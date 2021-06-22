@@ -1,0 +1,44 @@
+{
+  "name": "national-npp",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint --fix --ext .jsx,.js,.tsx,.ts .",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,scss}\"",
+    "secrets": "npm run secrets:logout && cross-env-shell BW_SESSION=`bw login product@bitsofgood.org --raw` \"npm run secrets:sync\"",
+    "secrets:logout": "(bw logout || exit 0)",
+    "secrets:login": "bw login product@bitsofgood.org",
+    "secrets:sync": "bw sync && bw get item national-npp/development/.env.local | fx .notes > \".env.local\"",
+    "prepare": "husky install"
+  },
+  "dependencies": {
+    "@auth0/nextjs-auth0": "^1.4.0",
+    "mongodb": "^3.6.9",
+    "mongoose": "^5.12.14",
+    "next": "11.0.0",
+    "react": "17.0.2",
+    "react-dom": "17.0.2"
+  },
+  "devDependencies": {
+    "@bitwarden/cli": "^1.16.0",
+    "@next/eslint-plugin-next": "^11.0.0",
+    "@types/react": "17.0.11",
+    "@typescript-eslint/eslint-plugin": "^4.27.0",
+    "@typescript-eslint/parser": "^4.27.0",
+    "babel-eslint": "^10.1.0",
+    "cross-env": "^7.0.3",
+    "eslint": "^7.29.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-react": "^7.24.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "fx": "^20.0.2",
+    "husky": "^6.0.0",
+    "prettier": "^2.3.1",
+    "typescript": "4.3.4"
+  }
+}
