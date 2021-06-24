@@ -87,7 +87,10 @@ const SHARED_SETTINGS = {
 };
 
 module.exports = {
-  parser: "babel-eslint",
+  parser: "@babel/eslint-parser",
+  parserOptions: {
+    requireConfigFile: false,
+  },
   env: {
     node: true,
     browser: true,
