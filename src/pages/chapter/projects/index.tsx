@@ -1,11 +1,11 @@
 import { Flex, Text } from "@chakra-ui/react";
 
-function LandingPage() {
+function ChapterProjects() {
   return (
     <Flex height="100%" justifyContent="center" alignItems="center">
-      <Text fontSize="2xl">Landing Page.</Text>
+      <Text fontSize="2xl">Chapter Projects Page.</Text>
     </Flex>
   );
 }
 
-export default LandingPage;
+export default ChapterProjects;
