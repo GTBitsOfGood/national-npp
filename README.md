@@ -18,3 +18,16 @@
     - You will be asked for a password, ask your EM to send it to you
     - **Note:** Windows users will need to run `npm run secrets:login` and `npm run secrets:sync` instead
 5. Run `npm run dev` to start the application
+
+## Useful Commands
+
+When you commit your code, both of the commands below are run automatically.
+
+- `npm run lint`: Check for errors in your code
+- `npm run format`: Fix code styling
+
+## Additional Information
+
+- Use `[NAME]/[ISSUE_NUMBER]-[SHORT_DESCRIPTION]` when naming your feature branches
+- Highly recommended to use VSCode with ESLint and Prettier extensions
+  - To save even more time, set up "Format on Save"
