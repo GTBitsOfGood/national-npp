@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { InternalResponse } from "src/utils/types";
 
 interface Data {
   name: string;
@@ -6,7 +7,7 @@ interface Data {
 
 export default function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse<InternalResponse<Data>>
 ) {
-  res.status(200).json({ name: "John Doe" });
+  res.status(200).json({ success: true, payload: { name: "Matt" } });
 }
