@@ -22,7 +22,7 @@ import {
 function Navigation() {
   // Assume that you know this information, nav bar changes based on this information
   const isLoggedIn = true;
-  const isChapter = false;
+  const isChapter = true;
   const isNonprofit = false;
   const npUserName = "liv.2b.girl";
   const nonProftName = "Liv2BGirl";
@@ -50,9 +50,9 @@ function Navigation() {
           <Text
             textAlign={useBreakpointValue({ base: "center", md: "left" })}
             fontFamily={"heading"}
-            color={useColorModeValue("gray.800", "white")}
+            color={slate}
           >
-            Hack4Impact
+            hack4impact
           </Text>
 
           <Flex display={{ base: "none", md: "flex" }} ml={10}>
@@ -70,8 +70,8 @@ function Navigation() {
                 <Text p={1} fontSize="sm" fontWeight={700} color={black}>
                   {isChapter ? chapterName : nonProftName}
                 </Text>
-                <Text p={1} fontSize="xs" fontWeight={500} color={slate}>
-                  {isChapter ? "admin" : npUserName}
+                <Text p={1} fontSize="sm" fontWeight={500} color={slate}>
+                  {isChapter ? "Admin" : npUserName}
                 </Text>
               </VStack>
               <MenuButton
