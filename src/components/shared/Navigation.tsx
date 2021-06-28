@@ -16,18 +16,24 @@ import {
   PopoverContent,
   useColorModeValue,
   useBreakpointValue,
+  VStack,
 } from "@chakra-ui/react";
 
 function Navigation() {
   // Assume that you know this information, nav bar changes based on this information
   const isLoggedIn = true;
-  const isChapter = true;
+  const isChapter = false;
   const isNonprofit = false;
+  const npUserName = "liv.2b.girl";
+  const nonProftName = "Liv2BGirl";
+  const chapterName = "Chapter Name";
+
+  //colors
+  const black = "rgba(51, 51, 51, 1)";
+  const slate = "rgba(101, 119, 136, 1)";
+  const blue = "rgba(0, 105, 202, 1)";
 
   return (
-    // <Flex height="70px" borderBottom="solid">
-    //   <Text>Navigation</Text>
-    // </Flex>
     <Box>
       <Flex
         bg={useColorModeValue("white", "gray.800")}
@@ -46,7 +52,7 @@ function Navigation() {
             fontFamily={"heading"}
             color={useColorModeValue("gray.800", "white")}
           >
-            Logo
+            Hack4Impact
           </Text>
 
           <Flex display={{ base: "none", md: "flex" }} ml={10}>
@@ -60,6 +66,14 @@ function Navigation() {
         {isLoggedIn ? (
           <Flex alignItems={"center"}>
             <Menu>
+              <VStack spacing={-2} align="flex-end">
+                <Text p={1} fontSize="sm" fontWeight={700} color={black}>
+                  {isChapter ? chapterName : nonProftName}
+                </Text>
+                <Text p={1} fontSize="xs" fontWeight={500} color={slate}>
+                  {isChapter ? "admin" : npUserName}
+                </Text>
+              </VStack>
               <MenuButton
                 as={Button}
                 rounded={"full"}
@@ -68,9 +82,7 @@ function Navigation() {
               >
                 <Avatar
                   size={"sm"}
-                  src={
-                    "https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
-                  }
+                  src={"https://hack4impact.org/brokenLink"}
                 />
               </MenuButton>
               <MenuList>
@@ -91,10 +103,10 @@ function Navigation() {
               fontSize={"sm"}
               fontWeight={600}
               color={"white"}
-              bg={"rgba(0, 105, 202, 1)"}
+              bg={blue}
               href={"#"}
               _hover={{
-                bg: "pink.300",
+                bg: "rgba(0, 105, 202, 0.5)",
               }}
             >
               Log In
@@ -113,9 +125,14 @@ const DesktopNav = (props: {
   isChapter: boolean;
   isNonprofit: boolean;
 }) => {
-  const linkColor = useColorModeValue("gray.600", "gray.200");
-  const linkHoverColor = useColorModeValue("gray.800", "white");
+  // const linkColor = useColorModeValue("gray.600", "gray.200");
+  // const linkHoverColor = useColorModeValue("gray.800", "white");
   const popoverContentBgColor = useColorModeValue("white", "gray.800");
+
+  //colors
+  const slate = "rgba(101, 119, 136, 1)";
+  const black = "rgba(51, 51, 51, 1)";
+  const blue = "rgba(0, 105, 202, 1)";
 
   let NAV_ITEMS: Array<NavItem> = [];
   if (props.isLoggedIn) {
@@ -136,17 +153,22 @@ const DesktopNav = (props: {
                 href={navItem.href ?? "#"}
                 fontSize={"sm"}
                 fontWeight={500}
-                color={linkColor}
+                color={slate}
                 _hover={{
                   textDecoration: "none",
-                  color: linkHoverColor,
+                  color: black,
+                }}
+                _active={{
+                  fontWeight: 600,
+                  textDecoration: "none",
+                  color: blue,
                 }}
               >
                 {navItem.label}
               </Link>
             </PopoverTrigger>
 
-            {navItem.children && (
+            {navItem.children && ( // not needed rn, maybe later???
               <PopoverContent
                 border={0}
                 boxShadow={"xl"}
@@ -169,6 +191,7 @@ const DesktopNav = (props: {
   );
 };
 
+// not sure if we will need this in the future ?
 const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
   return (
     <Link
