@@ -228,25 +228,25 @@ interface NavItem {
 const NAV_ITEMS_NON_PROFIT: Array<NavItem> = [
   {
     label: "My Project",
-    href: "#",
+    href: "/chapter/projects/",
   },
   {
     label: "Maintenance",
-    href: "#",
+    href: "/",
   },
 ];
 
 const NAV_ITEMS_ADMIN: Array<NavItem> = [
   {
     label: "Projects",
-    href: "#",
+    href: "/chapter/projects/",
   },
   {
     label: "Edit Process",
-    href: "#",
+    href: "/",
   },
   {
     label: "Maintenance",
-    href: "#",
+    href: "/",
   },
 ];
