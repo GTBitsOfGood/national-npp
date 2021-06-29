@@ -48,7 +48,7 @@ function Navigation() {
         align={"center"}
       >
         <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }}>
-          <Image src="images/small_logo.svg" boxSize="150"/>
+          <Image src="images/small_logo.svg" boxSize="150" />
           <Flex display={{ base: "none", md: "flex" }} ml={6}>
             <DesktopNav
               isLoggedIn={isLoggedIn}
