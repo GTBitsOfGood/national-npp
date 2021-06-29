@@ -15,16 +15,16 @@ import {
   PopoverTrigger,
   PopoverContent,
   useColorModeValue,
-  useBreakpointValue,
   VStack,
-  Image,
 } from "@chakra-ui/react";
+import Image from "next/image";
+import Logo from "public/images/small_logo.svg";
 
 function Navigation() {
   // Assume that you know this information, nav bar changes based on this information
   const isLoggedIn = true;
-  const isChapter = true;
-  const isNonprofit = false;
+  const isChapter = false;
+  const isNonprofit = true;
   const npUserName = "liv.2b.girl";
   const nonProftName = "Liv2BGirl";
   const chapterName = "Chapter Name";
@@ -48,7 +48,7 @@ function Navigation() {
         align={"center"}
       >
         <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }}>
-          <Image src="images/small_logo.svg" boxSize="150" />
+          <Image src={Logo} width={150} height={150} />
           <Flex display={{ base: "none", md: "flex" }} ml={6}>
             <DesktopNav
               isLoggedIn={isLoggedIn}
