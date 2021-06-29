@@ -17,6 +17,7 @@ import {
   useColorModeValue,
   useBreakpointValue,
   VStack,
+  Image,
 } from "@chakra-ui/react";
 
 function Navigation() {
@@ -38,24 +39,17 @@ function Navigation() {
       <Flex
         bg={useColorModeValue("white", "gray.800")}
         color={useColorModeValue("gray.600", "white")}
-        minH={"60px"}
-        py={{ base: 2 }}
-        px={{ base: 4 }}
+        maxH={"66px"}
+        py="23px"
+        px="34px"
         borderBottom={1}
         borderStyle={"solid"}
         borderColor={useColorModeValue("gray.200", "gray.900")}
         align={"center"}
       >
         <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }}>
-          <Text
-            textAlign={useBreakpointValue({ base: "center", md: "left" })}
-            fontFamily={"heading"}
-            color={slate}
-          >
-            hack4impact
-          </Text>
-
-          <Flex display={{ base: "none", md: "flex" }} ml={10}>
+          <Image src="images/small_logo.svg" boxSize="150"/>
+          <Flex display={{ base: "none", md: "flex" }} ml={6}>
             <DesktopNav
               isLoggedIn={isLoggedIn}
               isChapter={isChapter}
@@ -143,7 +137,7 @@ const DesktopNav = (props: {
     }
   }
   return (
-    <Stack direction={"row"} spacing={4}>
+    <Stack direction={"row"} spacing={6} align="center">
       {NAV_ITEMS.map((navItem) => (
         <Box key={navItem.label}>
           <Popover trigger={"hover"} placement={"bottom-start"}>
