@@ -23,8 +23,8 @@ import Logo from "public/images/small_logo.svg";
 function Navigation() {
   // Assume that you know this information, nav bar changes based on this information
   const isLoggedIn = true;
-  const isChapter = false;
-  const isNonprofit = true;
+  const isChapter = true;
+  const isNonprofit = false;
   const npUserName = "liv.2b.girl";
   const nonProftName = "Liv2BGirl";
   const chapterName = "Chapter Name";
@@ -49,13 +49,15 @@ function Navigation() {
       >
         <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }}>
           <Image src={Logo} width={150} height={150} />
-          <Flex display={{ base: "none", md: "flex" }} ml={6}>
-            <DesktopNav
-              isLoggedIn={isLoggedIn}
-              isChapter={isChapter}
-              isNonprofit={isNonprofit}
-            />
-          </Flex>
+          {isChapter || isNonprofit ? (
+            <Flex display={{ base: "none", md: "flex" }} ml={6}>
+              <DesktopNav
+                isLoggedIn={isLoggedIn}
+                isChapter={isChapter}
+                isNonprofit={isNonprofit}
+              />
+            </Flex>
+          ) : null}
         </Flex>
         {isLoggedIn ? (
           <Flex alignItems={"center"}>
