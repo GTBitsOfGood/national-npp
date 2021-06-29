@@ -18,6 +18,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import Image from "next/image";
+import NextLink from "next/link";
 import Logo from "public/images/small_logo.svg";
 
 function Navigation() {
@@ -144,24 +145,26 @@ const DesktopNav = (props: {
         <Box key={navItem.label}>
           <Popover trigger={"hover"} placement={"bottom-start"}>
             <PopoverTrigger>
-              <Link
-                p={2}
-                href={navItem.href ?? "#"}
-                fontSize={"sm"}
-                fontWeight={500}
-                color={slate}
-                _hover={{
-                  textDecoration: "none",
-                  color: black,
-                }}
-                _active={{
-                  fontWeight: 600,
-                  textDecoration: "none",
-                  color: blue,
-                }}
-              >
-                {navItem.label}
-              </Link>
+              <NextLink href={navItem.href ?? "/"}>
+                <Link
+                  p={2}
+                  href={navItem.href ?? "/"}
+                  fontSize={"sm"}
+                  fontWeight={500}
+                  color={slate}
+                  _hover={{
+                    textDecoration: "none",
+                    color: black,
+                  }}
+                  _active={{
+                    fontWeight: 600,
+                    textDecoration: "none",
+                    color: blue,
+                  }}
+                >
+                  {navItem.label}
+                </Link>
+              </NextLink>
             </PopoverTrigger>
 
             {navItem.children && ( // not needed rn, maybe later???
