@@ -23,8 +23,8 @@ import Logo from "public/images/small_logo.svg";
 
 function Navigation() {
   // Assume that you know this information, nav bar changes based on this information
-  const isLoggedIn = true;
-  const isChapter = true;
+  const isLoggedIn = false;
+  const isChapter = false;
   const isNonprofit = false;
   const npUserName = "liv.2b.girl";
   const nonProftName = "Liv2BGirl";
@@ -124,7 +124,7 @@ const DesktopNav = (props: {
 }) => {
   // const linkColor = useColorModeValue("gray.600", "gray.200");
   // const linkHoverColor = useColorModeValue("gray.800", "white");
-  const popoverContentBgColor = useColorModeValue("white", "gray.800");
+  // const popoverContentBgColor = useColorModeValue("white", "gray.800");
 
   //colors
   const slate = "rgba(101, 119, 136, 1)";
@@ -167,7 +167,7 @@ const DesktopNav = (props: {
               </NextLink>
             </PopoverTrigger>
 
-            {navItem.children && ( // not needed rn, maybe later???
+            {/* {navItem.children && ( // not needed rn, maybe later???
               <PopoverContent
                 border={0}
                 boxShadow={"xl"}
@@ -182,7 +182,7 @@ const DesktopNav = (props: {
                   ))}
                 </Stack>
               </PopoverContent>
-            )}
+            )} */}
           </Popover>
         </Box>
       ))}
@@ -191,31 +191,31 @@ const DesktopNav = (props: {
 };
 
 // not sure if we will need this in the future ?
-const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
-  return (
-    <Link
-      href={href}
-      role={"group"}
-      display={"block"}
-      p={2}
-      rounded={"md"}
-      _hover={{ bg: useColorModeValue("pink.50", "gray.900") }}
-    >
-      <Stack direction={"row"} align={"center"}>
-        <Box>
-          <Text
-            transition={"all .3s ease"}
-            _groupHover={{ color: "pink.400" }}
-            fontWeight={500}
-          >
-            {label}
-          </Text>
-          <Text fontSize={"sm"}>{subLabel}</Text>
-        </Box>
-      </Stack>
-    </Link>
-  );
-};
+// const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
+//   return (
+//     <Link
+//       href={href}
+//       role={"group"}
+//       display={"block"}
+//       p={2}
+//       rounded={"md"}
+//       _hover={{ bg: useColorModeValue("pink.50", "gray.900") }}
+//     >
+//       <Stack direction={"row"} align={"center"}>
+//         <Box>
+//           <Text
+//             transition={"all .3s ease"}
+//             _groupHover={{ color: "pink.400" }}
+//             fontWeight={500}
+//           >
+//             {label}
+//           </Text>
+//           <Text fontSize={"sm"}>{subLabel}</Text>
+//         </Box>
+//       </Stack>
+//     </Link>
+//   );
+// };
 
 interface NavItem {
   label: string;
