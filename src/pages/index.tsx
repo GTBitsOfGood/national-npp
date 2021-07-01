@@ -20,12 +20,12 @@ function LandingPage() {
       <Stack
         justifyContent="center"
         alignItems="center"
-        direction={{ base: "column-reverse", sm: "row" }}
+        direction={{ base: "column-reverse", md: "row" }}
         marginBottom="10"
         flex="1"
         flexBasis="250px"
       >
-        <Box bg="white" w={{ sm: "50%" }} p={10}>
+        <Box bg="white" w={{ md: "50%" }} p={10}>
           <Heading
             fontSize={{ base: "x-large", md: "xx-large", lg: "xxx-large" }}
             marginBottom="1"
@@ -49,7 +49,7 @@ function LandingPage() {
       <Stack
         justifyContent="center"
         alignItems="center"
-        direction={{ base: "column", sm: "row" }}
+        direction={{ base: "column", md: "row" }}
         marginBottom="10"
         flex="1"
       >
@@ -59,15 +59,15 @@ function LandingPage() {
           width={190}
           height={190}
         />
-        <Box w={{ sm: "50%" }} p={10} marginLeft={{ sm: "20" }}>
+        <Box w={{ md: "50%" }} p={10} marginLeft={{ md: "20" }}>
           <Heading
-            fontSize={{ base: "large", sm: "x-large" }}
+            fontSize={{ base: "large", md: "x-large" }}
             color="rgb(0,105,202)"
             marginBottom="5"
           >
             Start a New Project with us
           </Heading>
-          <Text fontSize={{ base: "small", sm: "medium" }}>
+          <Text fontSize={{ base: "small", md: "medium" }}>
             Have a great idea for how a website or mobile application can help
             your nonprofit reach more people? Let us know, and we can build it
             for you!
@@ -77,7 +77,7 @@ function LandingPage() {
       <Stack
         justifyContent="center"
         alignItems="center"
-        direction={{ base: "column", sm: "row" }}
+        direction={{ base: "column", md: "row" }}
         flex="1"
       >
         <Image
@@ -86,15 +86,15 @@ function LandingPage() {
           width={190}
           height={190}
         />
-        <Box w={{ sm: "50%" }} p={10}>
+        <Box w={{ md: "50%" }} p={10}>
           <Heading
-            fontSize={{ base: "large", sm: "x-large" }}
+            fontSize={{ base: "large", md: "x-large" }}
             color="rgb(0,105,202)"
             marginBottom="5"
           >
             Project Maintenance
           </Heading>
-          <Text fontSize={{ base: "small", sm: "medium" }}>
+          <Text fontSize={{ base: "small", md: "medium" }}>
             Have a completed product for Bits of Good that requires bug fixes or
             maintenance? Let us know, and we can fix it for you!
           </Text>
