@@ -13,6 +13,7 @@ import Image from "next/image";
 import FirstLandingImage from "public/images/landing_first.svg";
 import SecondLandingImage from "public/images/landing_second.svg";
 import ThirdLandingImage from "public/images/landing_third.svg";
+import FourthLandingImage from "public/images/small_logo.svg";
 
 function LandingPage() {
   return (
@@ -105,7 +106,12 @@ function LandingPage() {
       </Box>
       <HStack justifyContent="center" spacing="10">
         <Box justifyContent="center">
-          <Text fontSize="small">hack4impact</Text>
+          <Image
+            src={FourthLandingImage}
+            alt="Build Websites"
+            width={120}
+            height={120}
+          />
         </Box>
         <Box w="50%">
           <Text fontSize="small">
