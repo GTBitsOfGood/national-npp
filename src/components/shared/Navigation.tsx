@@ -22,7 +22,7 @@ function Navigation() {
   const isChapter = true;
   const isNonprofit = false;
   const npUserName = "liv.2b.girl";
-  const nonProftName = "Liv2BGirl";
+  const nonprofitName = "Liv2BGirl";
   const chapterName = "Chapter Name";
 
   let NAV_ITEMS: Array<NavItem> = [];
@@ -46,14 +46,13 @@ function Navigation() {
         <Flex flex="1" justify="start">
           <Image src={Logo} width={150} height={150} />
           {isLoggedIn && (isChapter || isNonprofit) ? (
-            <Flex display={{ base: "none", md: "flex" }} ml={6}>
+            <Flex display={{ base: "none", md: "flex" }} ml={12}>
               <Stack direction={"row"} spacing={6} align="center">
                 {NAV_ITEMS.map((navItem) => (
                   <Box key={navItem.label} placement={"bottom-start"}>
-                    <NextLink href={navItem.href ?? "/"}>
+                    <NextLink href={navItem.href}>
                       <Link
                         p={2}
-                        href={navItem.href ?? "/"}
                         fontSize={"sm"}
                         fontWeight={500}
                         color={"slategrey"}
@@ -78,9 +77,9 @@ function Navigation() {
         {isLoggedIn ? (
           <Flex alignItems={"center"}>
             <Menu>
-              <VStack spacing={-2} align="flex-end">
+              <VStack spacing={-2} align="flex-end" marginRight={6}>
                 <Text p={1} fontSize="sm" fontWeight={700} color={"black.400"}>
-                  {isChapter ? chapterName : nonProftName}
+                  {isChapter ? chapterName : nonprofitName}
                 </Text>
                 <Text p={1} fontSize="sm" fontWeight={500} color={"slategrey"}>
                   {isChapter ? "Admin" : npUserName}
@@ -92,7 +91,7 @@ function Navigation() {
                 variant={"link"}
                 cursor={"pointer"}
               >
-                <Avatar size={"sm"} />
+                <Avatar width="40px" height="40px" />
               </MenuButton>
               <MenuList>
                 <MenuItem>Edit Profile</MenuItem>
@@ -108,12 +107,11 @@ function Navigation() {
             spacing={6}
           >
             <Button
-              display={{ base: "none", md: "inline-flex" }}
-              fontSize={"sm"}
+              display="inline-flex"
+              fontSize="sm"
               fontWeight={600}
               color={"white"}
               bg={"blue.500"}
-              href={"#"}
               _hover={{
                 bg: "blue.400",
               }}
@@ -131,14 +129,13 @@ export default Navigation;
 
 interface NavItem {
   label: string;
-  subLabel?: string;
-  href?: string;
+  href: string;
 }
 
 const NAV_ITEMS_NON_PROFIT: Array<NavItem> = [
   {
     label: "My Project",
-    href: "/chapter/projects/",
+    href: "/chapter/projects",
   },
   {
     label: "Maintenance",
@@ -149,11 +146,7 @@ const NAV_ITEMS_NON_PROFIT: Array<NavItem> = [
 const NAV_ITEMS_ADMIN: Array<NavItem> = [
   {
     label: "Projects",
-    href: "/chapter/projects/",
-  },
-  {
-    label: "Edit Process",
-    href: "/",
+    href: "/chapter/projects",
   },
   {
     label: "Maintenance",
