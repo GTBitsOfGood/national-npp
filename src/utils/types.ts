@@ -21,3 +21,13 @@ export interface InternalResponse<T> {
   message?: string;
   payload?: T;
 }
+
+export interface ChapterProject {
+  id: string;
+  org: string;
+  website: string;
+  email: string;
+  started: Date;
+  lastUpdated: Date;
+  status: string;
+}
