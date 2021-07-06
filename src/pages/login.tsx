@@ -19,13 +19,9 @@ import {
   Heading,
   Text,
   Input,
-  Link,
   Box,
   Stack,
-  Image,
-  useColorModeValue,
-  Checkbox
-} from '@chakra-ui/react';
+} from "@chakra-ui/react";
 
 export default function SplitScreen() {
   return (
@@ -65,7 +61,13 @@ export default function SplitScreen() {
                 <Input type="email" placeholder="name@email.com" />
               </FormControl>
               <Stack spacing={8} py={4}>
-                <Button bg={"#0069CA"} variant={"solid"} textColor={"white"} fontSize={18} p={7}>
+                <Button
+                  bg={"#0069CA"}
+                  variant={"solid"}
+                  textColor={"white"}
+                  fontSize={18}
+                  p={7}
+                >
                   Next
                 </Button>
               </Stack>
@@ -77,4 +79,4 @@ export default function SplitScreen() {
   );
 }
 /*
-    */
+ */
