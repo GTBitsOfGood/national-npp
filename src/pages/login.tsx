@@ -1,16 +1,3 @@
-/*import { Flex } from "@chakra-ui/react";
-
-function LoginPage() {
-  return (
-    <Flex>
-      Page where nonprofit or chapter can input their email to receive a link to
-      log in
-    </Flex>
-  );
-}
-
-export default LoginPage;
-*/
 import {
   Button,
   Flex,
@@ -22,8 +9,19 @@ import {
   Box,
   Stack,
 } from "@chakra-ui/react";
+import { signIn } from "next-auth/client";
+import Image from "next/image";
+import { useState } from "react";
+import loginImage from "src/public/images/login_image.svg";
+//import NextLink from "next/link";
 
-export default function SplitScreen() {
+function LoginPage() {
+  const [value, setValue] = useState("");
+
+  const onChange = (event: React.ChangeEvent) => {
+    setValue(event.target.value);
+  };
+
   return (
     <Flex align={"center"} justify={"center"} bg={"#EBEEF1"} height={"100%"}>
       <Box
@@ -32,15 +30,23 @@ export default function SplitScreen() {
         border="1px"
         borderColor="#657788"
         borderRadius="10px"
-        minW={"100vh"}
+        width={{ base: "100%", md: "70%" }}
       >
         <Stack
           minH={"50vh"}
           direction={{ base: "column", md: "row" }}
           spacing={0}
         >
-          <Flex flex={1}>
-            <Box bg={"#0069CA"} width={"100%"} opacity=".1" />
+          <Flex
+            flex={1}
+            display={{ base: "none", md: "flex" }}
+            bg={"#e6f0fa"}
+            width={"100%"}
+            roundedLeft="lg"
+          >
+            <Box position="relative" right="50%" left="10%" marginY="auto">
+              <Image src={loginImage} height={550} />
+            </Box>
           </Flex>
           <Flex
             p={8}
@@ -50,7 +56,7 @@ export default function SplitScreen() {
             bg={"#FFFFFF"}
             rounded={"lg"}
           >
-            <Stack spacing={4} w={"100%"} maxW={"md"} p={14}>
+            <Stack spacing={4} w={"100%"} maxW={"md"} p={{ base: 5, md: 14 }}>
               <Heading fontSize={"2xl"}>Welcome!</Heading>
               <Text>
                 Login or sign up here to work on your project with Hack4Impact
@@ -58,14 +64,21 @@ export default function SplitScreen() {
               </Text>
               <FormControl id="email">
                 <FormLabel>Email</FormLabel>
-                <Input type="email" placeholder="name@email.com" />
+                <Input
+                  type="email"
+                  placeholder="name@email.com"
+                  value={value}
+                  onChange={onChange}
+                />
               </FormControl>
               <Stack spacing={8} py={4}>
                 <Button
+                  onClick={() => signIn("email", { email: { value } })}
                   bg={"#0069CA"}
                   variant={"solid"}
                   textColor={"white"}
                   fontSize={18}
+                  _hover={{ bg: "blue.400" }}
                   p={7}
                 >
                   Next
@@ -78,5 +91,5 @@ export default function SplitScreen() {
     </Flex>
   );
 }
-/*
- */
+
+export default LoginPage;

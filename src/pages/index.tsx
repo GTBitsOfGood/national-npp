@@ -10,6 +10,7 @@ import {
   Link,
 } from "@chakra-ui/react";
 import Image from "next/image";
+import NextLink from "next/link";
 import FirstLandingImage from "public/images/landing_first.svg";
 import SecondLandingImage from "public/images/landing_second.svg";
 import ThirdLandingImage from "public/images/landing_third.svg";
@@ -42,7 +43,9 @@ function LandingPage() {
             into real products. If you have an existing project or a team, we
             are happy to get involved in your development cycle.
           </Text>
-          <Button colorScheme="blue">Log In</Button>
+          <NextLink href="/login">
+            <Button colorScheme="blue">Log In</Button>
+          </NextLink>
         </VStack>
         <Image
           src={FirstLandingImage}
