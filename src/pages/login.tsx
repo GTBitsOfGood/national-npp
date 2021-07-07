@@ -1,16 +1,3 @@
-/*import { Flex } from "@chakra-ui/react";
-
-function LoginPage() {
-  return (
-    <Flex>
-      Page where nonprofit or chapter can input their email to receive a link to
-      log in
-    </Flex>
-  );
-}
-
-export default LoginPage;
-*/
 import {
   Button,
   Flex,
@@ -22,8 +9,17 @@ import {
   Box,
   Stack,
 } from "@chakra-ui/react";
+import { signIn } from "next-auth/client";
+//import NextLink from "next/link";
+import { useState } from "react";
 
-export default function SplitScreen() {
+function LoginPage() {
+  const [value, setValue] = useState("");
+
+  const onChange = (event: React.ChangeEvent) => {
+    setValue(event.target.value);
+  };
+
   return (
     <Flex align={"center"} justify={"center"} bg={"#EBEEF1"} height={"100%"}>
       <Box
@@ -58,14 +54,21 @@ export default function SplitScreen() {
               </Text>
               <FormControl id="email">
                 <FormLabel>Email</FormLabel>
-                <Input type="email" placeholder="name@email.com" />
+                <Input
+                  type="email"
+                  placeholder="name@email.com"
+                  value={value}
+                  onChange={onChange}
+                />
               </FormControl>
               <Stack spacing={8} py={4}>
                 <Button
+                  onClick={() => signIn("email", { email: { value } })}
                   bg={"#0069CA"}
                   variant={"solid"}
                   textColor={"white"}
                   fontSize={18}
+                  _hover={{ bg: "blue.400" }}
                   p={7}
                 >
                   Next
@@ -78,5 +81,5 @@ export default function SplitScreen() {
     </Flex>
   );
 }
-/*
- */
+
+export default LoginPage;
