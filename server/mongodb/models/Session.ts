@@ -1,13 +1,5 @@
-import mongoose, { Schema, Types } from "mongoose";
-
-export interface Session {
-  _id: Types.ObjectId;
-  id: string;
-  userId: Types.ObjectId;
-  expires: Date;
-  sessionToken: string;
-  accessToken: string;
-}
+import mongoose, { Schema } from "mongoose";
+import { Session } from "src/utils/types";
 
 const SessionSchema = new Schema<Session>(
   {
@@ -38,4 +30,5 @@ const SessionSchema = new Schema<Session>(
 const SessionModel =
   (mongoose.models.Session as mongoose.Model<Session>) ||
   mongoose.model<Session>("Session", SessionSchema);
+
 export default SessionModel;

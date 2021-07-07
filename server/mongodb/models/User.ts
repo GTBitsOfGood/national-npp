@@ -1,18 +1,6 @@
-import mongoose, { Schema, Types } from "mongoose";
-
-export interface User {
-  _id: Types.ObjectId;
-  id: string;
-  email: string;
-  emailVerified: Date;
-  name?: string;
-  image?: string;
-  isAdmin?: boolean;
-  chapter?: string;
-  nonprofit?: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
+import mongoose, { Schema } from "mongoose";
+import NonprofitSchema from "server/mongodb/models/embedded/Nonprofit";
+import { User } from "src/utils/types";
 
 const UserSchema = new Schema<User>(
   {
@@ -27,9 +15,17 @@ const UserSchema = new Schema<User>(
     },
     name: String,
     image: String,
-    isAdmin: Boolean,
-    chapter: String,
-    nonprofit: String,
+    phoneNum: String,
+    calendly: String,
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
+    chapter: {
+      type: Schema.Types.ObjectId,
+      ref: "Chapter",
+    },
+    nonprofit: NonprofitSchema,
     createdAt: {
       type: Date,
       immutable: true,

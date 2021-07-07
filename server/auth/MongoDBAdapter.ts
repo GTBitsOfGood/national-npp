@@ -5,10 +5,11 @@ import { AdapterInstance } from "next-auth/adapters";
 import { AppOptions } from "next-auth/internals";
 import { EmailConfig } from "next-auth/providers";
 import AccountModel from "server/mongodb/models/Account";
-import SessionModel, { Session } from "server/mongodb/models/Session";
-import UserModel, { User } from "server/mongodb/models/User";
+import SessionModel from "server/mongodb/models/Session";
+import UserModel from "server/mongodb/models/User";
 import VerificationRequestModel from "server/mongodb/models/VerificationRequest";
 import dbConnect from "server/utils/dbConnect";
+import { User, Session } from "src/utils/types";
 
 /*
     This adapter has not been tested with providers other than email. That is considered future work for now.
@@ -38,7 +39,6 @@ const MongoDBAdapter = () => {
             emailVerified,
             name: "",
             image: "",
-            isAdmin: false,
           });
 
           return newUser;
