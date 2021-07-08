@@ -4,6 +4,7 @@ import { ChapterStage, InternalResponse, ProjectType } from "src/utils/types";
 /*
 import { 
   getChapterUserProfile,
+  getNonprofitUserProfile,
 } from "../../../server/mongodb/actions/User";
 import {
   createProject,
@@ -15,7 +16,6 @@ import {
   getNonprofitProject,
 } from "../../../server/mongodb/actions/Project";
 */
-
 interface Data {
   name: string;
 }
@@ -24,6 +24,14 @@ export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<InternalResponse<Data>>
 ) {
+  /*
+  getNonprofitUserProfile(Types.ObjectId("60db9ac9c2e44048a7832a3c")).then(
+    (user) => {
+      console.log(user);
+      res.status(200).json({ success: true, payload: user });
+    }
+  );
+  */
   /*
   getNonprofitProject(Types.ObjectId("60db9ac9c2e44048a7832a3c")).then(
     (project) => {

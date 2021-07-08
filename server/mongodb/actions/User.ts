@@ -13,5 +13,7 @@ export async function getChapterUserProfile(userId: Types.ObjectId) {
 export async function getNonprofitUserProfile(userId: Types.ObjectId) {
   await dbConnect();
 
-  return null;
+  const user = await UserModel.findById(userId).populate('nonprofit');
+
+  return user;
 }

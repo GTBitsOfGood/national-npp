@@ -47,7 +47,10 @@ export async function getProjectById(projectId: Types.ObjectId) {
 export async function getNonprofitProject(userId: Types.ObjectId) {
   await dbConnect();
 
-  const project = await ProjectModel.findOne({ userId, 'status': {$ne : ChapterStage.CLOSED}});
+  const project = await ProjectModel.findOne({
+    userId,
+    status: { $ne: ChapterStage.CLOSED },
+  });
 
   return project;
 }
@@ -58,7 +61,11 @@ export async function updateProjectStatus(
 ) {
   await dbConnect();
 
-  const updatedProject = await ProjectModel.updateOne({ _id: projectId }, { status });
+  const updatedProject = await ProjectModel.updateOne(
+    { _id: projectId },
+    { status },
+    { new: true }
+  );
 
   return updatedProject;
 }
@@ -69,7 +76,11 @@ export async function updateProjectContact(
 ) {
   await dbConnect();
 
-  const updatedProject = await ProjectModel.updateOne({ _id: projectId }, { contact: userId });
+  const updatedProject = await ProjectModel.updateOne(
+    { _id: projectId },
+    { contact: userId },
+    { new: true }
+  );
 
   return updatedProject;
 }
