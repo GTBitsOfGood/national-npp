@@ -5,7 +5,9 @@ import dbConnect from "server/utils/dbConnect";
 export async function getChapterUserProfile(userId: Types.ObjectId) {
   await dbConnect();
 
-  return null;
+  const model = await UserModel.findById(userId);
+
+  return model;
 }
 
 export async function getNonprofitUserProfile(userId: Types.ObjectId) {
