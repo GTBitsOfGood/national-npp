@@ -1,6 +1,6 @@
 import { Heading, Button, Box, Grid } from "@chakra-ui/react";
 import { useState } from "react";
-import ChapterCard from "src/components/ChapterCard";
+import ChapterCard from "src/components/chapters/ChapterCard";
 
 function ChapterSelectPage() {
   const [selected, setSelected] = useState("");
@@ -45,7 +45,7 @@ function ChapterSelectPage() {
         margin="auto"
       >
         <Heading
-          fontSize={{ base: "medium", md: "x-large" }}
+          fontSize={{ base: "x-large", md: "xx-large" }}
           marginBottom="50px"
         >
           Select a chapter to work with

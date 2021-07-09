@@ -32,6 +32,7 @@ function ChapterCard(props: {
       justifyContent="space-between"
       boxSizing="border-box"
       width="400px"
+      minHeight="200px"
       padding={isSelected ? "28px" : "30px"}
       backgroundColor="white"
       border={isSelected ? "3px solid #0069CA" : "1px solid #657788"}
