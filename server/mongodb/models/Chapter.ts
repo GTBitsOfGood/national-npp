@@ -13,6 +13,7 @@ const ChapterSchema = new Schema<Chapter>({
   },
   address: AddressSchema,
   phoneNum: String,
+  calendly: String,
   projectProcess: {
     type: [String],
     required: true,

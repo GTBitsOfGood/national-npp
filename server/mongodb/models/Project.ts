@@ -3,18 +3,20 @@ import { Project, ChapterStage, ProjectType } from "src/utils/types";
 
 const ProjectSchema = new Schema<Project>(
   {
-    chapterId: {
+    chapter: {
       type: Schema.Types.ObjectId,
       required: true,
+      ref: "Chapter",
     },
-    userId: {
+    nonprofit: {
       type: Schema.Types.ObjectId,
       required: true,
+      ref: "Nonprofit",
     },
     status: {
       type: String,
       enum: Object.values(ChapterStage),
-      default: ChapterStage.NEW_PROJECT,
+      default: ChapterStage.APPLICATION,
     },
     type: {
       type: String,
