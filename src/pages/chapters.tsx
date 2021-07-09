@@ -1,6 +1,7 @@
 import { Heading, Button, Box, Grid } from "@chakra-ui/react";
 import { useState } from "react";
 import ChapterCard from "src/components/chapters/ChapterCard";
+import { ProjectType } from "src/utils/types";
 
 function ChapterSelectPage() {
   const [selected, setSelected] = useState("");
@@ -8,28 +9,42 @@ function ChapterSelectPage() {
 
   for (let i = 0; i < 10; i += 1) {
     chapters.push({
-      id: `${i}`,
-      school: "Georgia Tech",
-      location: "Atlanta, GA",
-      projectTypes: ["Website", "Mobile"],
+      _id: `${i}`,
+      name: "Georgia Tech",
       email: "gt@hack4impact.org",
+      address: {
+        street: "7 Fake Street",
+        city: "Atlanta",
+        state: "GA",
+        zipCode: "30303",
+        country: "USA",
+      },
+      projectProcess: [],
+      projectTypes: [ProjectType.WEBSITE, ProjectType.MOBILE_APP],
+      projectLimit: 5,
       website: "bitsofgood.org",
       facebook: "bitsofgood",
       instagram: "bitsofgood",
-      open: true,
     });
   }
 
   chapters.push({
-    id: `${2000}`,
-    school: "University of Illinois at Urbana-Champaign",
-    location: "Champaign, IL",
-    projectTypes: ["Website", "Mobile"],
+    _id: `${2000}`,
+    name: "University of Illinois at Urbana-Champaign",
     email: "gt@hack4impact.org",
+    address: {
+      street: "7 Fake Street",
+      city: "Champaign",
+      state: "IL",
+      zipCode: "61820",
+      country: "USA",
+    },
+    projectProcess: [],
+    projectTypes: [ProjectType.WEBSITE, ProjectType.MOBILE_APP],
+    projectLimit: 3,
     website: "bitsofgood.org",
     facebook: "bitsofgood",
     instagram: "bitsofgood",
-    open: false,
   });
 
   function onChapterCardClick(id: string) {
@@ -62,9 +77,9 @@ function ChapterSelectPage() {
           />
           {chapters.map((chapter) => (
             <ChapterCard
-              key={chapter.id}
+              key={chapter._id}
               chapter={chapter}
-              isSelected={chapter.id === selected}
+              isSelected={chapter._id === selected}
               onClick={onChapterCardClick}
             />
           ))}

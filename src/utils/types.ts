@@ -24,7 +24,7 @@ export interface User {
 }
 
 export interface Chapter {
-  _id: Types.ObjectId;
+  _id: string; // TODO should this be an ObjectId?
   name: string;
   email: string;
   address: Address;

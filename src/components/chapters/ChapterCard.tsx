@@ -20,9 +20,10 @@ function ChapterCard(props: {
   onClick: (id: string) => void;
 }) {
   const { chapter, isSelected, onClick: _onClick } = props;
+  const open = true; // TODO can't calculate from given information
 
   function onClick() {
-    _onClick(chapter ? chapter.id : "");
+    _onClick(chapter ? chapter._id : "");
   }
 
   return (
@@ -38,9 +39,9 @@ function ChapterCard(props: {
       border={isSelected ? "3px solid #0069CA" : "1px solid #657788"}
       borderRadius="15px"
       position="relative"
-      onClick={!chapter || chapter.open ? onClick : undefined}
-      opacity={!chapter || chapter.open ? 1 : 0.5}
-      cursor={!chapter || chapter.open ? "pointer" : "default"}
+      onClick={!chapter || open ? onClick : undefined}
+      opacity={!chapter || open ? 1 : 0.5}
+      cursor={!chapter || open ? "pointer" : "default"}
     >
       {isSelected && (
         <Box position="absolute" top="-15px" left="-15px">
@@ -53,7 +54,7 @@ function ChapterCard(props: {
         </Box>
       )}
       <Box>
-        {chapter && !chapter.open && (
+        {chapter && !open && (
           <Tag
             backgroundColor="#DEE4E9"
             color="#33333"
@@ -65,12 +66,12 @@ function ChapterCard(props: {
           </Tag>
         )}
         <Heading fontSize="lg" color="#333333" marginBottom="10px">
-          {chapter ? chapter.school : "No Preference"}
+          {chapter ? chapter.name : "No Preference"}
         </Heading>
         {chapter ? (
           <VStack align="left" color="#657788" spacing="1px">
             <Text>
-              {chapter.location} •{" "}
+              {chapter.address.city}, {chapter.address.state} •{" "}
               <Link color="#0069CA" href={`mailto:${chapter.email}`}>
                 Contact
               </Link>
