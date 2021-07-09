@@ -10,7 +10,7 @@ const cardItems = [
     email: "example1@gmail.com",
     projectTypes: ["Website", "Mobile"],
     website: "website1.com",
-    facebook: "whatever",
+    facebook: "https://facebook.com",
     address: "Washington 1",
   },
   {
@@ -18,35 +18,35 @@ const cardItems = [
     email: "example2@gmail.com",
     projectTypes: ["Website"],
     website: "website2.com",
-    facebook: "whatever",
-    instagram: "hello",
+    facebook: "https://facebook.com",
+    instagram: "https://instagram.com",
     address: "Washington 2",
   },
   {
-    name: "University of Washington3",
+    name: "University of Washington 3",
     email: "example3@gmail.com",
     projectTypes: ["Website", "Mobile"],
-    facebook: "whatever",
+    facebook: "https://facebook.com",
     website: "website3.com",
     instagram: "hello",
     address: "Washington 3",
   },
   {
-    name: "University of Washington4",
+    name: "University of Washington 4",
     email: "example4@gmail.com",
     projectTypes: ["Website", "Mobile", "Mobile 2"],
-    facebook: "whatever",
+    facebook: "https://facebook.com",
     website: "website4.com",
     address: "Washington 4",
   },
   {
-    name: "University of Washington5",
+    name: "University of Washington5 ",
     email: "example5@gmail.com",
     projectTypes: ["Website", "Mobile", "Mobile 2"],
-    facebook: "whatever",
+    facebook: "https://facebook.com",
     website: "website5.com",
     address: "Washington 5",
-    instagram: "@hello",
+    instagram: "https://instagram.com",
   },
 ];
 
@@ -86,7 +86,11 @@ function ChapterCard() {
             {cardItem.address}
           </Text>
           <CircleIcon boxSize={1} color="blue.600" />
-          <Link fontSize="small" color="blue.600" href={cardItem.website}>
+          <Link
+            fontSize="small"
+            color="blue.600"
+            href={"mailto:" + cardItem.email}
+          >
             Contact
           </Link>
         </HStack>
@@ -95,9 +99,15 @@ function ChapterCard() {
         </Text>
         <HStack />
         <HStack spacing="2" marginTop="10">
-          {cardItem.email ? <IoIosGlobe /> : ""}
-          {cardItem.instagram ? <FiInstagram /> : ""}
-          {cardItem.facebook ? <AiFillFacebook /> : ""}
+          <Link href={cardItem.website}>
+            {cardItem.website ? <IoIosGlobe /> : ""}
+          </Link>
+          <Link href={cardItem.instagram}>
+            {cardItem.instagram ? <FiInstagram /> : ""}
+          </Link>
+          <Link href={cardItem.facebook}>
+            {cardItem.facebook ? <AiFillFacebook /> : ""}
+          </Link>
         </HStack>
       </Box>
     </Box>
