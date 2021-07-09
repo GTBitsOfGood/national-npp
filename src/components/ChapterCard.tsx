@@ -1,4 +1,12 @@
-import { Box, Heading, Text, Link, HStack, Icon } from "@chakra-ui/react";
+import {
+  Box,
+  Heading,
+  Text,
+  Link,
+  HStack,
+  Icon,
+  Tooltip,
+} from "@chakra-ui/react";
 //import React, { useState } from "react";
 import { AiFillFacebook } from "react-icons/ai";
 import { FiInstagram } from "react-icons/fi";
@@ -100,13 +108,19 @@ function ChapterCard() {
         <HStack />
         <HStack spacing="2" marginTop="10">
           <Link href={cardItem.website}>
-            {cardItem.website ? <IoIosGlobe /> : ""}
+            <Tooltip label="Site">
+              <Box>{cardItem.website ? <IoIosGlobe /> : ""}</Box>
+            </Tooltip>
           </Link>
           <Link href={cardItem.instagram}>
-            {cardItem.instagram ? <FiInstagram /> : ""}
+            <Tooltip label="Instagram">
+              <Box>{cardItem.instagram ? <FiInstagram /> : ""}</Box>
+            </Tooltip>
           </Link>
           <Link href={cardItem.facebook}>
-            {cardItem.facebook ? <AiFillFacebook /> : ""}
+            <Tooltip label="Facebook">
+              <Box>{cardItem.facebook ? <AiFillFacebook /> : ""}</Box>
+            </Tooltip>
           </Link>
         </HStack>
       </Box>
