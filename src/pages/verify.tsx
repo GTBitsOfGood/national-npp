@@ -1,7 +1,7 @@
 import { Flex, Text, Box, Stack, Link } from "@chakra-ui/react";
 import Image from "next/image";
 import NextLink from "next/link";
-import loginImage from "src/public/images/login_image.svg";
+import loginImage from "public/images/login_first.svg";
 
 function VerifyEmailPage() {
   return (
@@ -22,7 +22,7 @@ function VerifyEmailPage() {
             width={"100%"}
             roundedLeft="lg"
           >
-            <Box position="relative" right="50%" left="10%" marginY="auto">
+            <Box position="relative" left="10%" marginY="auto">
               <Image src={loginImage} height={550} />
             </Box>
           </Flex>
@@ -34,7 +34,7 @@ function VerifyEmailPage() {
             bg={"#FFFFFF"}
             rounded={"lg"}
           >
-            <Stack spacing={2} w={"100%"} maxW={"md"} p={16}>
+            <Stack spacing={2} w={"100%"} maxW={"md"} p={{ base: 5, md: 14 }}>
               <Text
                 fontFamily="Helvetica, sans-serif"
                 fontSize={"28"}

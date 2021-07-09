@@ -12,7 +12,7 @@ import {
 import { signIn } from "next-auth/client";
 import Image from "next/image";
 import { useState } from "react";
-import loginImage from "src/public/images/login_image.svg";
+import loginImage from "public/images/login_first.svg";
 //import NextLink from "next/link";
 
 function LoginPage() {
@@ -44,7 +44,7 @@ function LoginPage() {
             width={"100%"}
             roundedLeft="lg"
           >
-            <Box position="relative" right="50%" left="10%" marginY="auto">
+            <Box position="relative" left="10%" marginY="auto">
               <Image src={loginImage} height={550} />
             </Box>
           </Flex>
