@@ -19,7 +19,7 @@ function ChapterSelectPage() {
       p={{ base: 5, md: 10 }}
       direction="column"
       alignItems="space-between"
-      justifyContent="center"
+      justifyContent="flex-start"
       backgroundColor="gray.100"
       height="100%"
     >
