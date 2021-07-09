@@ -145,6 +145,13 @@ export interface InternalResponse<T> {
   payload?: T;
 }
 
+export type ChapterChange = Omit<Partial<Chapter>, "_id">;
+export type NonprofitChange = Omit<Partial<Nonprofit>, "_id" | "isVerified">;
+export type UserChange = Pick<
+  Partial<User>,
+  "name" | "image" | "phoneNum" | "calendly"
+>;
+
 /* Enums */
 
 export enum ProjectType {

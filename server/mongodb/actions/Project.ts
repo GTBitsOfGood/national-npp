@@ -4,7 +4,7 @@ import dbConnect from "server/utils/dbConnect";
 import { ChapterStage, ProjectType } from "src/utils/types";
 
 export async function createProject(
-  userId: Types.ObjectId,
+  nonprofitId: Types.ObjectId,
   chapterId: Types.ObjectId,
   type: ProjectType
 ) {
@@ -25,7 +25,7 @@ export async function getProjectById(projectId: Types.ObjectId) {
   return null;
 }
 
-export async function getNonprofitProject(userId: Types.ObjectId) {
+export async function getNonprofitProject(nonprofitId: Types.ObjectId) {
   await dbConnect();
 
   return null;
