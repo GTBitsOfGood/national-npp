@@ -70,7 +70,9 @@ function ChapterSelectPage() {
           ))}
         </Grid>
         <Box align="right" marginTop="40px">
-          <Button px="20px" colorScheme="blue">Next</Button>
+          <Button px="20px" colorScheme="blue">
+            Next
+          </Button>
         </Box>
       </Box>
     </Box>
