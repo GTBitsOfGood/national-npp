@@ -4,127 +4,121 @@ import {
   Text,
   Link,
   HStack,
-  Icon,
   Tooltip,
+  VStack,
+  Tag,
 } from "@chakra-ui/react";
-//import React, { useState } from "react";
 import { AiFillFacebook } from "react-icons/ai";
+import { BsCircleFill } from "react-icons/bs";
 import { FiInstagram } from "react-icons/fi";
-import { IoIosGlobe } from "react-icons/io";
+import { IoIosCheckmarkCircle, IoIosGlobe } from "react-icons/io";
+import { Chapter } from "src/utils/types";
 
-const cardItems = [
-  {
-    name: "University of Washington",
-    email: "example1@gmail.com",
-    projectTypes: ["Website", "Mobile"],
-    website: "website1.com",
-    facebook: "https://facebook.com",
-    address: "Washington 1",
-  },
-  {
-    name: "University of Washington 2",
-    email: "example2@gmail.com",
-    projectTypes: ["Website"],
-    website: "website2.com",
-    facebook: "https://facebook.com",
-    instagram: "https://instagram.com",
-    address: "Washington 2",
-  },
-  {
-    name: "University of Washington 3",
-    email: "example3@gmail.com",
-    projectTypes: ["Website", "Mobile"],
-    facebook: "https://facebook.com",
-    website: "website3.com",
-    instagram: "hello",
-    address: "Washington 3",
-  },
-  {
-    name: "University of Washington 4",
-    email: "example4@gmail.com",
-    projectTypes: ["Website", "Mobile", "Mobile 2"],
-    facebook: "https://facebook.com",
-    website: "website4.com",
-    address: "Washington 4",
-  },
-  {
-    name: "University of Washington5 ",
-    email: "example5@gmail.com",
-    projectTypes: ["Website", "Mobile", "Mobile 2"],
-    facebook: "https://facebook.com",
-    website: "website5.com",
-    address: "Washington 5",
-    instagram: "https://instagram.com",
-  },
-];
+function ChapterCard(props: {
+  chapter?: Chapter;
+  isSelected: boolean;
+  onClick: (id: string) => void;
+}) {
+  const { chapter, isSelected, onClick: _onClick } = props;
 
-const CircleIcon = (props) => (
-  <Icon viewBox="0 0 200 200" {...props}>
-    <path
-      fill="currentColor"
-      d="M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0"
-    />
-  </Icon>
-);
+  function onClick() {
+    _onClick(chapter ? chapter.id : "");
+  }
 
-function ChapterCard() {
-  // const [isSelected, setSelected] = useState(false);
-
-  // const selected = () => setSelected(true);
-
-  return cardItems.map((cardItem) => (
+  return (
     <Box
-      key={cardItem.name}
-      w={60}
-      h={40}
-      border="1px"
-      borderRadius="15px"
-      borderColor="blackAlpha.600"
-      margin="4"
-      _hover={{ backgroundColor: "rgb(240, 248, 255)" }}
+      display="flex"
+      flexDirection="column"
+      justifyContent="space-between"
+      boxSizing="border-box"
+      width="400px"
+      padding={isSelected ? "28px" : "30px"}
       backgroundColor="white"
-      // onClick={selected}
+      border={isSelected ? "3px solid #0069CA" : "1px solid #657788"}
+      borderRadius="15px"
+      position="relative"
+      onClick={!chapter || chapter.open ? onClick : undefined}
+      opacity={!chapter || chapter.open ? 1 : 0.5}
+      cursor={!chapter || chapter.open ? "pointer" : "default"}
     >
-      <Box marginLeft="4" marginTop="5">
-        <Heading fontSize="medium" color="black" marginBottom="2">
-          {cardItem.name}
-        </Heading>
-        <HStack spacing="0.5">
-          <Text fontSize="small" color="gray.500">
-            {cardItem.address}
-          </Text>
-          <CircleIcon boxSize={1} color="blue.600" />
-          <Link
-            fontSize="small"
-            color="blue.600"
-            href={"mailto:" + cardItem.email}
+      {isSelected && (
+        <Box position="absolute" top="-15px" left="-15px">
+          <Box position="absolute" top="5px" left="5px">
+            <BsCircleFill size="20px" color="white" />
+          </Box>
+          <Box position="absolute">
+            <IoIosCheckmarkCircle size="30px" color="#0069CA" />
+          </Box>
+        </Box>
+      )}
+      <Box>
+        {chapter && !chapter.open && (
+          <Tag
+            backgroundColor="#DEE4E9"
+            color="#33333"
+            borderRadius="2px"
+            px={"4px"}
+            marginBottom="10px"
           >
-            Contact
-          </Link>
-        </HStack>
-        <Text fontSize="small" color="gray.500">
-          {cardItem.projectTypes.join(", ")}
-        </Text>
-        <HStack />
-        <HStack spacing="2" marginTop="10">
-          <Link href={cardItem.website}>
-            <Tooltip label="Site">
-              <Box>{cardItem.website ? <IoIosGlobe /> : ""}</Box>
-            </Tooltip>
-          </Link>
-          <Link href={cardItem.instagram}>
-            <Tooltip label="Instagram">
-              <Box>{cardItem.instagram ? <FiInstagram /> : ""}</Box>
-            </Tooltip>
-          </Link>
-          <Link href={cardItem.facebook}>
-            <Tooltip label="Facebook">
-              <Box>{cardItem.facebook ? <AiFillFacebook /> : ""}</Box>
-            </Tooltip>
-          </Link>
-        </HStack>
+            <b>CLOSED FOR NEW PROJECTS</b>
+          </Tag>
+        )}
+        <Heading fontSize="lg" color="#333333" marginBottom="10px">
+          {chapter ? chapter.school : "No Preference"}
+        </Heading>
+        {chapter ? (
+          <VStack align="left" color="#657788" spacing="1px">
+            <Text>
+              {chapter.location} •{" "}
+              <Link color="#0069CA" href={`mailto:${chapter.email}`}>
+                Contact
+              </Link>
+            </Text>
+            <Text>{chapter.projectTypes.join(", ")}</Text>
+          </VStack>
+        ) : (
+          <Text>A chapter will be randomly assigned to you.</Text>
+        )}
       </Box>
+      {chapter && (
+        <HStack spacing="20px" marginTop="30px">
+          <Link href={chapter.website}>
+            <Tooltip label="Website">
+              <Box>
+                {chapter.website ? (
+                  <IoIosGlobe size="20px" color="#333333" />
+                ) : (
+                  ""
+                )}
+              </Box>
+            </Tooltip>
+          </Link>
+          <Link href={chapter.instagram}>
+            <Tooltip label="Instagram">
+              <Box>
+                {chapter.instagram ? (
+                  <FiInstagram size="20px" color="#333333" />
+                ) : (
+                  ""
+                )}
+              </Box>
+            </Tooltip>
+          </Link>
+          <Link href={chapter.facebook}>
+            <Tooltip label="Facebook">
+              <Box>
+                {chapter.facebook ? (
+                  <AiFillFacebook size="20px" color="#333333" />
+                ) : (
+                  ""
+                )}
+              </Box>
+            </Tooltip>
+          </Link>
+        </HStack>
+      )}
     </Box>
-  ));
+  );
 }
+
 export default ChapterCard;

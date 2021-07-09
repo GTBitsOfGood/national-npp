@@ -1,47 +1,79 @@
-import { Flex, Heading, Button, Box } from "@chakra-ui/react";
-import React from "react";
+import { Heading, Button, Box, Grid } from "@chakra-ui/react";
+import { useState } from "react";
 import ChapterCard from "src/components/ChapterCard";
 
 function ChapterSelectPage() {
-  // const [cardItems, setCardItems] = React.useState([]);
+  const [selected, setSelected] = useState("");
+  const chapters = [];
 
-  // React.useEffect(() => {
-  // 	fetch('')
-  // 	.then(response => response.json())
-  //   .then(data => setCardItems(data))
-  //   .catch(error => {
-  //     console.error(error)
-  //   })
-  //   }, [])
+  for (let i = 0; i < 10; i += 1) {
+    chapters.push({
+      id: `${i}`,
+      school: "Georgia Tech",
+      location: "Atlanta, GA",
+      projectTypes: ["Website", "Mobile"],
+      email: "gt@hack4impact.org",
+      website: "bitsofgood.org",
+      facebook: "bitsofgood",
+      instagram: "bitsofgood",
+      open: true,
+    });
+  }
+
+  chapters.push({
+    id: `${2000}`,
+    school: "University of Illinois at Urbana-Champaign",
+    location: "Champaign, IL",
+    projectTypes: ["Website", "Mobile"],
+    email: "gt@hack4impact.org",
+    website: "bitsofgood.org",
+    facebook: "bitsofgood",
+    instagram: "bitsofgood",
+    open: false,
+  });
+
+  function onChapterCardClick(id: string) {
+    setSelected(id);
+  }
 
   return (
-    <Flex
-      p={{ base: 5, md: 10 }}
-      direction="column"
-      alignItems="space-between"
-      justifyContent="flex-start"
-      backgroundColor="gray.100"
-      height="100%"
-    >
-      <Box align="left">
-        <Heading fontSize={{ base: "medium", md: "x-large" }} marginBottom="5">
+    <Box height="100%" backgroundColor="#EBEEF1" overflow="auto">
+      <Box
+        boxSizing="border-box"
+        padding="50px"
+        maxWidth="1420px"
+        margin="auto"
+      >
+        <Heading
+          fontSize={{ base: "medium", md: "x-large" }}
+          marginBottom="50px"
+        >
           Select a chapter to work with
         </Heading>
+        <Grid
+          gridTemplateColumns="repeat(auto-fill, 400px)"
+          columnGap="60px"
+          rowGap="40px"
+        >
+          <ChapterCard
+            key={""}
+            isSelected={selected === ""}
+            onClick={onChapterCardClick}
+          />
+          {chapters.map((chapter) => (
+            <ChapterCard
+              key={chapter.id}
+              chapter={chapter}
+              isSelected={chapter.id === selected}
+              onClick={onChapterCardClick}
+            />
+          ))}
+        </Grid>
+        <Box align="right" marginTop="40px">
+          <Button px="20px" colorScheme="blue">Next</Button>
+        </Box>
       </Box>
-
-      <Flex
-        alignItems="center"
-        justifyContent="center"
-        spacing="2"
-        marginBottom="5"
-        flexWrap="wrap"
-      >
-        <ChapterCard />
-      </Flex>
-      <Box align="right">
-        <Button colorScheme="blue">Next</Button>
-      </Box>
-    </Flex>
+    </Box>
   );
 }
 export default ChapterSelectPage;

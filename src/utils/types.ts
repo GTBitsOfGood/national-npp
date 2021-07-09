@@ -22,6 +22,18 @@ export interface InternalResponse<T> {
   payload?: T;
 }
 
+export interface Chapter {
+  id: string;
+  school: string;
+  location: string;
+  projectTypes: string[];
+  email: string;
+  website: string;
+  facebook?: string;
+  instagram?: string;
+  open: boolean;
+}
+
 export interface ChapterProject {
   id: string;
   org: string;
