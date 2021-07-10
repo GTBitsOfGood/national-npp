@@ -1,5 +1,4 @@
 import mongoose, { Schema } from "mongoose";
-import NonprofitSchema from "server/mongodb/models/embedded/Nonprofit";
 import { User } from "src/utils/types";
 
 const UserSchema = new Schema<User>(
@@ -25,7 +24,10 @@ const UserSchema = new Schema<User>(
       type: Schema.Types.ObjectId,
       ref: "Chapter",
     },
-    nonprofit: NonprofitSchema,
+    nonprofit: {
+      type: Schema.Types.ObjectId,
+      ref: "Nonprofit",
+    },
     createdAt: {
       type: Date,
       immutable: true,

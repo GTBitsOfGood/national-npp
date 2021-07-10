@@ -17,8 +17,8 @@ export interface User {
   phoneNum?: string;
   calendly?: string;
   isAdmin: boolean;
-  chapterId?: Types.ObjectId;
-  nonprofit?: Nonprofit;
+  chapter?: Chapter | Types.ObjectId;
+  nonprofit?: Nonprofit | Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -28,7 +28,7 @@ export interface Chapter {
   name: string;
   email: string;
   address: Address;
-  phoneNum?: string;
+  calendly?: string;
   projectProcess: Array<NonprofitStage>;
   projectTypes: Array<ProjectType>;
   projectLimit: number;
@@ -38,8 +38,9 @@ export interface Chapter {
 }
 
 export interface Nonprofit {
+  _id: Types.ObjectId;
   name: string;
-  address: string;
+  address: Address;
   isVerified: boolean;
   website?: string;
   mission?: string;
@@ -47,11 +48,12 @@ export interface Nonprofit {
 
 export interface Project {
   _id: Types.ObjectId;
-  chapterId: Types.ObjectId;
-  userId: Types.ObjectId;
+  chapter: Chapter | Types.ObjectId;
+  nonprofit: Nonprofit | Types.ObjectId;
+  name: string;
   status: ChapterStage;
   type?: ProjectType;
-  contact?: Types.ObjectId;
+  contact?: User | Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -88,6 +90,7 @@ export interface Address {
   city: string;
   state: string;
   zipCode: string;
+  country: string;
 }
 
 export interface Session {
@@ -142,6 +145,13 @@ export interface InternalResponse<T> {
   payload?: T;
 }
 
+export type ChapterChange = Omit<Partial<Chapter>, "_id">;
+export type NonprofitChange = Omit<Partial<Nonprofit>, "_id" | "isVerified">;
+export type UserChange = Pick<
+  Partial<User>,
+  "name" | "image" | "phoneNum" | "calendly"
+>;
+
 /* Enums */
 
 export enum ProjectType {
@@ -162,16 +172,19 @@ export enum QuestionType {
 export enum NonprofitStage {
   APPLICATION = "Application",
   INTERVIEW = "Interview",
+  UNDER_REVIEW = "Under review",
   IN_PROGRESS = "In Progress",
   COMPLETE = "Complete",
 }
 
 export enum ChapterStage {
-  NEW_PROJECT = "New Project",
-  APPLICATION_COMPLETE = "Application Complete",
+  APPLICATION = "Awaiting Application",
+  APPLICATION_SUBMITTED = "Application Submitted",
+  INTERVIEW = "Awaiting Interview",
   INTERVIEW_SCHEDULED = "Interview Scheduled",
-  UNDER_REVIEW = "Under Review",
+  UNDER_REVIEW = "Under review",
   IN_PROGRESS = "In Progress",
+  MEETING_SCHEDULED = "Meeting Scheduled",
   DELIVERED = "Delivered",
   MAINTENANCE = "In Maintenance",
   CLOSED = "Closed",
