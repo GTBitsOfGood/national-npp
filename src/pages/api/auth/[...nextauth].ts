@@ -19,8 +19,4 @@ export default NextAuth({
   ],
   adapter: MongoDBAdapter(),
   secret: process.env.NEXT_AUTH_SECRET,
-  pages: {
-    signIn: "/login",
-    verifyRequest: "/verify",
-  },
 });

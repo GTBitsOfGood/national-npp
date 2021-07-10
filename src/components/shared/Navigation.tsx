@@ -106,18 +106,20 @@ function Navigation() {
             direction={"row"}
             spacing={6}
           >
-            <Button
-              display="inline-flex"
-              fontSize="sm"
-              fontWeight={600}
-              color={"white"}
-              bg={"blue.500"}
-              _hover={{
-                bg: "blue.400",
-              }}
-            >
-              Log In
-            </Button>
+            <NextLink href="/login">
+              <Button
+                display="inline-flex"
+                fontSize="sm"
+                fontWeight={600}
+                color={"white"}
+                bg={"blue.500"}
+                _hover={{
+                  bg: "blue.400",
+                }}
+              >
+                Log In
+              </Button>
+            </NextLink>
           </Stack>
         )}
       </Flex>
