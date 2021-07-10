@@ -11,14 +11,13 @@ import {
 } from "@chakra-ui/react";
 import { signIn } from "next-auth/client";
 import Image from "next/image";
-import { useState } from "react";
 import loginImage from "public/images/login_first.svg";
-//import NextLink from "next/link";
+import { useState } from "react";
 
 function LoginPage() {
   const [value, setValue] = useState("");
 
-  const onChange = (event: React.ChangeEvent) => {
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
   };
 
@@ -73,7 +72,11 @@ function LoginPage() {
               </FormControl>
               <Stack spacing={8} py={4}>
                 <Button
-                  onClick={() => signIn("email", { email: { value } })}
+                  onClick={() =>
+                    signIn("email", {
+                      email: value,
+                    })
+                  }
                   bg={"#0069CA"}
                   variant={"solid"}
                   textColor={"white"}

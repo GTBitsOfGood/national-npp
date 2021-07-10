@@ -106,7 +106,7 @@ function Navigation() {
             direction={"row"}
             spacing={6}
           >
-            <NextLink href="/login">
+            <NextLink href="/api/auth/signin">
               <Button
                 display="inline-flex"
                 fontSize="sm"

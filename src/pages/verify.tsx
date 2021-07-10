@@ -49,7 +49,7 @@ function VerifyEmailPage() {
               >
                 A sign in link has been sent to your email address.
               </Text>
-              <NextLink href="/login">
+              <NextLink href="/api/auth/signin">
                 <Link
                   fontFamily="Helvetica, sans-serif"
                   color={"#0069CA"}

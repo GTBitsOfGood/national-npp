@@ -43,7 +43,7 @@ function LandingPage() {
             into real products. If you have an existing project or a team, we
             are happy to get involved in your development cycle.
           </Text>
-          <NextLink href="/login">
+          <NextLink href="/api/auth/signin">
             <Button colorScheme="blue">Log In</Button>
           </NextLink>
         </VStack>
@@ -71,7 +71,6 @@ function LandingPage() {
           alt="Maintaining a project"
         />
       </Box>
-
       <Box paddingX={20} w="full">
         <Divider borderColor="grey" />
       </Box>
