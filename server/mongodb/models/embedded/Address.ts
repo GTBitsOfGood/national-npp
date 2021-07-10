@@ -18,6 +18,10 @@ const AddressSchema = new Schema<Address>({
     type: String,
     required: true,
   },
+  country: {
+    type: String,
+    required: true,
+  },
 });
 
 export default AddressSchema;
