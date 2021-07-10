@@ -1,6 +1,11 @@
 import { Types } from "mongoose";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { ChapterStage, InternalResponse, ProjectType } from "src/utils/types";
+import {
+  ChapterStage,
+  InternalResponse,
+  NonprofitStage,
+  ProjectType,
+} from "src/utils/types";
 /*
 import { 
   getChapterUserProfile,
@@ -15,7 +20,13 @@ import {
   updateProjectContact,
   getNonprofitProject,
 } from "../../../server/mongodb/actions/Project";
+import {
+  getChapters,
+  updateChapter
+} from "../../../server/mongodb/actions/Chapter";
+import { createNonprofit, updateNonprofit } from "server/mongodb/actions/Nonprofit";
 */
+
 interface Data {
   name: string;
 }
@@ -24,6 +35,57 @@ export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<InternalResponse<Data>>
 ) {
+  /*
+  updateNonprofit(Types.ObjectId("60e90c4bad3b843454ad2517"), {
+    address: {
+      street: 'Test Street Updated',
+      city: 'Test City',
+      state: 'Test State',
+      zipCode: 'Test Zipcode',
+      country: 'Test Country',
+    },
+  }).then(
+    (update) => {
+      console.log(update);
+      res.status(200).json({ success: true, payload: update });
+    }
+  );
+  */
+  /*
+  createNonprofit({
+    name: "Test Nonprofit",
+    address: {
+      street: 'Test Street',
+      city: 'Test City',
+      state: 'Test State',
+      zipCode: 'Test Zipcode',
+      country: 'Test Country',
+    },
+  }).then(
+    (nonprofit) => {
+      console.log(nonprofit);
+      res.status(200).json({ success: true, payload: nonprofit });
+    }
+  );
+  */
+  /*
+  updateChapter(Types.ObjectId("60e909a2f7f3bb3b6d38454a"), {
+    projectProcess: [NonprofitStage.APPLICATION, NonprofitStage.INTERVIEW],
+  }).then(
+    (update) => {
+      console.log(update);
+      res.status(200).json({ success: true, payload: update });
+    }
+  );
+  */
+  /*
+  getChapters().then(
+    (chapters) => {
+      console.log(chapters);
+      res.status(200).json({ success: true, payload: chapters });
+    }
+  );
+  */
   /*
   getNonprofitUserProfile(Types.ObjectId("60db9ac9c2e44048a7832a3c")).then(
     (user) => {

@@ -13,8 +13,9 @@ export async function createProject(
   await dbConnect();
 
   const newProject = await ProjectModel.create({
-    userId,
-    chapterId,
+    chapter: chapterId,
+    nonprofit: nonprofitId,
+    name,
     type,
   });
 
@@ -49,7 +50,7 @@ export async function getNonprofitProject(nonprofitId: Types.ObjectId) {
   await dbConnect();
 
   const project = await ProjectModel.findOne({
-    userId,
+    nonprofit: nonprofitId,
     status: { $ne: ChapterStage.CLOSED },
   });
 
