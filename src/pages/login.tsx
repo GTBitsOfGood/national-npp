@@ -9,16 +9,36 @@ import {
   Box,
   Stack,
 } from "@chakra-ui/react";
-import { signIn } from "next-auth/client";
+import { signIn, SignInResponse } from "next-auth/client";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import loginImage from "public/images/login_first.svg";
 import { useState } from "react";
+import { showError } from "src/utils/notifications";
 
 function LoginPage() {
+  const router = useRouter();
   const [value, setValue] = useState("");
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
+  };
+
+  const handleSubmit = async () => {
+    const response: SignInResponse | undefined = await signIn("email", {
+      email: value,
+      redirect: false,
+    });
+
+    if (!response) {
+      showError("No response received from sign in.");
+    } else if (!response.ok) {
+      response.error
+        ? showError(response.error)
+        : showError("Failed to sign in.");
+    } else {
+      await router.replace("/verify");
+    }
   };
 
   return (
@@ -72,11 +92,7 @@ function LoginPage() {
               </FormControl>
               <Stack spacing={8} py={4}>
                 <Button
-                  onClick={() =>
-                    signIn("email", {
-                      email: value,
-                    })
-                  }
+                  onClick={handleSubmit}
                   bg={"#0069CA"}
                   variant={"solid"}
                   textColor={"white"}

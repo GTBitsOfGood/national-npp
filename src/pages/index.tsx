@@ -43,7 +43,7 @@ function LandingPage() {
             into real products. If you have an existing project or a team, we
             are happy to get involved in your development cycle.
           </Text>
-          <NextLink href="/api/auth/signin">
+          <NextLink href="/login">
             <Button colorScheme="blue">Log In</Button>
           </NextLink>
         </VStack>
