@@ -24,7 +24,7 @@ export interface User {
 }
 
 export interface Chapter {
-  _id: Types.ObjectId;
+  _id: Types.ObjectId | string;
   name: string;
   email: string;
   address: Address;
