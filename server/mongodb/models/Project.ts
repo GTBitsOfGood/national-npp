@@ -13,6 +13,11 @@ const ProjectSchema = new Schema<Project>(
       required: true,
       ref: "Nonprofit",
     },
+    name: {
+      type: String,
+      required: true,
+      unique: true,
+    },
     status: {
       type: String,
       enum: Object.values(ChapterStage),

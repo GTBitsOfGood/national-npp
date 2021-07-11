@@ -28,7 +28,6 @@ export interface Chapter {
   name: string;
   email: string;
   address: Address;
-  phoneNum?: string;
   calendly?: string;
   projectProcess: Array<NonprofitStage>;
   projectTypes: Array<ProjectType>;
@@ -41,7 +40,7 @@ export interface Chapter {
 export interface Nonprofit {
   _id: Types.ObjectId;
   name: string;
-  address: string;
+  address: Address;
   isVerified: boolean;
   website?: string;
   mission?: string;
@@ -51,6 +50,7 @@ export interface Project {
   _id: Types.ObjectId;
   chapter: Chapter | Types.ObjectId;
   nonprofit: Nonprofit | Types.ObjectId;
+  name: string;
   status: ChapterStage;
   type?: ProjectType;
   contact?: User | Types.ObjectId;
@@ -172,15 +172,17 @@ export enum QuestionType {
 export enum NonprofitStage {
   APPLICATION = "Application",
   INTERVIEW = "Interview",
+  UNDER_REVIEW = "Under review",
   IN_PROGRESS = "In Progress",
   COMPLETE = "Complete",
 }
 
 export enum ChapterStage {
   APPLICATION = "Awaiting Application",
-  APPLICATION_COMPLETE = "Application Submitted",
+  APPLICATION_SUBMITTED = "Application Submitted",
   INTERVIEW = "Awaiting Interview",
   INTERVIEW_SCHEDULED = "Interview Scheduled",
+  UNDER_REVIEW = "Under review",
   IN_PROGRESS = "In Progress",
   MEETING_SCHEDULED = "Meeting Scheduled",
   DELIVERED = "Delivered",

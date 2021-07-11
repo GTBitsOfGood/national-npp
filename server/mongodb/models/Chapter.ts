@@ -12,7 +12,6 @@ const ChapterSchema = new Schema<Chapter>({
     required: true,
   },
   address: AddressSchema,
-  phoneNum: String,
   calendly: String,
   projectProcess: {
     type: [String],

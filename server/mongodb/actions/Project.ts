@@ -6,6 +6,7 @@ import { ChapterStage, ProjectType } from "src/utils/types";
 export async function createProject(
   nonprofitId: Types.ObjectId,
   chapterId: Types.ObjectId,
+  name: string,
   type: ProjectType
 ) {
   await dbConnect();
