@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import ChapterModel from "server/mongodb/models/Chapter";
 import dbConnect from "server/utils/dbConnect";
 import { ChapterChange } from "src/utils/types";
@@ -5,7 +6,9 @@ import { ChapterChange } from "src/utils/types";
 export async function getChapters() {
   await dbConnect();
 
-  return null;
+  const chapters = await ChapterModel.find();
+
+  return chapters;
 }
 
 export async function updateChapter(
@@ -14,5 +17,11 @@ export async function updateChapter(
 ) {
   await dbConnect();
 
-  return null;
+  const updatedChapter = await ChapterModel.updateOne(
+    { _id: chapterId },
+    chapter,
+    { new: true }
+  );
+
+  return updatedChapter;
 }

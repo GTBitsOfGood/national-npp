@@ -11,25 +11,41 @@ export async function createProject(
 ) {
   await dbConnect();
 
-  return null;
+  const newProject = await ProjectModel.create({
+    chapter: chapterId,
+    nonprofit: nonprofitId,
+    name,
+    type,
+  });
+
+  return newProject;
 }
 
 export async function getChapterProjects(chapterId: Types.ObjectId) {
   await dbConnect();
 
-  return null;
+  const chapterProjects = await ProjectModel.find({ chapterId });
+
+  return chapterProjects;
 }
 
 export async function getProjectById(projectId: Types.ObjectId) {
   await dbConnect();
 
-  return null;
+  const project = await ProjectModel.findById(projectId);
+
+  return project;
 }
 
 export async function getNonprofitProject(nonprofitId: Types.ObjectId) {
   await dbConnect();
 
-  return null;
+  const project = await ProjectModel.findOne({
+    nonprofit: nonprofitId,
+    status: { $ne: ChapterStage.CLOSED },
+  });
+
+  return project;
 }
 
 export async function updateProjectStatus(
@@ -38,7 +54,13 @@ export async function updateProjectStatus(
 ) {
   await dbConnect();
 
-  return null;
+  const updatedProject = await ProjectModel.updateOne(
+    { _id: projectId },
+    { status },
+    { new: true }
+  );
+
+  return updatedProject;
 }
 
 export async function updateProjectContact(
@@ -47,5 +69,11 @@ export async function updateProjectContact(
 ) {
   await dbConnect();
 
-  return null;
+  const updatedProject = await ProjectModel.updateOne(
+    { _id: projectId },
+    { contact: userId },
+    { new: true }
+  );
+
+  return updatedProject;
 }

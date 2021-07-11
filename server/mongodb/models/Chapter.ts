@@ -33,6 +33,7 @@ const ChapterSchema = new Schema<Chapter>({
 });
 
 const ChapterModel =
-  mongoose.models.Chapter || mongoose.model<Chapter>("Chapter", ChapterSchema);
+  (mongoose.models.Chapter as mongoose.Model<Chapter>) ||
+  mongoose.model<Chapter>("Chapter", ChapterSchema);
 
 export default ChapterModel;

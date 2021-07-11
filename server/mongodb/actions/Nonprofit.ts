@@ -6,7 +6,9 @@ import { NonprofitChange } from "src/utils/types";
 export async function createNonprofit(nonprofit: NonprofitChange) {
   await dbConnect();
 
-  return null;
+  const newNonprofit = await NonprofitModel.create(nonprofit);
+
+  return newNonprofit;
 }
 
 export async function updateNonprofit(
@@ -15,5 +17,11 @@ export async function updateNonprofit(
 ) {
   await dbConnect();
 
-  return null;
+  const updatedNonprofit = await NonprofitModel.updateOne(
+    { _id: nonprofitId },
+    nonprofit,
+    { new: true }
+  );
+
+  return updatedNonprofit;
 }
