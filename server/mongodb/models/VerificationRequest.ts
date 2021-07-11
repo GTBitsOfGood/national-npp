@@ -1,12 +1,5 @@
-import mongoose, { Schema, Types } from "mongoose";
-
-export interface VerificationRequest {
-  _id: Types.ObjectId;
-  id: string;
-  identifier: string;
-  token: string;
-  expires: Date;
-}
+import mongoose, { Schema } from "mongoose";
+import { VerificationRequest } from "src/utils/types";
 
 const VerificationRequestSchema = new Schema<VerificationRequest>(
   {
@@ -37,4 +30,5 @@ const VerificationRequestModel =
     "VerificationRequest",
     VerificationRequestSchema
   );
+
 export default VerificationRequestModel;

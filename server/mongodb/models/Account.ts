@@ -1,18 +1,5 @@
-import mongoose, { Schema, Types } from "mongoose";
-
-export interface Account {
-  _id: Types.ObjectId;
-  id: string;
-  userId: Types.ObjectId;
-  providerId: string;
-  providerType: string;
-  providerAccountId: string;
-  refreshToken: string;
-  accessToken: string;
-  accessTokenExpires: null;
-  createdAt: Date;
-  updatedAt: Date;
-}
+import mongoose, { Schema } from "mongoose";
+import { Account } from "src/utils/types";
 
 const AccountSchema = new Schema<Account>(
   {
@@ -57,4 +44,5 @@ const AccountSchema = new Schema<Account>(
 const AccountModel =
   (mongoose.models.Account as mongoose.Model<Account>) ||
   mongoose.model<Account>("Account", AccountSchema);
+
 export default AccountModel;
