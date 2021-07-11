@@ -8,7 +8,7 @@ import { ChapterChange, NonprofitChange, UserChange } from "src/utils/types";
 export async function getChapterUserProfile(userId: Types.ObjectId) {
   await dbConnect();
 
-  const user = await UserModel.findById(userId);
+  const user = await UserModel.findById(userId).populate("chapter");
 
   return user;
 }

@@ -1,6 +1,5 @@
 import { Types } from "mongoose";
 import ProjectModel from "server/mongodb/models/Project";
-import UserModel from "server/mongodb/models/User";
 import dbConnect from "server/utils/dbConnect";
 import { ChapterStage, ProjectType } from "src/utils/types";
 
@@ -28,14 +27,6 @@ export async function getChapterProjects(chapterId: Types.ObjectId) {
   const chapterProjects = await ProjectModel.find({ chapterId });
 
   return chapterProjects;
-}
-
-export async function getProjectsByStatus(status: ChapterStage) {
-  await dbConnect();
-
-  const statusProjects = await ProjectModel.find({ status });
-
-  return statusProjects;
 }
 
 export async function getProjectById(projectId: Types.ObjectId) {
