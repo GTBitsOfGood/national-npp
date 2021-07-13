@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import { User } from "src/utils/types";
+import { Role, User } from "src/utils/types";
 
 const UserSchema = new Schema<User>(
   {
@@ -16,9 +16,10 @@ const UserSchema = new Schema<User>(
     image: String,
     phoneNum: String,
     calendly: String,
-    isAdmin: {
-      type: Boolean,
-      default: false,
+    roles: {
+      type: [String],
+      required: true,
+      enum: Object.values(Role),
     },
     chapter: {
       type: Schema.Types.ObjectId,

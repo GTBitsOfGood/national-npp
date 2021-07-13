@@ -129,6 +129,7 @@ module.exports = {
             "ts-ignore": "allow-with-description",
           },
         ],
+        "@typescript-eslint/no-empty-interface": "off",
       },
       settings: SHARED_SETTINGS,
     },
