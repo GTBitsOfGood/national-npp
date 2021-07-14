@@ -8,3 +8,10 @@ export async function getChapterProjects() {
     method: HttpMethod.GET,
   });
 }
+
+export async function getProjectById() {
+  return internalRequest<Project>({
+    url: urls.baseUrl + urls.api.projects + "?action=id",
+    method: HttpMethod.GET,
+  });
+}

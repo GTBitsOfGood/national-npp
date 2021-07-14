@@ -3,6 +3,7 @@ const urls = {
   pages: {},
   api: {
     projects: "/api/projects",
+    chapters: "/api/chapters",
   },
 };
 
