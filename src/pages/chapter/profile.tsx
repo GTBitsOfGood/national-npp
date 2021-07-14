@@ -74,14 +74,15 @@ function ChapterProfilePage() {
           {"Profile"}
         </Text>
         <Flex
-          minW={850}
-          minH={1300}
+          minW={{ base: 425, md: 850 }}
+          minH={{ base: 2000, md: 1300 }}
           border="1px solid #657788"
           borderRadius={10}
           backgroundColor="white"
-          justifyContent="center"
+          justifyContent={{ base: "none", md: "center" }}
+          alignContent={{ base: "center", md: "none" }}
         >
-          <VStack margin={50} w={680}>
+          <VStack margin={50} w={{ base: 240, md: 680 }}>
             <Avatar width="80px" height="80px" marginBottom={50} />
             <Text
               alignSelf="flex-start"
@@ -91,7 +92,11 @@ function ChapterProfilePage() {
             >
               {"User Information"}
             </Text>
-            <Flex flexDirection="row" w={680} h={220}>
+            <Flex
+              flexDirection={{ base: "column", md: "row" }}
+              w={{ base: 240, md: 680 }}
+              h={{ base: 300, md: 220 }}
+            >
               <Flex
                 flexDirection="column"
                 justifyContent="space-between"
@@ -122,7 +127,10 @@ function ChapterProfilePage() {
                 </FormControl>
               </Flex>
               <Spacer />
-              <Flex flexDirection="column" justifyContent="space-between">
+              <Flex
+                flexDirection={{ base: "column", md: "row" }}
+                justifyContent="space-between"
+              >
                 <FormControl id="phone number">
                   <FormLabel fontSize="sm">Phone Number (Optional)</FormLabel>
                   <Input
@@ -144,7 +152,11 @@ function ChapterProfilePage() {
             >
               {"Chapter Information"}
             </Text>
-            <Flex flexDirection="row" w={680} h={440}>
+            <Flex
+              flexDirection={{ base: "column", md: "row" }}
+              w={{ base: 240, md: 680 }}
+              h={{ base: 880, md: 440 }}
+            >
               <Flex flexDirection="column" justifyContent="space-between">
                 <FormControl id="name">
                   <FormLabel fontSize="sm">Chapter Name</FormLabel>
@@ -319,7 +331,11 @@ function ChapterProfilePage() {
             <Spacer />
             <Spacer />
             <Spacer />
-            <Flex flexDirection="column" w={680} h={440}>
+            <Flex
+              flexDirection="column"
+              w={{ base: 240, md: 680 }}
+              h={{ base: 880, md: 440 }}
+            >
               <Text
                 alignSelf="flex-start"
                 fontSize="md"
@@ -420,7 +436,10 @@ function ChapterProfilePage() {
                 </Flex>
               </FormControl>
             </Flex>
-            <Flex flexDirection="row" alignSelf="flex-end">
+            <Flex
+              flexDirection="row"
+              alignSelf={{ base: "center", md: "flex-end" }}
+            >
               <Button size="md" colorScheme="blue">
                 Save Changes
               </Button>
