@@ -83,7 +83,7 @@ function NonprofitProjectPage() {
             height="50%"
           >
             <Heading>{projectName}</Heading>
-            <Stack m="5">
+            <Stack m="5" paddingTop="5">
               <Text>
                 <Box as="span" fontWeight="bold">
                   Chapter Partner:
