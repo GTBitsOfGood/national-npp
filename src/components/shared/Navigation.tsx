@@ -19,8 +19,8 @@ import Logo from "public/images/small_logo.svg";
 function Navigation() {
   // Assume that you know this information, nav bar changes based on this information
   const isLoggedIn = true;
-  const isChapter = true;
-  const isNonprofit = false;
+  const isChapter = false;
+  const isNonprofit = true;
   const npUserName = "liv.2b.girl";
   const nonprofitName = "Liv2BGirl";
   const chapterName = "Chapter Name";
@@ -137,7 +137,7 @@ interface NavItem {
 const NAV_ITEMS_NON_PROFIT: Array<NavItem> = [
   {
     label: "My Project",
-    href: "/chapter/projects",
+    href: "/nonprofit/project",
   },
   {
     label: "Maintenance",
