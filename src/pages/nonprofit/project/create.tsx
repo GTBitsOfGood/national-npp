@@ -13,28 +13,28 @@ import ProjectTypeCard from "src/components/ProjectTypeCard";
 import { ProjectType } from "src/utils/types";
 
 function NonprofitProjectCreationPage() {
-  const chapters = [
-    {
-      _id: `1`,
-      name: "Georgia Tech",
-      email: "gt@hack4impact.org",
-      address: {
-        street: "7 Fake Street",
-        city: "Atlanta",
-        state: "GA",
-        zipCode: "30303",
-        country: "USA",
-      },
-      projectProcess: [],
-      projectTypes: [ProjectType.WEBSITE, ProjectType.MOBILE_APP],
-      projectLimit: 5,
-      website: "bitsofgood.org",
-      facebook: "bitsofgood",
-      instagram: "bitsofgood",
+  const chapter = {
+    _id: `1`,
+    name: "Georgia Tech",
+    email: "gt@hack4impact.org",
+    address: {
+      street: "7 Fake Street",
+      city: "Atlanta",
+      state: "GA",
+      zipCode: "30303",
+      country: "USA",
     },
-  ];
-
-
+    projectProcess: [],
+    projectTypes: [ProjectType.WEBSITE, ProjectType.MOBILE_APP],
+    projectLimit: 5,
+    website: "bitsofgood.org",
+    facebook: "bitsofgood",
+    instagram: "bitsofgood",
+  };
+  const [selected, setSelected] = useState("");
+  function onProjectTypeCardClick(projectType: ProjectType) {
+    setSelected(projectType);
+  }
   return (
     <Box height="100%" backgroundColor="#EBEEF1" overflow="auto">
       <Box
@@ -52,8 +52,8 @@ function NonprofitProjectCreationPage() {
         <Heading fontSize={{ base: "lg", md: "x-large" }} marginBottom="20px">
           Chapter Partner
         </Heading>
-        <HStack spacing="5" marginBottom="100px">
-          <Text fontSize={{ base: "medium", md: "large" }}>Chapter Name</Text>
+        <HStack spacing="5" marginBottom="70px">
+          <Text fontSize={{ base: "medium", md: "large" }}>{chapter.name}</Text>
           <Link href="/chapters">
             <Text fontSize={{ base: "medium", md: "large" }} color="#0069CA">
               {" "}
@@ -70,6 +70,14 @@ function NonprofitProjectCreationPage() {
           rowGap="40px"
           marginBottom="70px"
         >
+          {chapter.projectTypes.map((projectType) => (
+            <ProjectTypeCard
+              key={projectType}
+              projectType={projectType}
+              isSelected={projectType === selected}
+              onClick={onProjectTypeCardClick}
+            />
+          ))}
         </Grid>
         <Heading fontSize={{ base: "lg", md: "x-large" }} marginBottom="20px">
           Give your project a name
