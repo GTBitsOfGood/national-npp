@@ -3,7 +3,6 @@ import loginImage from "public/images/login_first.svg";
 import StepCard from "src/components/nonprofit/project/StepCard";
 
 function NonprofitProjectPage() {
-
   const projectName = "Liv2BGirl Mobile App";
   const chapterPartner = "University of Pennsylvania";
   const productType = "Mobile App";
