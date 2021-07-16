@@ -1,4 +1,5 @@
 import { Flex, Stack, VStack, Heading, Box, Text } from "@chakra-ui/react";
+import { Step, Steps, useSteps } from "chakra-ui-steps";
 import applicationSubmittedImage from "public/images/projectStatus/application_submitted.svg";
 import submitApplicationImage from "public/images/projectStatus/awaiting_application.svg";
 import { MouseEventHandler } from "react";
