@@ -15,16 +15,25 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { states, countries } from "src/utils/constants";
+// import { states, countries } from "src/utils/constants";
 
 function NonprofitProfilePage() {
+  const [name, setName] = useState<string>("");
+  const [number, setNumber] = useState<string>("");
+
+  const [nameOrg, setNameOrg] = useState<string>("");
+  const [website, setWebsite] = useState<string>("");
+
+  const [street, setStreet] = useState<string>("");
+  const [city, setCity] = useState<string>("");
+  const [state, setState] = useState<string>("");
+  const [zip, setZip] = useState<string>("");
+  const [country, setCountry] = useState<string>("");
+
+  const [mission, setMission] = useState<string>("");
+
   return (
-    <Flex
-      justifyContent="center"
-      backgroundColor="#EBEEF1"
-      overflow="auto"
-      minH={1200}
-    >
+    <Flex justifyContent="center" backgroundColor="#EBEEF1" overflow="auto">
       <VStack margin={50}>
         <Text
           alignSelf="flex-start"
@@ -66,8 +75,8 @@ function NonprofitProfilePage() {
                     fontSize="sm"
                     width={320}
                     placeholder="Full Name"
-                    // value={nameAdmin}
-                    // onChangeText={setNameAdmin}
+                    value={name}
+                    onChangeText={setName}
                     marginBottom={6}
                   />
                 </FormControl>
@@ -78,8 +87,8 @@ function NonprofitProfilePage() {
                     fontSize="sm"
                     width={320}
                     placeholder="(XXX) XXX-XXXX"
-                    // value={calendly}
-                    // onChangeText={setCalendly}
+                    value={number}
+                    onChangeText={setNumber}
                   />
                 </FormControl>
               </Flex>
@@ -101,8 +110,8 @@ function NonprofitProfilePage() {
                     fontSize="sm"
                     width={320}
                     placeholder="Organization Name"
-                    // value={name}
-                    // onChangeText={setName}
+                    value={nameOrg}
+                    onChangeText={setNameOrg}
                     marginBottom={5}
                   />
                 </FormControl>
@@ -113,8 +122,8 @@ function NonprofitProfilePage() {
                     fontSize="sm"
                     width={320}
                     placeholder="nonprofit.org"
-                    // value={contact}
-                    // onChangeText={setContact}
+                    value={website}
+                    onChangeText={setWebsite}
                     marginBottom={5}
                   />
                 </FormControl>
@@ -125,8 +134,8 @@ function NonprofitProfilePage() {
                     fontSize="sm"
                     width={320}
                     placeholder="Street"
-                    // value={street}
-                    // onChangeText={setStreet}
+                    value={street}
+                    onChangeText={setStreet}
                     marginBottom={4}
                   />
                   <Input
@@ -134,8 +143,8 @@ function NonprofitProfilePage() {
                     fontSize="sm"
                     width={320}
                     placeholder="City"
-                    // value={city}
-                    // onChangeText={setCity}
+                    value={city}
+                    onChangeText={setCity}
                     marginBottom={4}
                   />
                   <HStack marginBottom={4}>
@@ -151,8 +160,8 @@ function NonprofitProfilePage() {
                       fontSize="sm"
                       width={120}
                       placeholder="ZIP"
-                      // value={zip}
-                      // onChangeText={setZip}
+                      value={zip}
+                      onChangeText={setZip}
                     />
                   </HStack>
                   <Select
@@ -169,9 +178,9 @@ function NonprofitProfilePage() {
                     Organization Mission (Optional)
                   </FormLabel>
                   <Textarea
-                    // value={value}
-                    // onChange={handleInputChange}
-                    placeholder="Here is a sample placeholder"
+                    value={mission}
+                    // onChangeText={setMission}
+                    placeholder="Organization Mission"
                     size="sm"
                   />
                 </FormControl>
