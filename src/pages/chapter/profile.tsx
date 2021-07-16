@@ -57,7 +57,6 @@ function ChapterProfilePage() {
   // });
   return (
     <Flex
-      height="100%"
       justifyContent="center"
       alignItems="stretch"
       backgroundColor="#EBEEF1"
@@ -75,7 +74,7 @@ function ChapterProfilePage() {
         </Text>
         <Flex
           minW={{ base: 425, md: 850 }}
-          minH={{ base: 2000, md: 1300 }}
+          maxH={{ base: 2000, md: 1300 }}
           border="1px solid #657788"
           borderRadius={10}
           backgroundColor="white"
@@ -436,10 +435,7 @@ function ChapterProfilePage() {
                 </Flex>
               </FormControl>
             </Flex>
-            <Flex
-              flexDirection="row"
-              alignSelf={{ base: "center", md: "flex-end" }}
-            >
+            <Flex flexDirection="row" alignSelf={"flex-end"}>
               <Button size="md" colorScheme="blue">
                 Save Changes
               </Button>
