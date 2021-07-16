@@ -8,3 +8,10 @@ export async function getChapters() {
     method: HttpMethod.GET,
   });
 }
+
+export async function updateChapter() {
+  return internalRequest<Chapter>({
+    url: urls.baseUrl + urls.api.chapters + "?action=update",
+    method: HttpMethod.PATCH,
+  });
+}
