@@ -59,6 +59,9 @@ const getStepCardData = (chapterStage: ChapterStage): StepCardData => {
 };
 
 function NonprofitProjectPage() {
+  const projectName = "Liv2BGirl Mobile App";
+  const chapterPartner = "University of Pennsylvania";
+  const productType = "Mobile App";
   return (
     <Flex h="100%" bgColor="#EBEEF1">
       <Stack
@@ -73,22 +76,35 @@ function NonprofitProjectPage() {
         direction={{ base: "column", md: "row" }}
       >
         <Flex direction="column" width={{ base: "100%", md: "50%" }}>
-          <VStack alignItems="flex-start" maxW="100%" m="10" height="50%">
-            <Heading>Liv2BGirl Mobile App</Heading>
-            <Box m="5">
+          <VStack
+            alignItems="flex-start"
+            maxW="100%"
+            m={{ md: "10" }}
+            height="50%"
+          >
+            <Heading>{projectName}</Heading>
+            <Stack m="5">
               <Text>
                 <Box as="span" fontWeight="bold">
                   Chapter Partner:
                 </Box>{" "}
-                University of Pennsylvania
+                {chapterPartner}
               </Text>
               <Text>
                 <Box as="span" fontWeight="bold">
                   Product Type:
                 </Box>{" "}
-                Mobile App
+                {productType}
               </Text>
-            </Box>
+            </Stack>
+            <Stack paddingTop="5">
+              <Text fontWeight="600" fontSize="md" color="#0069CA">
+                Contact Chapter
+              </Text>
+              <Text fontWeight="600" fontSize="md" color="#0069CA">
+                Cancel Project
+              </Text>
+            </Stack>
           </VStack>
         </Flex>
         <Flex width={{ base: "100%", md: "50%" }}>
