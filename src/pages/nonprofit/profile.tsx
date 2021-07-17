@@ -8,29 +8,25 @@ import {
   FormLabel,
   Input,
   Spacer,
-  Checkbox,
-  CheckboxGroup,
   Select,
   Button,
   Textarea,
 } from "@chakra-ui/react";
 import { useState } from "react";
-// import { states, countries } from "src/utils/constants";
+import { states, countries } from "src/utils/constants";
 
 function NonprofitProfilePage() {
-  const [name, setName] = useState<string>("");
-  const [number, setNumber] = useState<string>("");
+  const [name, setName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
 
-  const [nameOrg, setNameOrg] = useState<string>("");
-  const [website, setWebsite] = useState<string>("");
-
-  const [street, setStreet] = useState<string>("");
-  const [city, setCity] = useState<string>("");
-  const [state, setState] = useState<string>("");
-  const [zip, setZip] = useState<string>("");
-  const [country, setCountry] = useState<string>("");
-
-  const [mission, setMission] = useState<string>("");
+  const [nonprofitName, setNonprofitName] = useState("");
+  const [website, setWebsite] = useState("");
+  const [street, setStreet] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState(states[0]);
+  const [zip, setZip] = useState("");
+  const [country, setCountry] = useState(countries[0]);
+  const [mission, setMission] = useState("");
 
   return (
     <Flex justifyContent="center" backgroundColor="#EBEEF1" overflow="auto">
@@ -40,9 +36,9 @@ function NonprofitProfilePage() {
           p={1}
           fontSize="xx-large"
           fontWeight={700}
-          color={"black.400"}
+          color="black.400"
         >
-          {"Profile"}
+          Profile
         </Text>
         <Flex
           minW={425}
@@ -60,15 +56,15 @@ function NonprofitProfilePage() {
               fontWeight={700}
               color={"black.400"}
             >
-              {"User Information"}
+              User Information
             </Text>
-            <Flex flexDirection={"column"} w={325} h={220}>
+            <Flex flexDirection={"column"} w={325}>
               <Flex
                 flexDirection="column"
                 justifyContent="space-between"
                 marginBottom={10}
               >
-                <FormControl id="name">
+                <FormControl id="name" isRequired>
                   <FormLabel fontSize="sm">Name</FormLabel>
                   <Input
                     type="name"
@@ -76,19 +72,19 @@ function NonprofitProfilePage() {
                     width={320}
                     placeholder="Full Name"
                     value={name}
-                    onChangeText={setName}
+                    onChange={(e) => setName(e.target.value)}
                     marginBottom={6}
                   />
                 </FormControl>
-                <FormControl id="phone">
-                  <FormLabel fontSize="sm">Phone Number (Optional)</FormLabel>
+                <FormControl id="phone-number">
+                  <FormLabel fontSize="sm">Phone Number</FormLabel>
                   <Input
-                    type="phone"
+                    type="tel"
                     fontSize="sm"
                     width={320}
-                    placeholder="(XXX) XXX-XXXX"
-                    value={number}
-                    onChangeText={setNumber}
+                    placeholder="XXX-XXX-XXXX"
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
                   />
                 </FormControl>
               </Flex>
@@ -99,87 +95,96 @@ function NonprofitProfilePage() {
               fontWeight={700}
               color={"black.400"}
             >
-              {"Nonprofit Information"}
+              Nonprofit Information
             </Text>
             <Flex flexDirection={"column"} w={325} h={600}>
               <Flex flexDirection="column" justifyContent="space-between">
-                <FormControl id="name">
-                  <FormLabel fontSize="sm">Organization Name</FormLabel>
+                <FormControl id="nonprofit-name" isRequired>
+                  <FormLabel fontSize="sm">Name</FormLabel>
                   <Input
                     type="name"
                     fontSize="sm"
                     width={320}
-                    placeholder="Organization Name"
-                    value={nameOrg}
-                    onChangeText={setNameOrg}
+                    placeholder="Nonprofit Name"
+                    value={nonprofitName}
+                    onChange={(e) => setNonprofitName(e.target.value)}
                     marginBottom={5}
                   />
                 </FormControl>
-                <FormControl id="url">
-                  <FormLabel fontSize="sm">Website URL (Optional)</FormLabel>
+                <FormControl id="website">
+                  <FormLabel fontSize="sm">Website</FormLabel>
                   <Input
                     type="url"
                     fontSize="sm"
                     width={320}
                     placeholder="nonprofit.org"
                     value={website}
-                    onChangeText={setWebsite}
+                    onChange={(e) => setWebsite(e.target.value)}
                     marginBottom={5}
                   />
                 </FormControl>
-                <FormControl id="location">
+                <FormControl id="location" isRequired>
                   <FormLabel fontSize="sm">Location</FormLabel>
                   <Input
-                    type="street"
+                    type="text"
                     fontSize="sm"
                     width={320}
                     placeholder="Street"
                     value={street}
-                    onChangeText={setStreet}
+                    onChange={(e) => setStreet(e.target.value)}
                     marginBottom={4}
                   />
                   <Input
-                    type="city"
+                    type="text"
                     fontSize="sm"
                     width={320}
                     placeholder="City"
                     value={city}
-                    onChangeText={setCity}
+                    onChange={(e) => setCity(e.target.value)}
                     marginBottom={4}
                   />
                   <HStack marginBottom={4}>
                     <Select
                       fontSize="sm"
-                      width={191}
-                      placeholder="Select State"
+                      width={190}
+                      value={state}
+                      onChange={(e) => setState(e.target.value)}
                     >
-                      {/* {stateOptions} */}
+                      {states.map((state) => (
+                        <option key={state} value={state}>
+                          {state}
+                        </option>
+                      ))}
                     </Select>
                     <Input
-                      type="zip code"
+                      type="text"
                       fontSize="sm"
                       width={120}
                       placeholder="ZIP"
                       value={zip}
-                      onChangeText={setZip}
+                      onChange={(e) => setZip(e.target.value)}
                     />
                   </HStack>
                   <Select
                     fontSize="sm"
                     width={320}
-                    placeholder="Select Country"
+                    value={country}
+                    onChange={(e) => setCountry(e.target.value)}
                     marginBottom={5}
                   >
-                    {/* {countryOptions} */}
+                    {countries.map((country) => (
+                      <option key={country} value={country}>
+                        {country}
+                      </option>
+                    ))}
                   </Select>
                 </FormControl>
                 <FormControl id="mission">
-                  <FormLabel fontSize="sm">
-                    Organization Mission (Optional)
-                  </FormLabel>
+                  <FormLabel fontSize="sm">Mission</FormLabel>
                   <Textarea
+                    resize="none"
                     value={mission}
-                    // onChangeText={setMission}
+                    onChange={(e) => setMission(e.target.value)}
                     placeholder="Organization Mission"
                     size="sm"
                   />
