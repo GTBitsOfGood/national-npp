@@ -10,7 +10,7 @@ export async function getChapters() {
 }
 
 export async function updateChapter() {
-  return internalRequest<Chapter>({
+  return internalRequest({
     url: urls.baseUrl + urls.api.chapters + "?action=update",
     method: HttpMethod.PATCH,
   });

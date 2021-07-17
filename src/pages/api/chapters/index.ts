@@ -19,7 +19,7 @@ export default APIWrapper({
   },
   PATCH: {
     config: {
-      requireSession: false,
+      requireSession: true,
     },
     handler: async (req) => {
       const action = req.query.action;
@@ -27,7 +27,6 @@ export default APIWrapper({
       if (action == "update") {
         const chapterId = req.user?.chapter;
         const partialChapterUpdate = req.body as ChapterChange;
-        console.log(partialChapterUpdate);
 
         if (!chapterId) {
           throw new Error("User is missing chapter.");

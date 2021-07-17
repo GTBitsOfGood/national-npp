@@ -160,6 +160,7 @@ export interface InternalResponseData<T> {
   payload?: T;
 }
 
+export type ProjectChange = Omit<Partial<Project>, "_id">;
 export type ChapterChange = Omit<Partial<Chapter>, "_id">;
 export type NonprofitChange = Omit<Partial<Nonprofit>, "_id" | "isVerified">;
 export type UserChange = Pick<

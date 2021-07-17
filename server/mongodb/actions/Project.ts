@@ -1,22 +1,12 @@
 import { Types } from "mongoose";
 import ProjectModel from "server/mongodb/models/Project";
 import dbConnect from "server/utils/dbConnect";
-import { ChapterStage, ProjectType } from "src/utils/types";
+import { ProjectChange, ChapterStage, ProjectType } from "src/utils/types";
 
-export async function createProject(
-  nonprofitId: Types.ObjectId,
-  chapterId: Types.ObjectId,
-  name: string,
-  type: ProjectType
-) {
+export async function createProject(project: ProjectChange) {
   await dbConnect();
 
-  const newProject = await ProjectModel.create({
-    chapter: chapterId,
-    nonprofit: nonprofitId,
-    name,
-    type,
-  });
+  const newProject = await ProjectModel.create(project);
 
   return newProject;
 }
@@ -48,32 +38,16 @@ export async function getNonprofitProject(nonprofitId: Types.ObjectId) {
   return project;
 }
 
-export async function updateProjectStatus(
+export async function updateProject(
   projectId: Types.ObjectId,
-  status: ChapterStage
+  project: ProjectChange
 ) {
   await dbConnect();
 
-  const updatedProject = await ProjectModel.updateOne(
-    { _id: projectId },
-    { status },
-    { new: true }
-  );
-
-  return updatedProject;
-}
-
-export async function updateProjectContact(
-  projectId: Types.ObjectId,
-  userId: Types.ObjectId
-) {
-  await dbConnect();
-
-  const updatedProject = await ProjectModel.updateOne(
-    { _id: projectId },
-    { contact: userId },
-    { new: true }
-  );
+  const updatedProject = await ProjectModel.findByIdAndUpdate(projectId, {
+    project,
+    new: true,
+  });
 
   return updatedProject;
 }
