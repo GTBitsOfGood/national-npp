@@ -1,8 +1,6 @@
 import { Flex, Text, Stack } from "@chakra-ui/react";
 import { Step, Steps, useSteps } from "chakra-ui-steps";
 
-
-
 function ProgressBar() {
   const steps = [{ label: "Step 1" }, { label: "Step 2" }, { label: "Step 3" }];
   const { nextStep, prevStep, reset, activeStep } = useSteps({

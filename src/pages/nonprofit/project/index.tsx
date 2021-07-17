@@ -5,8 +5,7 @@ import submitApplicationImage from "public/images/projectStatus/awaiting_applica
 import { MouseEventHandler } from "react";
 import ProgressBar from "src/components/nonprofit/project/ProgressBar";
 import StepCard from "src/components/nonprofit/project/StepCard";
-import { ChapterStage } from "src/utils/types";
-import {NonprofitStage} from "src/utils/types";
+import { ChapterStage, NonprofitStage } from "src/utils/types";
 
 interface StepCardData {
   actionRequired: boolean;
