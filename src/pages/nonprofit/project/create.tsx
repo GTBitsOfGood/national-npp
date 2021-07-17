@@ -7,9 +7,10 @@ import {
   Grid,
   Text,
   Input,
+  Flex,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import ProjectTypeCard from "src/components/ProjectTypeCard";
+import ProjectTypeCard from "src/components/nonprofit/project/create/ProjectTypeCard";
 import { ProjectType } from "src/utils/types";
 
 function NonprofitProjectCreationPage() {
@@ -31,18 +32,22 @@ function NonprofitProjectCreationPage() {
     facebook: "bitsofgood",
     instagram: "bitsofgood",
   };
-  const [selected, setSelected] = useState("");
+
+  const [selected, setSelected] = useState<ProjectType>();
   function onProjectTypeCardClick(projectType: ProjectType) {
     setSelected(projectType);
   }
+
   return (
-    <Box height="100%" backgroundColor="#EBEEF1" overflow="auto">
-      <Box
-        boxSizing="border-box"
-        padding="50px"
-        maxWidth="1420px"
-        margin="auto"
-      >
+    <Flex
+      direction="column"
+      justify="space-between"
+      padding="60px"
+      height="100%"
+      backgroundColor="#EBEEF1"
+      overflow="auto"
+    >
+      <Box>
         <Heading
           fontSize={{ base: "x-large", md: "xx-large" }}
           marginBottom="50px"
@@ -56,7 +61,6 @@ function NonprofitProjectCreationPage() {
           <Text fontSize={{ base: "medium", md: "large" }}>{chapter.name}</Text>
           <Link href="/chapters">
             <Text fontSize={{ base: "medium", md: "large" }} color="#0069CA">
-              {" "}
               Change
             </Text>
           </Link>
@@ -84,21 +88,19 @@ function NonprofitProjectCreationPage() {
         </Heading>
         <Box width={{ base: "300px", md: "600px" }}>
           <Input
-            placeholder="Text Here"
+            placeholder="Project Name"
             size="md"
             variant="outline"
             backgroundColor="white"
             borderColor="grey"
           />
         </Box>
-
-        <Box align="right" marginTop="40px">
-          <Button px="25px" colorScheme="blue">
-            Get Started
-          </Button>
-        </Box>
       </Box>
-    </Box>
+
+      <Box align="right" marginTop="40px">
+        <Button colorScheme="blue">Get Started</Button>
+      </Box>
+    </Flex>
   );
 }
 

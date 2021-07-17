@@ -11,7 +11,25 @@ function ProjectTypeCard(props: {
   const { projectType, isSelected, onClick: _onClick } = props;
 
   function onClick() {
-    _onClick(projectType);
+    if (!isSelected) {
+      _onClick(projectType);
+    }
+  }
+
+  let description = "";
+
+  switch (projectType) {
+    case ProjectType.WEB_APP:
+      description = "This is the description for web app";
+      break;
+    case ProjectType.WEBSITE:
+      description = "This is the description for website";
+      break;
+    case ProjectType.MOBILE_APP:
+      description = "This is the description for mobile app";
+      break;
+    default:
+      break;
   }
 
   return (
@@ -19,7 +37,6 @@ function ProjectTypeCard(props: {
       display="flex"
       flexDirection="column"
       justifyContent="space-between"
-      boxSizing="border-box"
       width="400px"
       minHeight="160px"
       padding={isSelected ? "28px" : "30px"}
@@ -28,7 +45,7 @@ function ProjectTypeCard(props: {
       borderRadius="15px"
       position="relative"
       onClick={onClick}
-      // cursor={!chapter || open ? "pointer" : "default"}
+      _hover={{ cursor: isSelected ? "default" : "pointer" }}
     >
       {isSelected && (
         <Box position="absolute" top="-15px" left="-15px">
@@ -44,21 +61,7 @@ function ProjectTypeCard(props: {
         <Heading fontSize="lg" color="#333333" marginBottom="1px">
           {projectType}
         </Heading>
-        {projectType === "Web app" ? (
-          <Text> This is the description for Web app</Text>
-        ) : (
-          ""
-        )}
-        {projectType === "Website" ? (
-          <Text>This is the description for Website</Text>
-        ) : (
-          ""
-        )}
-        {projectType === "Mobile app" ? (
-          <Text> This is the description for Mobile App</Text>
-        ) : (
-          ""
-        )}
+        <Text>{description}</Text>
       </VStack>
     </Box>
   );
