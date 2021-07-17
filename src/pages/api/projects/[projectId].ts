@@ -6,17 +6,17 @@ import { ProjectChange, Role } from "src/utils/types";
 export default APIWrapper({
   GET: {
     config: {
-      requireSession: false,
+      requireSession: true,
       roles: [Role.CHAPTER_MEMBER],
     },
     handler: async (req) => {
       const projectId = req.query.projectId as string;
 
       if (!projectId) {
-        throw new Error("Project ID is missing");
+        throw new Error("Project ID is missing.");
       }
 
-      const project = await getProjectById(Types.ObjectId(id));
+      const project = await getProjectById(Types.ObjectId(projectId));
       return project;
     },
   },
@@ -30,7 +30,7 @@ export default APIWrapper({
       const partialProjectUpdate = req.body as ProjectChange;
 
       if (!projectId) {
-        throw new Error("Project ID is missing");
+        throw new Error("Project ID is missing.");
       }
 
       if (!partialProjectUpdate) {

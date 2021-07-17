@@ -1,7 +1,6 @@
-import { Types } from "mongoose";
 import { getChapters, updateChapter } from "server/mongodb/actions/Chapter";
 import APIWrapper from "server/utils/APIWrapper";
-import { ChapterChange } from "src/utils/types";
+import { ChapterChange, Role } from "src/utils/types";
 
 export default APIWrapper({
   GET: {
@@ -20,6 +19,7 @@ export default APIWrapper({
   PATCH: {
     config: {
       requireSession: true,
+      roles: [Role.CHAPTER_MEMBER],
     },
     handler: async (req) => {
       const action = req.query.action;

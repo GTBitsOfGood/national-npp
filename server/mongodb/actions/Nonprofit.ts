@@ -17,8 +17,8 @@ export async function updateNonprofit(
 ) {
   await dbConnect();
 
-  const updatedNonprofit = await NonprofitModel.updateOne(
-    { _id: nonprofitId },
+  const updatedNonprofit = await NonprofitModel.findByIdAndUpdate(
+    nonprofitId,
     nonprofit,
     { new: true }
   );

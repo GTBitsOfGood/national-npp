@@ -1,4 +1,3 @@
-import { Types } from "mongoose";
 import {
   createNonprofit,
   updateNonprofit,
@@ -9,7 +8,8 @@ import { NonprofitChange, Role } from "src/utils/types";
 export default APIWrapper({
   POST: {
     config: {
-      requireSession: false,
+      requireSession: true,
+      roles: [Role.NONPROFIT_MEMBER],
     },
     handler: async (req) => {
       const action = req.query.action;
@@ -18,7 +18,7 @@ export default APIWrapper({
         const nonprofitInfo = req.body as NonprofitChange;
 
         if (!nonprofitInfo) {
-          throw new Error("Not enough data provided to create a nonprofit");
+          throw new Error("Not enough data provided to create a nonprofit.");
         }
 
         const nonprofit = await createNonprofit(nonprofitInfo);

@@ -1,4 +1,3 @@
-import { Types } from "mongoose";
 import {
   createProject,
   getChapterProjects,
@@ -49,7 +48,7 @@ export default APIWrapper({
         const projectInfo = req.body as ProjectChange;
 
         if (!projectInfo) {
-          throw new Error("Not enough data provided to create a chapter");
+          throw new Error("Not enough data provided to create a project.");
         }
 
         const project = await createProject(projectInfo);

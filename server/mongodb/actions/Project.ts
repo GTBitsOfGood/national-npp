@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
 import ProjectModel from "server/mongodb/models/Project";
 import dbConnect from "server/utils/dbConnect";
-import { ProjectChange, ChapterStage, ProjectType } from "src/utils/types";
+import { ProjectChange, ChapterStage } from "src/utils/types";
 
 export async function createProject(project: ProjectChange) {
   await dbConnect();
@@ -44,10 +44,11 @@ export async function updateProject(
 ) {
   await dbConnect();
 
-  const updatedProject = await ProjectModel.findByIdAndUpdate(projectId, {
+  const updatedProject = await ProjectModel.findByIdAndUpdate(
+    projectId,
     project,
-    new: true,
-  });
+    { new: true }
+  );
 
   return updatedProject;
 }

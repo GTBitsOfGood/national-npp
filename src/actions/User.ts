@@ -10,8 +10,15 @@ export async function getChapterUserProfile() {
 }
 
 export async function getNonprofitUserProfile() {
-  return internalRequest({
+  return internalRequest<User>({
     url: urls.baseUrl + urls.api.users + "?action=nonprofit",
     method: HttpMethod.GET,
+  });
+}
+
+export async function updateUserProfile() {
+  return internalRequest({
+    url: urls.baseUrl + urls.api.nonprofits + "?action=update",
+    method: HttpMethod.PATCH,
   });
 }

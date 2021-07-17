@@ -17,8 +17,8 @@ export async function updateChapter(
 ) {
   await dbConnect();
 
-  const updatedChapter = await ChapterModel.updateOne(
-    { _id: chapterId },
+  const updatedChapter = await ChapterModel.findByIdAndUpdate(
+    chapterId,
     chapter,
     { new: true }
   );
