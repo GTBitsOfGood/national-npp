@@ -39,6 +39,7 @@ const MongoDBAdapter = () => {
             emailVerified,
             name: "",
             image: "",
+            roles: [],
           });
 
           return newUser;

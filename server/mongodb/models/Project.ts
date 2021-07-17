@@ -21,7 +21,7 @@ const ProjectSchema = new Schema<Project>(
     status: {
       type: String,
       enum: Object.values(ChapterStage),
-      default: ChapterStage.APPLICATION,
+      default: ChapterStage.SUBMIT_APPLICATION,
     },
     type: {
       type: String,

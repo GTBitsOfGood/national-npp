@@ -1,10 +1,10 @@
-import { InternalRequest, InternalResponse } from "src/utils/types";
+import { InternalRequestData, InternalResponseData } from "src/utils/types";
 
 export async function internalRequest<T>({
   url,
   method,
   body,
-}: InternalRequest): Promise<T> {
+}: InternalRequestData): Promise<T> {
   const requestInfo: RequestInit = {
     method,
     mode: "same-origin",
@@ -19,7 +19,7 @@ export async function internalRequest<T>({
   }
 
   const response = await fetch(url, requestInfo);
-  const responseBody = (await response.json()) as InternalResponse<T>;
+  const responseBody = (await response.json()) as InternalResponseData<T>;
 
   if (!responseBody) {
     throw new Error("Unable to connect to API.");

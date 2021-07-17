@@ -1,4 +1,5 @@
 import { Types } from "mongoose";
+import { NextApiRequest } from "next-auth/internals/utils";
 
 /* 
     Only define types used in multiple files here. Keep single file types like
@@ -16,7 +17,7 @@ export interface User {
   image?: string;
   phoneNum?: string;
   calendly?: string;
-  isAdmin: boolean;
+  roles: Array<Role>;
   chapter?: Chapter | Types.ObjectId;
   nonprofit?: Nonprofit | Types.ObjectId;
   createdAt: Date;
@@ -102,6 +103,16 @@ export interface Session {
   accessToken: string;
 }
 
+export interface SessionUser {
+  id: Types.ObjectId;
+  email: string;
+  name: string;
+  image: string;
+  roles: Array<Role>;
+  chapter?: Types.ObjectId;
+  nonprofit?: Types.ObjectId;
+}
+
 export interface VerificationRequest {
   _id: Types.ObjectId;
   id: string;
@@ -133,13 +144,17 @@ export enum HttpMethod {
   DELETE = "DELETE",
 }
 
-export interface InternalRequest {
+export interface InternalRequest extends NextApiRequest {
+  user?: SessionUser;
+}
+
+export interface InternalRequestData {
   url: string;
   method: HttpMethod;
   body?: { [key: string]: unknown };
 }
 
-export interface InternalResponse<T> {
+export interface InternalResponseData<T> {
   success: boolean;
   message?: string;
   payload?: T;
@@ -178,16 +193,24 @@ export enum NonprofitStage {
 }
 
 export enum ChapterStage {
-  APPLICATION = "Awaiting Application",
+  SUBMIT_APPLICATION = "Awaiting Application",
   APPLICATION_SUBMITTED = "Application Submitted",
-  INTERVIEW = "Awaiting Interview",
+  ASSIGNING_CONTACT = "Needs Contact",
+  SCHEDULE_INTERVIEW = "Awaiting Interview",
   INTERVIEW_SCHEDULED = "Interview Scheduled",
   UNDER_REVIEW = "Under review",
   IN_PROGRESS = "In Progress",
   MEETING_SCHEDULED = "Meeting Scheduled",
-  DELIVERED = "Delivered",
+  COMPLETED = "Completed",
   MAINTENANCE = "In Maintenance",
+  CANCELLED = "Cancelled",
+  REJECTED = "Rejected",
   CLOSED = "Closed",
+}
+
+export enum Role {
+  CHAPTER_MEMBER = "Chapter Member",
+  NONPROFIT_MEMBER = "Nonprofit Member",
 }
 
 // TODO: Remove this type and update chapter projects table
