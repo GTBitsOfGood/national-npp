@@ -1,4 +1,3 @@
-/* eslint-disable react/forbid-elements */
 import {
   Flex,
   Text,
@@ -8,264 +7,244 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Spacer,
   Checkbox,
   CheckboxGroup,
   Select,
   Button,
+  Box,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { states, countries } from "src/utils/constants";
+import { NonprofitStage, ProjectType } from "src/utils/types";
+
+const requiredStages = [NonprofitStage.IN_PROGRESS, NonprofitStage.COMPLETE];
 
 function ChapterProfilePage() {
-  //admin info
-  const [nameAdmin, setNameAdmin] = useState<string>("");
-  const [calendly, setCalendly] = useState<string>("");
-  const [phoneNumber, setPhoneNumber] = useState<string>("");
+  const [name, setName] = useState("");
+  const [calendly, setCalendly] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
 
-  //chapter info
-  const [name, setName] = useState<string>("");
-  const [street, setStreet] = useState<string>("");
-  const [city, setCity] = useState<string>("");
-  const [state, setState] = useState<string>("");
-  const [zip, setZip] = useState<string>("");
-  const [country, setCountry] = useState<string>("");
+  const [chapterName, setChapterName] = useState("");
+  const [street, setStreet] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState(states[0]);
+  const [zip, setZip] = useState("");
+  const [country, setCountry] = useState(countries[0]);
+  const [chapterEmail, setChapterEmail] = useState("");
+  const [projectLimit, setProjectLimit] = useState("1");
+  const [website, setWebsite] = useState("");
+  const [facebook, setFacebook] = useState("");
+  const [instagram, setInstagram] = useState("");
+  const [chapterProjects, setChapterProjects] = useState<ProjectType[]>([]);
 
-  const [contact, setContact] = useState<string>("");
-  const [projectLimit, setProjectLimit] = useState<number>(NaN);
-  const [website, setWebsite] = useState<string>("");
-  const [facebook, setFacebook] = useState<string>("");
-  const [instagram, setInstagram] = useState<string>("");
-  const [chapterProjects, setChapterProjects] = useState<boolean[]>([
-    false,
-    false,
-    false,
+  const [projectProcess, setProjectProcess] = useState<NonprofitStage[]>([
+    ...requiredStages,
   ]);
-  const [projectProcessCustomization, setprojectProcessCustomization] =
-    useState<boolean[]>([false, false, true, true, false, true]);
 
-  // const stateOptions = states.map((state, idx) => {
-  //   <option key={idx} value={state}>
-  //     {state}
-  //   </option>;
-  // });
-
-  // const countryOptions = countries.map((country, idx) => {
-  //   <option key={idx} value={country}>
-  //     {country}
-  //   </option>;
-  // });
   return (
-    <Flex
-      justifyContent="center"
-      alignItems="stretch"
-      backgroundColor="#EBEEF1"
-      overflow="auto"
-    >
-      <VStack margin={50}>
+    <Flex justifyContent="center" backgroundColor="#EBEEF1" overflow="auto">
+      <VStack marginY={50}>
         <Text
           alignSelf="flex-start"
-          p={1}
+          pl={4}
           fontSize="xx-large"
           fontWeight={700}
-          color={"black.400"}
+          color="black.400"
         >
-          {"Profile"}
+          Profile
         </Text>
-        <Flex
-          minW={{ base: 425, md: 850 }}
-          maxH={{ base: 2000, md: 1300 }}
+        <VStack
+          minW={{ base: 425, md: 800 }}
+          p={12}
           border="1px solid #657788"
           borderRadius={10}
+          direction="column"
           backgroundColor="white"
-          justifyContent={{ base: "none", md: "center" }}
-          alignContent={{ base: "center", md: "none" }}
+          spacing={10}
+          align="stretch"
         >
-          <VStack margin={50} w={{ base: 240, md: 680 }}>
-            <Avatar width="80px" height="80px" marginBottom={50} />
+          <Avatar alignSelf="center" width="80px" height="80px" />
+          <VStack align="start" spacing={5}>
             <Text
               alignSelf="flex-start"
               fontSize="md"
               fontWeight={700}
-              color={"black.400"}
+              color="black.400"
             >
-              {"User Information"}
+              User Information
             </Text>
-            <Flex
-              flexDirection={{ base: "column", md: "row" }}
-              w={{ base: 240, md: 680 }}
-              h={{ base: 300, md: 220 }}
-            >
-              <Flex
-                flexDirection="column"
-                justifyContent="space-between"
-                marginBottom={10}
+            <Flex direction={{ base: "column", md: "row" }}>
+              <VStack
+                direction="column"
+                spacing={5}
+                mr={{ base: 0, md: 5 }}
+                mb={{ base: 5, md: 0 }}
               >
-                <FormControl id="name">
+                <FormControl id="name" isRequired>
                   <FormLabel fontSize="sm">Name</FormLabel>
                   <Input
                     type="name"
                     fontSize="sm"
                     width={320}
                     placeholder="Full Name"
-                    value={nameAdmin}
-                    onChangeText={setNameAdmin}
-                    marginBottom={6}
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                   />
                 </FormControl>
-                <FormControl id="url">
-                  <FormLabel fontSize="sm">Calendly Link</FormLabel>
+                <FormControl id="calendly" isRequired>
+                  <FormLabel fontSize="sm">Calendly</FormLabel>
                   <Input
-                    type="email"
+                    type="url"
                     fontSize="sm"
                     width={320}
                     placeholder="calendly.com/"
                     value={calendly}
-                    onChangeText={setCalendly}
+                    onChange={(e) => setCalendly(e.target.value)}
                   />
                 </FormControl>
-              </Flex>
-              <Spacer />
-              <Flex
-                flexDirection={{ base: "column", md: "row" }}
-                justifyContent="space-between"
-              >
-                <FormControl id="phone number">
-                  <FormLabel fontSize="sm">Phone Number (Optional)</FormLabel>
-                  <Input
-                    type="phone number"
-                    fontSize="sm"
-                    width={320}
-                    placeholder="(XXX) XXX-XXXX"
-                    value={phoneNumber}
-                    onChangeText={setPhoneNumber}
-                  />
-                </FormControl>
-              </Flex>
+              </VStack>
+              <FormControl id="phone-number">
+                <FormLabel fontSize="sm">Phone Number</FormLabel>
+                <Input
+                  type="tel"
+                  fontSize="sm"
+                  width={320}
+                  placeholder="XXX-XXX-XXXX"
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                />
+              </FormControl>
             </Flex>
+          </VStack>
+          <VStack align="start" spacing={5}>
             <Text
               alignSelf="flex-start"
               fontSize="md"
               fontWeight={700}
-              color={"black.400"}
+              color="black.400"
             >
-              {"Chapter Information"}
+              Chapter Information
             </Text>
-            <Flex
-              flexDirection={{ base: "column", md: "row" }}
-              w={{ base: 240, md: 680 }}
-              h={{ base: 880, md: 440 }}
-            >
-              <Flex flexDirection="column" justifyContent="space-between">
-                <FormControl id="name">
-                  <FormLabel fontSize="sm">Chapter Name</FormLabel>
+            <Flex direction={{ base: "column", md: "row" }}>
+              <VStack
+                direction="column"
+                spacing={5}
+                mr={{ base: 0, md: 5 }}
+                mb={{ base: 5, md: 0 }}
+              >
+                <FormControl id="chapter-name" isRequired>
+                  <FormLabel fontSize="sm">Name</FormLabel>
                   <Input
                     type="name"
                     fontSize="sm"
                     width={320}
                     placeholder="Chapter Name"
-                    value={name}
-                    onChangeText={setName}
-                    marginBottom={6}
+                    value={chapterName}
+                    onChange={(e) => setChapterName(e.target.value)}
                   />
                 </FormControl>
-                <FormControl id="email">
-                  <FormLabel fontSize="sm">Contact</FormLabel>
+                <FormControl id="chapter-email" isRequired>
+                  <FormLabel fontSize="sm">Email</FormLabel>
                   <Input
                     type="email"
                     fontSize="sm"
                     width={320}
                     placeholder="chapter@email.com"
-                    value={contact}
-                    onChangeText={setContact}
-                    marginBottom={6}
+                    value={chapterEmail}
+                    onChange={(e) => setChapterEmail(e.target.value)}
                   />
                 </FormControl>
-                <FormControl id="location">
+                <FormControl id="location" isRequired>
                   <FormLabel fontSize="sm">Location</FormLabel>
-                  <Input
-                    type="street"
-                    fontSize="sm"
-                    width={320}
-                    placeholder="Street"
-                    value={street}
-                    onChangeText={setStreet}
-                    marginBottom={4}
-                  />
-                  <Input
-                    type="city"
-                    fontSize="sm"
-                    width={320}
-                    placeholder="City"
-                    value={city}
-                    onChangeText={setCity}
-                    marginBottom={4}
-                  />
-                  <HStack marginBottom={4}>
+                  <VStack spacing={3}>
+                    <Input
+                      type="text"
+                      fontSize="sm"
+                      width={320}
+                      placeholder="Street"
+                      value={street}
+                      onChange={(e) => setStreet(e.target.value)}
+                    />
+                    <Input
+                      type="text"
+                      fontSize="sm"
+                      width={320}
+                      placeholder="City"
+                      value={city}
+                      onChange={(e) => setCity(e.target.value)}
+                    />
+                    <HStack>
+                      <Select
+                        fontSize="sm"
+                        width={190}
+                        value={state}
+                        onChange={(e) => setState(e.target.value)}
+                      >
+                        {states.map((state) => (
+                          <option key={state} value={state}>
+                            {state}
+                          </option>
+                        ))}
+                      </Select>
+                      <Input
+                        type="text"
+                        fontSize="sm"
+                        width={120}
+                        placeholder="ZIP"
+                        value={zip}
+                        onChange={(e) => setZip(e.target.value)}
+                      />
+                    </HStack>
                     <Select
                       fontSize="sm"
-                      width={191}
-                      placeholder="Select State"
+                      width={320}
+                      value={country}
+                      onChange={(e) => setCountry(e.target.value)}
                     >
-                      {/* {stateOptions} */}
+                      {countries.map((country) => (
+                        <option key={country} value={country}>
+                          {country}
+                        </option>
+                      ))}
                     </Select>
-                    <Input
-                      type="zip code"
-                      fontSize="sm"
-                      width={120}
-                      placeholder="ZIP"
-                      value={zip}
-                      onChangeText={setZip}
-                    />
-                  </HStack>
-                  <Select
-                    fontSize="sm"
-                    width={320}
-                    placeholder="Select Country"
-                  >
-                    {/* {countryOptions} */}
-                  </Select>
+                  </VStack>
                 </FormControl>
-              </Flex>
-              <Spacer />
-              <Flex flexDirection="column" justifyContent="space-between">
-                <FormControl id="url">
-                  <FormLabel fontSize="sm">Website URL (Optional)</FormLabel>
+              </VStack>
+              <VStack spacing={5}>
+                <FormControl id="website">
+                  <FormLabel fontSize="sm">Website</FormLabel>
                   <Input
                     type="url"
                     fontSize="sm"
                     width={320}
                     placeholder="chapter.org"
                     value={website}
-                    onChangeText={setWebsite}
-                    marginBottom={6}
+                    onChange={(e) => setWebsite(e.target.value)}
                   />
                 </FormControl>
-                <FormControl id="url">
-                  <FormLabel fontSize="sm">Facebook URL (Optional)</FormLabel>
+                <FormControl id="facebook">
+                  <FormLabel fontSize="sm">Facebook</FormLabel>
                   <Input
                     type="url"
                     fontSize="sm"
                     width={320}
                     placeholder="facebook.com/"
                     value={facebook}
-                    onChangeText={setFacebook}
-                    marginBottom={6}
+                    onChange={(e) => setFacebook(e.target.value)}
                   />
                 </FormControl>
-                <FormControl id="url">
-                  <FormLabel fontSize="sm">Instagram URL (Optional)</FormLabel>
+                <FormControl id="instagram">
+                  <FormLabel fontSize="sm">Instagram</FormLabel>
                   <Input
                     type="url"
                     fontSize="sm"
                     width={320}
                     placeholder="instagram.com/"
                     value={instagram}
-                    onChangeText={setInstagram}
-                    marginBottom={5}
+                    onChange={(e) => setInstagram(e.target.value)}
                   />
                 </FormControl>
-                <FormControl id="number">
+                <FormControl id="limit" isRequired>
                   <FormLabel fontSize="sm">Project Limit</FormLabel>
                   <Input
                     type="number"
@@ -273,175 +252,96 @@ function ChapterProfilePage() {
                     width={320}
                     placeholder="Enter a number"
                     value={projectLimit}
-                    onChangeText={setProjectLimit}
-                    marginBottom={5}
+                    onChange={(e) => setProjectLimit(e.target.value)}
                   />
                 </FormControl>
-                <FormControl>
+                <FormControl id="products" isRequired>
                   <FormLabel fontSize="sm">Chapter Products</FormLabel>
-                  <CheckboxGroup>
-                    <HStack w={320}>
-                      <Checkbox
-                        size="md"
-                        isChecked={chapterProjects[0]}
-                        onChange={(e) =>
-                          setChapterProjects([
-                            e.target.checked,
-                            chapterProjects[1],
-                            chapterProjects[2],
-                          ])
-                        }
-                      >
-                        Websites
-                      </Checkbox>
-                      <Checkbox
-                        size="md"
-                        isChecked={chapterProjects[1]}
-                        onChange={(e) =>
-                          setChapterProjects([
-                            chapterProjects[0],
-                            e.target.checked,
-                            chapterProjects[2],
-                          ])
-                        }
-                      >
-                        Web Apps
-                      </Checkbox>
-                      <Checkbox
-                        size="md"
-                        isChecked={chapterProjects[2]}
-                        onChange={(e) =>
-                          setChapterProjects([
-                            chapterProjects[0],
-                            chapterProjects[1],
-                            e.target.checked,
-                          ])
-                        }
-                      >
-                        Mobile Apps
-                      </Checkbox>
+                  <CheckboxGroup value={chapterProjects}>
+                    <HStack spacing={4}>
+                      {Object.values(ProjectType).map((type) => (
+                        <Checkbox
+                          key={type}
+                          size="sm"
+                          value={type}
+                          onChange={(e) => {
+                            const isChecked = e.target.checked;
+
+                            let newProjects = [...chapterProjects];
+                            if (isChecked) {
+                              newProjects.push(type);
+                            } else {
+                              newProjects = newProjects.filter(
+                                (t) => t !== type
+                              );
+                            }
+
+                            setChapterProjects(newProjects);
+                          }}
+                        >
+                          {type}
+                        </Checkbox>
+                      ))}
                     </HStack>
                   </CheckboxGroup>
                 </FormControl>
-              </Flex>
+              </VStack>
             </Flex>
-            <Spacer />
-            <Spacer />
-            <Spacer />
-            <Spacer />
-            <Spacer />
-            <Flex
-              flexDirection="column"
-              w={{ base: 240, md: 680 }}
-              h={{ base: 880, md: 440 }}
-            >
+          </VStack>
+          <VStack align="start" spacing={5}>
+            <Box>
               <Text
                 alignSelf="flex-start"
                 fontSize="md"
                 fontWeight={700}
-                color={"black.400"}
+                color="black.400"
               >
                 Project Process Customization
               </Text>
               <Text
                 alignSelf="flex-start"
-                fontSize="s"
+                fontSize="sm"
                 fontWeight={400}
-                color={"grey"}
+                color="grey"
               >
-                Customize which parts of the project application, development,
-                and handoff process you would like displayed to nonprofits.
+                Customize your project process for nonprofits to follow.
               </Text>
-              <FormControl>
-                <Flex alignSelf="flex-start">
-                  <CheckboxGroup>
-                    <Flex flexDirection="column" paddingTop={6}>
-                      <Checkbox
-                        size="md"
-                        isChecked={projectProcessCustomization[0]}
-                        onChange={(e) =>
-                          setChapterProjects([
-                            e.target.checked,
-                            chapterProjects[1],
-                            chapterProjects[2],
-                            chapterProjects[3],
-                            chapterProjects[4],
-                            chapterProjects[5],
-                          ])
+            </Box>
+            <CheckboxGroup value={projectProcess}>
+              <VStack align="start" spacing={2}>
+                {Object.values(NonprofitStage).map((stage) => {
+                  const isRequired = requiredStages.includes(stage);
+
+                  return (
+                    <Checkbox
+                      key={stage}
+                      isDisabled={isRequired}
+                      size="md"
+                      value={stage}
+                      onChange={(e) => {
+                        const isChecked = e.target.checked;
+
+                        let newProcess = [...projectProcess];
+                        if (isChecked) {
+                          newProcess.push(stage);
+                        } else {
+                          newProcess = newProcess.filter((s) => s !== stage);
                         }
-                      >
-                        Application
-                      </Checkbox>
-                      <Checkbox
-                        size="md"
-                        paddingTop={2}
-                        isChecked={projectProcessCustomization[1]}
-                        onChange={(e) =>
-                          setChapterProjects([
-                            chapterProjects[0],
-                            e.target.checked,
-                            chapterProjects[2],
-                            chapterProjects[3],
-                            chapterProjects[4],
-                            chapterProjects[5],
-                          ])
-                        }
-                      >
-                        Interview
-                      </Checkbox>
-                      <Checkbox
-                        size="md"
-                        paddingTop={2}
-                        isDisabled
-                        defaultIsChecked
-                      >
-                        In-Progress [Required]
-                      </Checkbox>
-                      <Checkbox
-                        size="md"
-                        paddingTop={2}
-                        isDisabled
-                        defaultIsChecked
-                      >
-                        Completed [Required]
-                      </Checkbox>
-                      <Checkbox
-                        size="md"
-                        paddingTop={2}
-                        isChecked={projectProcessCustomization[4]}
-                        onChange={(e) =>
-                          setChapterProjects([
-                            chapterProjects[0],
-                            chapterProjects[1],
-                            chapterProjects[2],
-                            chapterProjects[3],
-                            e.target.checked,
-                            chapterProjects[5],
-                          ])
-                        }
-                      >
-                        Feedback
-                      </Checkbox>
-                      <Checkbox
-                        size="md"
-                        paddingTop={2}
-                        isDisabled
-                        defaultIsChecked
-                      >
-                        Maintenance [Required]
-                      </Checkbox>
-                    </Flex>
-                  </CheckboxGroup>
-                </Flex>
-              </FormControl>
-            </Flex>
-            <Flex flexDirection="row" alignSelf={"flex-end"}>
-              <Button size="md" colorScheme="blue">
-                Save Changes
-              </Button>
-            </Flex>
+
+                        setProjectProcess(newProcess);
+                      }}
+                    >
+                      {isRequired ? `${stage} (Required)` : stage}
+                    </Checkbox>
+                  );
+                })}
+              </VStack>
+            </CheckboxGroup>
           </VStack>
-        </Flex>
+          <Button alignSelf="flex-end" size="md" colorScheme="blue">
+            Save Changes
+          </Button>
+        </VStack>
       </VStack>
     </Flex>
   );
