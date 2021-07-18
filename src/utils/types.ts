@@ -145,7 +145,8 @@ export enum HttpMethod {
 }
 
 export interface InternalRequest extends NextApiRequest {
-  user?: SessionUser;
+  user: SessionUser;
+  body: { [key: string]: unknown };
 }
 
 export interface InternalRequestData {
@@ -160,12 +161,22 @@ export interface InternalResponseData<T> {
   payload?: T;
 }
 
-export type ChapterChange = Omit<Partial<Chapter>, "_id">;
-export type NonprofitChange = Omit<Partial<Nonprofit>, "_id" | "isVerified">;
-export type UserChange = Pick<
+export type ProjectCreate = Pick<
+  Required<Project>,
+  "chapter" | "name" | "type"
+>;
+export type NonprofitProjectUpdate = Pick<Partial<Project>, "status">;
+export type ChapterProjectUpdate = Pick<Partial<Project>, "status" | "contact">;
+
+export type UserUpdate = Pick<
   Partial<User>,
   "name" | "image" | "phoneNum" | "calendly"
 >;
+
+export type ChapterUpdate = Omit<Partial<Chapter>, "_id">;
+
+export type NonprofitCreate = Omit<Nonprofit, "_id" | "isVerified">;
+export type NonprofitUpdate = Omit<Partial<Nonprofit>, "_id" | "isVerified">;
 
 /* Enums */
 
