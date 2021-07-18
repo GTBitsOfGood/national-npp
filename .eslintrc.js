@@ -42,7 +42,6 @@ const SHARED_RULES = {
         "menu",
         "menuitem",
         "ol",
-        "option",
         "p",
         "script",
         "section",
