@@ -1,6 +1,6 @@
-import { Heading, Button, VStack, Box, Text } from "@chakra-ui/react";
+import { Heading, VStack, Box, Text } from "@chakra-ui/react";
 import Image from "next/image";
-import { MouseEventHandler } from "react";
+import { ReactNode } from "react";
 
 // Image/Graphic Logic
 
@@ -9,8 +9,7 @@ interface StepCardData {
   image: StaticImageData;
   title: string;
   text: string;
-  buttonText?: string;
-  buttonCallback?: MouseEventHandler;
+  buttons: ReactNode[];
 }
 
 const StepCard = ({
@@ -18,32 +17,29 @@ const StepCard = ({
   text,
   image,
   title,
-  buttonText,
-  buttonCallback,
+  buttons,
 }: StepCardData) => {
   return (
     <VStack
       bgColor="#0069CA0D"
       p="10"
-      maxW="100%"
+      w="100%"
       justifyContent="center"
       spacing="25px"
     >
       {actionRequired && (
         <Box color="#0069CA" m="0" bgColor="rgba(0, 105, 202, 0.1)" px="2">
-          <Text>Action Required</Text>
+          <Text fontWeight="bold">ACTION REQUIRED</Text>
         </Box>
       )}
-      <Heading m="3">{title}</Heading>
+      <Heading m="3" as="h3" fontSize={{ base: "20px", md: "25px" }}>
+        {title}
+      </Heading>
       <Box m="4">
         <Image src={image} />
       </Box>
-      <Text noOfLines={{ base: 3, md: 6 }}>{text}</Text>
-      {buttonText && buttonCallback && (
-        <Button onClick={buttonCallback} bgColor="#0069CA" color="white">
-          {buttonText}
-        </Button>
-      )}
+      <Text noOfLines={{ base: 2, md: 4, lg: 6 }}>{text}</Text>
+      {buttons}
     </VStack>
   );
 };
