@@ -8,9 +8,11 @@ import {
 } from "src/utils/types";
 import urls from "src/utils/urls";
 
+const userAPI = urls.baseUrl + urls.api.users;
+
 export async function getUserProfile() {
   return internalRequest<User>({
-    url: urls.baseUrl + urls.api.users + "?action=profile",
+    url: userAPI + "?action=profile",
     method: HttpMethod.GET,
   });
 }
@@ -21,7 +23,7 @@ export async function updateUserProfile(
   nonprofitUpdate?: NonprofitUpdate
 ) {
   return internalRequest<User>({
-    url: urls.baseUrl + urls.api.users + "?action=profile",
+    url: userAPI + "?action=profile",
     method: HttpMethod.PATCH,
     body: {
       userUpdate,

@@ -8,9 +8,11 @@ import {
 } from "src/utils/types";
 import urls from "src/utils/urls";
 
+const projectAPI = urls.baseUrl + urls.api.projects;
+
 export async function createProject(projectCreate: ProjectCreate) {
   return internalRequest<Project>({
-    url: urls.baseUrl + urls.api.projects,
+    url: projectAPI,
     method: HttpMethod.POST,
     body: {
       projectCreate,
@@ -20,21 +22,21 @@ export async function createProject(projectCreate: ProjectCreate) {
 
 export async function getChapterProjects() {
   return internalRequest<Array<Project>>({
-    url: urls.baseUrl + urls.api.projects + "?action=chapter",
+    url: projectAPI + "?action=chapter",
     method: HttpMethod.GET,
   });
 }
 
 export async function getChapterProject(projectId: string) {
   return internalRequest<Project>({
-    url: urls.baseUrl + urls.api.projects + `/${projectId}` + "?action=chapter",
+    url: projectAPI + `/${projectId}` + "?action=chapter",
     method: HttpMethod.GET,
   });
 }
 
 export async function getNonprofitProject() {
   return internalRequest<Project>({
-    url: urls.baseUrl + urls.api.projects + "?action=nonprofit",
+    url: projectAPI + "?action=nonprofit",
     method: HttpMethod.GET,
   });
 }
@@ -44,7 +46,7 @@ export async function updateChapterProject(
   projectUpdate: ChapterProjectUpdate
 ) {
   return internalRequest<Project>({
-    url: urls.baseUrl + urls.api.projects + `/${projectId}` + "?action=chapter",
+    url: projectAPI + `/${projectId}` + "?action=chapter",
     method: HttpMethod.PATCH,
     body: {
       projectUpdate,
@@ -56,7 +58,7 @@ export async function updateNonprofitProject(
   projectUpdate: NonprofitProjectUpdate
 ) {
   return internalRequest<Project>({
-    url: urls.baseUrl + urls.api.projects + "?action=nonprofit",
+    url: projectAPI + "?action=nonprofit",
     method: HttpMethod.PATCH,
     body: {
       projectUpdate,
