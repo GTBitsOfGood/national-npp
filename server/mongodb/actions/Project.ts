@@ -1,38 +1,45 @@
 import { Types } from "mongoose";
 import ProjectModel from "server/mongodb/models/Project";
 import dbConnect from "server/utils/dbConnect";
-import { ChapterStage, ProjectType } from "src/utils/types";
+import {
+  ProjectCreate,
+  ChapterStage,
+  NonprofitProjectUpdate,
+  ChapterProjectUpdate,
+} from "src/utils/types";
 
 export async function createProject(
   nonprofitId: Types.ObjectId,
-  chapterId: Types.ObjectId,
-  name: string,
-  type: ProjectType
+  projectCreate: ProjectCreate
 ) {
   await dbConnect();
 
-  const newProject = await ProjectModel.create({
-    chapter: chapterId,
+  const project = await ProjectModel.create({
+    ...projectCreate,
     nonprofit: nonprofitId,
-    name,
-    type,
   });
 
-  return newProject;
+  return project;
 }
 
 export async function getChapterProjects(chapterId: Types.ObjectId) {
   await dbConnect();
 
-  const chapterProjects = await ProjectModel.find({ chapterId });
+  const projects = await ProjectModel.find({ chapterId });
 
-  return chapterProjects;
+  return projects;
 }
 
-export async function getProjectById(projectId: Types.ObjectId) {
+export async function getChapterProject(
+  projectId: Types.ObjectId,
+  chapterId: Types.ObjectId
+) {
   await dbConnect();
 
-  const project = await ProjectModel.findById(projectId);
+  const project = await ProjectModel.findOne({
+    _id: projectId,
+    chapter: chapterId,
+  });
 
   return project;
 }
@@ -42,38 +49,39 @@ export async function getNonprofitProject(nonprofitId: Types.ObjectId) {
 
   const project = await ProjectModel.findOne({
     nonprofit: nonprofitId,
-    status: { $ne: ChapterStage.CLOSED },
+    status: { $ne: ChapterStage.CLOSED }, // TODO: Add other inactive project stages
   });
 
   return project;
 }
 
-export async function updateProjectStatus(
-  projectId: Types.ObjectId,
-  status: ChapterStage
+export async function updateNonprofitProject(
+  nonprofitId: Types.ObjectId,
+  projectUpdate: NonprofitProjectUpdate
 ) {
   await dbConnect();
 
-  const updatedProject = await ProjectModel.updateOne(
-    { _id: projectId },
-    { status },
+  const project = await ProjectModel.findOneAndUpdate(
+    { nonprofitId },
+    projectUpdate,
     { new: true }
   );
 
-  return updatedProject;
+  return project;
 }
 
-export async function updateProjectContact(
+export async function updateChapterProject(
   projectId: Types.ObjectId,
-  userId: Types.ObjectId
+  chapterId: Types.ObjectId,
+  projectUpdate: ChapterProjectUpdate
 ) {
   await dbConnect();
 
-  const updatedProject = await ProjectModel.updateOne(
-    { _id: projectId },
-    { contact: userId },
+  const project = await ProjectModel.findOneAndUpdate(
+    { _id: projectId, chapter: chapterId },
+    projectUpdate,
     { new: true }
   );
 
-  return updatedProject;
+  return project;
 }
