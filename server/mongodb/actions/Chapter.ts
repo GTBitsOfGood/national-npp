@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
 import ChapterModel from "server/mongodb/models/Chapter";
 import dbConnect from "server/utils/dbConnect";
-import { ChapterChange } from "src/utils/types";
+import { ChapterUpdate } from "src/utils/types";
 
 export async function getChapters() {
   await dbConnect();
@@ -13,7 +13,7 @@ export async function getChapters() {
 
 export async function updateChapter(
   chapterId: Types.ObjectId,
-  chapter: ChapterChange
+  chapter: ChapterUpdate
 ) {
   await dbConnect();
 

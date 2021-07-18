@@ -1,24 +1,32 @@
 import { internalRequest } from "src/utils/requests";
-import { User, HttpMethod } from "src/utils/types";
+import {
+  User,
+  HttpMethod,
+  UserUpdate,
+  ChapterUpdate,
+  NonprofitUpdate,
+} from "src/utils/types";
 import urls from "src/utils/urls";
 
-export async function getChapterUserProfile() {
+export async function getUserProfile() {
   return internalRequest<User>({
-    url: urls.baseUrl + urls.api.users + "?action=chapter",
+    url: urls.baseUrl + urls.api.users + "?action=profile",
     method: HttpMethod.GET,
   });
 }
 
-export async function getNonprofitUserProfile() {
+export async function updateUserProfile(
+  userUpdate: UserUpdate,
+  chapterUpdate?: ChapterUpdate,
+  nonprofitUpdate?: NonprofitUpdate
+) {
   return internalRequest<User>({
-    url: urls.baseUrl + urls.api.users + "?action=nonprofit",
-    method: HttpMethod.GET,
-  });
-}
-
-export async function updateUserProfile() {
-  return internalRequest({
-    url: urls.baseUrl + urls.api.nonprofits + "?action=update",
+    url: urls.baseUrl + urls.api.users + "?action=profile",
     method: HttpMethod.PATCH,
+    body: {
+      userUpdate,
+      chapterUpdate,
+      nonprofitUpdate,
+    },
   });
 }

@@ -1,27 +1,27 @@
 import { Types } from "mongoose";
 import NonprofitModel from "server/mongodb/models/Nonprofit";
 import dbConnect from "server/utils/dbConnect";
-import { NonprofitChange } from "src/utils/types";
+import { NonprofitCreate, NonprofitUpdate } from "src/utils/types";
 
-export async function createNonprofit(nonprofit: NonprofitChange) {
+export async function createNonprofit(nonprofitCreate: NonprofitCreate) {
   await dbConnect();
 
-  const newNonprofit = await NonprofitModel.create(nonprofit);
+  const nonprofit = await NonprofitModel.create(nonprofitCreate);
 
-  return newNonprofit;
+  return nonprofit;
 }
 
 export async function updateNonprofit(
   nonprofitId: Types.ObjectId,
-  nonprofit: NonprofitChange
+  nonprofitUpdate: NonprofitUpdate
 ) {
   await dbConnect();
 
-  const updatedNonprofit = await NonprofitModel.findByIdAndUpdate(
+  const nonprofit = await NonprofitModel.findByIdAndUpdate(
     nonprofitId,
-    nonprofit,
+    nonprofitUpdate,
     { new: true }
   );
 
-  return updatedNonprofit;
+  return nonprofit;
 }

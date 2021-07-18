@@ -1,9 +1,9 @@
 import { Types } from "mongoose";
 import UserModel from "server/mongodb/models/User";
 import dbConnect from "server/utils/dbConnect";
-import { UserChange } from "src/utils/types";
+import { UserUpdate } from "src/utils/types";
 
-export async function getChapterUserProfile(userId: Types.ObjectId) {
+export async function getChapterUser(userId: Types.ObjectId) {
   await dbConnect();
 
   const user = await UserModel.findById(userId).populate("chapter");
@@ -11,7 +11,7 @@ export async function getChapterUserProfile(userId: Types.ObjectId) {
   return user;
 }
 
-export async function getNonprofitUserProfile(userId: Types.ObjectId) {
+export async function getNonprofitUser(userId: Types.ObjectId) {
   await dbConnect();
 
   const user = await UserModel.findById(userId).populate("nonprofit");
@@ -19,15 +19,28 @@ export async function getNonprofitUserProfile(userId: Types.ObjectId) {
   return user;
 }
 
-export async function updateUserProfile(
+export async function updateChapterUser(
   userId: Types.ObjectId,
-  user: UserChange
+  userUpdate: UserUpdate
 ) {
   await dbConnect();
 
-  const userUpdate = await UserModel.findByIdAndUpdate(userId, user, {
+  const user = await UserModel.findByIdAndUpdate(userId, userUpdate, {
     new: true,
-  });
+  }).populate("chapter");
 
-  return userUpdate;
+  return user;
+}
+
+export async function updateNonprofitUser(
+  userId: Types.ObjectId,
+  userUpdate: UserUpdate
+) {
+  await dbConnect();
+
+  const user = await UserModel.findByIdAndUpdate(userId, userUpdate, {
+    new: true,
+  }).populate("nonprofit");
+
+  return user;
 }

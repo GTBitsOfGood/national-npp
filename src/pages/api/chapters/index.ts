@@ -1,44 +1,14 @@
-import { getChapters, updateChapter } from "server/mongodb/actions/Chapter";
+import { getChapters } from "server/mongodb/actions/Chapter";
 import APIWrapper from "server/utils/APIWrapper";
-import { ChapterChange, Role } from "src/utils/types";
 
 export default APIWrapper({
   GET: {
     config: {
       requireSession: false,
     },
-    handler: async (req) => {
-      const action = req.query.action;
-
-      if (action == "chapters") {
-        const chapters = await getChapters();
-        return chapters;
-      }
-    },
-  },
-  PATCH: {
-    config: {
-      requireSession: true,
-      roles: [Role.CHAPTER_MEMBER],
-    },
-    handler: async (req) => {
-      const action = req.query.action;
-
-      if (action == "update") {
-        const chapterId = req.user?.chapter;
-        const partialChapterUpdate = req.body as ChapterChange;
-
-        if (!chapterId) {
-          throw new Error("User is missing chapter.");
-        }
-
-        if (!partialChapterUpdate) {
-          throw new Error("Missing updated chapter info.");
-        }
-
-        const update = await updateChapter(chapterId, partialChapterUpdate);
-        return update;
-      }
+    handler: async () => {
+      const chapters = await getChapters();
+      return chapters;
     },
   },
 });

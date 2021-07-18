@@ -1,10 +1,13 @@
+import { updateChapter } from "server/mongodb/actions/Chapter";
+import { updateNonprofit } from "server/mongodb/actions/Nonprofit";
 import {
-  getChapterUserProfile,
-  getNonprofitUserProfile,
-  updateUserProfile,
+  getChapterUser,
+  getNonprofitUser,
+  updateChapterUser,
+  updateNonprofitUser,
 } from "server/mongodb/actions/User";
 import APIWrapper from "server/utils/APIWrapper";
-import { UserChange } from "src/utils/types";
+import { ChapterUpdate, NonprofitUpdate, UserUpdate } from "src/utils/types";
 
 export default APIWrapper({
   GET: {
@@ -12,26 +15,27 @@ export default APIWrapper({
       requireSession: true,
     },
     handler: async (req) => {
+      const user = req.user;
       const action = req.query.action;
 
-      if (action == "chapter") {
-        const userId = req.user?.id;
+      if (action == "profile") {
+        const userId = user.id;
+        const chapterId = user.chapter;
+        const nonprofitId = user.nonprofit;
 
-        if (!userId) {
-          throw new Error("User is missing.");
+        if (nonprofitId) {
+          const user = await getNonprofitUser(userId);
+          return user;
         }
 
-        const chapter = await getChapterUserProfile(userId);
-        return chapter;
-      } else if (action == "nonprofit") {
-        const userId = req.user?.id;
-
-        if (!userId) {
-          throw new Error("User is missing.");
+        if (chapterId) {
+          const user = await getChapterUser(userId);
+          return user;
         }
 
-        const nonprofit = await getNonprofitUserProfile(userId);
-        return nonprofit;
+        throw new Error("User does not belong to a chapter or nonprofit.");
+      } else {
+        throw new Error("Unknown action.");
       }
     },
   },
@@ -40,22 +44,35 @@ export default APIWrapper({
       requireSession: true,
     },
     handler: async (req) => {
+      const user = req.user;
       const action = req.query.action;
 
-      if (action == "update") {
-        const userId = req.user?.id;
-        const partialUserUpdate = req.body as UserChange;
+      if (action == "profile") {
+        const userId = user.id;
+        const chapterId = user.chapter;
+        const nonprofitId = user.nonprofit;
 
-        if (!userId) {
-          throw new Error("User is missing.");
+        const userUpdate = req.body.userUpdate as UserUpdate;
+
+        if (nonprofitId) {
+          const nonprofitUpdate = req.body.nonprofitUpdate as NonprofitUpdate;
+          await updateNonprofit(nonprofitId, nonprofitUpdate);
+
+          const user = await updateNonprofitUser(userId, userUpdate);
+          return user;
         }
 
-        if (!partialUserUpdate) {
-          throw new Error("Missing updated user info.");
+        if (chapterId) {
+          const chapterUpdate = req.body.chapterUpdate as ChapterUpdate;
+          await updateChapter(chapterId, chapterUpdate);
+
+          const user = await updateChapterUser(userId, userUpdate);
+          return user;
         }
 
-        const update = await updateUserProfile(userId, partialUserUpdate);
-        return update;
+        throw new Error("User does not belong to a chapter or nonprofit.");
+      } else {
+        throw new Error("Unknown action.");
       }
     },
   },

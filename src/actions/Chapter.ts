@@ -4,14 +4,7 @@ import urls from "src/utils/urls";
 
 export async function getChapters() {
   return internalRequest<Array<Chapter>>({
-    url: urls.baseUrl + urls.api.chapters + "?action=chapters",
+    url: urls.baseUrl + urls.api.chapters,
     method: HttpMethod.GET,
-  });
-}
-
-export async function updateChapter() {
-  return internalRequest({
-    url: urls.baseUrl + urls.api.chapters + "?action=update",
-    method: HttpMethod.PATCH,
   });
 }
