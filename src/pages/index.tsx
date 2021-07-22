@@ -11,9 +11,9 @@ import {
 } from "@chakra-ui/react";
 import Image from "next/image";
 import NextLink from "next/link";
-import FirstLandingImage from "public/images/landing_first.svg";
-import SecondLandingImage from "public/images/landing_second.svg";
-import ThirdLandingImage from "public/images/landing_third.svg";
+import FirstLandingImage from "public/images/landing/landing_first.svg";
+import SecondLandingImage from "public/images/landing/landing_second.svg";
+import ThirdLandingImage from "public/images/landing/landing_third.svg";
 import FourthLandingImage from "public/images/small_logo.svg";
 import LandingInfoCard from "src/components/landing/LandingInfoCard";
 
