@@ -17,17 +17,19 @@ import {
 } from "@chakra-ui/react";
 import { Step, Steps, useSteps } from "chakra-ui-steps";
 import { Types } from "mongoose";
-import applicationSubmittedImage from "public/images/projectStatus/application_submitted.svg";
-import assigningContact from "public/images/projectStatus/assigning_contact.svg";
-import submitApplicationImage from "public/images/projectStatus/awaiting_application.svg";
-import projectCancelled from "public/images/projectStatus/cancelled.svg";
-import projectComplete from "public/images/projectStatus/celebration.svg";
-import meeting from "public/images/projectStatus/meeting.svg";
-import projectRejected from "public/images/projectStatus/rejected.svg";
-import remoteMeeting from "public/images/projectStatus/remote_meeting.svg";
-import underReview from "public/images/projectStatus/under_review.svg";
+import ApplicationReviewImage from "public/images/nonprofit/project/application_review.svg";
+import AssignContactImage from "public/images/nonprofit/project/assign_contact.svg";
+import CancelledImage from "public/images/nonprofit/project/cancelled.svg";
+import CompletedImage from "public/images/nonprofit/project/completed.svg";
+import InterviewReviewImage from "public/images/nonprofit/project/interview_review.svg";
+import MeetingScheduledImage from "public/images/nonprofit/project/meeting_scheduled.svg";
+import RejectedImage from "public/images/nonprofit/project/rejected.svg";
+import ScheduleMeetingImage from "public/images/nonprofit/project/schedule_meeting.svg";
+import SubmitApplicationImage from "public/images/nonprofit/project/submit_application.svg";
+import { useMemo } from "react";
 import { FaEnvelope, FaTimes } from "react-icons/fa";
 import StepCard from "src/components/nonprofit/project/StepCard";
+import { getNonprofitStage, nonprofitStageOrder } from "src/utils/stages";
 import {
   Chapter,
   ChapterStage,
@@ -36,271 +38,7 @@ import {
   ProjectType,
 } from "src/utils/types";
 
-const getStepCardData = (chapterStage: ChapterStage) => {
-  switch (chapterStage) {
-    case ChapterStage.SUBMIT_APPLICATION:
-      return {
-        actionRequired: true,
-        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit,\
-        sed do eiusmod tempor incididunt ut labore et dolore magna\
-        aliqua. Adipiscing tristique risus nec feugiat in. Morbi enim\
-        nunc faucibus a pellentesque sit amet porttitor. Nec ultrices\
-        dui sapien eget mi proin sed libero.",
-        image: submitApplicationImage,
-        title: "Submit Application Form",
-        buttons: [
-          <Button
-            onClick={() => console.log("redirecting to form")}
-            colorScheme="blue"
-            key="first-button"
-          >
-            Go to Form
-          </Button>,
-        ],
-      };
-    case ChapterStage.APPLICATION_SUBMITTED:
-      return {
-        actionRequired: false,
-        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, \
-        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \
-        Nam aliquam sem et tortor consequat id porta nibh venenatis. Vitae \
-        elementum curabitur vitae nunc.",
-        image: applicationSubmittedImage,
-        title: "Application Under Review",
-        buttons: [],
-      };
-    case ChapterStage.ASSIGNING_CONTACT:
-      return {
-        actionRequired: false,
-        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, \
-        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \
-        Nam aliquam sem et tortor consequat id porta nibh venenatis. Vitae \
-        elementum curabitur vitae nunc.",
-        image: assigningContact,
-        title: "A contact will be reaching out to you.",
-        buttons: [],
-      };
-    case ChapterStage.SCHEDULE_INTERVIEW:
-      return {
-        actionRequired: true,
-        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, \
-        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \
-        Nam aliquam sem et tortor consequat id porta nibh venenatis. Vitae \
-        elementum curabitur vitae nunc.",
-        image: meeting,
-        title: "Schedule an Interview",
-        buttons: [
-          <Button
-            onClick={() => console.log("scheduling interview")}
-            colorScheme="blue"
-            key="first-button"
-          >
-            Schedule Interview
-          </Button>,
-        ],
-      };
-    case ChapterStage.INTERVIEW_SCHEDULED:
-      return {
-        actionRequired: false,
-        text: "Your interview is scheduled for July 27th from 4:30 PM - 5:30 PM EST.",
-        image: meeting,
-        title: "Interview Scheduled",
-        buttons: [
-          <Button
-            onClick={() => console.log("rescheduling interview")}
-            color="#0069CA"
-            variant="link"
-            key="first-button"
-          >
-            Reschedul Interview
-          </Button>,
-          <Button
-            onClick={() => console.log("cancelling interview")}
-            color="#0069CA"
-            variant="link"
-            key="second-button"
-          >
-            Cancel Interview
-          </Button>,
-        ],
-      };
-    case ChapterStage.UNDER_REVIEW:
-      return {
-        actionRequired: false,
-        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, \
-        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \
-        Nam aliquam sem et tortor consequat id porta nibh venenatis. Vitae \
-        elementum curabitur vitae nunc.",
-        image: underReview,
-        title: "Interview Under Review",
-        buttons: [],
-      };
-    case ChapterStage.IN_PROGRESS:
-      return {
-        actionRequired: false,
-        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, \
-          sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \
-          Nam aliquam sem et tortor consequat id porta nibh venenatis. Vitae \
-          elementum curabitur vitae nunc.",
-        image: underReview,
-        title: "A contact is being assigned to your project.",
-        buttons: [],
-      };
-    case ChapterStage.MEETING_SCHEDULED:
-      return {
-        actionRequired: false,
-        text: "Discussing Product Functionalities",
-        image: remoteMeeting,
-        title: "Meeting Scheduled",
-        buttons: [
-          <Button
-            onClick={() => console.log("rescheduling meeting")}
-            color="#0069CA"
-            variant="link"
-            key="first-button"
-          >
-            Reschedule Meeting
-          </Button>,
-          <Button
-            onClick={() => console.log("cancelling meeting")}
-            color="#0069CA"
-            variant="link"
-            key="second-button"
-          >
-            Cancel Meeting
-          </Button>,
-        ],
-      };
-    case ChapterStage.COMPLETED:
-      return {
-        actionRequired: false,
-        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, \
-        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \
-        Nam aliquam sem et tortor consequat id porta nibh venenatis. Vitae \
-        elementum curabitur vitae nunc.",
-        image: projectComplete,
-        title: "Project Complete!",
-        buttons: [
-          <Button
-            onClick={() => console.log("returning to home")}
-            colorScheme="blue"
-            key="first-button"
-          >
-            Return to Home
-          </Button>,
-        ],
-      };
-    case ChapterStage.MAINTENANCE:
-      return {
-        actionRequired: false,
-        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, \
-        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \
-        Nam aliquam sem et tortor consequat id porta nibh venenatis. Vitae \
-        elementum curabitur vitae nunc.",
-        image: projectComplete,
-        title: "Project Complete!",
-        buttons: [
-          <Button
-            onClick={() => console.log("launching the feedback form")}
-            colorScheme="blue"
-            key="first-button"
-          >
-            Feedback Form
-          </Button>,
-          <Button
-            onClick={() => console.log("returning to home")}
-            colorScheme="blue"
-            variant="link"
-            key="second-button"
-          >
-            Return to Home
-          </Button>,
-        ],
-      };
-    case ChapterStage.REJECTED:
-      return {
-        actionRequired: false,
-        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, \
-        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \
-        Nam aliquam sem et tortor consequat id porta nibh venenatis. Vitae \
-        elementum curabitur vitae nunc.",
-        image: projectRejected,
-        title: "Project Rejected",
-        buttons: [
-          <Button
-            onClick={() => console.log("returning to home")}
-            colorScheme="blue"
-            key="first-button"
-          >
-            Return to Home
-          </Button>,
-        ],
-      };
-    case ChapterStage.CANCELLED:
-      return {
-        actionRequired: false,
-        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, \
-        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \
-        Nam aliquam sem et tortor consequat id porta nibh venenatis. Vitae \
-        elementum curabitur vitae nunc.",
-        image: projectCancelled,
-        title: "Project Cancelled",
-        buttons: [
-          <Button
-            onClick={() => console.log("returning to home")}
-            colorScheme="blue"
-            key="first-button"
-          >
-            Return to Home
-          </Button>,
-        ],
-      };
-    default:
-      return {
-        actionRequired: true,
-        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit,\
-        sed do eiusmod tempor incididunt ut labore et dolore magna\
-        aliqua. Adipiscing tristique risus nec feugiat in. Morbi enim\
-        nunc faucibus a pellentesque sit amet porttitor. Nec ultrices\
-        dui sapien eget mi proin sed libero.",
-        image: submitApplicationImage,
-        title: "Submit Application Form",
-        buttons: [
-          <Button
-            onClick={() => console.log("redirecting to form")}
-            colorScheme="blue"
-            key="first-button"
-          >
-            Go to Form
-          </Button>,
-        ],
-      };
-  }
-};
-
-const getCurrNonProfitStage = (chapterStage: ChapterStage): NonprofitStage => {
-  switch (chapterStage) {
-    case ChapterStage.SUBMIT_APPLICATION:
-    case ChapterStage.APPLICATION_SUBMITTED:
-      return NonprofitStage.APPLICATION;
-    case ChapterStage.ASSIGNING_CONTACT:
-    case ChapterStage.SCHEDULE_INTERVIEW:
-    case ChapterStage.INTERVIEW_SCHEDULED:
-      return NonprofitStage.INTERVIEW;
-    case ChapterStage.IN_PROGRESS:
-    case ChapterStage.MEETING_SCHEDULED:
-      return NonprofitStage.IN_PROGRESS;
-    case ChapterStage.COMPLETED:
-    case ChapterStage.REJECTED:
-    case ChapterStage.CANCELLED:
-    case ChapterStage.MAINTENANCE:
-    case ChapterStage.CLOSED:
-      return NonprofitStage.COMPLETE;
-    default:
-      return NonprofitStage.APPLICATION;
-  }
-};
-
+// TODO: Remove this when actual project is passed to page
 const tempProject: Project = {
   _id: Types.ObjectId("123456789012"),
   name: "Liv2BGirl",
@@ -343,13 +81,255 @@ interface Props {
 
 function NonprofitProjectPage({ project }: Props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const chapterStage = tempProject.status;
+  const nonprofitStage = getNonprofitStage(chapterStage);
   const { activeStep } = useSteps({
-    initialStep: Object.values(NonprofitStage).indexOf(
-      getCurrNonProfitStage(tempProject.status)
-    ),
+    initialStep: nonprofitStageOrder[nonprofitStage],
   });
 
   const chapterPartner = tempProject.chapter as Chapter;
+
+  const getStepCardData = (chapterStage: ChapterStage) => {
+    switch (chapterStage) {
+      case ChapterStage.SUBMIT_APPLICATION:
+        return {
+          actionRequired: true,
+          text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit,\
+            sed do eiusmod tempor incididunt ut labore et dolore magna\
+            aliqua. Adipiscing tristique risus nec feugiat in. Morbi enim\
+            nunc faucibus a pellentesque sit amet porttitor. Nec ultrices\
+            dui sapien eget mi proin sed libero.",
+          image: SubmitApplicationImage,
+          title: "Submit Application Form",
+          buttons: [
+            <Button
+              onClick={() => console.log("redirecting to form")}
+              colorScheme="blue"
+              key="first-button"
+            >
+              Go to Form
+            </Button>,
+          ],
+        };
+      case ChapterStage.APPLICATION_REVIEW:
+        return {
+          actionRequired: false,
+          text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, \
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \
+            Nam aliquam sem et tortor consequat id porta nibh venenatis. Vitae \
+            elementum curabitur vitae nunc.",
+          image: ApplicationReviewImage,
+          title: "Application Under Review",
+          buttons: [],
+        };
+      case ChapterStage.INTERVIEW_CONTACT:
+        return {
+          actionRequired: false,
+          text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, \
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \
+            Nam aliquam sem et tortor consequat id porta nibh venenatis. Vitae \
+            elementum curabitur vitae nunc.",
+          image: AssignContactImage,
+          title: "A contact will be reaching out to you.",
+          buttons: [],
+        };
+      case ChapterStage.SCHEDULE_INTERVIEW:
+        return {
+          actionRequired: true,
+          text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, \
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \
+            Nam aliquam sem et tortor consequat id porta nibh venenatis. Vitae \
+            elementum curabitur vitae nunc.",
+          image: ScheduleMeetingImage,
+          title: "Schedule an Interview",
+          buttons: [
+            <Button
+              onClick={() => console.log("scheduling interview")}
+              colorScheme="blue"
+              key="first-button"
+            >
+              Schedule Interview
+            </Button>,
+          ],
+        };
+      case ChapterStage.INTERVIEW_SCHEDULED:
+        return {
+          actionRequired: false,
+          text: "Your interview is scheduled for July 27th from 4:30 PM - 5:30 PM EST.",
+          image: MeetingScheduledImage,
+          title: "Interview Scheduled",
+          buttons: [
+            <Button
+              onClick={() => console.log("rescheduling interview")}
+              color="#0069CA"
+              variant="link"
+              key="first-button"
+            >
+              Reschedule Interview
+            </Button>,
+            <Button
+              onClick={() => console.log("cancelling interview")}
+              color="#0069CA"
+              variant="link"
+              key="second-button"
+            >
+              Cancel Interview
+            </Button>,
+          ],
+        };
+      case ChapterStage.INTERVIEW_REVIEW:
+        return {
+          actionRequired: false,
+          text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, \
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \
+            Nam aliquam sem et tortor consequat id porta nibh venenatis. Vitae \
+            elementum curabitur vitae nunc.",
+          image: InterviewReviewImage,
+          title: "Interview Under Review",
+          buttons: [],
+        };
+      case ChapterStage.MEETING_CONTACT:
+        return {
+          actionRequired: false,
+          text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, \
+              sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \
+              Nam aliquam sem et tortor consequat id porta nibh venenatis. Vitae \
+              elementum curabitur vitae nunc.",
+          image: AssignContactImage,
+          title: "A contact is being assigned to your project.",
+          buttons: [],
+        };
+      case ChapterStage.SCHEDULE_MEETING:
+        return {
+          actionRequired: true,
+          text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, \
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \
+            Nam aliquam sem et tortor consequat id porta nibh venenatis. Vitae \
+            elementum curabitur vitae nunc.",
+          image: ScheduleMeetingImage,
+          title: "Schedule a Meeting",
+          buttons: [
+            <Button
+              onClick={() => console.log("scheduling meeting")}
+              colorScheme="blue"
+              key="first-button"
+            >
+              Schedule Meeting
+            </Button>,
+          ],
+        };
+      case ChapterStage.MEETING_SCHEDULED:
+        return {
+          actionRequired: false,
+          text: "Discussing Product Functionalities",
+          image: MeetingScheduledImage,
+          title: "Meeting Scheduled",
+          buttons: [
+            <Button
+              onClick={() => console.log("rescheduling meeting")}
+              color="#0069CA"
+              variant="link"
+              key="first-button"
+            >
+              Reschedule Meeting
+            </Button>,
+            <Button
+              onClick={() => console.log("cancelling meeting")}
+              color="#0069CA"
+              variant="link"
+              key="second-button"
+            >
+              Cancel Meeting
+            </Button>,
+          ],
+        };
+      case ChapterStage.COMPLETED:
+      case ChapterStage.MAINTENANCE:
+      case ChapterStage.CLOSED:
+        return {
+          actionRequired: false,
+          text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, \
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \
+            Nam aliquam sem et tortor consequat id porta nibh venenatis. Vitae \
+            elementum curabitur vitae nunc.",
+          image: CompletedImage,
+          title: "Project Complete!",
+          buttons: [
+            <Button
+              onClick={() => console.log("returning to home")}
+              colorScheme="blue"
+              key="first-button"
+            >
+              Return to Home
+            </Button>,
+          ],
+        };
+      case ChapterStage.REJECTED:
+        return {
+          actionRequired: false,
+          text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, \
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \
+            Nam aliquam sem et tortor consequat id porta nibh venenatis. Vitae \
+            elementum curabitur vitae nunc.",
+          image: RejectedImage,
+          title: "Project Rejected",
+          buttons: [
+            <Button
+              onClick={() => console.log("returning to home")}
+              colorScheme="blue"
+              key="first-button"
+            >
+              Return to Home
+            </Button>,
+          ],
+        };
+      case ChapterStage.CANCELLED:
+        return {
+          actionRequired: false,
+          text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, \
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \
+            Nam aliquam sem et tortor consequat id porta nibh venenatis. Vitae \
+            elementum curabitur vitae nunc.",
+          image: CancelledImage,
+          title: "Project Cancelled",
+          buttons: [
+            <Button
+              onClick={() => console.log("returning to home")}
+              colorScheme="blue"
+              key="first-button"
+            >
+              Return to Home
+            </Button>,
+          ],
+        };
+      default:
+        return {
+          actionRequired: true,
+          text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit,\
+            sed do eiusmod tempor incididunt ut labore et dolore magna\
+            aliqua. Adipiscing tristique risus nec feugiat in. Morbi enim\
+            nunc faucibus a pellentesque sit amet porttitor. Nec ultrices\
+            dui sapien eget mi proin sed libero.",
+          image: SubmitApplicationImage,
+          title: "Submit Application Form",
+          buttons: [
+            <Button
+              onClick={() => console.log("redirecting to form")}
+              colorScheme="blue"
+              key="first-button"
+            >
+              Go to Form
+            </Button>,
+          ],
+        };
+    }
+  };
+
+  const stepCardData = useMemo(
+    () => getStepCardData(chapterStage),
+    [chapterStage]
+  );
 
   return (
     <Flex
@@ -447,7 +427,7 @@ function NonprofitProjectPage({ project }: Props) {
             </VStack>
           </Flex>
           <Flex minH="600px" w={{ base: "100%", md: "50%" }}>
-            <StepCard {...getStepCardData(tempProject.status)} />
+            <StepCard {...stepCardData} />
           </Flex>
         </Stack>
       </VStack>

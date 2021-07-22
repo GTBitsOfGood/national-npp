@@ -30,7 +30,9 @@ const StepCard = ({
           <Text fontWeight="bold">ACTION REQUIRED</Text>
         </Box>
       )}
-      <Heading fontSize={{ base: "xl", md: "2xl" }}>{title}</Heading>
+      <Heading textAlign="center" fontSize={{ base: "xl", md: "2xl" }}>
+        {title}
+      </Heading>
       <Box m="4">
         <Image src={image} />
       </Box>
