@@ -198,7 +198,6 @@ export enum QuestionType {
 export enum NonprofitStage {
   APPLICATION = "Application",
   INTERVIEW = "Interview",
-  UNDER_REVIEW = "Under review",
   IN_PROGRESS = "In Progress",
   COMPLETE = "Complete",
 }

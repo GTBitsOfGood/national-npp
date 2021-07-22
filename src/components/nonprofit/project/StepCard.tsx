@@ -2,12 +2,10 @@ import { Heading, VStack, Box, Text } from "@chakra-ui/react";
 import Image from "next/image";
 import { ReactNode } from "react";
 
-// Image/Graphic Logic
-
 interface StepCardData {
   actionRequired: boolean;
-  image: StaticImageData;
   title: string;
+  image: StaticImageData;
   text: string;
   buttons: ReactNode[];
 }
@@ -21,10 +19,10 @@ const StepCard = ({
 }: StepCardData) => {
   return (
     <VStack
-      bgColor="#0069CA0D"
-      p="10"
-      w="100%"
+      w="full"
       justifyContent="center"
+      bgColor="#0069CA0D"
+      p={10}
       spacing="25px"
     >
       {actionRequired && (
@@ -32,13 +30,13 @@ const StepCard = ({
           <Text fontWeight="bold">ACTION REQUIRED</Text>
         </Box>
       )}
-      <Heading m="3" as="h3" fontSize={{ base: "20px", md: "25px" }}>
-        {title}
-      </Heading>
+      <Heading fontSize={{ base: "xl", md: "2xl" }}>{title}</Heading>
       <Box m="4">
         <Image src={image} />
       </Box>
-      <Text noOfLines={{ base: 2, md: 4, lg: 6 }}>{text}</Text>
+      <Text noOfLines={6} textAlign="center">
+        {text}
+      </Text>
       {buttons}
     </VStack>
   );

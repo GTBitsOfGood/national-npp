@@ -15,6 +15,8 @@ import {
   ModalCloseButton,
   useDisclosure,
 } from "@chakra-ui/react";
+import { Step, Steps, useSteps } from "chakra-ui-steps";
+import { Types } from "mongoose";
 import applicationSubmittedImage from "public/images/projectStatus/application_submitted.svg";
 import assigningContact from "public/images/projectStatus/assigning_contact.svg";
 import submitApplicationImage from "public/images/projectStatus/awaiting_application.svg";
@@ -24,21 +26,17 @@ import meeting from "public/images/projectStatus/meeting.svg";
 import projectRejected from "public/images/projectStatus/rejected.svg";
 import remoteMeeting from "public/images/projectStatus/remote_meeting.svg";
 import underReview from "public/images/projectStatus/under_review.svg";
-import { ReactNode } from "react";
 import { FaEnvelope, FaTimes } from "react-icons/fa";
-import ProgressBar from "src/components/nonprofit/project/ProgressBar";
 import StepCard from "src/components/nonprofit/project/StepCard";
-import { ChapterStage, NonprofitStage } from "src/utils/types";
+import {
+  Chapter,
+  ChapterStage,
+  NonprofitStage,
+  Project,
+  ProjectType,
+} from "src/utils/types";
 
-interface StepCardData {
-  actionRequired: boolean;
-  image: StaticImageData;
-  title: string;
-  text: string;
-  buttons: ReactNode[];
-}
-
-const getStepCardData = (chapterStage: ChapterStage): StepCardData => {
+const getStepCardData = (chapterStage: ChapterStage) => {
   switch (chapterStage) {
     case ChapterStage.SUBMIT_APPLICATION:
       return {
@@ -257,7 +255,6 @@ const getStepCardData = (chapterStage: ChapterStage): StepCardData => {
           </Button>,
         ],
       };
-    // insert other mappings...
     default:
       return {
         actionRequired: true,
@@ -290,8 +287,6 @@ const getCurrNonProfitStage = (chapterStage: ChapterStage): NonprofitStage => {
     case ChapterStage.SCHEDULE_INTERVIEW:
     case ChapterStage.INTERVIEW_SCHEDULED:
       return NonprofitStage.INTERVIEW;
-    case ChapterStage.UNDER_REVIEW:
-      return NonprofitStage.UNDER_REVIEW;
     case ChapterStage.IN_PROGRESS:
     case ChapterStage.MEETING_SCHEDULED:
       return NonprofitStage.IN_PROGRESS;
@@ -306,29 +301,68 @@ const getCurrNonProfitStage = (chapterStage: ChapterStage): NonprofitStage => {
   }
 };
 
-interface PageProps {
-  projectName: string;
-  chapterPartner: string;
-  productType: string;
-  currChapterStage: ChapterStage;
-  orgEmail: string;
+const tempProject: Project = {
+  _id: Types.ObjectId("123456789012"),
+  name: "Liv2BGirl",
+  type: ProjectType.MOBILE_APP,
+  status: ChapterStage.SCHEDULE_INTERVIEW,
+  chapter: {
+    _id: Types.ObjectId("123456789012"),
+    name: "Georgia Tech",
+    email: "chapter@email.com",
+    address: {
+      city: "",
+      state: "",
+      street: "",
+      country: "",
+      zipCode: "",
+    },
+    projectTypes: Object.values(ProjectType),
+    projectLimit: 5,
+    projectProcess: Object.values(NonprofitStage),
+  },
+  nonprofit: {
+    _id: Types.ObjectId("123456789012"),
+    name: "Nonprofit Org",
+    isVerified: false,
+    address: {
+      city: "",
+      state: "",
+      street: "",
+      country: "",
+      zipCode: "",
+    },
+  },
+  createdAt: new Date(),
+  updatedAt: new Date(),
+};
+
+interface Props {
+  project: Project;
 }
 
-function NonprofitProjectPage({
-  projectName = "Liv2BGirl Mobile App",
-  chapterPartner = "University of Pennsylvania",
-  productType = "Mobile App",
-  currChapterStage = ChapterStage.COMPLETED,
-  orgEmail = "testing@xyz.com",
-}: PageProps) {
+function NonprofitProjectPage({ project }: Props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { activeStep } = useSteps({
+    initialStep: Object.values(NonprofitStage).indexOf(
+      getCurrNonProfitStage(tempProject.status)
+    ),
+  });
+
+  const chapterPartner = tempProject.chapter as Chapter;
 
   return (
-    <Flex minH="100%" bgColor="#EBEEF1">
+    <Flex
+      h="100%"
+      justify="center"
+      align="center"
+      bgColor="#EBEEF1"
+      overflowY="auto"
+    >
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
-        <ModalContent maxW="48rem">
-          <ModalHeader>Cancel Project</ModalHeader>
+        <ModalContent maxW={{ base: "20rem", md: "35rem" }}>
+          <ModalHeader fontSize="2xl">Cancel Project</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Text>Are you sure you want to cancel your project?</Text>
@@ -346,57 +380,56 @@ function NonprofitProjectPage({
           </ModalFooter>
         </ModalContent>
       </Modal>
-      <VStack mx="auto" minW="80%">
-        <ProgressBar
-          currStep={Object.values(NonprofitStage).indexOf(
-            getCurrNonProfitStage(currChapterStage)
-          )}
-          steps={Object.values(NonprofitStage).map((stage) => ({
-            label: stage,
-          }))}
-          display={{ base: "none", md: "block" }}
-          marginX="auto"
-          paddingY={10}
-        />
+      <VStack
+        h="100%"
+        w={{ base: "100%", md: "80%", lg: "65%" }}
+        pb={{ base: "0", md: "40px" }}
+      >
+        <Steps
+          activeStep={activeStep}
+          colorScheme="blue"
+          responsive={false}
+          display={{ base: "none", md: "flex" }}
+          p={10}
+        >
+          {Object.values(NonprofitStage).map((step) => (
+            <Step key={step} label={step} />
+          ))}
+        </Steps>
         <Stack
-          height={{ base: "auto", md: "70vh" }}
-          width="70%"
-          m="auto"
           p="5"
           rounded="lg"
           border="1px"
           borderColor="#657788"
           bgColor="#FFFF"
           direction={{ base: "column", md: "row" }}
+          w="full"
         >
           <Flex direction="column" width={{ base: "100%", md: "50%" }}>
-            <VStack
-              alignItems="flex-start"
-              maxW="100%"
-              m={{ md: "10" }}
-              height="50%"
-            >
-              <Heading>{projectName}</Heading>
-              <Stack m="5" paddingTop="5">
+            <VStack alignItems="flex-start" maxW="100%" m={10} spacing={5}>
+              <Heading>{tempProject.name}</Heading>
+              <VStack align="flex-start" spacing={3}>
                 <Text>
                   <Box as={"span"} fontWeight="bold">
                     Chapter Partner:
                   </Box>{" "}
-                  {chapterPartner}
+                  {chapterPartner.name}
                 </Text>
                 <Text>
                   <Box as="span" fontWeight="bold">
                     Product Type:
                   </Box>{" "}
-                  {productType}
+                  {tempProject.type}
                 </Text>
-              </Stack>
-              <VStack mx="auto">
+              </VStack>
+              <VStack align="flex-start" spacing={0}>
                 <Button
                   leftIcon={<FaEnvelope />}
                   colorScheme="blue"
                   variant="ghost"
-                  onClick={() => window.open(`mailto:${orgEmail}`)}
+                  onClick={() => window.open(`mailto:${chapterPartner.email}`)}
+                  p={0}
+                  _hover={{ bgColor: "none" }}
                 >
                   Contact Chapter
                 </Button>
@@ -405,14 +438,16 @@ function NonprofitProjectPage({
                   colorScheme="blue"
                   variant="ghost"
                   onClick={onOpen}
+                  p={0}
+                  _hover={{ bgColor: "none" }}
                 >
                   Cancel Project
                 </Button>
               </VStack>
             </VStack>
           </Flex>
-          <Flex width={{ base: "100%", md: "50%" }}>
-            <StepCard {...getStepCardData(currChapterStage)} />
+          <Flex minH="600px" w={{ base: "100%", md: "50%" }}>
+            <StepCard {...getStepCardData(tempProject.status)} />
           </Flex>
         </Stack>
       </VStack>
