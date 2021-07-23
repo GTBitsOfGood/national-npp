@@ -95,6 +95,9 @@ function Navigation() {
               </MenuButton>
               <MenuList>
                 <MenuItem>Edit Profile</MenuItem>
+                <NextLink href="/chapter/forms">
+                  {isChapter ? <MenuItem>Forms</MenuItem> : null}
+                </NextLink>
                 <MenuItem>Sign Out</MenuItem>
               </MenuList>
             </Menu>
@@ -137,7 +140,7 @@ interface NavItem {
 const NAV_ITEMS_NON_PROFIT: Array<NavItem> = [
   {
     label: "My Project",
-    href: "/chapter/projects",
+    href: "/nonprofit/project",
   },
   {
     label: "Maintenance",
