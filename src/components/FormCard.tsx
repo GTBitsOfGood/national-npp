@@ -1,0 +1,72 @@
+import {
+  Box,
+  Heading,
+  Text,
+  HStack,
+  Link,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Button,
+  useDisclosure,
+} from "@chakra-ui/react";
+import { FiEdit2 } from "react-icons/fi";
+import { RiDeleteBin5Line } from "react-icons/ri";
+function FormCard(props: { name: string }) {
+  const { name } = props;
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  return (
+    <Box width="900px" height="80px" borderBottom="1px" borderColor="#EBEEF1">
+      <HStack padding="30px 50px 30px 50px" justifyContent="space-between">
+        <HStack spacing="50px">
+          <Box width="150px">
+            <Heading fontSize="medium">{name}</Heading>
+          </Box>
+          <Box>
+            <Text fontSize="12px" color="#808080">
+              Last Edited: 07/21/21
+            </Text>
+          </Box>
+        </HStack>
+        <HStack fontSize="12px" color="#1974d2" spacing="50px">
+          <HStack>
+            <FiEdit2 size="1.5em" />
+            <Link>Edit Form</Link>
+          </HStack>
+          <HStack>
+            <RiDeleteBin5Line size="1.5em" />
+            <Link onClick={onOpen}>Delete Form</Link>
+            <Modal isOpen={isOpen} onClose={onClose} size="md" isCentered>
+              <ModalOverlay />
+              <ModalContent borderColor="#657788" border="1px">
+                <ModalHeader>Delete Form</ModalHeader>
+                <ModalCloseButton />
+                <ModalBody fontSize="small">
+                  Please confirm that you would like to delete {name}.
+                </ModalBody>
+
+                <ModalFooter>
+                  <Button colorScheme="red" mr={2}>
+                    Delete
+                  </Button>
+                  <Button variant="ghost" color="#1974d2" onClick={onClose}>
+                    Cancel
+                  </Button>
+                </ModalFooter>
+              </ModalContent>
+            </Modal>
+          </HStack>
+        </HStack>
+      </HStack>
+
+      {/* <Divider borderColor="grey" width="100%" /> */}
+    </Box>
+  );
+}
+
+export default FormCard;
