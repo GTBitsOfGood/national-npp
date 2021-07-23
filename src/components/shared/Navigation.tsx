@@ -95,9 +95,11 @@ function Navigation() {
               </MenuButton>
               <MenuList>
                 <MenuItem>Edit Profile</MenuItem>
-                <NextLink href="/chapter/forms">
-                  {isChapter ? <MenuItem>Forms</MenuItem> : null}
-                </NextLink>
+                {isChapter ? (
+                  <NextLink href="/chapter/forms">
+                    <MenuItem>Forms</MenuItem>
+                  </NextLink>
+                ) : null}
                 <MenuItem>Sign Out</MenuItem>
               </MenuList>
             </Menu>
