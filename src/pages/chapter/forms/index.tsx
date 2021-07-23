@@ -40,8 +40,7 @@ function ChapterFormsPage() {
     <Box height="100%" backgroundColor="#EBEEF1" overflow="auto">
       <Box
         boxSizing="border-box"
-        padding="40px"
-        paddingBottom="5px"
+        paddingTop="40px"
         maxWidth="1420px"
         margin="auto"
         align="center"
