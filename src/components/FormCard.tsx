@@ -21,8 +21,8 @@ function FormCard(props: { name: string; updatedAt: Date }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   function dateToString(updatedAt: Date) {
-    const dateOfMonth = `0${updatedAt.getDate().toString().slice(-2)}`;
-    const month = `0${(updatedAt.getMonth() + 1).toString().slice(-2)}`;
+    const dateOfMonth = `${updatedAt.getDate().toString().slice(-2)}`;
+    const month = `${(updatedAt.getMonth() + 1).toString().slice(-2)}`;
     const year = updatedAt.getFullYear();
 
     return `${month}/${dateOfMonth}/${year}`;
@@ -71,8 +71,6 @@ function FormCard(props: { name: string; updatedAt: Date }) {
           </HStack>
         </HStack>
       </HStack>
-
-      {/* <Divider borderColor="grey" width="100%" /> */}
     </Box>
   );
 }
