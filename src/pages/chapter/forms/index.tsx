@@ -39,9 +39,11 @@ function ChapterFormsPage() {
   return (
     <Box height="100%" backgroundColor="#EBEEF1" overflow="auto">
       <Box
+        display="table"
         boxSizing="border-box"
-        paddingTop="40px"
-        maxWidth="1420px"
+        padding="40px 40px 40px 40px"
+        justifyContent="center"
+        alignItems="center"
         margin="auto"
         align="center"
       >
