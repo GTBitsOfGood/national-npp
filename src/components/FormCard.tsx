@@ -16,9 +16,17 @@ import {
 } from "@chakra-ui/react";
 import { FiEdit2 } from "react-icons/fi";
 import { RiDeleteBin5Line } from "react-icons/ri";
-function FormCard(props: { name: string }) {
-  const { name } = props;
+function FormCard(props: { name: string; updatedAt: Date }) {
+  const { name, updatedAt } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  function dateToString(updatedAt: Date) {
+    const dateOfMonth = `0${updatedAt.getDate().toString().slice(-2)}`;
+    const month = `0${(updatedAt.getMonth() + 1).toString().slice(-2)}`;
+    const year = updatedAt.getFullYear();
+
+    return `${month}/${dateOfMonth}/${year}`;
+  }
 
   return (
     <Box width="900px" height="80px" borderBottom="1px" borderColor="#EBEEF1">
@@ -29,7 +37,7 @@ function FormCard(props: { name: string }) {
           </Box>
           <Box>
             <Text fontSize="12px" color="#808080">
-              Last Edited: 07/21/21
+              Last Edited: {dateToString(updatedAt)}
             </Text>
           </Box>
         </HStack>

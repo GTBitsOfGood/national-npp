@@ -9,31 +9,37 @@ function ChapterFormsPage() {
       _id: `1`,
       name: "Application Form 1",
       type: FormType.APPLICATION,
+      updatedAt: new Date(),
     },
     {
       _id: `2`,
       name: "Application Form 2",
       type: FormType.APPLICATION,
+      updatedAt: new Date(),
     },
     {
       _id: `3`,
       name: "Feedback Form 1",
       type: FormType.FEEDBACK,
+      updatedAt: new Date(),
     },
     {
       _id: `4`,
       name: "Application Form 1",
       type: FormType.APPLICATION,
+      updatedAt: new Date(),
     },
     {
       _id: `5`,
       name: "Application Form 2",
       type: FormType.APPLICATION,
+      updatedAt: new Date(),
     },
     {
       _id: `6`,
       name: "Feedback Form 1",
       type: FormType.FEEDBACK,
+      updatedAt: new Date(),
     },
   ];
   return (
@@ -86,7 +92,11 @@ function ChapterFormsPage() {
             overflow="scroll"
           >
             {forms.map((form) => (
-              <FormCard key={form._id} name={form.name} />
+              <FormCard
+                key={form._id}
+                name={form.name}
+                updatedAt={form.updatedAt}
+              />
             ))}
           </Box>
         </Box>
