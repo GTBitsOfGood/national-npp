@@ -41,6 +41,7 @@ export interface Chapter {
 export interface Nonprofit {
   _id: Types.ObjectId;
   name: string;
+  email: string;
   address: Address;
   isVerified: boolean;
   website?: string;
