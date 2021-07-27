@@ -29,7 +29,7 @@ function FormCard(props: { name: string; updatedAt: Date }) {
   }
 
   return (
-    <Box width="900px" height="80px" borderBottom="1px" borderColor="#EBEEF1">
+    <Box borderBottom="1px" borderColor="#EBEEF1">
       <HStack padding="30px 50px 30px 50px" justifyContent="space-between">
         <HStack spacing="50px">
           <Box width="150px">
