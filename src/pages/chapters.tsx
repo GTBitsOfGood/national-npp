@@ -1,51 +1,12 @@
 import { Heading, Button, Box, Grid } from "@chakra-ui/react";
 import { useState } from "react";
 import ChapterCard from "src/components/chapters/ChapterCard";
-import { ProjectType } from "src/utils/types";
+import { GetStaticProps, GetStaticPropsContext } from 'next';
+import { getChapters } from 'src/actions/Chapter';
+import { Chapter } from 'src/utils/types';
 
-function ChapterSelectPage() {
+function ChapterSelectPage({ chapters }: { chapters: Array<Chapter> }) {
   const [selected, setSelected] = useState("");
-  const chapters = [];
-
-  for (let i = 0; i < 10; i += 1) {
-    chapters.push({
-      _id: `${i}`,
-      name: "Georgia Tech",
-      email: "gt@hack4impact.org",
-      address: {
-        street: "7 Fake Street",
-        city: "Atlanta",
-        state: "GA",
-        zipCode: "30303",
-        country: "USA",
-      },
-      projectProcess: [],
-      projectTypes: [ProjectType.WEBSITE, ProjectType.MOBILE_APP],
-      projectLimit: 5,
-      website: "bitsofgood.org",
-      facebook: "bitsofgood",
-      instagram: "bitsofgood",
-    });
-  }
-
-  chapters.push({
-    _id: `${2000}`,
-    name: "University of Illinois at Urbana-Champaign",
-    email: "gt@hack4impact.org",
-    address: {
-      street: "7 Fake Street",
-      city: "Champaign",
-      state: "IL",
-      zipCode: "61820",
-      country: "USA",
-    },
-    projectProcess: [],
-    projectTypes: [ProjectType.WEBSITE, ProjectType.MOBILE_APP],
-    projectLimit: 3,
-    website: "bitsofgood.org",
-    facebook: "bitsofgood",
-    instagram: "bitsofgood",
-  });
 
   function onChapterCardClick(id: string) {
     setSelected(id);
@@ -75,7 +36,7 @@ function ChapterSelectPage() {
             isSelected={selected === ""}
             onClick={onChapterCardClick}
           />
-          {chapters.map((chapter) => (
+          {chapters.map((chapter: Chapter) => (
             <ChapterCard
               key={chapter._id}
               chapter={chapter}
@@ -93,4 +54,16 @@ function ChapterSelectPage() {
     </Box>
   );
 }
+
+
+export const getStaticProps: GetStaticProps = async(ctx: GetStaticPropsContext) => {
+  const chapters = await getChapters();
+
+  return {
+    props: {
+      chapters
+    }
+  }
+}
+
 export default ChapterSelectPage;
