@@ -6,10 +6,10 @@ import {
   Tab,
   TabPanel,
 } from "@chakra-ui/react";
+import { GetServerSideProps } from "next";
+import { useSession, getSession } from "next-auth/client";
+import { getChapterProjects } from "src/actions/Project";
 import ChapterProjectsTable from "src/components/chapter/projects/ChapterProjectsTable";
-import { GetServerSideProps } from 'next';
-import { useSession, getSession } from 'next-auth/client';
-import { getChapterProjects } from 'src/actions/Project';
 import { Project } from "src/utils/types";
 
 function ChapterProjects({ projects }: { projects: Array<Project> }) {
@@ -125,14 +125,14 @@ function ChapterProjects({ projects }: { projects: Array<Project> }) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async(ctx) => {
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const projects = await getChapterProjects();
 
   return {
     props: {
-      projects
-    }
-  }
-}
+      projects,
+    },
+  };
+};
 
 export default ChapterProjects;

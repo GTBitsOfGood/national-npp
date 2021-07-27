@@ -1,9 +1,9 @@
 import { Heading, Button, Box, Grid } from "@chakra-ui/react";
+import { GetStaticProps, GetStaticPropsContext } from "next";
 import { useState } from "react";
+import { getChapters } from "src/actions/Chapter";
 import ChapterCard from "src/components/chapters/ChapterCard";
-import { GetStaticProps, GetStaticPropsContext } from 'next';
-import { getChapters } from 'src/actions/Chapter';
-import { Chapter } from 'src/utils/types';
+import { Chapter } from "src/utils/types";
 
 function ChapterSelectPage({ chapters }: { chapters: Array<Chapter> }) {
   const [selected, setSelected] = useState("");
@@ -55,15 +55,16 @@ function ChapterSelectPage({ chapters }: { chapters: Array<Chapter> }) {
   );
 }
 
-
-export const getStaticProps: GetStaticProps = async(ctx: GetStaticPropsContext) => {
+export const getStaticProps: GetStaticProps = async (
+  ctx: GetStaticPropsContext
+) => {
   const chapters = await getChapters();
 
   return {
     props: {
-      chapters
-    }
-  }
-}
+      chapters,
+    },
+  };
+};
 
 export default ChapterSelectPage;
