@@ -17,6 +17,7 @@ import {
 } from "@chakra-ui/react";
 import { Step, Steps, useSteps } from "chakra-ui-steps";
 import { Types } from "mongoose";
+import NextLink from "next/link";
 import ApplicationReviewImage from "public/images/nonprofit/project/application_review.svg";
 import AssignContactImage from "public/images/nonprofit/project/assign_contact.svg";
 import CancelledImage from "public/images/nonprofit/project/cancelled.svg";
@@ -32,6 +33,7 @@ import {
   FaTimes,
   FaRegFileAlt,
   FaRegCommentAlt,
+  FaChevronLeft,
 } from "react-icons/fa";
 import StepCard from "src/components/nonprofit/project/StepCard";
 import { getNonprofitStage, nonprofitStageOrder } from "src/utils/stages";
@@ -399,6 +401,19 @@ function ChapterProjectPage({ project }: Props) {
         >
           <Flex direction="column" width={{ base: "100%", md: "50%" }}>
             <VStack alignItems="flex-start" maxW="100%" m={10} spacing={5}>
+              <NextLink href="/chapter/projects">
+                <Button
+                  leftIcon={<FaChevronLeft />}
+                  colorScheme="blue"
+                  variant="ghost"
+                  p={0}
+                  marginTop={-19}
+                  marginBottom={-19}
+                  _hover={{ bgColor: "none" }}
+                >
+                  Project Lists
+                </Button>
+              </NextLink>
               <Heading>{tempProject.name}</Heading>
               <VStack align="flex-start" spacing={3}>
                 <Text>
