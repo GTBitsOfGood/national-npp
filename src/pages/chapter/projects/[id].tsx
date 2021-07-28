@@ -6,13 +6,6 @@ import {
   Box,
   Text,
   Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  ModalCloseButton,
   useDisclosure,
 } from "@chakra-ui/react";
 import { Step, Steps, useSteps } from "chakra-ui-steps";
@@ -36,6 +29,7 @@ import {
   FaChevronLeft,
 } from "react-icons/fa";
 import StepCard from "src/components/nonprofit/project/StepCard";
+import ConfirmAlert from "src/components/shared/ConfirmAlert";
 import { getNonprofitStage, nonprofitStageOrder } from "src/utils/stages";
 import {
   ChapterStage,
@@ -353,27 +347,7 @@ function ChapterProjectPage({ project }: Props) {
       bgColor="#EBEEF1"
       overflowY="auto"
     >
-      <Modal isOpen={isOpen} onClose={onClose} isCentered>
-        <ModalOverlay />
-        <ModalContent maxW={{ base: "20rem", md: "35rem" }}>
-          <ModalHeader fontSize="2xl">Cancel Project</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Text>Are you sure you want to cancel this project?</Text>
-            <Text paddingBottom={3}>
-              All of your responses will be permanently deleted.
-            </Text>
-          </ModalBody>
-          <ModalFooter>
-            <Button colorScheme="red" mr={3}>
-              Cancel Project
-            </Button>
-            <Button variant="ghost" colorScheme="blue" onClick={onClose}>
-              Close
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      <ConfirmAlert isOpen={isOpen} onClose={onClose} />
       <VStack
         h="100%"
         w={{ base: "100%", md: "80%", lg: "65%" }}
