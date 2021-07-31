@@ -13,31 +13,41 @@ import {
   Button,
   Box,
 } from "@chakra-ui/react";
+import { GetServerSideProps } from "next";
+import { useSession, getSession } from "next-auth/client";
 import { useState } from "react";
+import { getUserProfile } from "src/actions/User";
 import { states, countries } from "src/utils/constants";
-import { NonprofitStage, ProjectType } from "src/utils/types";
+import { Chapter, NonprofitStage, ProjectType, User } from "src/utils/types";
 
 const requiredStages = [NonprofitStage.IN_PROGRESS, NonprofitStage.COMPLETE];
 
-function ChapterProfilePage() {
-  const [name, setName] = useState("");
-  const [calendly, setCalendly] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+function ChapterProfilePage({ userProfile }: { userProfile: User }) {
+  const [name, setName] = useState(userProfile.name);
+  const [calendly, setCalendly] = useState(userProfile.calendly);
+  const [phoneNumber, setPhoneNumber] = useState(userProfile.phoneNum);
 
-  const [chapterName, setChapterName] = useState("");
-  const [street, setStreet] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState(states[0]);
-  const [zip, setZip] = useState("");
-  const [country, setCountry] = useState(countries[0]);
-  const [chapterEmail, setChapterEmail] = useState("");
-  const [projectLimit, setProjectLimit] = useState("1");
-  const [website, setWebsite] = useState("");
-  const [facebook, setFacebook] = useState("");
-  const [instagram, setInstagram] = useState("");
-  const [chapterProjects, setChapterProjects] = useState<ProjectType[]>([]);
+  const chapterInfo = userProfile.chapter as Chapter;
+
+  const [chapterName, setChapterName] = useState(chapterInfo.name || "");
+  const [street, setStreet] = useState(chapterInfo.address.street || "");
+  const [city, setCity] = useState(chapterInfo.address.city || "");
+  const [state, setState] = useState(chapterInfo.address.state || "");
+  const [zip, setZip] = useState(chapterInfo.address.zipCode || "");
+  const [country, setCountry] = useState(chapterInfo.address.country || "");
+  const [chapterEmail, setChapterEmail] = useState(chapterInfo.email || "");
+  const [projectLimit, setProjectLimit] = useState(
+    chapterInfo.projectLimit || 1
+  );
+  const [website, setWebsite] = useState(chapterInfo.website || "");
+  const [facebook, setFacebook] = useState(chapterInfo.facebook || "");
+  const [instagram, setInstagram] = useState(chapterInfo.instagram || "");
+  const [chapterProjects, setChapterProjects] = useState<ProjectType[]>(
+    chapterInfo.projectTypes || []
+  );
 
   const [projectProcess, setProjectProcess] = useState<NonprofitStage[]>([
+    ...chapterInfo.projectProcess,
     ...requiredStages,
   ]);
 
@@ -346,5 +356,26 @@ function ChapterProfilePage() {
     </Flex>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const session = await getSession(ctx);
+  const userProfile = await getUserProfile();
+  // TODO needs chapter role
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/src/pages/login.tsx",
+        permanent: false,
+      },
+    };
+  } else {
+    return {
+      props: {
+        userProfile,
+      },
+    };
+  }
+};
 
 export default ChapterProfilePage;

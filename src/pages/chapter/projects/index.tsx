@@ -10,7 +10,7 @@ import { GetServerSideProps } from "next";
 import { useSession, getSession } from "next-auth/client";
 import { getChapterProjects } from "src/actions/Project";
 import ChapterProjectsTable from "src/components/chapter/projects/ChapterProjectsTable";
-import { Project } from "src/utils/types";
+import { ChapterStage, Project } from "src/utils/types";
 
 function ChapterProjects({ projects }: { projects: Array<Project> }) {
   projects = [];
@@ -23,7 +23,7 @@ function ChapterProjects({ projects }: { projects: Array<Project> }) {
       email: "gt@hack4impact.org",
       started: new Date(),
       lastUpdated: new Date(),
-      status: "newApp",
+      status: ChapterStage.MEETING_CONTACT,
     });
   }
 
@@ -34,7 +34,7 @@ function ChapterProjects({ projects }: { projects: Array<Project> }) {
     email: "hello@hack4impact.org",
     started: new Date(),
     lastUpdated: new Date(),
-    status: "rejected",
+    status: ChapterStage.REJECTED,
   });
 
   const closedFilter = (status: string) =>
@@ -126,13 +126,24 @@ function ChapterProjects({ projects }: { projects: Array<Project> }) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const session = await getSession(ctx);
   const projects = await getChapterProjects();
+  // TODO needs chapter role & project created
 
-  return {
-    props: {
-      projects,
-    },
-  };
+  if (!session || !projects) {
+    return {
+      redirect: {
+        destination: "/src/pages/login.tsx",
+        permanent: false,
+      },
+    };
+  } else {
+    return {
+      props: {
+        projects,
+      },
+    };
+  }
 };
 
 export default ChapterProjects;

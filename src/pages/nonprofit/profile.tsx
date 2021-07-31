@@ -12,21 +12,27 @@ import {
   Button,
   Textarea,
 } from "@chakra-ui/react";
+import { GetServerSideProps } from "next";
+import { useSession, getSession } from "next-auth/client";
 import { useState } from "react";
+import { getUserProfile } from "src/actions/User";
 import { states, countries } from "src/utils/constants";
+import { Nonprofit, User } from "src/utils/types";
 
-function NonprofitProfilePage() {
-  const [name, setName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+function NonprofitProfilePage({ userProfile }: { userProfile: User }) {
+  const [name, setName] = useState(userProfile.name);
+  const [phoneNumber, setPhoneNumber] = useState(userProfile.phoneNum);
 
-  const [nonprofitName, setNonprofitName] = useState("");
-  const [website, setWebsite] = useState("");
-  const [street, setStreet] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState(states[0]);
-  const [zip, setZip] = useState("");
-  const [country, setCountry] = useState(countries[0]);
-  const [mission, setMission] = useState("");
+  const nonprofitInfo = userProfile.nonprofit as Nonprofit;
+
+  const [nonprofitName, setNonprofitName] = useState(nonprofitInfo.name || "");
+  const [website, setWebsite] = useState(nonprofitInfo.website || "");
+  const [street, setStreet] = useState(nonprofitInfo.address.street || "");
+  const [city, setCity] = useState(nonprofitInfo.address.street || "");
+  const [state, setState] = useState(nonprofitInfo.address.city);
+  const [zip, setZip] = useState(nonprofitInfo.address.zipCode);
+  const [country, setCountry] = useState(nonprofitInfo.address.country);
+  const [mission, setMission] = useState(nonprofitInfo.mission || "");
 
   return (
     <Flex justifyContent="center" backgroundColor="#EBEEF1" overflow="auto">
@@ -203,5 +209,26 @@ function NonprofitProfilePage() {
     </Flex>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const session = await getSession(ctx);
+  const userProfile = await getUserProfile();
+  // TODO needs nonprofit role
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/src/pages/login.tsx",
+        permanent: false,
+      },
+    };
+  } else {
+    return {
+      props: {
+        userProfile,
+      },
+    };
+  }
+};
 
 export default NonprofitProfilePage;

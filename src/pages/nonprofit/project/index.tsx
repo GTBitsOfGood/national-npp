@@ -17,6 +17,8 @@ import {
 } from "@chakra-ui/react";
 import { Step, Steps, useSteps } from "chakra-ui-steps";
 import { Types } from "mongoose";
+import { GetServerSideProps } from "next";
+import { useSession, getSession } from "next-auth/client";
 import ApplicationReviewImage from "public/images/nonprofit/project/application_review.svg";
 import AssignContactImage from "public/images/nonprofit/project/assign_contact.svg";
 import CancelledImage from "public/images/nonprofit/project/cancelled.svg";
@@ -28,6 +30,7 @@ import ScheduleMeetingImage from "public/images/nonprofit/project/schedule_meeti
 import SubmitApplicationImage from "public/images/nonprofit/project/submit_application.svg";
 import { useMemo } from "react";
 import { FaEnvelope, FaTimes } from "react-icons/fa";
+import { getNonprofitProject } from "src/actions/Project";
 import StepCard from "src/components/nonprofit/project/StepCard";
 import { getNonprofitStage, nonprofitStageOrder } from "src/utils/stages";
 import {
@@ -35,60 +38,18 @@ import {
   ChapterStage,
   NonprofitStage,
   Project,
-  ProjectType,
 } from "src/utils/types";
 
-// TODO: Remove this when actual project is passed to page
-const tempProject: Project = {
-  _id: Types.ObjectId("123456789012"),
-  name: "Liv2BGirl",
-  type: ProjectType.MOBILE_APP,
-  status: ChapterStage.SCHEDULE_INTERVIEW,
-  chapter: {
-    _id: Types.ObjectId("123456789012"),
-    name: "Georgia Tech",
-    email: "chapter@email.com",
-    address: {
-      city: "",
-      state: "",
-      street: "",
-      country: "",
-      zipCode: "",
-    },
-    projectTypes: Object.values(ProjectType),
-    projectLimit: 5,
-    projectProcess: Object.values(NonprofitStage),
-  },
-  nonprofit: {
-    _id: Types.ObjectId("123456789012"),
-    name: "Nonprofit Org",
-    isVerified: false,
-    address: {
-      city: "",
-      state: "",
-      street: "",
-      country: "",
-      zipCode: "",
-    },
-  },
-  createdAt: new Date(),
-  updatedAt: new Date(),
-};
-
-interface Props {
-  project: Project;
-}
-
-function NonprofitProjectPage({ project }: Props) {
+function NonprofitProjectPage({ project }: { project: Project }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const chapterStage = tempProject.status;
+  const chapterStage = project.status;
   const nonprofitStage = getNonprofitStage(chapterStage);
   const { activeStep } = useSteps({
     initialStep: nonprofitStageOrder[nonprofitStage],
   });
 
-  const chapterPartner = tempProject.chapter as Chapter;
+  const chapterPartner = project.chapter as Chapter;
 
   const getStepCardData = (chapterStage: ChapterStage) => {
     switch (chapterStage) {
@@ -387,7 +348,7 @@ function NonprofitProjectPage({ project }: Props) {
         >
           <Flex direction="column" width={{ base: "100%", md: "50%" }}>
             <VStack alignItems="flex-start" maxW="100%" m={10} spacing={5}>
-              <Heading>{tempProject.name}</Heading>
+              <Heading>{project.name}</Heading>
               <VStack align="flex-start" spacing={3}>
                 <Text>
                   <Box as={"span"} fontWeight="bold">
@@ -399,7 +360,7 @@ function NonprofitProjectPage({ project }: Props) {
                   <Box as="span" fontWeight="bold">
                     Product Type:
                   </Box>{" "}
-                  {tempProject.type}
+                  {project.type}
                 </Text>
               </VStack>
               <VStack align="flex-start" spacing={0}>
@@ -434,5 +395,26 @@ function NonprofitProjectPage({ project }: Props) {
     </Flex>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const session = await getSession(ctx);
+  const project = await getNonprofitProject();
+  // TODO needs nonprofit role & project created
+
+  if (!session || !project) {
+    return {
+      redirect: {
+        destination: "/src/pages/login.tsx",
+        permanent: false,
+      },
+    };
+  } else {
+    return {
+      props: {
+        project,
+      },
+    };
+  }
+};
 
 export default NonprofitProjectPage;
