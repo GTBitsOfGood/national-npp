@@ -11,10 +11,16 @@ import {
   MenuItem,
   Link,
   VStack,
+  IconButton,
+  MenuGroup,
+  MenuDivider,
 } from "@chakra-ui/react";
 import Image from "next/image";
 import NextLink from "next/link";
 import Logo from "public/images/small_logo.svg";
+import { Fragment } from "react";
+import { FaEdit, FaSignOutAlt } from "react-icons/fa";
+import { GiHamburgerMenu } from "react-icons/gi";
 
 function Navigation() {
   // Assume that you know this information, nav bar changes based on this information
@@ -43,9 +49,57 @@ function Navigation() {
         borderColor={"gray.200"}
         align={"center"}
       >
-        <Flex flex="1" justify="start">
+        <Flex
+          flex="1"
+          justify={{ base: "space-between", md: "start" }}
+          align="center"
+        >
+          {isLoggedIn && (
+            <Menu>
+              <MenuButton
+                as={IconButton}
+                aria-label="Options"
+                icon={<GiHamburgerMenu />}
+                variant="outline"
+                display={{ base: "flex", md: "none" }}
+              />
+              <MenuList>
+                <MenuGroup title="Pages">
+                  {NAV_ITEMS.map((navItem, index) => (
+                    <NextLink key={index} href={navItem.href} passHref>
+                      <MenuItem as={Link}>{navItem.label}</MenuItem>
+                    </NextLink>
+                  ))}
+                </MenuGroup>
+                <MenuDivider />
+                <MenuGroup title="Profile">
+                  <MenuItem icon={<FaEdit />}>Edit Profile</MenuItem>
+                  <MenuItem icon={<FaSignOutAlt />}>Sign Out</MenuItem>
+                  <MenuItem minH="40px">
+                    <Avatar width="20px" height="20px" marginRight="2px" />
+                    <Text
+                      p={1}
+                      fontSize="sm"
+                      fontWeight={700}
+                      color={"black.400"}
+                    >
+                      {isChapter ? chapterName : nonprofitName}
+                    </Text>
+                    <Text
+                      p={1}
+                      fontSize="sm"
+                      fontWeight={500}
+                      color={"slategrey"}
+                    >
+                      {isChapter ? "Admin" : npUserName}
+                    </Text>
+                  </MenuItem>
+                </MenuGroup>
+              </MenuList>
+            </Menu>
+          )}
           <Image src={Logo} width={150} height={150} />
-          {isLoggedIn && (isChapter || isNonprofit) ? (
+          {isLoggedIn && (isChapter || isNonprofit) && (
             <Flex display={{ base: "none", md: "flex" }} ml={12}>
               <Stack direction={"row"} spacing={6} align="center">
                 {NAV_ITEMS.map((navItem) => (
@@ -72,10 +126,11 @@ function Navigation() {
                 ))}
               </Stack>
             </Flex>
-          ) : null}
+          )}
         </Flex>
+
         {isLoggedIn ? (
-          <Flex alignItems={"center"}>
+          <Flex alignItems={"center"} display={{ base: "none", md: "flex" }}>
             <Menu>
               <VStack spacing={-2} align="flex-end" marginRight={6}>
                 <Text p={1} fontSize="sm" fontWeight={700} color={"black.400"}>
@@ -94,8 +149,8 @@ function Navigation() {
                 <Avatar width="40px" height="40px" />
               </MenuButton>
               <MenuList>
-                <MenuItem>Edit Profile</MenuItem>
-                <MenuItem>Sign Out</MenuItem>
+                <MenuItem icon={<FaEdit />}>Edit Profile</MenuItem>
+                <MenuItem icon={<FaSignOutAlt />}>Sign Out</MenuItem>
               </MenuList>
             </Menu>
           </Flex>
