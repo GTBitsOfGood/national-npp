@@ -63,8 +63,8 @@ function Navigation() {
                 variant="outline"
                 display={{ base: "flex", md: "none" }}
               />
-              <MenuList>
-                <MenuGroup title="Pages">
+              <MenuList display={{ base: "block", md: "none" }}>
+                <MenuGroup>
                   {NAV_ITEMS.map((navItem, index) => (
                     <NextLink key={index} href={navItem.href} passHref>
                       <MenuItem as={Link}>{navItem.label}</MenuItem>
@@ -72,9 +72,9 @@ function Navigation() {
                   ))}
                 </MenuGroup>
                 <MenuDivider />
-                <MenuGroup title="Profile">
-                  <MenuItem icon={<FaEdit />}>Edit Profile</MenuItem>
-                  <MenuItem icon={<FaSignOutAlt />}>Sign Out</MenuItem>
+                <MenuGroup>
+                  <MenuItem>My Profile</MenuItem>
+                  <MenuItem>Sign Out</MenuItem>
                   <MenuItem minH="40px">
                     <Avatar width="20px" height="20px" marginRight="2px" />
                     <Text
@@ -149,8 +149,8 @@ function Navigation() {
                 <Avatar width="40px" height="40px" />
               </MenuButton>
               <MenuList>
-                <MenuItem icon={<FaEdit />}>Edit Profile</MenuItem>
-                <MenuItem icon={<FaSignOutAlt />}>Sign Out</MenuItem>
+                <MenuItem>My Profile</MenuItem>
+                <MenuItem>Sign Out</MenuItem>
               </MenuList>
             </Menu>
           </Flex>
