@@ -1,7 +1,7 @@
 import { Flex, Text, Box, Stack, Link } from "@chakra-ui/react";
 import Image from "next/image";
 import NextLink from "next/link";
-import loginImage from "public/images/login_first.svg";
+import loginImage from "public/images/login/login_first.svg";
 
 function VerifyEmailPage() {
   return (

@@ -12,7 +12,7 @@ import {
 import { signIn, SignInResponse } from "next-auth/client";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import loginImage from "public/images/login_first.svg";
+import loginImage from "public/images/login/login_first.svg";
 import { useState } from "react";
 import { showError } from "src/utils/notifications";
 
