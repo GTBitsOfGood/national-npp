@@ -18,15 +18,13 @@ import {
 import Image from "next/image";
 import NextLink from "next/link";
 import Logo from "public/images/small_logo.svg";
-import { Fragment } from "react";
-import { FaEdit, FaSignOutAlt } from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
 
 function Navigation() {
   // Assume that you know this information, nav bar changes based on this information
   const isLoggedIn = true;
-  const isChapter = false;
-  const isNonprofit = true;
+  const isChapter = true;
+  const isNonprofit = false;
   const npUserName = "liv.2b.girl";
   const nonprofitName = "Liv2BGirl";
   const chapterName = "Chapter Name";
@@ -149,6 +147,11 @@ function Navigation() {
                 <Avatar width="40px" height="40px" />
               </MenuButton>
               <MenuList>
+                {isChapter && (
+                  <NextLink href="/chapter/forms">
+                    <MenuItem>Forms</MenuItem>
+                  </NextLink>
+                )}
                 <MenuItem>My Profile</MenuItem>
                 <MenuItem>Sign Out</MenuItem>
               </MenuList>
