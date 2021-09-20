@@ -147,11 +147,6 @@ function Navigation() {
                 <Avatar width="40px" height="40px" />
               </MenuButton>
               <MenuList>
-                {isChapter && (
-                  <NextLink href="/chapter/forms">
-                    <MenuItem>Forms</MenuItem>
-                  </NextLink>
-                )}
                 <MenuItem>My Profile</MenuItem>
                 <MenuItem>Sign Out</MenuItem>
               </MenuList>

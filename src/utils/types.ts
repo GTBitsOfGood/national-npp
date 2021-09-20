@@ -59,33 +59,6 @@ export interface Project {
   updatedAt: Date;
 }
 
-export interface Form {
-  _id: Types.ObjectId;
-  name: string;
-  type: FormType;
-  chapterId: Types.ObjectId;
-  groups: Array<QuestionGroup>;
-}
-
-export interface FormResponse {
-  _id: Types.ObjectId;
-  projectId: Types.ObjectId;
-  groups: Array<QuestionGroup>;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface QuestionGroup {
-  title: string;
-  subtitle?: string;
-  questions: Array<Question>;
-}
-
-export interface Question {
-  description: string;
-  answer?: string;
-}
-
 export interface Address {
   street: string;
   city: string;
@@ -184,15 +157,6 @@ export enum ProjectType {
   WEBSITE = "Website",
   WEB_APP = "Web app",
   MOBILE_APP = "Mobile app",
-}
-
-export enum FormType {
-  APPLICATION = "Application",
-  FEEDBACK = "Feedback",
-}
-
-export enum QuestionType {
-  SHORT_ANSWER = "Short Answer",
 }
 
 export enum NonprofitStage {
