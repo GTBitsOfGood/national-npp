@@ -44,7 +44,7 @@ function NonprofitProjectCreationPage() {
       justify="space-between"
       padding="60px"
       height="100%"
-      backgroundColor="#EBEEF1"
+      width="100%"
       overflow="auto"
     >
       <Box>

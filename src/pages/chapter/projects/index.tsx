@@ -42,12 +42,13 @@ function ChapterProjects() {
   return (
     <Flex
       height="100%"
+      width="100%"
       justifyContent="flex-start"
       alignItems="stretch"
-      backgroundColor="#EBEEF1"
       overflow="auto"
     >
       <Flex
+        minH="600px"
         margin={50}
         padding={50}
         border="1px solid #657788"

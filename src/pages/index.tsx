@@ -44,7 +44,7 @@ function LandingPage() {
             are happy to get involved in your development cycle.
           </Text>
           <NextLink href="/login">
-            <Button colorScheme="blue">Log In</Button>
+            <Button variant="primary">Log In</Button>
           </NextLink>
         </VStack>
         <Image

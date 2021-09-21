@@ -332,13 +332,7 @@ function NonprofitProjectPage({ project }: Props) {
   );
 
   return (
-    <Flex
-      h="100%"
-      justify="center"
-      align="center"
-      bgColor="#EBEEF1"
-      overflowY="auto"
-    >
+    <Flex h="100%" justify="center" align="center" overflowY="auto">
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent maxW={{ base: "20rem", md: "35rem" }}>

@@ -1,16 +1,8 @@
-import { ChakraProvider, extendTheme } from "@chakra-ui/react";
-import { StepsStyleConfig as Steps } from "chakra-ui-steps";
+import { ChakraProvider } from "@chakra-ui/react";
 import { Provider } from "next-auth/client";
 import type { AppProps } from "next/app";
 import Layout from "src/components/shared/Layout";
-import "src/global.css";
-
-// TODO: Move to separate file
-const theme = extendTheme({
-  components: {
-    Steps,
-  },
-});
+import theme from "src/utils/theme";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

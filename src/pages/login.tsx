@@ -42,71 +42,74 @@ function LoginPage() {
   };
 
   return (
-    <Flex align={"center"} justify={"center"} bg={"#EBEEF1"} height={"100%"}>
-      <Box
-        position={"absolute"}
-        rounded={"lg"}
-        border="1px"
-        borderColor="#657788"
-        borderRadius="10px"
-        width={{ base: "100%", md: "70%" }}
-      >
-        <Stack
-          minH={"50vh"}
-          direction={{ base: "column", md: "row" }}
-          spacing={0}
+    <Flex height="100%" width="100%">
+      <Flex margin="auto" borderRadius="10px">
+        <Flex
+          flex="1"
+          rounded={"lg"}
+          border="1px"
+          borderColor="#657788"
+          borderRadius="10px"
+          width={{ base: "100%", md: "70%" }}
         >
-          <Flex
-            flex={1}
-            display={{ base: "none", md: "flex" }}
-            bg={"#e6f0fa"}
-            width={"100%"}
-            roundedLeft="lg"
+          <Stack
+            minH={"50vh"}
+            direction={{ base: "column", md: "row" }}
+            spacing={0}
           >
-            <Box position="relative" left="10%" marginY="auto">
-              <Image src={loginImage} height={550} />
-            </Box>
-          </Flex>
-          <Flex
-            p={8}
-            flex={1}
-            align={"center"}
-            justify={"center"}
-            bg={"#FFFFFF"}
-            rounded={"lg"}
-          >
-            <Stack spacing={4} w={"100%"} maxW={"md"} p={{ base: 5, md: 14 }}>
-              <Heading fontSize={"2xl"}>Welcome!</Heading>
-              <Text>
-                Login or sign up here to work on your project with Hack4Impact
-                today.
-              </Text>
-              <FormControl id="email">
-                <FormLabel>Email</FormLabel>
-                <Input
-                  type="email"
-                  placeholder="name@email.com"
-                  value={value}
-                  onChange={onChange}
-                />
-              </FormControl>
-              <Stack spacing={8} py={4}>
-                <Button
-                  onClick={handleSubmit}
-                  bg={"#0069CA"}
-                  variant={"solid"}
-                  textColor={"white"}
-                  fontSize={18}
-                  _hover={{ bg: "blue.400" }}
-                  p={7}
-                >
-                  Next
-                </Button>
+            <Flex
+              flex={1}
+              display={{ base: "none", md: "flex" }}
+              bg={"#e6f0fa"}
+              width={"100%"}
+              roundedLeft="lg"
+            >
+              <Box position="relative" left="10%" marginY="auto">
+                <Image src={loginImage} height={550} />
+              </Box>
+            </Flex>
+            <Flex
+              p={8}
+              flex={1}
+              align={"center"}
+              justify={"center"}
+              bg={"#FFFFFF"}
+              roundedRight={"lg"}
+              roundedLeft={{ base: "lg", md: "none" }}
+            >
+              <Stack spacing={4} w={"100%"} maxW={"md"} p={{ base: 5, md: 14 }}>
+                <Heading fontSize={"2xl"}>Welcome!</Heading>
+                <Text>
+                  Login or sign up here to work on your project with Hack4Impact
+                  today.
+                </Text>
+                <FormControl id="email">
+                  <FormLabel>Email</FormLabel>
+                  <Input
+                    type="email"
+                    placeholder="name@email.com"
+                    value={value}
+                    onChange={onChange}
+                  />
+                </FormControl>
+                <Stack spacing={8} py={4}>
+                  <Button
+                    onClick={handleSubmit}
+                    bg={"#0069CA"}
+                    variant={"solid"}
+                    textColor={"white"}
+                    fontSize={18}
+                    _hover={{ bg: "blue.400" }}
+                    p={7}
+                  >
+                    Next
+                  </Button>
+                </Stack>
               </Stack>
-            </Stack>
-          </Flex>
-        </Stack>
-      </Box>
+            </Flex>
+          </Stack>
+        </Flex>
+      </Flex>
     </Flex>
   );
 }
