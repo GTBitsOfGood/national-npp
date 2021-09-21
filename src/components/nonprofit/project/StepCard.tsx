@@ -26,7 +26,7 @@ const StepCard = ({
       spacing="25px"
     >
       {actionRequired && (
-        <Box color="#0069CA" m="0" bgColor="rgba(0, 105, 202, 0.1)" px="2">
+        <Box color="primary" m="0" bgColor="rgba(0, 105, 202, 0.1)" px="2">
           <Text fontWeight="bold">ACTION REQUIRED</Text>
         </Box>
       )}

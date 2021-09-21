@@ -37,7 +37,7 @@ function ChapterProjectsTable(props: { projects: ChapterProject[] }) {
           </Th>
         </Tr>
       </Thead>
-      <Tbody color="#333333" overflowY="auto">
+      <Tbody overflowY="auto">
         {projects.map((project) => (
           <Tr
             key={project.id}

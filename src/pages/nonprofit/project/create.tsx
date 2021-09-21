@@ -60,7 +60,7 @@ function NonprofitProjectCreationPage() {
         <HStack spacing="5" marginBottom="70px">
           <Text fontSize={{ base: "medium", md: "large" }}>{chapter.name}</Text>
           <Link href="/chapters">
-            <Text fontSize={{ base: "medium", md: "large" }} color="#0069CA">
+            <Text fontSize={{ base: "medium", md: "large" }} color="primary">
               Change
             </Text>
           </Link>
@@ -91,14 +91,14 @@ function NonprofitProjectCreationPage() {
             placeholder="Project Name"
             size="md"
             variant="outline"
-            backgroundColor="white"
-            borderColor="grey"
+            backgroundColor="surface"
+            borderColor="border"
           />
         </Box>
       </Box>
 
       <Box align="right" marginTop="40px">
-        <Button colorScheme="blue">Get Started</Button>
+        <Button variant="primary">Get Started</Button>
       </Box>
     </Flex>
   );

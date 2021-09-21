@@ -40,7 +40,7 @@ function ProjectTypeCard(props: {
       width="400px"
       minHeight="160px"
       padding={isSelected ? "28px" : "30px"}
-      backgroundColor="white"
+      backgroundColor="surface"
       border={isSelected ? "3px solid #0069CA" : "1px solid #657788"}
       borderRadius="15px"
       position="relative"
@@ -50,18 +50,18 @@ function ProjectTypeCard(props: {
       {isSelected && (
         <Box position="absolute" top="-15px" left="-15px">
           <Box position="absolute" top="5px" left="5px">
-            <BsCircleFill size="20px" color="white" />
+            <BsCircleFill size="20px" color="#FFFFFF" />
           </Box>
           <Box position="absolute">
             <IoIosCheckmarkCircle size="30px" color="#0069CA" />
           </Box>
         </Box>
       )}
-      <VStack align="left" color="#657788" spacing="1px">
-        <Heading fontSize="lg" color="#333333" marginBottom="1px">
+      <VStack align="left" spacing="1px">
+        <Heading fontSize="lg" marginBottom="1px">
           {projectType}
         </Heading>
-        <Text>{description}</Text>
+        <Text color="secondaryText">{description}</Text>
       </VStack>
     </Box>
   );

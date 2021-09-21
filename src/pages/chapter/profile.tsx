@@ -50,7 +50,6 @@ function ChapterProfilePage() {
             pl={4}
             fontSize="xx-large"
             fontWeight={700}
-            color="black.400"
           >
             Profile
           </Text>
@@ -60,18 +59,13 @@ function ChapterProfilePage() {
             border="1px solid #657788"
             borderRadius={10}
             direction="column"
-            backgroundColor="white"
+            backgroundColor="surface"
             spacing={10}
             align="stretch"
           >
             <Avatar alignSelf="center" width="80px" height="80px" />
             <VStack align="start" spacing={5}>
-              <Text
-                alignSelf="flex-start"
-                fontSize="md"
-                fontWeight={700}
-                color="black.400"
-              >
+              <Text alignSelf="flex-start" fontSize="md" fontWeight={700}>
                 User Information
               </Text>
               <Flex direction={{ base: "column", md: "row" }}>
@@ -118,12 +112,7 @@ function ChapterProfilePage() {
               </Flex>
             </VStack>
             <VStack align="start" spacing={5}>
-              <Text
-                alignSelf="flex-start"
-                fontSize="md"
-                fontWeight={700}
-                color="black.400"
-              >
+              <Text alignSelf="flex-start" fontSize="md" fontWeight={700}>
                 Chapter Information
               </Text>
               <Flex direction={{ base: "column", md: "row" }}>
@@ -291,19 +280,14 @@ function ChapterProfilePage() {
             </VStack>
             <VStack align="start" spacing={5}>
               <Box>
-                <Text
-                  alignSelf="flex-start"
-                  fontSize="md"
-                  fontWeight={700}
-                  color="black.400"
-                >
+                <Text alignSelf="flex-start" fontSize="md" fontWeight={700}>
                   Project Process Customization
                 </Text>
                 <Text
                   alignSelf="flex-start"
                   fontSize="sm"
                   fontWeight={400}
-                  color="grey"
+                  color="secondaryText"
                 >
                   Customize your project process for nonprofits to follow.
                 </Text>
@@ -339,7 +323,7 @@ function ChapterProfilePage() {
                 </VStack>
               </CheckboxGroup>
             </VStack>
-            <Button alignSelf="flex-end" size="md" colorScheme="blue">
+            <Button variant="primary" alignSelf="flex-end" size="md">
               Save Changes
             </Button>
           </VStack>

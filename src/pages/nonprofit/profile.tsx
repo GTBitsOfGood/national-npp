@@ -30,14 +30,13 @@ function NonprofitProfilePage() {
 
   return (
     <Flex height="100%" width="100%">
-      <Flex margin="auto" border="solid">
+      <Flex margin="auto">
         <VStack margin={50}>
           <Text
             alignSelf="flex-start"
             p={1}
             fontSize="xx-large"
             fontWeight={700}
-            color="black.400"
           >
             Profile
           </Text>
@@ -46,17 +45,12 @@ function NonprofitProfilePage() {
             minH={1150}
             border="1px solid #657788"
             borderRadius={10}
-            backgroundColor="white"
+            backgroundColor="surface"
             justifyContent="center"
           >
             <VStack margin={50} w={325}>
               <Avatar width="80px" height="80px" marginBottom={50} />
-              <Text
-                alignSelf="flex-start"
-                fontSize="md"
-                fontWeight={700}
-                color={"black.400"}
-              >
+              <Text alignSelf="flex-start" fontSize="md" fontWeight={700}>
                 User Information
               </Text>
               <Flex flexDirection={"column"} w={325}>
@@ -90,12 +84,7 @@ function NonprofitProfilePage() {
                   </FormControl>
                 </Flex>
               </Flex>
-              <Text
-                alignSelf="flex-start"
-                fontSize="md"
-                fontWeight={700}
-                color={"black.400"}
-              >
+              <Text alignSelf="flex-start" fontSize="md" fontWeight={700}>
                 Nonprofit Information
               </Text>
               <Flex flexDirection={"column"} w={325} h={600}>
@@ -194,7 +183,7 @@ function NonprofitProfilePage() {
               </Flex>
               <Spacer />
               <Flex flexDirection="row" alignSelf={"flex-end"}>
-                <Button marginTop={5} size="md" colorScheme="blue">
+                <Button variant="primary" marginTop={5} size="md">
                   Save Changes
                 </Button>
               </Flex>

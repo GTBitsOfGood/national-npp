@@ -23,6 +23,7 @@ const theme = extendTheme({
     secondary: "#80D2C8",
     border: "#BCC5D1",
     danger: "#F2594B",
+    primaryText: "#333333",
     secondaryText: "#657788",
   },
   components: {
@@ -34,8 +35,12 @@ const theme = extendTheme({
           color: "#FFFFFF",
         },
         secondary: {
-          backgroundColor: "#FFFFFF",
+          backgroundColor: "",
           color: "#0069CA",
+        },
+        danger: {
+          backgroundColor: "#F2594B",
+          color: "#FFFFFF",
         },
       },
     },

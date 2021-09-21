@@ -38,13 +38,13 @@ function Navigation() {
     <Box>
       <Flex
         bg={"white"}
-        color={"gray.600"}
+        color="secondaryText"
         maxH={"66px"}
         py="23px"
         px="34px"
         borderBottom={1}
         borderStyle={"solid"}
-        borderColor={"gray.200"}
+        borderColor="border"
         align={"center"}
       >
         <Flex
@@ -71,7 +71,11 @@ function Navigation() {
                 </MenuGroup>
                 <MenuDivider />
                 <MenuGroup>
-                  <MenuItem>My Profile</MenuItem>
+                  <NextLink
+                    href={isChapter ? "/chapter/profile" : "/nonprofit/profile"}
+                  >
+                    <MenuItem>My Profile</MenuItem>
+                  </NextLink>
                   <MenuItem>Sign Out</MenuItem>
                   <MenuItem minH="40px">
                     <Avatar width="20px" height="20px" marginRight="2px" />
@@ -79,7 +83,7 @@ function Navigation() {
                       p={1}
                       fontSize="sm"
                       fontWeight={700}
-                      color={"black.400"}
+                      color="primaryText"
                     >
                       {isChapter ? chapterName : nonprofitName}
                     </Text>
@@ -87,7 +91,7 @@ function Navigation() {
                       p={1}
                       fontSize="sm"
                       fontWeight={500}
-                      color={"slategrey"}
+                      color="secondaryText"
                     >
                       {isChapter ? "Admin" : npUserName}
                     </Text>
@@ -107,14 +111,14 @@ function Navigation() {
                         p={2}
                         fontSize={"sm"}
                         fontWeight={500}
-                        color={"slategrey"}
+                        color="secondaryText"
                         _hover={{
                           textDecoration: "none",
-                          color: "black",
+                          color: "primary",
                         }}
                         _active={{
                           textDecoration: "none",
-                          color: "blue.500",
+                          color: "primary",
                         }}
                       >
                         {navItem.label}
@@ -131,10 +135,15 @@ function Navigation() {
           <Flex alignItems={"center"} display={{ base: "none", md: "flex" }}>
             <Menu>
               <VStack spacing={-2} align="flex-end" marginRight={6}>
-                <Text p={1} fontSize="sm" fontWeight={700} color={"black.400"}>
+                <Text p={1} fontSize="sm" fontWeight={700}>
                   {isChapter ? chapterName : nonprofitName}
                 </Text>
-                <Text p={1} fontSize="sm" fontWeight={500} color={"slategrey"}>
+                <Text
+                  p={1}
+                  fontSize="sm"
+                  fontWeight={500}
+                  color="secondaryText"
+                >
                   {isChapter ? "Admin" : npUserName}
                 </Text>
               </VStack>
@@ -147,7 +156,12 @@ function Navigation() {
                 <Avatar width="40px" height="40px" />
               </MenuButton>
               <MenuList>
-                <MenuItem>My Profile</MenuItem>
+                <NextLink
+                  href={isChapter ? "/chapter/profile" : "/nonprofit/profile"}
+                >
+                  <MenuItem>My Profile</MenuItem>
+                </NextLink>
+
                 <MenuItem>Sign Out</MenuItem>
               </MenuList>
             </Menu>
@@ -161,14 +175,10 @@ function Navigation() {
           >
             <NextLink href="/login">
               <Button
+                variant="primary"
                 display="inline-flex"
                 fontSize="sm"
                 fontWeight={600}
-                color={"white"}
-                bg={"blue.500"}
-                _hover={{
-                  bg: "blue.400",
-                }}
               >
                 Log In
               </Button>

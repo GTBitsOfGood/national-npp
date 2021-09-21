@@ -105,7 +105,7 @@ function NonprofitProjectPage({ project }: Props) {
           buttons: [
             <Button
               onClick={() => console.log("redirecting to form")}
-              colorScheme="blue"
+              variant="primary"
               key="first-button"
             >
               Go to Form
@@ -146,7 +146,7 @@ function NonprofitProjectPage({ project }: Props) {
           buttons: [
             <Button
               onClick={() => console.log("scheduling interview")}
-              colorScheme="blue"
+              variant="primary"
               key="first-button"
             >
               Schedule Interview
@@ -162,16 +162,14 @@ function NonprofitProjectPage({ project }: Props) {
           buttons: [
             <Button
               onClick={() => console.log("rescheduling interview")}
-              color="#0069CA"
-              variant="link"
+              variant="secondary"
               key="first-button"
             >
               Reschedule Interview
             </Button>,
             <Button
               onClick={() => console.log("cancelling interview")}
-              color="#0069CA"
-              variant="link"
+              variant="secondary"
               key="second-button"
             >
               Cancel Interview
@@ -212,7 +210,7 @@ function NonprofitProjectPage({ project }: Props) {
           buttons: [
             <Button
               onClick={() => console.log("scheduling meeting")}
-              colorScheme="blue"
+              variant="primary"
               key="first-button"
             >
               Schedule Meeting
@@ -228,16 +226,14 @@ function NonprofitProjectPage({ project }: Props) {
           buttons: [
             <Button
               onClick={() => console.log("rescheduling meeting")}
-              color="#0069CA"
-              variant="link"
+              variant="secondary"
               key="first-button"
             >
               Reschedule Meeting
             </Button>,
             <Button
               onClick={() => console.log("cancelling meeting")}
-              color="#0069CA"
-              variant="link"
+              variant="secondary"
               key="second-button"
             >
               Cancel Meeting
@@ -258,7 +254,7 @@ function NonprofitProjectPage({ project }: Props) {
           buttons: [
             <Button
               onClick={() => console.log("returning to home")}
-              colorScheme="blue"
+              variant="primary"
               key="first-button"
             >
               Return to Home
@@ -277,7 +273,7 @@ function NonprofitProjectPage({ project }: Props) {
           buttons: [
             <Button
               onClick={() => console.log("returning to home")}
-              colorScheme="blue"
+              variant="primary"
               key="first-button"
             >
               Return to Home
@@ -296,7 +292,7 @@ function NonprofitProjectPage({ project }: Props) {
           buttons: [
             <Button
               onClick={() => console.log("returning to home")}
-              colorScheme="blue"
+              variant="primary"
               key="first-button"
             >
               Return to Home
@@ -316,7 +312,7 @@ function NonprofitProjectPage({ project }: Props) {
           buttons: [
             <Button
               onClick={() => console.log("redirecting to form")}
-              colorScheme="blue"
+              variant="primary"
               key="first-button"
             >
               Go to Form
@@ -345,10 +341,10 @@ function NonprofitProjectPage({ project }: Props) {
             </Text>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="red" mr={3}>
+            <Button variant="danger" mr={3}>
               Cancel Project
             </Button>
-            <Button variant="ghost" colorScheme="blue" onClick={onClose}>
+            <Button variant="secondary" onClick={onClose}>
               Close
             </Button>
           </ModalFooter>
@@ -374,8 +370,8 @@ function NonprofitProjectPage({ project }: Props) {
           p="5"
           rounded="lg"
           border="1px"
-          borderColor="#657788"
-          bgColor="#FFFF"
+          borderColor="border"
+          bgColor="surface"
           direction={{ base: "column", md: "row" }}
           w="full"
         >
@@ -399,8 +395,7 @@ function NonprofitProjectPage({ project }: Props) {
               <VStack align="flex-start" spacing={0}>
                 <Button
                   leftIcon={<FaEnvelope />}
-                  colorScheme="blue"
-                  variant="ghost"
+                  variant="secondary"
                   onClick={() => window.open(`mailto:${chapterPartner.email}`)}
                   p={0}
                   _hover={{ bgColor: "none" }}
@@ -409,8 +404,7 @@ function NonprofitProjectPage({ project }: Props) {
                 </Button>
                 <Button
                   leftIcon={<FaTimes />}
-                  colorScheme="blue"
-                  variant="ghost"
+                  variant="secondary"
                   onClick={onOpen}
                   p={0}
                   _hover={{ bgColor: "none" }}

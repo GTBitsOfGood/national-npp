@@ -20,7 +20,13 @@ import LandingInfoCard from "src/components/landing/LandingInfoCard";
 // TODO: Add Landing Banner (banner image is messed up right now)
 function LandingPage() {
   return (
-    <VStack h="100%" p={{ base: 10, md: 0 }} spacing={5}>
+    <VStack
+      h="100%"
+      p={{ base: 10, md: 0 }}
+      spacing={5}
+      backgroundColor="surface"
+      overflow="auto"
+    >
       <Stack
         justifyContent="center"
         alignItems="center"
@@ -72,7 +78,7 @@ function LandingPage() {
         />
       </Box>
       <Box paddingX={20} w="full">
-        <Divider borderColor="grey" />
+        <Divider borderColor="border" />
       </Box>
       <HStack justifyContent="center" spacing={10} w="full">
         <Image
@@ -88,7 +94,7 @@ function LandingPage() {
           </Text>
           <Link
             fontSize="small"
-            color="blue.600"
+            color="primary"
             href="mailto:contact@hack4impact.org"
           >
             contact@hack4impact.org

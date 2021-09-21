@@ -53,7 +53,7 @@ function ChapterProjects() {
         padding={50}
         border="1px solid #657788"
         borderRadius={10}
-        backgroundColor="white"
+        backgroundColor="surface"
         flexShrink={0}
         flexGrow={1}
         justifyContent="center"
@@ -70,7 +70,7 @@ function ChapterProjects() {
               fontWeight={600}
               _selected={{
                 border: "1px solid #E2E8F0",
-                color: "#0069CA",
+                color: "primary",
               }}
               _focus={{
                 boxShadow: "none",
@@ -81,7 +81,7 @@ function ChapterProjects() {
             <Tab
               width={120}
               height={50}
-              backgroundColor="white"
+              backgroundColor="surface"
               borderTopLeftRadius={10}
               borderTopRightRadius={10}
               border="1px solid none"
@@ -89,7 +89,7 @@ function ChapterProjects() {
               fontWeight={600}
               _selected={{
                 border: "1px solid #E2E8F0",
-                color: "#0069CA",
+                color: "primary",
               }}
               _focus={{
                 boxShadow: "none",
@@ -100,7 +100,7 @@ function ChapterProjects() {
           </TabList>
 
           <TabPanels
-            backgroundColor="white"
+            backgroundColor="surface"
             border="1px solid #E2E8F0"
             borderBottomLeftRadius={10}
             borderTopRightRadius={10}

@@ -48,7 +48,7 @@ function LoginPage() {
           flex="1"
           rounded={"lg"}
           border="1px"
-          borderColor="#657788"
+          borderColor="border"
           borderRadius="10px"
           width={{ base: "100%", md: "70%" }}
         >
@@ -95,11 +95,8 @@ function LoginPage() {
                 <Stack spacing={8} py={4}>
                   <Button
                     onClick={handleSubmit}
-                    bg={"#0069CA"}
-                    variant={"solid"}
-                    textColor={"white"}
+                    variant="primary"
                     fontSize={18}
-                    _hover={{ bg: "blue.400" }}
                     p={7}
                   >
                     Next

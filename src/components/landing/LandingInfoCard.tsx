@@ -18,7 +18,7 @@ function LandingInfoCard({ title, description, image, alt }: Props) {
     >
       <Image src={image} alt={alt} width={250} height={250} />
       <Box w={{ base: "full", md: "40%" }}>
-        <Heading fontSize="xl" color="blue.500" marginBottom="5">
+        <Heading fontSize="xl" color="primary" marginBottom="5">
           {title}
         </Heading>
         <Text fontSize="md">{description}</Text>

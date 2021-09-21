@@ -11,7 +11,7 @@ function VerifyEmailPage() {
           flex="1"
           rounded={"lg"}
           border="1px"
-          borderColor="#657788"
+          borderColor="border"
           width={{ base: "100%", md: "70%" }}
           borderRadius="10px"
         >
@@ -54,7 +54,7 @@ function VerifyEmailPage() {
                 <NextLink href="/login">
                   <Link
                     fontFamily="Helvetica, sans-serif"
-                    color={"#0069CA"}
+                    color="primary"
                     fontWeight={"600"}
                     fontSize="16"
                     py={2}
