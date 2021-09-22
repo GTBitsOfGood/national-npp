@@ -3,18 +3,15 @@ import { ChapterStage, NonprofitStage } from "src/utils/types";
 export const chapterStageOrder = {
   [ChapterStage.SUBMIT_APPLICATION]: 0,
   [ChapterStage.APPLICATION_REVIEW]: 1,
-  [ChapterStage.INTERVIEW_CONTACT]: 2,
-  [ChapterStage.SCHEDULE_INTERVIEW]: 3,
-  [ChapterStage.INTERVIEW_SCHEDULED]: 4,
-  [ChapterStage.INTERVIEW_REVIEW]: 5,
-  [ChapterStage.MEETING_CONTACT]: 6,
-  [ChapterStage.SCHEDULE_MEETING]: 7,
-  [ChapterStage.MEETING_SCHEDULED]: 8,
-  [ChapterStage.COMPLETED]: 9,
-  [ChapterStage.MAINTENANCE]: 10,
-  [ChapterStage.CANCELLED]: 11,
-  [ChapterStage.REJECTED]: 12,
-  [ChapterStage.CLOSED]: 13,
+  [ChapterStage.SCHEDULE_INTERVIEW]: 2,
+  [ChapterStage.INTERVIEW_SCHEDULED]: 3,
+  [ChapterStage.INTERVIEW_REVIEW]: 4,
+  [ChapterStage.SCHEDULE_MEETING]: 5,
+  [ChapterStage.MEETING_SCHEDULED]: 6,
+  [ChapterStage.MAINTENANCE]: 7,
+  [ChapterStage.COMPLETED]: 8,
+  [ChapterStage.CANCELLED]: 9,
+  [ChapterStage.REJECTED]: 10,
 };
 
 export const nonprofitStageOrder = {
@@ -29,20 +26,17 @@ export function getNonprofitStage(chapterStage: ChapterStage) {
     case ChapterStage.SUBMIT_APPLICATION:
     case ChapterStage.APPLICATION_REVIEW:
       return NonprofitStage.APPLICATION;
-    case ChapterStage.INTERVIEW_CONTACT:
     case ChapterStage.SCHEDULE_INTERVIEW:
     case ChapterStage.INTERVIEW_SCHEDULED:
     case ChapterStage.INTERVIEW_REVIEW:
       return NonprofitStage.INTERVIEW;
-    case ChapterStage.MEETING_CONTACT:
     case ChapterStage.SCHEDULE_MEETING:
     case ChapterStage.MEETING_SCHEDULED:
+    case ChapterStage.MAINTENANCE:
       return NonprofitStage.IN_PROGRESS;
     case ChapterStage.COMPLETED:
-    case ChapterStage.MAINTENANCE:
-    case ChapterStage.REJECTED:
     case ChapterStage.CANCELLED:
-    case ChapterStage.CLOSED:
+    case ChapterStage.REJECTED:
       return NonprofitStage.COMPLETE;
     default:
       return NonprofitStage.APPLICATION;

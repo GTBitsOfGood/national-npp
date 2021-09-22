@@ -169,18 +169,15 @@ export enum NonprofitStage {
 export enum ChapterStage {
   SUBMIT_APPLICATION = "Submit Application",
   APPLICATION_REVIEW = "Application Review",
-  INTERVIEW_CONTACT = "Interview Contact",
   SCHEDULE_INTERVIEW = "Schedule Interview",
   INTERVIEW_SCHEDULED = "Interview Scheduled",
   INTERVIEW_REVIEW = "Interview Review",
-  MEETING_CONTACT = "Meeting Contact",
   SCHEDULE_MEETING = "Schedule Meeting",
   MEETING_SCHEDULED = "Meeting Scheduled",
-  COMPLETED = "Completed",
   MAINTENANCE = "Maintenance",
+  COMPLETED = "Completed",
   CANCELLED = "Cancelled",
   REJECTED = "Rejected",
-  CLOSED = "Closed",
 }
 
 export enum Role {

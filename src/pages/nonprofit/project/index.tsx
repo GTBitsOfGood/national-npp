@@ -18,7 +18,6 @@ import {
 import { Step, Steps, useSteps } from "chakra-ui-steps";
 import { Types } from "mongoose";
 import ApplicationReviewImage from "public/images/nonprofit/project/application_review.svg";
-import AssignContactImage from "public/images/nonprofit/project/assign_contact.svg";
 import CancelledImage from "public/images/nonprofit/project/cancelled.svg";
 import CompletedImage from "public/images/nonprofit/project/completed.svg";
 import InterviewReviewImage from "public/images/nonprofit/project/interview_review.svg";
@@ -123,17 +122,6 @@ function NonprofitProjectPage({ project }: Props) {
           title: "Application Under Review",
           buttons: [],
         };
-      case ChapterStage.INTERVIEW_CONTACT:
-        return {
-          actionRequired: false,
-          text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, \
-            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \
-            Nam aliquam sem et tortor consequat id porta nibh venenatis. Vitae \
-            elementum curabitur vitae nunc.",
-          image: AssignContactImage,
-          title: "A contact will be reaching out to you.",
-          buttons: [],
-        };
       case ChapterStage.SCHEDULE_INTERVIEW:
         return {
           actionRequired: true,
@@ -187,17 +175,6 @@ function NonprofitProjectPage({ project }: Props) {
           title: "Interview Under Review",
           buttons: [],
         };
-      case ChapterStage.MEETING_CONTACT:
-        return {
-          actionRequired: false,
-          text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, \
-              sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \
-              Nam aliquam sem et tortor consequat id porta nibh venenatis. Vitae \
-              elementum curabitur vitae nunc.",
-          image: AssignContactImage,
-          title: "A contact is being assigned to your project.",
-          buttons: [],
-        };
       case ChapterStage.SCHEDULE_MEETING:
         return {
           actionRequired: true,
@@ -240,9 +217,8 @@ function NonprofitProjectPage({ project }: Props) {
             </Button>,
           ],
         };
-      case ChapterStage.COMPLETED:
       case ChapterStage.MAINTENANCE:
-      case ChapterStage.CLOSED:
+      case ChapterStage.COMPLETED:
         return {
           actionRequired: false,
           text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, \

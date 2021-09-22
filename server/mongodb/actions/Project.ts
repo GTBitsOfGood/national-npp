@@ -49,7 +49,7 @@ export async function getNonprofitProject(nonprofitId: Types.ObjectId) {
 
   const project = await ProjectModel.findOne({
     nonprofit: nonprofitId,
-    status: { $ne: ChapterStage.CLOSED }, // TODO: Add other inactive project stages
+    status: { $ne: ChapterStage.COMPLETED }, // TODO: Add other inactive project stages
   });
 
   return project;
