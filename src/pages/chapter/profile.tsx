@@ -15,9 +15,12 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { states, countries } from "src/utils/constants";
-import { NonprofitStage, ProjectType } from "src/utils/types";
+import { DisplayableProjectStage, ProjectType } from "src/utils/types";
 
-const requiredStages = [NonprofitStage.IN_PROGRESS, NonprofitStage.COMPLETE];
+const requiredStages = [
+  DisplayableProjectStage.IN_PROGRESS,
+  DisplayableProjectStage.COMPLETE,
+];
 
 function ChapterProfilePage() {
   const [name, setName] = useState("");
@@ -37,9 +40,9 @@ function ChapterProfilePage() {
   const [instagram, setInstagram] = useState("");
   const [chapterProjects, setChapterProjects] = useState<ProjectType[]>([]);
 
-  const [projectProcess, setProjectProcess] = useState<NonprofitStage[]>([
-    ...requiredStages,
-  ]);
+  const [projectProcess, setProjectProcess] = useState<
+    DisplayableProjectStage[]
+  >([...requiredStages]);
 
   return (
     <Flex height="100%" width="100%">
@@ -294,7 +297,7 @@ function ChapterProfilePage() {
               </Box>
               <CheckboxGroup value={projectProcess}>
                 <VStack align="start" spacing={2}>
-                  {Object.values(NonprofitStage).map((stage) => {
+                  {Object.values(DisplayableProjectStage).map((stage) => {
                     const isRequired = requiredStages.includes(stage);
 
                     return (

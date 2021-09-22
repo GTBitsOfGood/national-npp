@@ -5,6 +5,7 @@ import {
   NonprofitProjectUpdate,
   Project,
   ProjectCreate,
+  ProjectStatus,
 } from "src/utils/types";
 import urls from "src/utils/urls";
 
@@ -34,9 +35,13 @@ export async function getChapterProject(projectId: string) {
   });
 }
 
-export async function getNonprofitProject() {
+export async function getNonprofitProjects(active?: boolean) {
   return internalRequest<Project>({
-    url: projectAPI + "?action=nonprofit",
+    url: projectAPI,
+    queryParams: {
+      action: "nonprofit",
+      active,
+    },
     method: HttpMethod.GET,
   });
 }
