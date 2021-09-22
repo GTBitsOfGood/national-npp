@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
 import { NextApiRequest } from "next-auth/internals/utils";
 
-/* 
+/*
     Only define types used in multiple files here. Keep single file types like
     prop interfaces in their respective files.
 */
@@ -30,7 +30,7 @@ export interface Chapter {
   email: string;
   address: Address;
   calendly?: string;
-  projectProcess: Array<NonprofitStage>;
+  projectProcess: Array<DisplayableProjectStage>;
   projectTypes: Array<ProjectType>;
   projectLimit: number;
   website?: string;
@@ -52,7 +52,7 @@ export interface Project {
   chapter: Chapter | Types.ObjectId;
   nonprofit: Nonprofit | Types.ObjectId;
   name: string;
-  status: ChapterStage;
+  status: ProjectStage;
   type?: ProjectType;
   contact?: User | Types.ObjectId;
   createdAt: Date;
@@ -126,6 +126,7 @@ export interface InternalRequestData {
   url: string;
   method: HttpMethod;
   body?: { [key: string]: unknown };
+  queryParams?: { [key: string]: string | number | boolean | undefined };
 }
 
 export interface InternalResponseData<T> {
@@ -159,14 +160,14 @@ export enum ProjectType {
   MOBILE_APP = "Mobile app",
 }
 
-export enum NonprofitStage {
+export enum DisplayableProjectStage {
   APPLICATION = "Application",
   INTERVIEW = "Interview",
   IN_PROGRESS = "In Progress",
   COMPLETE = "Complete",
 }
 
-export enum ChapterStage {
+export enum ProjectStage {
   SUBMIT_APPLICATION = "Submit Application",
   APPLICATION_REVIEW = "Application Review",
   SCHEDULE_INTERVIEW = "Schedule Interview",

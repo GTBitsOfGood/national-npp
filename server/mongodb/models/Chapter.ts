@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 import AddressSchema from "server/mongodb/models/embedded/Address";
-import { Chapter, NonprofitStage, ProjectType } from "src/utils/types";
+import { Chapter, DisplayableProjectStage, ProjectType } from "src/utils/types";
 
 const ChapterSchema = new Schema<Chapter>({
   name: {
@@ -16,7 +16,7 @@ const ChapterSchema = new Schema<Chapter>({
   projectProcess: {
     type: [String],
     required: true,
-    enum: Object.values(NonprofitStage),
+    enum: Object.values(DisplayableProjectStage),
   },
   projectTypes: {
     type: [String],
