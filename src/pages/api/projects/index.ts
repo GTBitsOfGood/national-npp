@@ -1,10 +1,11 @@
 import {
   createProject,
   getChapterProjects,
-  getNonprofitProject,
+  getNonprofitProjects,
   updateNonprofitProject,
 } from "server/mongodb/actions/Project";
 import APIWrapper from "server/utils/APIWrapper";
+import { tryToParseBoolean } from "server/utils/request-validation";
 import { NonprofitProjectUpdate, ProjectCreate, Role } from "src/utils/types";
 
 export default APIWrapper({
@@ -31,9 +32,11 @@ export default APIWrapper({
         if (!nonprofitId) {
           throw new Error("User does not belong to a nonprofit.");
         }
-
-        const project = await getNonprofitProject(nonprofitId);
-        return project;
+        const projects = await getNonprofitProjects(
+          nonprofitId,
+          tryToParseBoolean(req.query.active)
+        );
+        return projects;
       } else {
         throw new Error("Unknown action.");
       }

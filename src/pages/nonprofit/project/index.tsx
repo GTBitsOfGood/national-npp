@@ -28,11 +28,14 @@ import SubmitApplicationImage from "public/images/nonprofit/project/submit_appli
 import { useMemo } from "react";
 import { FaEnvelope, FaTimes } from "react-icons/fa";
 import StepCard from "src/components/nonprofit/project/StepCard";
-import { getNonprofitStage, nonprofitStageOrder } from "src/utils/stages";
+import {
+  chapterStageToDisplayableProjectStage,
+  nonprofitStageOrder,
+} from "src/utils/stages";
 import {
   Chapter,
-  ChapterStage,
-  NonprofitStage,
+  ProjectStage,
+  DisplayableProjectStage,
   Project,
   ProjectType,
 } from "src/utils/types";
@@ -42,7 +45,7 @@ const tempProject: Project = {
   _id: Types.ObjectId("123456789012"),
   name: "Liv2BGirl",
   type: ProjectType.MOBILE_APP,
-  status: ChapterStage.SCHEDULE_INTERVIEW,
+  status: ProjectStage.SCHEDULE_INTERVIEW,
   chapter: {
     _id: Types.ObjectId("123456789012"),
     name: "Georgia Tech",
@@ -56,7 +59,7 @@ const tempProject: Project = {
     },
     projectTypes: Object.values(ProjectType),
     projectLimit: 5,
-    projectProcess: Object.values(NonprofitStage),
+    projectProcess: Object.values(DisplayableProjectStage),
   },
   nonprofit: {
     _id: Types.ObjectId("123456789012"),
@@ -82,16 +85,16 @@ function NonprofitProjectPage({ project }: Props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const chapterStage = tempProject.status;
-  const nonprofitStage = getNonprofitStage(chapterStage);
+  const nonprofitStage = chapterStageToDisplayableProjectStage(chapterStage);
   const { activeStep } = useSteps({
     initialStep: nonprofitStageOrder[nonprofitStage],
   });
 
   const chapterPartner = tempProject.chapter as Chapter;
 
-  const getStepCardData = (chapterStage: ChapterStage) => {
+  const getStepCardData = (chapterStage: ProjectStage) => {
     switch (chapterStage) {
-      case ChapterStage.SUBMIT_APPLICATION:
+      case ProjectStage.SUBMIT_APPLICATION:
         return {
           actionRequired: true,
           text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit,\
@@ -111,7 +114,7 @@ function NonprofitProjectPage({ project }: Props) {
             </Button>,
           ],
         };
-      case ChapterStage.APPLICATION_REVIEW:
+      case ProjectStage.APPLICATION_REVIEW:
         return {
           actionRequired: false,
           text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, \
@@ -122,7 +125,7 @@ function NonprofitProjectPage({ project }: Props) {
           title: "Application Under Review",
           buttons: [],
         };
-      case ChapterStage.SCHEDULE_INTERVIEW:
+      case ProjectStage.SCHEDULE_INTERVIEW:
         return {
           actionRequired: true,
           text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, \
@@ -141,7 +144,7 @@ function NonprofitProjectPage({ project }: Props) {
             </Button>,
           ],
         };
-      case ChapterStage.INTERVIEW_SCHEDULED:
+      case ProjectStage.INTERVIEW_SCHEDULED:
         return {
           actionRequired: false,
           text: "Your interview is scheduled for July 27th from 4:30 PM - 5:30 PM EST.",
@@ -164,7 +167,7 @@ function NonprofitProjectPage({ project }: Props) {
             </Button>,
           ],
         };
-      case ChapterStage.INTERVIEW_REVIEW:
+      case ProjectStage.INTERVIEW_REVIEW:
         return {
           actionRequired: false,
           text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, \
@@ -175,7 +178,7 @@ function NonprofitProjectPage({ project }: Props) {
           title: "Interview Under Review",
           buttons: [],
         };
-      case ChapterStage.SCHEDULE_MEETING:
+      case ProjectStage.SCHEDULE_MEETING:
         return {
           actionRequired: true,
           text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, \
@@ -194,7 +197,7 @@ function NonprofitProjectPage({ project }: Props) {
             </Button>,
           ],
         };
-      case ChapterStage.MEETING_SCHEDULED:
+      case ProjectStage.MEETING_SCHEDULED:
         return {
           actionRequired: false,
           text: "Discussing Product Functionalities",
@@ -217,8 +220,8 @@ function NonprofitProjectPage({ project }: Props) {
             </Button>,
           ],
         };
-      case ChapterStage.MAINTENANCE:
-      case ChapterStage.COMPLETED:
+      case ProjectStage.MAINTENANCE:
+      case ProjectStage.COMPLETED:
         return {
           actionRequired: false,
           text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, \
@@ -237,7 +240,7 @@ function NonprofitProjectPage({ project }: Props) {
             </Button>,
           ],
         };
-      case ChapterStage.REJECTED:
+      case ProjectStage.REJECTED:
         return {
           actionRequired: false,
           text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, \
@@ -256,7 +259,7 @@ function NonprofitProjectPage({ project }: Props) {
             </Button>,
           ],
         };
-      case ChapterStage.CANCELLED:
+      case ProjectStage.CANCELLED:
         return {
           actionRequired: false,
           text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, \
@@ -338,7 +341,7 @@ function NonprofitProjectPage({ project }: Props) {
           display={{ base: "none", md: "flex" }}
           p={10}
         >
-          {Object.values(NonprofitStage).map((step) => (
+          {Object.values(DisplayableProjectStage).map((step) => (
             <Step key={step} label={step} />
           ))}
         </Steps>

@@ -1,44 +1,69 @@
-import { ChapterStage, NonprofitStage } from "src/utils/types";
+import { ProjectStage, DisplayableProjectStage } from "src/utils/types";
 
 export const chapterStageOrder = {
-  [ChapterStage.SUBMIT_APPLICATION]: 0,
-  [ChapterStage.APPLICATION_REVIEW]: 1,
-  [ChapterStage.SCHEDULE_INTERVIEW]: 2,
-  [ChapterStage.INTERVIEW_SCHEDULED]: 3,
-  [ChapterStage.INTERVIEW_REVIEW]: 4,
-  [ChapterStage.SCHEDULE_MEETING]: 5,
-  [ChapterStage.MEETING_SCHEDULED]: 6,
-  [ChapterStage.MAINTENANCE]: 7,
-  [ChapterStage.COMPLETED]: 8,
-  [ChapterStage.CANCELLED]: 9,
-  [ChapterStage.REJECTED]: 10,
+  [ProjectStage.SUBMIT_APPLICATION]: 0,
+  [ProjectStage.APPLICATION_REVIEW]: 1,
+  [ProjectStage.SCHEDULE_INTERVIEW]: 2,
+  [ProjectStage.INTERVIEW_SCHEDULED]: 3,
+  [ProjectStage.INTERVIEW_REVIEW]: 4,
+  [ProjectStage.SCHEDULE_MEETING]: 5,
+  [ProjectStage.MEETING_SCHEDULED]: 6,
+  [ProjectStage.MAINTENANCE]: 7,
+  [ProjectStage.COMPLETED]: 8,
+  [ProjectStage.CANCELLED]: 9,
+  [ProjectStage.REJECTED]: 10,
 };
 
 export const nonprofitStageOrder = {
-  [NonprofitStage.APPLICATION]: 0,
-  [NonprofitStage.INTERVIEW]: 1,
-  [NonprofitStage.IN_PROGRESS]: 2,
-  [NonprofitStage.COMPLETE]: 3,
+  [DisplayableProjectStage.APPLICATION]: 0,
+  [DisplayableProjectStage.INTERVIEW]: 1,
+  [DisplayableProjectStage.IN_PROGRESS]: 2,
+  [DisplayableProjectStage.COMPLETE]: 3,
 };
 
-export function getNonprofitStage(chapterStage: ChapterStage) {
-  switch (chapterStage) {
-    case ChapterStage.SUBMIT_APPLICATION:
-    case ChapterStage.APPLICATION_REVIEW:
-      return NonprofitStage.APPLICATION;
-    case ChapterStage.SCHEDULE_INTERVIEW:
-    case ChapterStage.INTERVIEW_SCHEDULED:
-    case ChapterStage.INTERVIEW_REVIEW:
-      return NonprofitStage.INTERVIEW;
-    case ChapterStage.SCHEDULE_MEETING:
-    case ChapterStage.MEETING_SCHEDULED:
-    case ChapterStage.MAINTENANCE:
-      return NonprofitStage.IN_PROGRESS;
-    case ChapterStage.COMPLETED:
-    case ChapterStage.CANCELLED:
-    case ChapterStage.REJECTED:
-      return NonprofitStage.COMPLETE;
-    default:
-      return NonprofitStage.APPLICATION;
-  }
+export const displayableProjectStageDefinitions = {
+  [DisplayableProjectStage.APPLICATION]: [
+    ProjectStage.SUBMIT_APPLICATION,
+    ProjectStage.APPLICATION_REVIEW,
+  ],
+  [DisplayableProjectStage.INTERVIEW]: [
+    ProjectStage.SCHEDULE_INTERVIEW,
+    ProjectStage.INTERVIEW_SCHEDULED,
+    ProjectStage.INTERVIEW_REVIEW,
+  ],
+  [DisplayableProjectStage.IN_PROGRESS]: [
+    ProjectStage.SCHEDULE_MEETING,
+    ProjectStage.MEETING_SCHEDULED,
+    ProjectStage.MAINTENANCE,
+  ],
+  [DisplayableProjectStage.COMPLETE]: [
+    ProjectStage.COMPLETED,
+    ProjectStage.CANCELLED,
+    ProjectStage.REJECTED,
+  ],
+};
+
+const projectStageToDisplayableStage = Object.fromEntries(
+  Object.entries(displayableProjectStageDefinitions).flatMap(
+    ([displayableStage, stages]) =>
+      stages.map((stage) => [
+        stage,
+        displayableStage as DisplayableProjectStage,
+      ])
+  )
+);
+
+export function chapterStageToDisplayableProjectStage(
+  chapterStage: ProjectStage
+): DisplayableProjectStage {
+  return (
+    projectStageToDisplayableStage[chapterStage] ??
+    DisplayableProjectStage.APPLICATION
+  );
+}
+
+export function displayableProjectStageToChapterStages(
+  displayableProjectStage: DisplayableProjectStage
+): ProjectStage[] {
+  return displayableProjectStageDefinitions[displayableProjectStage];
 }

@@ -1,11 +1,13 @@
-import { Types } from "mongoose";
+import { FilterQuery, Types } from "mongoose";
 import ProjectModel from "server/mongodb/models/Project";
 import dbConnect from "server/utils/dbConnect";
+import { displayableProjectStageToChapterStages } from "src/utils/stages";
 import {
-  ProjectCreate,
-  ChapterStage,
-  NonprofitProjectUpdate,
   ChapterProjectUpdate,
+  DisplayableProjectStage,
+  NonprofitProjectUpdate,
+  Project,
+  ProjectCreate,
 } from "src/utils/types";
 
 export async function createProject(
@@ -44,15 +46,33 @@ export async function getChapterProject(
   return project;
 }
 
-export async function getNonprofitProject(nonprofitId: Types.ObjectId) {
+export async function getNonprofitProjects(
+  nonprofitId: Types.ObjectId,
+  active?: boolean
+) {
   await dbConnect();
 
-  const project = await ProjectModel.findOne({
+  const filter: FilterQuery<Project> = {
     nonprofit: nonprofitId,
-    status: { $ne: ChapterStage.COMPLETED }, // TODO: Add other inactive project stages
-  });
+  };
+  // will filter by active or inactive only if filter specified
+  if (active != undefined) {
+    filter["status"] = active
+      ? {
+          $nin: displayableProjectStageToChapterStages(
+            DisplayableProjectStage.COMPLETE
+          ),
+        }
+      : {
+          $in: displayableProjectStageToChapterStages(
+            DisplayableProjectStage.COMPLETE
+          ),
+        };
+  }
 
-  return project;
+  const projects = await ProjectModel.find(filter);
+
+  return projects;
 }
 
 export async function updateNonprofitProject(
