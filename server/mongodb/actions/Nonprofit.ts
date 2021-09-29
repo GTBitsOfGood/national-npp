@@ -25,3 +25,11 @@ export async function updateNonprofit(
 
   return nonprofit;
 }
+
+/* I imagine we need this to prepopulate the data in the nonprofit profile */
+export async function getNonprofit(nonprofitId: Types.ObjectId) {
+  await dbConnect();
+  const nonprofit = await NonprofitModel.find({ _id: nonprofitId });
+
+  return nonprofit;
+}

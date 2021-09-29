@@ -1,6 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 import AddressSchema from "server/mongodb/models/embedded/Address";
 import { Nonprofit } from "src/utils/types";
+import ContactSchema from "server/mongodb/models/embedded/Contact";
 
 const NonprofitSchema = new Schema<Nonprofit>({
   name: {
@@ -9,6 +10,10 @@ const NonprofitSchema = new Schema<Nonprofit>({
   },
   address: {
     type: AddressSchema,
+    required: true,
+  },
+  contact: {
+    type: ContactSchema,
     required: true,
   },
   isVerified: {

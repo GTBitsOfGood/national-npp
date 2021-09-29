@@ -43,6 +43,7 @@ export interface Nonprofit {
   name: string;
   address: Address;
   isVerified: boolean;
+  contact: Contact | Types.ObjectId;
   website?: string;
   mission?: string;
 }
@@ -106,6 +107,12 @@ export interface Account {
   accessTokenExpires: null;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface Contact {
+  _id: Types.ObjectId;
+  name: string;
+  email: string;
 }
 
 /* Request/Response */

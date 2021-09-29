@@ -13,3 +13,11 @@ export async function createNonprofit(nonprofitCreate: NonprofitCreate) {
     },
   });
 }
+
+/* TODO: need to add profile action to Nonprofit APIWrapper */
+export async function getNonprofit() {
+  return internalRequest<Nonprofit>({
+    url: nonprofitAPI + "action=profile",
+    method: HttpMethod.GET,
+  });
+}
