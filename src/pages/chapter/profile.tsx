@@ -44,30 +44,28 @@ function ChapterProfilePage() {
   const validInputs = (): boolean => {
     return (
       name !== "" &&
-      calendly !== "" && 
+      calendly !== "" &&
       chapterName !== "" &&
-      chapterEmail !== "" && 
+      chapterEmail !== "" &&
       street !== "" &&
       city !== "" &&
-      state !== "" && 
+      state !== "" &&
       zip !== "" &&
-      country !== "" && 
-      projectLimit !== "" && 
+      country !== "" &&
+      projectLimit !== "" &&
       chapterProjects.length > 0
-    )
-  }
+    );
+  };
 
-  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {    
+  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (validInputs()) {
       // update database:
-
-
       // TODO: notification of succesful update here
     } else {
       // TODO: notification of failed update here
       return;
     }
-  }
+  };
 
   return (
     <Flex height="100%" width="100%">
@@ -351,7 +349,12 @@ function ChapterProfilePage() {
                 </VStack>
               </CheckboxGroup>
             </VStack>
-            <Button variant="primary" alignSelf="flex-end" size="md" onClick={handleSubmit}>
+            <Button
+              variant="primary"
+              alignSelf="flex-end"
+              size="md"
+              onClick={handleSubmit}
+            >
               Save Changes
             </Button>
           </VStack>
