@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 import AddressSchema from "server/mongodb/models/embedded/Address";
-import { Nonprofit } from "src/utils/types";
 import ContactSchema from "server/mongodb/models/embedded/Contact";
+import { Nonprofit } from "src/utils/types";
 
 const NonprofitSchema = new Schema<Nonprofit>({
   name: {

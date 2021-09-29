@@ -190,6 +190,7 @@ export enum ChapterStage {
 export enum Role {
   CHAPTER_MEMBER = "Chapter Member",
   NONPROFIT_MEMBER = "Nonprofit Member",
+  NONPROFIT_ADMIN = "Nonprofit Admin",
 }
 
 // TODO: Remove this type and update chapter projects table
