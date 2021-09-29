@@ -20,7 +20,7 @@ import { NonprofitStage, ProjectType } from "src/utils/types";
 const requiredStages = [NonprofitStage.IN_PROGRESS, NonprofitStage.COMPLETE];
 
 function ChapterProfilePage() {
-  const [name, setName] = useState("");
+  const [name, setName] = useState(""); // change default state values to get from database
   const [calendly, setCalendly] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
 
@@ -40,6 +40,34 @@ function ChapterProfilePage() {
   const [projectProcess, setProjectProcess] = useState<NonprofitStage[]>([
     ...requiredStages,
   ]);
+
+  const validInputs = (): boolean => {
+    return (
+      name !== "" &&
+      calendly !== "" && 
+      chapterName !== "" &&
+      chapterEmail !== "" && 
+      street !== "" &&
+      city !== "" &&
+      state !== "" && 
+      zip !== "" &&
+      country !== "" && 
+      projectLimit !== "" && 
+      chapterProjects.length > 0
+    )
+  }
+
+  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {    
+    if (validInputs()) {
+      // update database:
+
+
+      // TODO: notification of succesful update here
+    } else {
+      // TODO: notification of failed update here
+      return;
+    }
+  }
 
   return (
     <Flex height="100%" width="100%">
@@ -323,7 +351,7 @@ function ChapterProfilePage() {
                 </VStack>
               </CheckboxGroup>
             </VStack>
-            <Button variant="primary" alignSelf="flex-end" size="md">
+            <Button variant="primary" alignSelf="flex-end" size="md" onClick={handleSubmit}>
               Save Changes
             </Button>
           </VStack>
