@@ -26,6 +26,7 @@ export async function updateNonprofit(
   return nonprofit;
 }
 
+// Implemented this but never used it
 export async function getNonprofit(nonprofitId: Types.ObjectId) {
   await dbConnect();
   const nonprofit = await NonprofitModel.findById({ nonprofitId });

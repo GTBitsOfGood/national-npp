@@ -11,8 +11,12 @@ import {
   Button,
   Textarea,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { updateNonprofit } from "src/actions/Nonprofit";
+import { getUserProfile, updateUserProfile } from "src/actions/User";
 import { states, countries } from "src/utils/constants";
+import { showError, showInfo } from "src/utils/notifications";
+import { Nonprofit, NonprofitUpdate, UserUpdate } from "src/utils/types";
 
 function NonprofitProfilePage() {
   const contacts = ["Joyce Shen (joyce.chen@example.com)"];
@@ -28,6 +32,81 @@ function NonprofitProfilePage() {
   const [country, setCountry] = useState(countries[0]);
   const [contact, setContact] = useState("");
   const [mission, setMission] = useState("");
+
+  useEffect(() => {
+    async function preloadData() {
+      const user = await getUserProfile();
+      if (user.name) {
+        setName(user.name);
+      }
+      if (user.phoneNum) {
+        setPhoneNumber(user.phoneNum);
+      }
+
+      const nonprofit = user.nonprofit as Nonprofit;
+      setNonprofitName(nonprofit.name);
+      setStreet(nonprofit.address.street);
+      setCity(nonprofit.address.city);
+      setState(nonprofit.address.state);
+      setZip(nonprofit.address.zipCode);
+      setCountry(nonprofit.address.country);
+      setContact(nonprofit.contact);
+      if (nonprofit.website) {
+        setWebsite(nonprofit.website);
+      }
+      if (nonprofit.mission) {
+        setMission(nonprofit.mission);
+      }
+    }
+    preloadData().catch((error) => {
+      console.log(error);
+    });
+  }, []);
+
+  const inputValidation = (): boolean => {
+    return (
+      name !== "" &&
+      nonprofitName !== "" &&
+      street !== "" &&
+      city !== "" &&
+      state !== "" &&
+      zip !== "" &&
+      country !== "" &&
+      contact !== ""
+    );
+  };
+
+  const submitData = async () => {
+    if (inputValidation()) {
+      const user = await getUserProfile();
+      const userUpdate: UserUpdate = {
+        ...user,
+        name: name,
+        phoneNum: phoneNumber,
+      };
+
+      const nonprofitUpdate: NonprofitUpdate = {
+        name: nonprofitName,
+        contact: contact,
+        address: {
+          street: street,
+          city: city,
+          state: state,
+          zipCode: zip,
+          country: country,
+        },
+        website: website,
+        mission: mission,
+      };
+
+      await updateUserProfile(userUpdate, nonprofitUpdate);
+      // Do I need this?
+      await updateNonprofit(nonprofitUpdate);
+      showInfo("Your data has been saved successfully!");
+    } else {
+      showError("Please fill out all required fields!");
+    }
+  };
 
   return (
     <Flex height="100%" width="100%">
@@ -210,7 +289,12 @@ function NonprofitProfilePage() {
                 size="sm"
               />
             </FormControl>
-            <Button variant="primary" alignSelf="flex-end" size="md">
+            <Button
+              variant="primary"
+              alignSelf="flex-end"
+              size="md"
+              onClick={submitData}
+            >
               Save Changes
             </Button>
           </VStack>
