@@ -7,7 +7,6 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Spacer,
   Select,
   Button,
   Textarea,
@@ -16,6 +15,7 @@ import { useState } from "react";
 import { states, countries } from "src/utils/constants";
 
 function NonprofitProfilePage() {
+  const contacts = ["Joyce Shen (joyce.chen@example.com)"];
   const [name, setName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
 
@@ -26,38 +26,42 @@ function NonprofitProfilePage() {
   const [state, setState] = useState(states[0]);
   const [zip, setZip] = useState("");
   const [country, setCountry] = useState(countries[0]);
+  const [contact, setContact] = useState("");
   const [mission, setMission] = useState("");
 
   return (
     <Flex height="100%" width="100%">
       <Flex margin="auto">
-        <VStack margin={50}>
+        <VStack marginY={50}>
           <Text
             alignSelf="flex-start"
-            p={1}
+            pl={4}
             fontSize="xx-large"
             fontWeight={700}
           >
             Profile
           </Text>
-          <Flex
-            minW={425}
-            minH={1150}
-            border="1px solid #657788"
+          <VStack
+            minW={{ base: 425, md: 800 }}
+            p={12}
+            border="1px solid #BCC5D1"
             borderRadius={10}
+            direction="column"
             backgroundColor="surface"
-            justifyContent="center"
+            spacing={10}
+            align="stretch"
           >
-            <VStack margin={50} w={325}>
-              <Avatar width="80px" height="80px" marginBottom={50} />
+            <Avatar alignSelf="center" width="80px" height="80px" />
+            <VStack align="start" spacing={5}>
               <Text alignSelf="flex-start" fontSize="md" fontWeight={700}>
                 User Information
               </Text>
-              <Flex flexDirection={"column"} w={325}>
-                <Flex
-                  flexDirection="column"
-                  justifyContent="space-between"
-                  marginBottom={10}
+              <Flex direction={{ base: "column", md: "row" }}>
+                <VStack
+                  direction="column"
+                  spacing={5}
+                  mr={{ base: 0, md: 5 }}
+                  mb={{ base: 5, md: 0 }}
                 >
                   <FormControl id="name" isRequired>
                     <FormLabel fontSize="sm">Name</FormLabel>
@@ -68,127 +72,148 @@ function NonprofitProfilePage() {
                       placeholder="Full Name"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      marginBottom={6}
                     />
                   </FormControl>
-                  <FormControl id="phone-number">
-                    <FormLabel fontSize="sm">Phone Number</FormLabel>
-                    <Input
-                      type="tel"
-                      fontSize="sm"
-                      width={320}
-                      placeholder="XXX-XXX-XXXX"
-                      value={phoneNumber}
-                      onChange={(e) => setPhoneNumber(e.target.value)}
-                    />
-                  </FormControl>
-                </Flex>
+                </VStack>
+                <FormControl id="phone-number">
+                  <FormLabel fontSize="sm">Phone Number (Optional)</FormLabel>
+                  <Input
+                    type="tel"
+                    fontSize="sm"
+                    width={320}
+                    placeholder="XXX-XXX-XXXX"
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                  />
+                </FormControl>
               </Flex>
+            </VStack>
+            <VStack align="start" spacing={5}>
               <Text alignSelf="flex-start" fontSize="md" fontWeight={700}>
                 Nonprofit Information
               </Text>
-              <Flex flexDirection={"column"} w={325} h={600}>
-                <Flex flexDirection="column" justifyContent="space-between">
+              <Flex direction={{ base: "column", md: "row" }}>
+                <VStack
+                  direction="column"
+                  spacing={5}
+                  mr={{ base: 0, md: 5 }}
+                  mb={{ base: 5, md: 0 }}
+                >
                   <FormControl id="nonprofit-name" isRequired>
-                    <FormLabel fontSize="sm">Name</FormLabel>
+                    <FormLabel fontSize="sm">Nonprofit Name</FormLabel>
                     <Input
                       type="name"
                       fontSize="sm"
                       width={320}
-                      placeholder="Nonprofit Name"
+                      placeholder="Chapter Name"
                       value={nonprofitName}
                       onChange={(e) => setNonprofitName(e.target.value)}
-                      marginBottom={5}
                     />
                   </FormControl>
-                  <FormControl id="website">
-                    <FormLabel fontSize="sm">Website</FormLabel>
-                    <Input
-                      type="url"
-                      fontSize="sm"
-                      width={320}
-                      placeholder="nonprofit.org"
-                      value={website}
-                      onChange={(e) => setWebsite(e.target.value)}
-                      marginBottom={5}
-                    />
-                  </FormControl>
-                  <FormControl id="location" isRequired>
-                    <FormLabel fontSize="sm">Location</FormLabel>
-                    <Input
-                      type="text"
-                      fontSize="sm"
-                      width={320}
-                      placeholder="Street"
-                      value={street}
-                      onChange={(e) => setStreet(e.target.value)}
-                      marginBottom={4}
-                    />
-                    <Input
-                      type="text"
-                      fontSize="sm"
-                      width={320}
-                      placeholder="City"
-                      value={city}
-                      onChange={(e) => setCity(e.target.value)}
-                      marginBottom={4}
-                    />
-                    <HStack marginBottom={4}>
-                      <Select
-                        fontSize="sm"
-                        width={190}
-                        value={state}
-                        onChange={(e) => setState(e.target.value)}
-                      >
-                        {states.map((state) => (
-                          <option key={state} value={state}>
-                            {state}
-                          </option>
-                        ))}
-                      </Select>
+                  <FormControl id="address" isRequired>
+                    <FormLabel fontSize="sm">Address</FormLabel>
+                    <VStack spacing={3}>
                       <Input
                         type="text"
                         fontSize="sm"
-                        width={120}
-                        placeholder="ZIP"
-                        value={zip}
-                        onChange={(e) => setZip(e.target.value)}
+                        width={320}
+                        placeholder="Street"
+                        value={street}
+                        onChange={(e) => setStreet(e.target.value)}
                       />
-                    </HStack>
+                      <Input
+                        type="text"
+                        fontSize="sm"
+                        width={320}
+                        placeholder="City"
+                        value={city}
+                        onChange={(e) => setCity(e.target.value)}
+                      />
+                      <HStack>
+                        <Select
+                          fontSize="sm"
+                          width={190}
+                          value={state}
+                          placeholder="Select State"
+                          onChange={(e) => setState(e.target.value)}
+                        >
+                          {states.map((state) => (
+                            <option key={state} value={state}>
+                              {state}
+                            </option>
+                          ))}
+                        </Select>
+                        <Input
+                          type="text"
+                          fontSize="sm"
+                          width={120}
+                          placeholder="ZIP"
+                          value={zip}
+                          onChange={(e) => setZip(e.target.value)}
+                        />
+                      </HStack>
+                      <Select
+                        fontSize="sm"
+                        width={320}
+                        placeholder="Select Country"
+                        value={country}
+                        onChange={(e) => setCountry(e.target.value)}
+                      >
+                        {countries.map((country) => (
+                          <option key={country} value={country}>
+                            {country}
+                          </option>
+                        ))}
+                      </Select>
+                    </VStack>
+                  </FormControl>
+                </VStack>
+                <VStack spacing={5}>
+                  <FormControl id="nonprofit-contact" isRequired>
+                    <FormLabel fontSize="sm">Contact</FormLabel>
                     <Select
                       fontSize="sm"
                       width={320}
-                      value={country}
-                      onChange={(e) => setCountry(e.target.value)}
-                      marginBottom={5}
+                      value={contact}
+                      onChange={(e) => setContact(e.target.value)}
                     >
-                      {countries.map((country) => (
-                        <option key={country} value={country}>
-                          {country}
+                      {contacts.map((contact) => (
+                        <option key={contact} value={contact}>
+                          {contact}
                         </option>
                       ))}
                     </Select>
                   </FormControl>
-                  <FormControl id="mission">
-                    <FormLabel fontSize="sm">Mission</FormLabel>
-                    <Textarea
-                      resize="none"
-                      value={mission}
-                      onChange={(e) => setMission(e.target.value)}
-                      placeholder="Organization Mission"
-                      size="sm"
+                  <FormControl id="website">
+                    <FormLabel fontSize="sm">Website URL (Optional)</FormLabel>
+                    <Input
+                      type="url"
+                      fontSize="sm"
+                      width={320}
+                      placeholder="facebook.com/"
+                      value={website}
+                      onChange={(e) => setWebsite(e.target.value)}
                     />
                   </FormControl>
-                </Flex>
-              </Flex>
-              <Spacer />
-              <Flex flexDirection="row" alignSelf={"flex-end"}>
-                <Button variant="primary" marginTop={5} size="md">
-                  Save Changes
-                </Button>
+                </VStack>
               </Flex>
             </VStack>
-          </Flex>
+            <FormControl id="mission">
+              <FormLabel fontSize="sm">
+                {" "}
+                Organization Mission (Optional){" "}
+              </FormLabel>
+              <Textarea
+                resize="none"
+                value={mission}
+                onChange={(e) => setMission(e.target.value)}
+                size="sm"
+              />
+            </FormControl>
+            <Button variant="primary" alignSelf="flex-end" size="md">
+              Save Changes
+            </Button>
+          </VStack>
         </VStack>
       </Flex>
     </Flex>
