@@ -15,7 +15,6 @@ const UserSchema = new Schema<User>(
     name: String,
     image: String,
     phoneNum: String,
-    calendly: String,
     roles: {
       type: [String],
       required: true,

@@ -13,57 +13,126 @@ import {
   Button,
   Box,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getUserProfile, updateUserProfile } from "src/actions/User";
 import { states, countries } from "src/utils/constants";
-import { NonprofitStage, ProjectType } from "src/utils/types";
+import {
+  NonprofitStage,
+  ProjectType,
+  UserUpdate,
+  ChapterUpdate,
+  MaintenanceType,
+  Chapter,
+} from "src/utils/types";
 
 const requiredStages = [NonprofitStage.IN_PROGRESS, NonprofitStage.COMPLETE];
 
 function ChapterProfilePage() {
-  const [name, setName] = useState(""); // change default state values to get from database
-  const [calendly, setCalendly] = useState("");
+  const [name, setName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
 
   const [chapterName, setChapterName] = useState("");
+  const [contact, setContact] = useState("");
   const [street, setStreet] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState(states[0]);
   const [zip, setZip] = useState("");
   const [country, setCountry] = useState(countries[0]);
-  const [chapterEmail, setChapterEmail] = useState("");
-  const [projectLimit, setProjectLimit] = useState("1");
   const [website, setWebsite] = useState("");
   const [facebook, setFacebook] = useState("");
   const [instagram, setInstagram] = useState("");
-  const [chapterProjects, setChapterProjects] = useState<ProjectType[]>([]);
+  const [maintenanceEnabled, setMaintenanceEnabled] = useState(true);
+  const [maintenanceType, setMaintenanceType] = useState<MaintenanceType[]>([]);
+  const [maintenanceDuration, setMaintenanceDuration] = useState(1);
+  const [maintenanceUnit, setMaintenanceUnit] = useState("month");
 
-  const [projectProcess, setProjectProcess] = useState<NonprofitStage[]>([
-    ...requiredStages,
-  ]);
+  useEffect(() => {
+    async function preloadFields() {
+      const user = await getUserProfile();
+      if (user.name) {
+        setName(user.name);
+      }
+      if (user.phoneNum) {
+        setPhoneNumber(user.phoneNum);
+      }
+
+      const chapter = user.chapter as Chapter;
+      setChapterName(chapter.name);
+      setContact(chapter.contact);
+      setStreet(chapter.address.street);
+      setCity(chapter.address.city);
+      setState(chapter.address.state);
+      setZip(chapter.address.zipCode);
+      setCountry(chapter.address.country);
+      if (chapter.website) {
+        setWebsite(chapter.website);
+      }
+      if (chapter.facebook) {
+        setFacebook(chapter.facebook);
+      }
+      if (chapter.instagram) {
+        setInstagram(chapter.instagram);
+      }
+      setMaintenanceEnabled(chapter.maintenanceEnabled);
+      setMaintenanceType(chapter.maintenanceType);
+      setMaintenanceDuration(chapter.maintenancePeriod.duration);
+      setMaintenanceUnit(chapter.maintenancePeriod.unit);
+    }
+
+    preloadFields().catch((error) => {
+      // Could send notification that we are unable to load user profile?
+      console.error(error);
+    });
+  }, []);
 
   const validInputs = (): boolean => {
     return (
       name !== "" &&
-      calendly !== "" &&
       chapterName !== "" &&
-      chapterEmail !== "" &&
       street !== "" &&
       city !== "" &&
       state !== "" &&
       zip !== "" &&
-      country !== "" &&
-      projectLimit !== "" &&
-      chapterProjects.length > 0
+      country !== ""
     );
   };
 
-  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     if (validInputs()) {
       // update database:
+      const user = await getUserProfile();
+      const userUpdate: UserUpdate = {
+        ...user,
+        name: name,
+        phoneNum: phoneNumber,
+      };
+
+      const chapterUpdate: ChapterUpdate = {
+        name: chapterName,
+        contact: contact,
+        address: {
+          street: street,
+          city: city,
+          state: state,
+          zipCode: zip,
+          country: country,
+        },
+        website: website,
+        facebook: facebook,
+        instagram: instagram,
+        maintenanceEnabled: maintenanceEnabled,
+        maintenanceType: maintenanceType,
+        maintenancePeriod: {
+          duration: maintenanceDuration,
+          unit: maintenanceUnit,
+        },
+      };
+
+      await updateUserProfile(userUpdate, chapterUpdate);
+
       // TODO: notification of succesful update here
     } else {
       // TODO: notification of failed update here
-      return;
     }
   };
 
@@ -112,17 +181,6 @@ function ChapterProfilePage() {
                       onChange={(e) => setName(e.target.value)}
                     />
                   </FormControl>
-                  <FormControl id="calendly" isRequired>
-                    <FormLabel fontSize="sm">Calendly</FormLabel>
-                    <Input
-                      type="url"
-                      fontSize="sm"
-                      width={320}
-                      placeholder="calendly.com/"
-                      value={calendly}
-                      onChange={(e) => setCalendly(e.target.value)}
-                    />
-                  </FormControl>
                 </VStack>
                 <FormControl id="phone-number">
                   <FormLabel fontSize="sm">Phone Number</FormLabel>
@@ -157,17 +215,6 @@ function ChapterProfilePage() {
                       placeholder="Chapter Name"
                       value={chapterName}
                       onChange={(e) => setChapterName(e.target.value)}
-                    />
-                  </FormControl>
-                  <FormControl id="chapter-email" isRequired>
-                    <FormLabel fontSize="sm">Email</FormLabel>
-                    <Input
-                      type="email"
-                      fontSize="sm"
-                      width={320}
-                      placeholder="chapter@email.com"
-                      value={chapterEmail}
-                      onChange={(e) => setChapterEmail(e.target.value)}
                     />
                   </FormControl>
                   <FormControl id="location" isRequired>
@@ -260,47 +307,6 @@ function ChapterProfilePage() {
                       onChange={(e) => setInstagram(e.target.value)}
                     />
                   </FormControl>
-                  <FormControl id="limit" isRequired>
-                    <FormLabel fontSize="sm">Project Limit</FormLabel>
-                    <Input
-                      type="number"
-                      fontSize="sm"
-                      width={320}
-                      placeholder="Enter a number"
-                      value={projectLimit}
-                      onChange={(e) => setProjectLimit(e.target.value)}
-                    />
-                  </FormControl>
-                  <FormControl id="products" isRequired>
-                    <FormLabel fontSize="sm">Chapter Products</FormLabel>
-                    <CheckboxGroup value={chapterProjects}>
-                      <HStack spacing={4}>
-                        {Object.values(ProjectType).map((type) => (
-                          <Checkbox
-                            key={type}
-                            size="sm"
-                            value={type}
-                            onChange={(e) => {
-                              const isChecked = e.target.checked;
-
-                              let newProjects = [...chapterProjects];
-                              if (isChecked) {
-                                newProjects.push(type);
-                              } else {
-                                newProjects = newProjects.filter(
-                                  (t) => t !== type
-                                );
-                              }
-
-                              setChapterProjects(newProjects);
-                            }}
-                          >
-                            {type}
-                          </Checkbox>
-                        ))}
-                      </HStack>
-                    </CheckboxGroup>
-                  </FormControl>
                 </VStack>
               </Flex>
             </VStack>
@@ -318,36 +324,6 @@ function ChapterProfilePage() {
                   Customize your project process for nonprofits to follow.
                 </Text>
               </Box>
-              <CheckboxGroup value={projectProcess}>
-                <VStack align="start" spacing={2}>
-                  {Object.values(NonprofitStage).map((stage) => {
-                    const isRequired = requiredStages.includes(stage);
-
-                    return (
-                      <Checkbox
-                        key={stage}
-                        isDisabled={isRequired}
-                        size="md"
-                        value={stage}
-                        onChange={(e) => {
-                          const isChecked = e.target.checked;
-
-                          let newProcess = [...projectProcess];
-                          if (isChecked) {
-                            newProcess.push(stage);
-                          } else {
-                            newProcess = newProcess.filter((s) => s !== stage);
-                          }
-
-                          setProjectProcess(newProcess);
-                        }}
-                      >
-                        {isRequired ? `${stage} (Required)` : stage}
-                      </Checkbox>
-                    );
-                  })}
-                </VStack>
-              </CheckboxGroup>
             </VStack>
             <Button
               variant="primary"
