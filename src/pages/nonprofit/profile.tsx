@@ -16,7 +16,7 @@ import { updateNonprofit } from "src/actions/Nonprofit";
 import { getUserProfile, updateUserProfile } from "src/actions/User";
 import { states, countries } from "src/utils/constants";
 import { showError, showInfo } from "src/utils/notifications";
-import { Nonprofit, NonprofitUpdate, UserUpdate } from "src/utils/types";
+import { Nonprofit, NonprofitUpdate, Role, UserUpdate } from "src/utils/types";
 
 function NonprofitProfilePage() {
   const contacts = ["Joyce Shen (joyce.chen@example.com)"];
@@ -85,24 +85,28 @@ function NonprofitProfilePage() {
         phoneNum: phoneNumber,
       };
 
-      const nonprofitUpdate: NonprofitUpdate = {
-        name: nonprofitName,
-        contact: contact,
-        address: {
-          street: street,
-          city: city,
-          state: state,
-          zipCode: zip,
-          country: country,
-        },
-        website: website,
-        mission: mission,
-      };
+      if (!user.roles.includes(Role.NONPROFIT_ADMIN)) {
+        showError("You must be a nonprofit admin to modify nonprofit info!");
+      } else {
+        const nonprofitUpdate: NonprofitUpdate = {
+          name: nonprofitName,
+          contact: contact,
+          address: {
+            street: street,
+            city: city,
+            state: state,
+            zipCode: zip,
+            country: country,
+          },
+          website: website,
+          mission: mission,
+        };
 
-      await updateUserProfile(userUpdate, nonprofitUpdate);
-      // Do I need this?
-      await updateNonprofit(nonprofitUpdate);
-      showInfo("Your data has been saved successfully!");
+        await updateUserProfile(userUpdate, nonprofitUpdate);
+        // Do I need this?
+        await updateNonprofit(nonprofitUpdate);
+        showInfo("Your data has been saved successfully!");
+      }
     } else {
       showError("Please fill out all required fields!");
     }
