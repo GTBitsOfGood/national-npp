@@ -12,10 +12,15 @@ import {
   Select,
   Button,
   Box,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
 } from "@chakra-ui/react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { getUserProfile, updateUserProfile } from "src/actions/User";
-import { states, countries } from "src/utils/constants";
+import { states, countries, maintenanceUnits } from "src/utils/constants";
 import {
   NonprofitStage,
   ProjectType,
@@ -45,7 +50,6 @@ function ChapterProfilePage() {
   const [maintenanceType, setMaintenanceType] = useState<MaintenanceType[]>([]);
   const [maintenanceDuration, setMaintenanceDuration] = useState(1);
   const [maintenanceUnit, setMaintenanceUnit] = useState("month");
-
   useEffect(() => {
     async function preloadFields() {
       const user = await getUserProfile();
@@ -217,8 +221,20 @@ function ChapterProfilePage() {
                       onChange={(e) => setChapterName(e.target.value)}
                     />
                   </FormControl>
+                  <FormControl id="contact" isRequired>
+                    <FormLabel fontSize="sm">Contact</FormLabel>
+                    <Select
+                      fontSize="sm"
+                      width={320}
+                      value={contact}
+                      onChange={(e) => setContact(e.target.value)}
+                      //TODO: Add a query to get all users get all users (name and email)
+                      //where chapterId is the same as the chapterId of the user currently on the profile page.
+                      //So you would have an array of objects like [{ id: 1, name: User1, email: user1@gmail.com }, {id: 2, name: User2, email: user2@gmail.com}].
+                    />
+                  </FormControl>
                   <FormControl id="location" isRequired>
-                    <FormLabel fontSize="sm">Location</FormLabel>
+                    <FormLabel fontSize="sm">Address</FormLabel>
                     <VStack spacing={3}>
                       <Input
                         type="text"
@@ -261,8 +277,8 @@ function ChapterProfilePage() {
                       <Select
                         fontSize="sm"
                         width={320}
-                        value={country}
-                        onChange={(e) => setCountry(e.target.value)}
+                        value={maintenanceUnit}
+                        onChange={(e) => setMaintenanceUnit(e.target.value)}
                       >
                         {countries.map((country) => (
                           <option key={country} value={country}>
@@ -275,34 +291,34 @@ function ChapterProfilePage() {
                 </VStack>
                 <VStack spacing={5}>
                   <FormControl id="website">
-                    <FormLabel fontSize="sm">Website</FormLabel>
+                    <FormLabel fontSize="sm">Website URL (Optional)</FormLabel>
                     <Input
                       type="url"
                       fontSize="sm"
                       width={320}
-                      placeholder="chapter.org"
+                      placeholder="www.example.com"
                       value={website}
                       onChange={(e) => setWebsite(e.target.value)}
                     />
                   </FormControl>
                   <FormControl id="facebook">
-                    <FormLabel fontSize="sm">Facebook</FormLabel>
+                    <FormLabel fontSize="sm">Facebook Username</FormLabel>
                     <Input
                       type="url"
                       fontSize="sm"
                       width={320}
-                      placeholder="facebook.com/"
+                      placeholder=""
                       value={facebook}
                       onChange={(e) => setFacebook(e.target.value)}
                     />
                   </FormControl>
                   <FormControl id="instagram">
-                    <FormLabel fontSize="sm">Instagram</FormLabel>
+                    <FormLabel fontSize="sm">Instagram Username</FormLabel>
                     <Input
                       type="url"
                       fontSize="sm"
                       width={320}
-                      placeholder="instagram.com/"
+                      placeholder=""
                       value={instagram}
                       onChange={(e) => setInstagram(e.target.value)}
                     />
@@ -311,9 +327,10 @@ function ChapterProfilePage() {
               </Flex>
             </VStack>
             <VStack align="start" spacing={5}>
+              <Checkbox size="md">Enable Maintenance</Checkbox>
               <Box>
                 <Text alignSelf="flex-start" fontSize="md" fontWeight={700}>
-                  Project Process Customization
+                  Maintenance
                 </Text>
                 <Text
                   alignSelf="flex-start"
@@ -321,9 +338,51 @@ function ChapterProfilePage() {
                   fontWeight={400}
                   color="secondaryText"
                 >
-                  Customize your project process for nonprofits to follow.
+                  Please specify the kind of maintenance your chapter is willing
+                  to support and a maintenance
                 </Text>
               </Box>
+              <Box>
+                <Text alignSelf="flex-start" fontSize="md" fontWeight={400}>
+                  Maintenance Type
+                </Text>
+              </Box>
+              <HStack align="start" spacing={6}>
+                <Checkbox size="md">Bug Fixes</Checkbox>
+                <Checkbox size="md">New Features</Checkbox>
+              </HStack>
+              <Box>
+                <Text alignSelf="flex-start" fontSize="md" fontWeight={400}>
+                  Maintenance Period (after project is marked Complete)
+                </Text>
+              </Box>
+              <HStack>
+                <NumberInput
+                  defaultValue={1}
+                  min={1}
+                  max={12}
+                  width={90}
+                  size="md"
+                >
+                  <NumberInputField />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
+                </NumberInput>
+                <Select
+                  fontSize="xs"
+                  width={120}
+                  value={maintenanceUnit}
+                  onChange={(e) => setMaintenanceUnit(e.target.value)}
+                >
+                  {maintenanceUnits.map((maintenanceUnit) => (
+                    <option key={maintenanceUnit} value={maintenanceUnit}>
+                      {maintenanceUnit}
+                    </option>
+                  ))}
+                </Select>
+              </HStack>
             </VStack>
             <Button
               variant="primary"

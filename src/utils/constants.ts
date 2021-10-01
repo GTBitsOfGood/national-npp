@@ -61,3 +61,5 @@ export const states = [
 ];
 
 export const countries = ["United States"];
+
+export const maintenanceUnits = ["Week(s)", "Month(s)", "Year(s)"];
