@@ -5,107 +5,95 @@ import {
   HStack,
   Avatar,
   FormControl,
+  FormErrorMessage,
   FormLabel,
   Input,
   Select,
   Button,
   Textarea,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { updateNonprofit } from "src/actions/Nonprofit";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 import { getUserProfile, updateUserProfile } from "src/actions/User";
 import { states, countries } from "src/utils/constants";
 import { showError, showInfo } from "src/utils/notifications";
 import { Nonprofit, NonprofitUpdate, UserUpdate } from "src/utils/types";
 
-function NonprofitProfilePage() {
-  const contacts = ["Joyce Shen (joyce.chen@example.com)"];
-  const [name, setName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+interface FormData {
+  name: string;
+  phoneNumber: string;
+  nonprofitName: string;
+  contact: string; // A user id
+  street: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  country: string;
+  website: string;
+  mission: string;
+}
 
-  const [nonprofitName, setNonprofitName] = useState("");
-  const [website, setWebsite] = useState("");
-  const [street, setStreet] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState(states[0]);
-  const [zip, setZip] = useState("");
-  const [country, setCountry] = useState(countries[0]);
-  const [contact, setContact] = useState("");
-  const [mission, setMission] = useState("");
+function NonprofitProfilePage() {
+  const {
+    handleSubmit,
+    register,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm<FormData>();
+
+  const contacts = ["Joyce Shen (joyce.chen@example.com)"];
 
   useEffect(() => {
     async function preloadData() {
       const user = await getUserProfile();
-      if (user.name) {
-        setName(user.name);
-      }
-      if (user.phoneNum) {
-        setPhoneNumber(user.phoneNum);
-      }
-
       const nonprofit = user.nonprofit as Nonprofit;
-      setNonprofitName(nonprofit.name);
-      setStreet(nonprofit.address.street);
-      setCity(nonprofit.address.city);
-      setState(nonprofit.address.state);
-      setZip(nonprofit.address.zipCode);
-      setCountry(nonprofit.address.country);
-      setContact(nonprofit.contact);
-      if (nonprofit.website) {
-        setWebsite(nonprofit.website);
-      }
-      if (nonprofit.mission) {
-        setMission(nonprofit.mission);
-      }
+
+      reset({
+        name: user.name,
+        phoneNumber: user.phoneNum,
+        nonprofitName: nonprofit.name,
+        contact: nonprofit.contact,
+        street: nonprofit.address.street,
+        city: nonprofit.address.city,
+        state: nonprofit.address.state,
+        zipCode: nonprofit.address.zipCode,
+        country: nonprofit.address.country,
+        website: nonprofit.website ?? "",
+        mission: nonprofit.mission ?? "",
+      });
     }
-    preloadData().catch((error) => {
-      console.log(error);
+
+    preloadData().catch((e) => {
+      const error = e as Error;
+      showError(error.message);
     });
-  }, []);
+  }, [reset]);
 
-  const inputValidation = (): boolean => {
-    return (
-      name !== "" &&
-      nonprofitName !== "" &&
-      street !== "" &&
-      city !== "" &&
-      state !== "" &&
-      zip !== "" &&
-      country !== "" &&
-      contact !== ""
-    );
-  };
+  const submitData = async (data: FormData) => {
+    // How else can you manipulate the objects passed to register on each input to ensure this data is safe?
+    const userUpdate: UserUpdate = {
+      name: data.name,
+      phoneNum: data.phoneNumber,
+    };
 
-  const submitData = async () => {
-    if (inputValidation()) {
-      const user = await getUserProfile();
-      const userUpdate: UserUpdate = {
-        ...user,
-        name: name,
-        phoneNum: phoneNumber,
-      };
+    const nonprofitUpdate: NonprofitUpdate = {
+      name: data.nonprofitName,
+      contact: data.contact,
+      address: {
+        street: data.street,
+        city: data.city,
+        state: data.state,
+        zipCode: data.zipCode,
+        country: data.country,
+      },
+      website: data.website,
+      mission: data.mission,
+    };
 
-      const nonprofitUpdate: NonprofitUpdate = {
-        name: nonprofitName,
-        contact: contact,
-        address: {
-          street: street,
-          city: city,
-          state: state,
-          zipCode: zip,
-          country: country,
-        },
-        website: website,
-        mission: mission,
-      };
+    // Remember, what happens if the update fails?
+    await updateUserProfile(userUpdate, nonprofitUpdate);
 
-      await updateUserProfile(userUpdate, nonprofitUpdate);
-      // Do I need this?
-      await updateNonprofit(nonprofitUpdate);
-      showInfo("Your data has been saved successfully!");
-    } else {
-      showError("Please fill out all required fields!");
-    }
+    showInfo("Your data has been saved successfully!");
   };
 
   return (
@@ -120,184 +108,218 @@ function NonprofitProfilePage() {
           >
             Profile
           </Text>
-          <VStack
-            minW={{ base: 425, md: 800 }}
-            p={12}
-            border="1px solid #BCC5D1"
-            borderRadius={10}
-            direction="column"
-            backgroundColor="surface"
-            spacing={10}
-            align="stretch"
-          >
-            <Avatar alignSelf="center" width="80px" height="80px" />
-            <VStack align="start" spacing={5}>
-              <Text alignSelf="flex-start" fontSize="md" fontWeight={700}>
-                User Information
-              </Text>
-              <Flex direction={{ base: "column", md: "row" }}>
-                <VStack
-                  direction="column"
-                  spacing={5}
-                  mr={{ base: 0, md: 5 }}
-                  mb={{ base: 5, md: 0 }}
-                >
-                  <FormControl id="name" isRequired>
-                    <FormLabel fontSize="sm">Name</FormLabel>
+          <form onSubmit={handleSubmit(submitData)}>
+            <VStack
+              minW={{ base: 425, md: 800 }}
+              p={12}
+              border="1px solid #BCC5D1"
+              borderRadius={10}
+              direction="column"
+              backgroundColor="surface"
+              spacing={10}
+              align="stretch"
+            >
+              <Avatar alignSelf="center" width="80px" height="80px" />
+              <VStack align="start" spacing={5}>
+                <Text alignSelf="flex-start" fontSize="lg" fontWeight={700}>
+                  User Information
+                </Text>
+                <Flex direction={{ base: "column", md: "row" }}>
+                  <VStack
+                    direction="column"
+                    spacing={5}
+                    mr={{ base: 0, md: 5 }}
+                    mb={{ base: 5, md: 0 }}
+                  >
+                    <FormControl isInvalid={errors.name}>
+                      <FormLabel>Name</FormLabel>
+                      <Input
+                        id="name"
+                        width={320}
+                        {...register("name", {
+                          required: "Please enter a name.",
+                        })}
+                      />
+                      <FormErrorMessage>
+                        {errors.name && errors.name.message}
+                      </FormErrorMessage>
+                    </FormControl>
+                  </VStack>
+                  <FormControl isInvalid={errors.phoneNumber}>
+                    <FormLabel>Phone Number</FormLabel>
                     <Input
-                      type="name"
-                      fontSize="sm"
+                      id="phoneNumber"
                       width={320}
-                      placeholder="Full Name"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
+                      {...register("phoneNumber", {
+                        required: "Please enter a phone number.",
+                      })}
                     />
+                    <FormErrorMessage>
+                      {errors.phoneNumber && errors.phoneNumber.message}
+                    </FormErrorMessage>
                   </FormControl>
-                </VStack>
-                <FormControl id="phone-number">
-                  <FormLabel fontSize="sm">Phone Number (Optional)</FormLabel>
-                  <Input
-                    type="tel"
-                    fontSize="sm"
-                    width={320}
-                    placeholder="XXX-XXX-XXXX"
-                    value={phoneNumber}
-                    onChange={(e) => setPhoneNumber(e.target.value)}
-                  />
-                </FormControl>
-              </Flex>
-            </VStack>
-            <VStack align="start" spacing={5}>
-              <Text alignSelf="flex-start" fontSize="md" fontWeight={700}>
-                Nonprofit Information
-              </Text>
-              <Flex direction={{ base: "column", md: "row" }}>
-                <VStack
-                  direction="column"
-                  spacing={5}
-                  mr={{ base: 0, md: 5 }}
-                  mb={{ base: 5, md: 0 }}
-                >
-                  <FormControl id="nonprofit-name" isRequired>
-                    <FormLabel fontSize="sm">Nonprofit Name</FormLabel>
-                    <Input
-                      type="name"
-                      fontSize="sm"
-                      width={320}
-                      placeholder="Chapter Name"
-                      value={nonprofitName}
-                      onChange={(e) => setNonprofitName(e.target.value)}
-                    />
-                  </FormControl>
-                  <FormControl id="address" isRequired>
-                    <FormLabel fontSize="sm">Address</FormLabel>
+                </Flex>
+              </VStack>
+              <VStack align="start" spacing={5}>
+                <Text alignSelf="flex-start" fontSize="lg" fontWeight={700}>
+                  Nonprofit Information
+                </Text>
+                <Flex direction={{ base: "column", md: "row" }}>
+                  <VStack
+                    direction="column"
+                    spacing={5}
+                    mr={{ base: 0, md: 5 }}
+                    mb={{ base: 5, md: 0 }}
+                  >
+                    <FormControl isInvalid={errors.nonprofitName}>
+                      <FormLabel>Nonprofit Name</FormLabel>
+                      <Input
+                        id="nonprofitName"
+                        width={320}
+                        {...register("nonprofitName", {
+                          required: "Please enter a nonprofit name.",
+                        })}
+                      />
+                      <FormErrorMessage>
+                        {errors.nonprofitName && errors.nonprofitName.message}
+                      </FormErrorMessage>
+                    </FormControl>
                     <VStack spacing={3}>
-                      <Input
-                        type="text"
-                        fontSize="sm"
-                        width={320}
-                        placeholder="Street"
-                        value={street}
-                        onChange={(e) => setStreet(e.target.value)}
-                      />
-                      <Input
-                        type="text"
-                        fontSize="sm"
-                        width={320}
-                        placeholder="City"
-                        value={city}
-                        onChange={(e) => setCity(e.target.value)}
-                      />
+                      <FormControl isInvalid={errors.street}>
+                        <FormLabel>Address</FormLabel>
+                        <Input
+                          id="street"
+                          width={320}
+                          placeholder="Street"
+                          {...register("street", {
+                            required: "Please enter a street.",
+                          })}
+                        />
+                      </FormControl>
+                      <FormControl isInvalid={errors.city}>
+                        <Input
+                          id="city"
+                          width={320}
+                          placeholder="City"
+                          {...register("city", {
+                            required: "Please enter a city.",
+                          })}
+                        />
+                      </FormControl>
                       <HStack>
+                        <FormControl isInvalid={errors.state}>
+                          <Select
+                            id="state"
+                            width={190}
+                            placeholder="State"
+                            {...register("state", {
+                              required: "Please enter a state.",
+                            })}
+                          >
+                            {states.map((state) => (
+                              <option key={state} value={state}>
+                                {state}
+                              </option>
+                            ))}
+                          </Select>
+                        </FormControl>
+                        <FormControl isInvalid={errors.zipCode}>
+                          <Input
+                            id="zipCode"
+                            width={120}
+                            placeholder="Zip code"
+                            {...register("zipCode", {
+                              required: "Please enter a zip code.",
+                            })}
+                          />
+                        </FormControl>
+                      </HStack>
+                      <FormControl isInvalid={errors.country}>
                         <Select
-                          fontSize="sm"
-                          width={190}
-                          value={state}
-                          placeholder="Select State"
-                          onChange={(e) => setState(e.target.value)}
+                          id="country"
+                          width={320}
+                          placeholder="Country"
+                          {...register("country", {
+                            required: "Please enter a country.",
+                          })}
                         >
-                          {states.map((state) => (
-                            <option key={state} value={state}>
-                              {state}
+                          {countries.map((country) => (
+                            <option key={country} value={country}>
+                              {country}
                             </option>
                           ))}
                         </Select>
-                        <Input
-                          type="text"
-                          fontSize="sm"
-                          width={120}
-                          placeholder="ZIP"
-                          value={zip}
-                          onChange={(e) => setZip(e.target.value)}
-                        />
-                      </HStack>
+                        <FormErrorMessage>
+                          {(errors.street && errors.street.message) ||
+                            (errors.city && errors.city.message) ||
+                            (errors.state && errors.state.message) ||
+                            (errors.zipCode && errors.zipCode.message) ||
+                            (errors.country && errors.country.message)}
+                        </FormErrorMessage>
+                      </FormControl>
+                    </VStack>
+                  </VStack>
+                  <VStack spacing={5}>
+                    <FormControl isInvalid={errors.contact}>
+                      <FormLabel>Contact</FormLabel>
                       <Select
-                        fontSize="sm"
+                        id="contact"
                         width={320}
-                        placeholder="Select Country"
-                        value={country}
-                        onChange={(e) => setCountry(e.target.value)}
+                        placeholder="Contact"
+                        {...register("contact", {
+                          required: "Please enter a contact.",
+                        })}
                       >
-                        {countries.map((country) => (
-                          <option key={country} value={country}>
-                            {country}
+                        {contacts.map((contact) => (
+                          <option key={contact} value={contact}>
+                            {contact}
                           </option>
                         ))}
                       </Select>
-                    </VStack>
-                  </FormControl>
-                </VStack>
-                <VStack spacing={5}>
-                  <FormControl id="nonprofit-contact" isRequired>
-                    <FormLabel fontSize="sm">Contact</FormLabel>
-                    <Select
-                      fontSize="sm"
-                      width={320}
-                      value={contact}
-                      onChange={(e) => setContact(e.target.value)}
-                    >
-                      {contacts.map((contact) => (
-                        <option key={contact} value={contact}>
-                          {contact}
-                        </option>
-                      ))}
-                    </Select>
-                  </FormControl>
-                  <FormControl id="website">
-                    <FormLabel fontSize="sm">Website URL (Optional)</FormLabel>
-                    <Input
-                      type="url"
-                      fontSize="sm"
-                      width={320}
-                      placeholder="facebook.com/"
-                      value={website}
-                      onChange={(e) => setWebsite(e.target.value)}
-                    />
-                  </FormControl>
-                </VStack>
-              </Flex>
+                      <FormErrorMessage>
+                        {errors.contact && errors.contact.message}
+                      </FormErrorMessage>
+                    </FormControl>
+                    <FormControl isInvalid={errors.website}>
+                      <FormLabel>Website URL (Optional)</FormLabel>
+                      <Input
+                        id="website"
+                        width={320}
+                        {...register("website", {
+                          required: "Please enter a website.",
+                        })}
+                      />
+                      <FormErrorMessage>
+                        {errors.website && errors.website.message}
+                      </FormErrorMessage>
+                    </FormControl>
+                  </VStack>
+                </Flex>
+              </VStack>
+              <FormControl isInvalid={errors.mission}>
+                <FormLabel>Organization Mission (Optional)</FormLabel>
+                <Textarea
+                  id="mission"
+                  resize="none"
+                  {...register("mission", {
+                    required: "Please enter a mission statement.",
+                  })}
+                />
+                <FormErrorMessage>
+                  {errors.mission && errors.mission.message}
+                </FormErrorMessage>
+              </FormControl>
+              <Button
+                type="submit"
+                variant="primary"
+                alignSelf="flex-end"
+                size="md"
+                isLoading={isSubmitting}
+              >
+                Save Changes
+              </Button>
             </VStack>
-            <FormControl id="mission">
-              <FormLabel fontSize="sm">
-                {" "}
-                Organization Mission (Optional){" "}
-              </FormLabel>
-              <Textarea
-                resize="none"
-                value={mission}
-                onChange={(e) => setMission(e.target.value)}
-                size="sm"
-              />
-            </FormControl>
-            <Button
-              variant="primary"
-              alignSelf="flex-end"
-              size="md"
-              onClick={submitData}
-            >
-              Save Changes
-            </Button>
-          </VStack>
+          </form>
         </VStack>
       </Flex>
     </Flex>

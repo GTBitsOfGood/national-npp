@@ -142,10 +142,7 @@ export type ProjectCreate = Pick<
 export type NonprofitProjectUpdate = Pick<Partial<Project>, "status">;
 export type ChapterProjectUpdate = Pick<Partial<Project>, "status" | "contact">;
 
-export type UserUpdate = Pick<
-  Partial<User>,
-  "name" | "image" | "phoneNum" | "calendly"
->;
+export type UserUpdate = Pick<Partial<User>, "name" | "image" | "phoneNum">;
 
 export type ChapterUpdate = Omit<Partial<Chapter>, "_id">;
 
