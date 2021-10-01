@@ -32,9 +32,8 @@ export interface Chapter {
   website?: string;
   facebook?: string;
   instagram?: string;
-  maintenanceEnabled: boolean;
   maintenanceType: Array<MaintenanceType>;
-  maintenancePeriod: MaintenancePeriod;
+  maintenancePeriod: number;
 }
 
 export interface Nonprofit {
