@@ -20,10 +20,15 @@ import {
   NumberInputStepper,
   Tooltip,
 } from "@chakra-ui/react";
-import React, { useEffect } from "react";
+import { Types } from "mongoose";
+import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { BsInfoCircle } from "react-icons/bs";
-import { getUserProfile, updateUserProfile } from "src/actions/User";
+import {
+  getUserProfile,
+  getChapterUsers,
+  updateUserProfile,
+} from "src/actions/User";
 import { states, countries } from "src/utils/constants";
 import {
   UserUpdate,
@@ -36,11 +41,11 @@ interface FormData {
   name: string;
   phoneNumber: string;
   chapterName: string;
-  contact: string; // A user id
+  contact: string;
   street: string;
   city: string;
   state: string;
-  zipCode: string;
+  zipCode: number;
   country: string;
   website: string;
   facebook: string;
@@ -49,19 +54,11 @@ interface FormData {
   maintenancePeriod: number;
 }
 
-// TODO: Remove this after getting actual contacts
-const exampleContacts = [
-  {
-    id: "1",
-    name: "Justin",
-    email: "justin@gmail.com",
-  },
-  {
-    id: "2",
-    name: "Cullen",
-    email: "cullen@gmail.com",
-  },
-];
+interface Contact {
+  id: string;
+  name: string;
+  email: string;
+}
 
 function ChapterProfilePage() {
   const {
@@ -72,31 +69,43 @@ function ChapterProfilePage() {
     reset,
   } = useForm<FormData>();
 
+  const [contactList, setContactList] = useState<Contact[]>([]);
+
   useEffect(() => {
     async function preloadFields() {
       const user = await getUserProfile();
       const chapter = user.chapter as Chapter;
 
+      const contacts = await getChapterUsers();
+      setContactList(
+        contacts.map((user) => {
+          return {
+            id: user._id.toString(),
+            name: user.name,
+            email: user.email,
+          };
+        })
+      );
+
       reset({
         name: user.name,
-        phoneNumber: user.phoneNum,
+        phoneNumber: user.phoneNum ?? "",
         chapterName: chapter.name,
-        contact: chapter.contact,
+        contact: chapter.contact.toString(),
         street: chapter.address.street,
         city: chapter.address.city,
         state: chapter.address.state,
         zipCode: chapter.address.zipCode,
         country: chapter.address.country,
-        website: chapter.website,
+        website: chapter.website ?? "",
         facebook: chapter.facebook,
         instagram: chapter.instagram,
-        maintenanceTypes: chapter.maintenanceType,
+        maintenanceTypes: chapter.maintenanceTypes,
         maintenancePeriod: chapter.maintenancePeriod,
       });
     }
 
-    preloadFields().catch((e) => {
-      const error = e as Error;
+    preloadFields().catch((error: Error) => {
       console.log(error.message);
     });
   }, [reset]);
@@ -109,7 +118,7 @@ function ChapterProfilePage() {
 
     const chapterUpdate: ChapterUpdate = {
       name: values.chapterName,
-      contact: values.contact,
+      contact: Types.ObjectId(values.contact),
       address: {
         street: values.street,
         city: values.city,
@@ -120,12 +129,16 @@ function ChapterProfilePage() {
       website: values.website,
       facebook: values.facebook,
       instagram: values.instagram,
-      maintenanceType: values.maintenanceTypes as Array<MaintenanceType>,
+      maintenanceTypes: values.maintenanceTypes as Array<MaintenanceType>,
       maintenancePeriod: values.maintenancePeriod,
     };
 
-    // Remember, this update could possibly fail
-    await updateUserProfile(userUpdate, chapterUpdate);
+    try {
+      await updateUserProfile(userUpdate, chapterUpdate);
+    } catch (e) {
+      const error = e as Error;
+      // TODO: notification of failed update here
+    }
 
     // TODO: notification of succesful update here
   };
@@ -165,7 +178,7 @@ function ChapterProfilePage() {
                     mr={{ base: 0, md: 5 }}
                     mb={{ base: 5, md: 0 }}
                   >
-                    <FormControl isInvalid={errors.name}>
+                    <FormControl isInvalid={Boolean(errors.name)}>
                       <FormLabel>Name</FormLabel>
                       <Input
                         id="name"
@@ -179,7 +192,7 @@ function ChapterProfilePage() {
                       </FormErrorMessage>
                     </FormControl>
                   </VStack>
-                  <FormControl isInvalid={errors.phoneNumber}>
+                  <FormControl isInvalid={Boolean(errors.phoneNumber)}>
                     <FormLabel>Phone Number</FormLabel>
                     <Input
                       id="phoneNumber"
@@ -205,7 +218,7 @@ function ChapterProfilePage() {
                     mr={{ base: 0, md: 5 }}
                     mb={{ base: 5, md: 0 }}
                   >
-                    <FormControl isInvalid={errors.chapterName}>
+                    <FormControl isInvalid={Boolean(errors.chapterName)}>
                       <FormLabel>Chapter Name</FormLabel>
                       <Input
                         id="nonprofitName"
@@ -218,7 +231,7 @@ function ChapterProfilePage() {
                         {errors.chapterName && errors.chapterName.message}
                       </FormErrorMessage>
                     </FormControl>
-                    <FormControl isInvalid={errors.contact}>
+                    <FormControl isInvalid={Boolean(errors.contact)}>
                       <FormLabel>Contact</FormLabel>
                       <Select
                         id="contact"
@@ -226,9 +239,10 @@ function ChapterProfilePage() {
                         placeholder="Contact"
                         {...register("contact", {
                           required: "Please enter a contact.",
+                          onChange: (e: React.ChangeEvent<HTMLSelectElement>) => e.target.value,
                         })}
                       >
-                        {exampleContacts.map(({ id, name, email }) => (
+                        {contactList.map(({ id, name, email }) => (
                           <option key={id} value={id}>
                             {`${name} (${email})`}
                           </option>
@@ -239,7 +253,7 @@ function ChapterProfilePage() {
                       </FormErrorMessage>
                     </FormControl>
                     <VStack spacing={3}>
-                      <FormControl isInvalid={errors.street}>
+                      <FormControl isInvalid={Boolean(errors.street)}>
                         <FormLabel>Address</FormLabel>
                         <Input
                           id="street"
@@ -250,7 +264,7 @@ function ChapterProfilePage() {
                           })}
                         />
                       </FormControl>
-                      <FormControl isInvalid={errors.city}>
+                      <FormControl isInvalid={Boolean(errors.city)}>
                         <Input
                           id="city"
                           width={320}
@@ -261,7 +275,7 @@ function ChapterProfilePage() {
                         />
                       </FormControl>
                       <HStack>
-                        <FormControl isInvalid={errors.state}>
+                        <FormControl isInvalid={Boolean(errors.state)}>
                           <Select
                             id="state"
                             width={190}
@@ -277,7 +291,7 @@ function ChapterProfilePage() {
                             ))}
                           </Select>
                         </FormControl>
-                        <FormControl isInvalid={errors.zipCode}>
+                        <FormControl isInvalid={Boolean(errors.zipCode)}>
                           <Input
                             id="zipCode"
                             type="number"
@@ -289,7 +303,7 @@ function ChapterProfilePage() {
                           />
                         </FormControl>
                       </HStack>
-                      <FormControl isInvalid={errors.country}>
+                      <FormControl isInvalid={Boolean(errors.country)}>
                         <Select
                           id="country"
                           width={320}
@@ -315,20 +329,18 @@ function ChapterProfilePage() {
                     </VStack>
                   </VStack>
                   <VStack spacing={5}>
-                    <FormControl isInvalid={errors.website}>
+                    <FormControl isInvalid={Boolean(errors.website)}>
                       <FormLabel>Website URL (Optional)</FormLabel>
                       <Input
                         id="website"
                         width={320}
-                        {...register("website", {
-                          required: "Please enter a website.",
-                        })}
+                        {...register("website")}
                       />
                       <FormErrorMessage>
                         {errors.website && errors.website.message}
                       </FormErrorMessage>
                     </FormControl>
-                    <FormControl isInvalid={errors.facebook}>
+                    <FormControl isInvalid={Boolean(errors.facebook)}>
                       <FormLabel>Facebook Username</FormLabel>
                       <Input
                         id="facebook"
@@ -341,7 +353,7 @@ function ChapterProfilePage() {
                         {errors.facebook && errors.facebook.message}
                       </FormErrorMessage>
                     </FormControl>
-                    <FormControl isInvalid={errors.instagram}>
+                    <FormControl isInvalid={Boolean(errors.instagram)}>
                       <FormLabel>Instagram Username</FormLabel>
                       <Input
                         id="instagram"
@@ -372,7 +384,7 @@ function ChapterProfilePage() {
                     maintenance your chapter is willing to support.
                   </Text>
                 </Box>
-                <FormControl isInvalid={errors.maintenancePeriod}>
+                <FormControl isInvalid={Boolean(errors.maintenancePeriod)}>
                   <FormLabel>
                     <HStack>
                       <Text>Time Period</Text>
@@ -413,14 +425,33 @@ function ChapterProfilePage() {
                       errors.maintenancePeriod.message}
                   </FormErrorMessage>
                 </FormControl>
-                <FormControl>
+                <FormControl isInvalid={Boolean(errors.maintenanceTypes)}>
                   <FormLabel>Request Types</FormLabel>
                   <CheckboxGroup>
                     <HStack align="start" spacing={6}>
-                      <Checkbox size="md">Bug Fixes</Checkbox>
-                      <Checkbox size="md">New Features</Checkbox>
+                      <Checkbox
+                        size="md"
+                        value="Bug Fixes"
+                        {...register("maintenanceTypes")}
+                      >
+                        Bug Fixes
+                      </Checkbox>
+                      <Checkbox
+                        size="md"
+                        value="New Features"
+                        {...register("maintenanceTypes")}
+                      >
+                        New Features
+                      </Checkbox>
                     </HStack>
                   </CheckboxGroup>
+                  <FormErrorMessage>
+                    {errors.maintenanceTypes &&
+                      ((errors.maintenanceTypes[0] &&
+                        errors.maintenanceTypes[1].message) ||
+                        (errors.maintenanceTypes[1] &&
+                          errors.maintenanceTypes[1].message))}
+                  </FormErrorMessage>
                 </FormControl>
               </VStack>
               <Button

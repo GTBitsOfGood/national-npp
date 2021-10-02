@@ -19,6 +19,16 @@ export async function getNonprofitUser(userId: Types.ObjectId) {
   return user;
 }
 
+export async function getChapterUsers(chapterId: Types.ObjectId) {
+  await dbConnect();
+
+  const users = await UserModel.find({ chapter: chapterId }).populate(
+    "chapter"
+  );
+
+  return users;
+}
+
 export async function updateChapterUser(
   userId: Types.ObjectId,
   userUpdate: UserUpdate

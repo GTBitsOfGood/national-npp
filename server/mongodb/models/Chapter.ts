@@ -1,6 +1,5 @@
 import mongoose, { Schema } from "mongoose";
 import AddressSchema from "server/mongodb/models/embedded/Address";
-import MaintenancePeriodSchema from "server/mongodb/models/embedded/MaintenancePeriod";
 import { Chapter, MaintenanceType } from "src/utils/types";
 
 const ChapterSchema = new Schema<Chapter>({
@@ -9,19 +8,27 @@ const ChapterSchema = new Schema<Chapter>({
     required: true,
   },
   email: String,
-  contact: String,
+  contact: {
+    type: Schema.Types.ObjectId,
+    required: true,
+  },
   address: AddressSchema,
   website: String,
-  facebook: String,
-  instagram: String,
-  maintenanceEnabled: Boolean,
-  maintenanceType: {
+  facebook: {
+    type: String,
+    required: true,
+  },
+  instagram: {
+    type: String,
+    required: true,
+  },
+  maintenanceTypes: {
     type: [String],
     required: true,
     enum: Object.values(MaintenanceType),
   },
   maintenancePeriod: {
-    type: MaintenancePeriodSchema,
+    type: Number,
     required: true,
   },
 });

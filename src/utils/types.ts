@@ -13,7 +13,7 @@ export interface User {
   id: string;
   email: string;
   emailVerified: Date;
-  name?: string;
+  name: string;
   image?: string;
   phoneNum?: string;
   roles: Array<Role>;
@@ -27,12 +27,12 @@ export interface Chapter {
   _id: Types.ObjectId | string;
   name: string;
   email: string;
-  contact: string;
+  contact: Types.ObjectId;
   address: Address;
   website?: string;
-  facebook?: string;
-  instagram?: string;
-  maintenanceType: Array<MaintenanceType>;
+  facebook: string;
+  instagram: string;
+  maintenanceTypes: Array<MaintenanceType>;
   maintenancePeriod: number;
 }
 
@@ -61,7 +61,7 @@ export interface Address {
   street: string;
   city: string;
   state: string;
-  zipCode: string;
+  zipCode: number;
   country: string;
 }
 
