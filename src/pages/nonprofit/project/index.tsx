@@ -4,6 +4,7 @@ import {
   VStack,
   Heading,
   Box,
+  Link,
   Text,
   Button,
   Modal,
@@ -14,6 +15,10 @@ import {
   ModalFooter,
   ModalCloseButton,
   useDisclosure,
+  Tabs,
+  Tab,
+  TabList,
+  TabPanels,
 } from "@chakra-ui/react";
 import { Step, Steps, useSteps } from "chakra-ui-steps";
 import { Types } from "mongoose";
@@ -25,7 +30,8 @@ import MeetingScheduledImage from "public/images/nonprofit/project/meeting_sched
 import RejectedImage from "public/images/nonprofit/project/rejected.svg";
 import ScheduleMeetingImage from "public/images/nonprofit/project/schedule_meeting.svg";
 import SubmitApplicationImage from "public/images/nonprofit/project/submit_application.svg";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { BsPlus } from "react-icons/bs";
 import { FaEnvelope, FaTimes } from "react-icons/fa";
 import StepCard from "src/components/nonprofit/project/StepCard";
 import {
@@ -307,7 +313,13 @@ function NonprofitProjectPage({ project }: Props) {
   );
 
   return (
-    <Flex h="100%" justify="center" align="center" overflowY="auto">
+    <Flex
+      h="100%"
+      justify="center"
+      overflowY="auto"
+      w="100%"
+      direction={{ base: "column", md: "row" }}
+    >
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent maxW={{ base: "20rem", md: "35rem" }}>
@@ -329,10 +341,82 @@ function NonprofitProjectPage({ project }: Props) {
           </ModalFooter>
         </ModalContent>
       </Modal>
+      <Stack w={{ base: "full", md: "33%" }} spacing="40px" py="10">
+        <Flex justifyContent="space-between" alignItems="center">
+          <Heading>My Projects</Heading>
+          <Link href={"/nonprofit/project/create"}>
+            <Button
+              leftIcon={<BsPlus />}
+              variant="ghost"
+              color="#0069CA"
+              _hover={{ boxShadow: "none" }}
+            >
+              New Project
+            </Button>
+          </Link>
+        </Flex>
+        <Tabs
+          flexGrow={1}
+          display="flex"
+          flexDirection="column"
+          variant="unstyled"
+        >
+          <TabList flex="0 0" borderBottom="1px solid #BCC5D1">
+            <Tab
+              width={120}
+              borderTopLeftRadius={10}
+              borderTopRightRadius={10}
+              border="1px solid none"
+              borderBottom="none"
+              fontWeight={600}
+              _selected={{
+                border: "1px solid #BCC5D1",
+                borderBottom: "none",
+                color: "primary",
+              }}
+              _focus={{
+                boxShadow: "none",
+              }}
+            >
+              Active
+            </Tab>
+            <Tab
+              width={120}
+              height={50}
+              borderTopLeftRadius={10}
+              borderTopRightRadius={10}
+              border="1px solid none"
+              fontWeight={600}
+              _selected={{
+                border: "1px solid #BCC5D1",
+                borderBottom: "none",
+                color: "primary",
+              }}
+              _focus={{
+                boxShadow: "none",
+              }}
+            >
+              Closed
+            </Tab>
+          </TabList>
+
+          <TabPanels
+            borderBottomLeftRadius={10}
+            borderTopRightRadius={10}
+            borderBottomRightRadius={10}
+            minH="200px"
+            overflowX="hidden"
+            overflowY="auto"
+          >
+          </TabPanels>
+        </Tabs>
+      </Stack>
+
       <VStack
-        h="100%"
-        w={{ base: "100%", md: "80%", lg: "65%" }}
+        w={{ base: "full", md: "60%" }}
         pb={{ base: "0", md: "40px" }}
+        h="80%"
+        alignSelf="center"
       >
         <Steps
           activeStep={activeStep}
@@ -352,9 +436,10 @@ function NonprofitProjectPage({ project }: Props) {
           borderColor="border"
           bgColor="surface"
           direction={{ base: "column", md: "row" }}
+          h="full"
           w="full"
         >
-          <Flex direction="column" width={{ base: "100%", md: "50%" }}>
+          <Flex direction="column" flexGrow={1}>
             <VStack alignItems="flex-start" maxW="100%" m={10} spacing={5}>
               <Heading>{tempProject.name}</Heading>
               <VStack align="flex-start" spacing={3}>
