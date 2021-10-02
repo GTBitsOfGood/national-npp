@@ -29,6 +29,7 @@ import {
   getChapterUsers,
   updateUserProfile,
 } from "src/actions/User";
+import { showError, showInfo } from "src/utils/notifications"
 import { states, countries } from "src/utils/constants";
 import {
   UserUpdate,
@@ -135,12 +136,11 @@ function ChapterProfilePage() {
 
     try {
       await updateUserProfile(userUpdate, chapterUpdate);
+      showInfo("Successfully updated profile.");
     } catch (e) {
       const error = e as Error;
-      // TODO: notification of failed update here
+      showError("Could not update profile.");
     }
-
-    // TODO: notification of succesful update here
   };
 
   return (
@@ -239,7 +239,8 @@ function ChapterProfilePage() {
                         placeholder="Contact"
                         {...register("contact", {
                           required: "Please enter a contact.",
-                          onChange: (e: React.ChangeEvent<HTMLSelectElement>) => e.target.value,
+                          onChange: (e: React.ChangeEvent<HTMLSelectElement>) =>
+                            e.target.value,
                         })}
                       >
                         {contactList.map(({ id, name, email }) => (
@@ -345,9 +346,7 @@ function ChapterProfilePage() {
                       <Input
                         id="facebook"
                         width={320}
-                        {...register("facebook", {
-                          required: "Please enter a facebook username.",
-                        })}
+                        {...register("facebook")}
                       />
                       <FormErrorMessage>
                         {errors.facebook && errors.facebook.message}
@@ -358,9 +357,7 @@ function ChapterProfilePage() {
                       <Input
                         id="instagram"
                         width={320}
-                        {...register("instagram", {
-                          required: "Please enter an instagram username.",
-                        })}
+                        {...register("instagram")}
                       />
                       <FormErrorMessage>
                         {errors.instagram && errors.instagram.message}

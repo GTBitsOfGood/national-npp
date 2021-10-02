@@ -14,14 +14,8 @@ const ChapterSchema = new Schema<Chapter>({
   },
   address: AddressSchema,
   website: String,
-  facebook: {
-    type: String,
-    required: true,
-  },
-  instagram: {
-    type: String,
-    required: true,
-  },
+  facebook: String,
+  instagram: String,
   maintenanceTypes: {
     type: [String],
     required: true,

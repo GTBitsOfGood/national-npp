@@ -30,8 +30,8 @@ export interface Chapter {
   contact: Types.ObjectId;
   address: Address;
   website?: string;
-  facebook: string;
-  instagram: string;
+  facebook?: string;
+  instagram?: string;
   maintenanceTypes: Array<MaintenanceType>;
   maintenancePeriod: number;
 }
