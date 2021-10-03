@@ -83,9 +83,17 @@ const tempProject: Project = {
   updatedAt: new Date(),
 };
 
-interface Props {
-  project: Project;
+  useEffect(() => {
+    async function fetchProjects() {
+      const projects = await getNonprofitProjects(active);
+      if (projects.length !== 0 && active) {
+        setCurrProject(projects[0]);
 }
+      setDisplayedProjects(projects);
+      setTimeout(() => setLoading(false), 500);
+    }
+    void fetchProjects();
+  }, [active]);
 
 function NonprofitProjectPage({ project }: Props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
