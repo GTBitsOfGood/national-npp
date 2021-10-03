@@ -1,4 +1,5 @@
 import { FilterQuery, Types } from "mongoose";
+import ChapterModel from "server/mongodb/models/Chapter";
 import ProjectModel from "server/mongodb/models/Project";
 import dbConnect from "server/utils/dbConnect";
 import { displayableProjectStageToChapterStages } from "src/utils/stages";
@@ -9,7 +10,6 @@ import {
   Project,
   ProjectCreate,
 } from "src/utils/types";
-import ChapterModel from "../models/Chapter";
 
 export async function createProject(
   nonprofitId: Types.ObjectId,
