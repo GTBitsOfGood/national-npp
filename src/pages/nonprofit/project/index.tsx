@@ -356,12 +356,20 @@ function NonprofitProjectPage({ project }: Props) {
 
   return (
     <Flex
-      h="100%"
-      justify="center"
+      h={{ base: "fit-content", md: "100%" }}
+      justifyContent="center"
+      alignItems="center"
       overflowY="auto"
       w="100%"
+      bgColor={{ base: "surface", md: "inherit" }}
       direction={{ base: "column", md: "row" }}
     >
+      {/* modal */}
+      {loading ? (
+        <Spinner />
+      ) : (
+        <>
+          {" "}
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent maxW={{ base: "20rem", md: "35rem" }}>
@@ -374,7 +382,7 @@ function NonprofitProjectPage({ project }: Props) {
             </Text>
           </ModalBody>
           <ModalFooter>
-            <Button variant="danger" mr={3}>
+                <Button variant="danger" mr={3} onClick={cancelProject}>
               Cancel Project
             </Button>
             <Button variant="secondary" onClick={onClose}>
@@ -383,9 +391,16 @@ function NonprofitProjectPage({ project }: Props) {
           </ModalFooter>
         </ModalContent>
       </Modal>
-      <Stack w={{ base: "full", md: "33%" }} spacing="40px" py="10">
+          {/* project selection */}
+          <Stack
+            w={{ base: "full", md: "33%" }}
+            spacing={{ base: "5px", md: "40px" }}
+            h={{ md: "80%" }}
+            py="10"
+            px="5"
+          >
         <Flex justifyContent="space-between" alignItems="center">
-          <Heading>My Projects</Heading>
+              <Heading size="lg">My Projects</Heading>
           <Link href={"/nonprofit/project/create"}>
             <Button
               leftIcon={<BsPlus />}
@@ -397,13 +412,24 @@ function NonprofitProjectPage({ project }: Props) {
             </Button>
           </Link>
         </Flex>
+            <Flex display={{ base: "flex", md: "none" }} direction="column">
+              <HStack>
+                <Button variant="link" onClick={() => setActive(true)}>
+                  Active
+                </Button>
+                <Button variant="link" onClick={() => setActive(false)}>
+                  Closed
+                </Button>
+              </HStack>
+              {renderNonProfitProjectCards(true)}
+            </Flex>
         <Tabs
-          flexGrow={1}
-          display="flex"
+              display={{ base: "none", md: "flex" }}
           flexDirection="column"
           variant="unstyled"
+              onChange={(index) => setActive(!index)}
         >
-          <TabList flex="0 0" borderBottom="1px solid #BCC5D1">
+              <TabList borderBottom="1px solid #BCC5D1">
             <Tab
               width={120}
               borderTopLeftRadius={10}
@@ -450,18 +476,27 @@ function NonprofitProjectPage({ project }: Props) {
             overflowX="hidden"
             overflowY="auto"
           >
+                {renderNonProfitProjectCards(false)}
           </TabPanels>
         </Tabs>
       </Stack>
-
+          {/* step card */}
       <VStack
         w={{ base: "full", md: "60%" }}
-        pb={{ base: "0", md: "40px" }}
         h="80%"
         alignSelf="center"
+            px="5"
       >
+            {currProject && Object.keys(currProject).length !== 0 ? (
+              <>
         <Steps
-          activeStep={activeStep}
+                  activeStep={Object.values(DisplayableProjectStage).findIndex(
+                    (stage) =>
+                      stage ===
+                      chapterStageToDisplayableProjectStage(
+                        (currProject as Project).status
+                      )
+                  )}
           colorScheme="blue"
           responsive={false}
           display={{ base: "none", md: "flex" }}
@@ -472,9 +507,9 @@ function NonprofitProjectPage({ project }: Props) {
           ))}
         </Steps>
         <Stack
-          p="5"
+                  p={{ md: "5" }}
           rounded="lg"
-          border="1px"
+                  border={{ base: "none", md: "1px" }}
           borderColor="border"
           bgColor="surface"
           direction={{ base: "column", md: "row" }}
@@ -482,35 +517,44 @@ function NonprofitProjectPage({ project }: Props) {
           w="full"
         >
           <Flex direction="column" flexGrow={1}>
-            <VStack alignItems="flex-start" maxW="100%" m={10} spacing={5}>
-              <Heading>{tempProject.name}</Heading>
-              <VStack align="flex-start" spacing={3}>
+                    <VStack
+                      alignItems="flex-start"
+                      maxW="100%"
+                      m={{ md: 10 }}
+                      spacing={5}
+                    >
+                      <Heading>{currProject.name}</Heading>
+                      <Flex
+                        direction={{ base: "row", md: "column" }}
+                        flexWrap={"wrap"}
+                        w="full"
+                        align="flex-start"
+                      >
+                        <Box w={{ base: "50%", md: "full" }} my={{ md: 3 }}>
+                          <Text fontWeight="bold">Chapter Partner</Text>
+                          <Text>
+                            {(currProject.chapter as Chapter).name}
+                          </Text>{" "}
+                        </Box>
+                        <Box w={{ base: "50%", md: "full" }} my={{ md: 3 }}>
+                          <Text fontWeight="bold"> Chapter Contact</Text>
+                          <Text>{(currProject.chapter as Chapter).email}</Text>
                 <Text>
-                  <Box as={"span"} fontWeight="bold">
-                    Chapter Partner:
-                  </Box>{" "}
-                  {chapterPartner.name}
+                            fb @{(currProject.chapter as Chapter).facebook}
                 </Text>
                 <Text>
-                  <Box as="span" fontWeight="bold">
-                    Product Type:
-                  </Box>{" "}
-                  {tempProject.type}
+                            ig @{(currProject.chapter as Chapter).instagram}
                 </Text>
-              </VStack>
+                        </Box>
+                        <Box w={{ base: "50%", md: "full" }} my={{ md: 3 }}>
+                          <Text fontWeight="bold"> Product Type</Text>
+                          <Text>{currProject.type}</Text>
+                        </Box>
+                      </Flex>
               <VStack align="flex-start" spacing={0}>
                 <Button
-                  leftIcon={<FaEnvelope />}
                   variant="secondary"
-                  onClick={() => window.open(`mailto:${chapterPartner.email}`)}
-                  p={0}
-                  _hover={{ bgColor: "none" }}
-                >
-                  Contact Chapter
-                </Button>
-                <Button
-                  leftIcon={<FaTimes />}
-                  variant="secondary"
+                          color="#657788"
                   onClick={onOpen}
                   p={0}
                   _hover={{ bgColor: "none" }}
@@ -521,10 +565,39 @@ function NonprofitProjectPage({ project }: Props) {
             </VStack>
           </Flex>
           <Flex minH="600px" w={{ base: "100%", md: "50%" }}>
-            <StepCard {...stepCardData} />
+                    <StepCard
+                      {...getStepCardData((currProject as Project).status)}
+                    />
           </Flex>
+                </Stack>{" "}
+              </>
+            ) : (
+              <Stack
+                p={{ md: "5" }}
+                rounded="lg"
+                border={{ base: "none", md: "1px" }}
+                borderColor="border"
+                bgColor="surface"
+                direction={{ base: "column", md: "row" }}
+                h="full"
+                w="full"
+                alignItems="center"
+                justifyContent="center"
+              >
+                <VStack spacing={5}>
+                  <Image src={SubmitApplicationImage} />
+                  <Text>Get started on a new project with Hack4Impact!</Text>
+                  <Link href={"/nonprofit/project/create"}>
+                    <Button color="#0069CA" variant="solid">
+                      Start a Project
+                    </Button>
+                  </Link>
+                </VStack>
         </Stack>
-      </VStack>
+            )}
+          </VStack>{" "}
+        </>
+      )}
     </Flex>
   );
 }
