@@ -10,9 +10,13 @@ const ChapterSchema = new Schema<Chapter>({
   email: String,
   contact: {
     type: Schema.Types.ObjectId,
+    ref: "User",
     required: true,
   },
-  address: AddressSchema,
+  address: {
+    type: AddressSchema,
+    required: true,
+  },
   website: String,
   facebook: String,
   instagram: String,

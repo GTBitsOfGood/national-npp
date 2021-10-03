@@ -15,7 +15,7 @@ const AddressSchema = new Schema<Address>({
     required: true,
   },
   zipCode: {
-    type: Number,
+    type: String,
     required: true,
   },
   country: {
