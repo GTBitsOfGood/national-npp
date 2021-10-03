@@ -9,6 +9,7 @@ import {
   Project,
   ProjectCreate,
 } from "src/utils/types";
+import ChapterModel from "../models/Chapter";
 
 export async function createProject(
   nonprofitId: Types.ObjectId,
@@ -70,7 +71,10 @@ export async function getNonprofitProjects(
         };
   }
 
-  const projects = await ProjectModel.find(filter);
+  const projects = await ProjectModel.find(filter).populate({
+    path: "chapter",
+    model: ChapterModel,
+  });
 
   return projects;
 }
