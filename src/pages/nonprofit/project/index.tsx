@@ -3,6 +3,7 @@ import {
   Stack,
   VStack,
   Heading,
+  HStack,
   Box,
   Link,
   Text,
@@ -18,10 +19,11 @@ import {
   Tabs,
   Tab,
   TabList,
+  Spinner,
   TabPanels,
 } from "@chakra-ui/react";
-import { Step, Steps, useSteps } from "chakra-ui-steps";
-import { Types } from "mongoose";
+import { Step, Steps } from "chakra-ui-steps";
+import Image from "next/image";
 import ApplicationReviewImage from "public/images/nonprofit/project/application_review.svg";
 import CancelledImage from "public/images/nonprofit/project/cancelled.svg";
 import CompletedImage from "public/images/nonprofit/project/completed.svg";
@@ -30,9 +32,12 @@ import MeetingScheduledImage from "public/images/nonprofit/project/meeting_sched
 import RejectedImage from "public/images/nonprofit/project/rejected.svg";
 import ScheduleMeetingImage from "public/images/nonprofit/project/schedule_meeting.svg";
 import SubmitApplicationImage from "public/images/nonprofit/project/submit_application.svg";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { BsPlus } from "react-icons/bs";
-import { FaEnvelope, FaTimes } from "react-icons/fa";
+import {
+  getNonprofitProjects,
+  updateNonprofitProject,
+} from "src/actions/Project";
 import StepCard from "src/components/nonprofit/project/StepCard";
 import {
   chapterStageToDisplayableProjectStage,
@@ -43,45 +48,14 @@ import {
   ProjectStage,
   DisplayableProjectStage,
   Project,
-  ProjectType,
 } from "src/utils/types";
 
-// TODO: Remove this when actual project is passed to page
-const tempProject: Project = {
-  _id: Types.ObjectId("123456789012"),
-  name: "Liv2BGirl",
-  type: ProjectType.MOBILE_APP,
-  status: ProjectStage.SCHEDULE_INTERVIEW,
-  chapter: {
-    _id: Types.ObjectId("123456789012"),
-    name: "Georgia Tech",
-    email: "chapter@email.com",
-    address: {
-      city: "",
-      state: "",
-      street: "",
-      country: "",
-      zipCode: "",
-    },
-    projectTypes: Object.values(ProjectType),
-    projectLimit: 5,
-    projectProcess: Object.values(DisplayableProjectStage),
-  },
-  nonprofit: {
-    _id: Types.ObjectId("123456789012"),
-    name: "Nonprofit Org",
-    isVerified: false,
-    address: {
-      city: "",
-      state: "",
-      street: "",
-      country: "",
-      zipCode: "",
-    },
-  },
-  createdAt: new Date(),
-  updatedAt: new Date(),
-};
+function NonprofitProjectPage() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [displayedProjects, setDisplayedProjects] = useState<Project[]>([]);
+  const [currProject, setCurrProject] = useState<Partial<Project>>({});
+  const [loading, setLoading] = useState(true);
+  const [active, setActive] = useState(true);
 
   useEffect(() => {
     async function fetchProjects() {
@@ -95,8 +69,10 @@ const tempProject: Project = {
     void fetchProjects();
   }, [active]);
 
-function NonprofitProjectPage({ project }: Props) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelProject = () => {
+    // fill in after backend to update nonprofit project by id is complete
+    return;
+  };
 
   const renderNonProfitProjectCards = (mobile: boolean) => {
     return (
@@ -348,11 +324,6 @@ function NonprofitProjectPage({ project }: Props) {
         };
     }
   };
-
-  const stepCardData = useMemo(
-    () => getStepCardData(chapterStage),
-    [chapterStage]
-  );
 
   return (
     <Flex
