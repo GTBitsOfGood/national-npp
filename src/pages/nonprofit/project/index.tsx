@@ -90,13 +90,47 @@ interface Props {
 function NonprofitProjectPage({ project }: Props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const chapterStage = tempProject.status;
-  const nonprofitStage = chapterStageToDisplayableProjectStage(chapterStage);
-  const { activeStep } = useSteps({
-    initialStep: nonprofitStageOrder[nonprofitStage],
-  });
-
-  const chapterPartner = tempProject.chapter as Chapter;
+  const renderNonProfitProjectCards = (mobile: boolean) => {
+    return (
+      <Box
+        display="flex"
+        direction={mobile ? "row" : "column"}
+        overflow="scroll"
+      >
+        {displayedProjects.map((project: Project, index) => (
+          <VStack
+            key={index}
+            bgColor="white"
+            my="5"
+            px="5"
+            justifyContent="center"
+            alignItems="left"
+            spacing="5"
+            w={mobile ? "400px" : "full"}
+            height={mobile ? "100px" : "150px"}
+            backgroundColor="surface"
+            border="1px"
+            borderColor={
+              project._id === currProject._id ? "#0069CA" : "#BCC5D1"
+            }
+            borderRadius="15px"
+            onClick={() => setCurrProject(project)}
+          >
+            <Heading size={mobile ? "md" : "lg"}>{project.name}</Heading>
+            <Box
+              color="primary"
+              m="0"
+              bgColor="rgba(0, 105, 202, 0.1)"
+              px="2"
+              w="fit-content"
+            >
+              <Text fontWeight="bold">{project.status}</Text>
+            </Box>
+          </VStack>
+        ))}
+      </Box>
+    );
+  };
 
   const getStepCardData = (chapterStage: ProjectStage) => {
     switch (chapterStage) {
