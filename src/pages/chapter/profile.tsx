@@ -29,13 +29,14 @@ import {
   getChapterUsers,
   updateUserProfile,
 } from "src/actions/User";
-import { showError, showInfo } from "src/utils/notifications"
+import { showError, showInfo } from "src/utils/notifications";
 import { states, countries } from "src/utils/constants";
 import {
   UserUpdate,
   ChapterUpdate,
   MaintenanceType,
   Chapter,
+  User,
 } from "src/utils/types";
 
 interface FormData {
@@ -77,7 +78,7 @@ function ChapterProfilePage() {
       const user = await getUserProfile();
       const chapter = user.chapter as Chapter;
 
-      const contacts = await getChapterUsers();
+      const contacts: User[] = await getChapterUsers();
       setContactList(
         contacts.map((user) => {
           return {
