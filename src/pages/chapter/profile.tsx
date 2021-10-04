@@ -29,8 +29,8 @@ import {
   getChapterUsers,
   updateUserProfile,
 } from "src/actions/User";
-import { showError, showInfo } from "src/utils/notifications";
 import { states, countries } from "src/utils/constants";
+import { showError, showInfo } from "src/utils/notifications";
 import {
   UserUpdate,
   ChapterUpdate,
@@ -47,7 +47,7 @@ interface FormData {
   street: string;
   city: string;
   state: string;
-  zipCode: number;
+  zipCode: string;
   country: string;
   website: string;
   facebook: string;
@@ -100,15 +100,15 @@ function ChapterProfilePage() {
         zipCode: chapter.address.zipCode,
         country: chapter.address.country,
         website: chapter.website ?? "",
-        facebook: chapter.facebook,
-        instagram: chapter.instagram,
+        facebook: chapter.facebook ?? "",
+        instagram: chapter.instagram ?? "",
         maintenanceTypes: chapter.maintenanceTypes,
         maintenancePeriod: chapter.maintenancePeriod,
       });
     }
 
     preloadFields().catch((error: Error) => {
-      console.log(error.message);
+      showError("Could not preload profile info.");
     });
   }, [reset]);
 
@@ -296,7 +296,6 @@ function ChapterProfilePage() {
                         <FormControl isInvalid={Boolean(errors.zipCode)}>
                           <Input
                             id="zipCode"
-                            type="number"
                             width={120}
                             placeholder="Zip code"
                             {...register("zipCode", {
@@ -425,24 +424,22 @@ function ChapterProfilePage() {
                 </FormControl>
                 <FormControl isInvalid={Boolean(errors.maintenanceTypes)}>
                   <FormLabel>Request Types</FormLabel>
-                  <CheckboxGroup>
-                    <HStack align="start" spacing={6}>
-                      <Checkbox
-                        size="md"
-                        value="Bug Fixes"
-                        {...register("maintenanceTypes")}
-                      >
-                        Bug Fixes
-                      </Checkbox>
-                      <Checkbox
-                        size="md"
-                        value="New Features"
-                        {...register("maintenanceTypes")}
-                      >
-                        New Features
-                      </Checkbox>
-                    </HStack>
-                  </CheckboxGroup>
+                  <Controller
+                    control={control}
+                    name="maintenanceTypes"
+                    render={({ field: { onChange, ...restFields } }) => (
+                      <CheckboxGroup onChange={onChange} {...restFields}>
+                        <HStack align="start" spacing={6}>
+                          <Checkbox size="md" value="Bug Fixes">
+                            Bug Fixes
+                          </Checkbox>
+                          <Checkbox size="md" value="New Features">
+                            New Features
+                          </Checkbox>
+                        </HStack>
+                      </CheckboxGroup>
+                    )}
+                  />
                   <FormErrorMessage>
                     {errors.maintenanceTypes &&
                       ((errors.maintenanceTypes[0] &&

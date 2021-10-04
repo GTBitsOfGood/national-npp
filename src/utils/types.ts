@@ -61,13 +61,8 @@ export interface Address {
   street: string;
   city: string;
   state: string;
-  zipCode: number;
+  zipCode: string;
   country: string;
-}
-
-export interface MaintenancePeriod {
-  duration: number;
-  unit: string;
 }
 
 export interface Session {
