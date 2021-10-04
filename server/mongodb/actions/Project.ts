@@ -1,7 +1,7 @@
 import { FilterQuery, Types } from "mongoose";
 import ProjectModel from "server/mongodb/models/Project";
 import dbConnect from "server/utils/dbConnect";
-import { displayableProjectStageToChapterStages } from "src/utils/stages";
+import { displayableProjectStageToProjectStages } from "src/utils/stages";
 import {
   ChapterProjectUpdate,
   DisplayableProjectStage,
@@ -59,12 +59,12 @@ export async function getNonprofitProjects(
   if (active != undefined) {
     filter["status"] = active
       ? {
-          $nin: displayableProjectStageToChapterStages(
+          $nin: displayableProjectStageToProjectStages(
             DisplayableProjectStage.COMPLETE
           ),
         }
       : {
-          $in: displayableProjectStageToChapterStages(
+          $in: displayableProjectStageToProjectStages(
             DisplayableProjectStage.COMPLETE
           ),
         };

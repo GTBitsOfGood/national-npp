@@ -29,8 +29,8 @@ import { useMemo } from "react";
 import { FaEnvelope, FaTimes } from "react-icons/fa";
 import StepCard from "src/components/nonprofit/project/StepCard";
 import {
-  chapterStageToDisplayableProjectStage,
-  nonprofitStageOrder,
+  projectStageToDisplayableProjectStage,
+  displayableProjectStageOrder,
 } from "src/utils/stages";
 import {
   Chapter,
@@ -85,9 +85,9 @@ function NonprofitProjectPage({ project }: Props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const chapterStage = tempProject.status;
-  const nonprofitStage = chapterStageToDisplayableProjectStage(chapterStage);
+  const nonprofitStage = projectStageToDisplayableProjectStage(chapterStage);
   const { activeStep } = useSteps({
-    initialStep: nonprofitStageOrder[nonprofitStage],
+    initialStep: displayableProjectStageOrder[nonprofitStage],
   });
 
   const chapterPartner = tempProject.chapter as Chapter;

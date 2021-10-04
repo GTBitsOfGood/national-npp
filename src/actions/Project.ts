@@ -5,7 +5,6 @@ import {
   NonprofitProjectUpdate,
   Project,
   ProjectCreate,
-  ProjectStatus,
 } from "src/utils/types";
 import urls from "src/utils/urls";
 

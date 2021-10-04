@@ -1,6 +1,6 @@
 import { ProjectStage, DisplayableProjectStage } from "src/utils/types";
 
-export const chapterStageOrder = {
+export const projectStageOrder = {
   [ProjectStage.SUBMIT_APPLICATION]: 0,
   [ProjectStage.APPLICATION_REVIEW]: 1,
   [ProjectStage.SCHEDULE_INTERVIEW]: 2,
@@ -14,7 +14,7 @@ export const chapterStageOrder = {
   [ProjectStage.REJECTED]: 10,
 };
 
-export const nonprofitStageOrder = {
+export const displayableProjectStageOrder = {
   [DisplayableProjectStage.APPLICATION]: 0,
   [DisplayableProjectStage.INTERVIEW]: 1,
   [DisplayableProjectStage.IN_PROGRESS]: 2,
@@ -53,7 +53,7 @@ const projectStageToDisplayableStage = Object.fromEntries(
   )
 );
 
-export function chapterStageToDisplayableProjectStage(
+export function projectStageToDisplayableProjectStage(
   chapterStage: ProjectStage
 ): DisplayableProjectStage {
   return (
@@ -62,7 +62,7 @@ export function chapterStageToDisplayableProjectStage(
   );
 }
 
-export function displayableProjectStageToChapterStages(
+export function displayableProjectStageToProjectStages(
   displayableProjectStage: DisplayableProjectStage
 ): ProjectStage[] {
   return displayableProjectStageDefinitions[displayableProjectStage];
