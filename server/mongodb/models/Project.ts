@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import { Project, ChapterStage, ProjectType } from "src/utils/types";
+import { Project, ProjectStage, ProjectType } from "src/utils/types";
 
 const ProjectSchema = new Schema<Project>(
   {
@@ -20,8 +20,8 @@ const ProjectSchema = new Schema<Project>(
     },
     status: {
       type: String,
-      enum: Object.values(ChapterStage),
-      default: ChapterStage.SUBMIT_APPLICATION,
+      enum: Object.values(ProjectStage),
+      default: ProjectStage.SUBMIT_APPLICATION,
     },
     type: {
       type: String,
