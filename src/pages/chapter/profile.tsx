@@ -38,6 +38,11 @@ import {
   Chapter,
   User,
 } from "src/utils/types";
+import {
+  maxInput,
+  phoneNumberPattern,
+  zipCodePattern,
+} from "src/utils/validation";
 
 interface FormData {
   name: string;
@@ -108,7 +113,7 @@ function ChapterProfilePage() {
     }
 
     preloadFields().catch((error: Error) => {
-      showError("Could not preload profile info.");
+      showError(error.message);
     });
   }, [reset]);
 
@@ -140,7 +145,7 @@ function ChapterProfilePage() {
       showInfo("Successfully updated profile.");
     } catch (e) {
       const error = e as Error;
-      showError("Could not update profile.");
+      showError(error.message);
     }
   };
 
@@ -184,6 +189,7 @@ function ChapterProfilePage() {
                       <Input
                         id="name"
                         width={320}
+                        maxLength={maxInput}
                         {...register("name", {
                           required: "Please enter a name.",
                         })}
@@ -197,9 +203,14 @@ function ChapterProfilePage() {
                     <FormLabel>Phone Number</FormLabel>
                     <Input
                       id="phoneNumber"
+                      placeholder="XXX-XXX-XXXX"
                       width={320}
                       {...register("phoneNumber", {
                         required: "Please enter a phone number.",
+                        pattern: {
+                          value: phoneNumberPattern,
+                          message: "Please format phone number correctly.",
+                        },
                       })}
                     />
                     <FormErrorMessage>
@@ -224,6 +235,7 @@ function ChapterProfilePage() {
                       <Input
                         id="nonprofitName"
                         width={320}
+                        maxLength={maxInput}
                         {...register("chapterName", {
                           required: "Please enter a chapter name.",
                         })}
@@ -239,7 +251,7 @@ function ChapterProfilePage() {
                         width={320}
                         placeholder="Contact"
                         {...register("contact", {
-                          required: "Please enter a contact.",
+                          required: "Please select a contact.",
                           onChange: (e: React.ChangeEvent<HTMLSelectElement>) =>
                             e.target.value,
                         })}
@@ -260,6 +272,7 @@ function ChapterProfilePage() {
                         <Input
                           id="street"
                           width={320}
+                          maxLength={maxInput}
                           placeholder="Street"
                           {...register("street", {
                             required: "Please enter a street.",
@@ -270,6 +283,7 @@ function ChapterProfilePage() {
                         <Input
                           id="city"
                           width={320}
+                          maxLength={maxInput}
                           placeholder="City"
                           {...register("city", {
                             required: "Please enter a city.",
@@ -300,6 +314,10 @@ function ChapterProfilePage() {
                             placeholder="Zip code"
                             {...register("zipCode", {
                               required: "Please enter a zip code.",
+                              pattern: {
+                                value: zipCodePattern,
+                                message: "Please provide a valid zip code.",
+                              },
                             })}
                           />
                         </FormControl>
@@ -335,6 +353,7 @@ function ChapterProfilePage() {
                       <Input
                         id="website"
                         width={320}
+                        maxLength={maxInput}
                         {...register("website")}
                       />
                       <FormErrorMessage>
@@ -346,6 +365,7 @@ function ChapterProfilePage() {
                       <Input
                         id="facebook"
                         width={320}
+                        maxLength={maxInput}
                         {...register("facebook")}
                       />
                       <FormErrorMessage>
@@ -357,6 +377,7 @@ function ChapterProfilePage() {
                       <Input
                         id="instagram"
                         width={320}
+                        maxLength={maxInput}
                         {...register("instagram")}
                       />
                       <FormErrorMessage>
