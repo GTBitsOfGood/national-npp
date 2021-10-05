@@ -12,7 +12,8 @@ const NonprofitSchema = new Schema<Nonprofit>({
     required: true,
   },
   contact: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: "User",
     required: true,
   },
   isVerified: {

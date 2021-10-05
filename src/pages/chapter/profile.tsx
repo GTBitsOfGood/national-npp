@@ -37,6 +37,7 @@ import {
   MaintenanceType,
   Chapter,
   User,
+  Contact,
 } from "src/utils/types";
 import {
   maxInput,
@@ -59,12 +60,6 @@ interface FormData {
   instagram: string;
   maintenanceTypes: string[];
   maintenancePeriod: number;
-}
-
-interface Contact {
-  id: string;
-  name: string;
-  email: string;
 }
 
 function ChapterProfilePage() {

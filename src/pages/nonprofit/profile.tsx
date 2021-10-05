@@ -12,18 +12,28 @@ import {
   Button,
   Textarea,
 } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { getUserProfile, updateUserProfile } from "src/actions/User";
+import {
+  getNonprofitUsers,
+  getUserProfile,
+  updateUserProfile,
+} from "src/actions/User";
 import { states, countries } from "src/utils/constants";
 import { showError, showInfo } from "src/utils/notifications";
-import { Nonprofit, NonprofitUpdate, UserUpdate } from "src/utils/types";
+import {
+  Contact,
+  Nonprofit,
+  NonprofitUpdate,
+  User,
+  UserUpdate,
+} from "src/utils/types";
 
 interface FormData {
   name: string;
   phoneNumber: string;
   nonprofitName: string;
-  contact: string; // A user id
+  contact: string;
   street: string;
   city: string;
   state: string;
@@ -41,18 +51,29 @@ function NonprofitProfilePage() {
     reset,
   } = useForm<FormData>();
 
-  const contacts = ["Joyce Shen (joyce.chen@example.com)"];
+  const [contactList, setContactList] = useState<Contact[]>([]);
 
   useEffect(() => {
     async function preloadData() {
       const user = await getUserProfile();
       const nonprofit = user.nonprofit as Nonprofit;
 
+      const contacts: User[] = await getNonprofitUsers();
+      setContactList(
+        contacts.map((user) => {
+          return {
+            id: user._id.toString(),
+            name: user.name,
+            email: user.email,
+          };
+        })
+      );
+
       reset({
         name: user.name,
-        phoneNumber: user.phoneNum,
+        phoneNumber: user.phoneNum ?? "",
         nonprofitName: nonprofit.name,
-        contact: nonprofit.contact,
+        contact: nonprofit.contact.toString(),
         street: nonprofit.address.street,
         city: nonprofit.address.city,
         state: nonprofit.address.state,
@@ -70,7 +91,6 @@ function NonprofitProfilePage() {
   }, [reset]);
 
   const submitData = async (data: FormData) => {
-    // How else can you manipulate the objects passed to register on each input to ensure this data is safe?
     const userUpdate: UserUpdate = {
       name: data.name,
       phoneNum: data.phoneNumber,
@@ -90,10 +110,13 @@ function NonprofitProfilePage() {
       mission: data.mission,
     };
 
-    // Remember, what happens if the update fails?
-    await updateUserProfile(userUpdate, nonprofitUpdate);
-
-    showInfo("Your data has been saved successfully!");
+    try {
+      await updateUserProfile(userUpdate, {}, nonprofitUpdate);
+      showInfo("Successfully updated profile.");
+    } catch (e) {
+      const error = e as Error;
+      showError(error.message);
+    }
   };
 
   return (
@@ -267,12 +290,14 @@ function NonprofitProfilePage() {
                         width={320}
                         placeholder="Contact"
                         {...register("contact", {
-                          required: "Please enter a contact.",
+                          required: "Please select a contact.",
+                          onChange: (e: React.ChangeEvent<HTMLSelectElement>) =>
+                            e.target.value,
                         })}
                       >
-                        {contacts.map((contact) => (
-                          <option key={contact} value={contact}>
-                            {contact}
+                        {contactList.map(({ id, name, email }) => (
+                          <option key={id} value={id}>
+                            {`${name} (${email})`}
                           </option>
                         ))}
                       </Select>

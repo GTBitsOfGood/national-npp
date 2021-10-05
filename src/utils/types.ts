@@ -188,6 +188,12 @@ export enum Role {
   NONPROFIT_ADMIN = "Nonprofit Admin",
 }
 
+export interface Contact {
+  id: string;
+  name: string;
+  email: string;
+}
+
 // TODO: Remove this type and update chapter projects table
 export interface ChapterProject {
   id: string;
