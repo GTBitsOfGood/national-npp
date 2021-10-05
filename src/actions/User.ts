@@ -17,6 +17,13 @@ export async function getUserProfile() {
   });
 }
 
+export async function getChapterUsers() {
+  return internalRequest<User[]>({
+    url: userAPI + "?action=users",
+    method: HttpMethod.GET,
+  });
+}
+
 export async function updateUserProfile(
   userUpdate: UserUpdate,
   chapterUpdate?: ChapterUpdate,
