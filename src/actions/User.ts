@@ -24,6 +24,13 @@ export async function getChapterUsers() {
   });
 }
 
+export async function getNonprofitUsers() {
+  return internalRequest<User[]>({
+    url: userAPI + "?action=users",
+    method: HttpMethod.GET,
+  });
+}
+
 export async function updateUserProfile(
   userUpdate: UserUpdate,
   chapterUpdate?: ChapterUpdate,

@@ -41,6 +41,7 @@ export interface Nonprofit {
   name: string;
   address: Address;
   isVerified: boolean;
+  contact: Types.ObjectId;
   website?: string;
   mission?: string;
 }
@@ -184,6 +185,13 @@ export enum ProjectStage {
 export enum Role {
   CHAPTER_MEMBER = "Chapter Member",
   NONPROFIT_MEMBER = "Nonprofit Member",
+  NONPROFIT_ADMIN = "Nonprofit Admin",
+}
+
+export interface Contact {
+  id: string;
+  name: string;
+  email: string;
 }
 
 // TODO: Remove this type and update chapter projects table

@@ -7,6 +7,7 @@ import {
   updateChapterUser,
   updateNonprofitUser,
   getChapterUsers,
+  getNonprofitUsers,
 } from "server/mongodb/actions/User";
 import APIWrapper from "server/utils/APIWrapper";
 import { ChapterUpdate, NonprofitUpdate, UserUpdate } from "src/utils/types";
@@ -37,12 +38,13 @@ export default APIWrapper({
 
         throw new Error("User does not belong to a chapter or nonprofit.");
       } else if (action == "users") {
-        const userId = user.id;
         const chapterId = user.chapter;
         const nonprofitId = user.nonprofit;
 
         if (nonprofitId) {
-          throw new Error("Not implemented for nonprofit users yet.");
+          const users = await getNonprofitUsers(nonprofitId);
+
+          return users;
         }
 
         if (chapterId) {
@@ -74,6 +76,12 @@ export default APIWrapper({
 
         if (nonprofitId) {
           const nonprofitUpdate = req.body.nonprofitUpdate as NonprofitUpdate;
+          if (nonprofitUpdate.contact) {
+            nonprofitUpdate.contact = Types.ObjectId(
+              nonprofitUpdate.contact.toString()
+            );
+          }
+
           await updateNonprofit(nonprofitId, nonprofitUpdate);
 
           const user = await updateNonprofitUser(userId, userUpdate);
