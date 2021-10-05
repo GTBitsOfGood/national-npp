@@ -76,6 +76,12 @@ export default APIWrapper({
 
         if (nonprofitId) {
           const nonprofitUpdate = req.body.nonprofitUpdate as NonprofitUpdate;
+          if (nonprofitUpdate.contact) {
+            nonprofitUpdate.contact = Types.ObjectId(
+              nonprofitUpdate.contact.toString()
+            );
+          }
+
           await updateNonprofit(nonprofitId, nonprofitUpdate);
 
           const user = await updateNonprofitUser(userId, userUpdate);

@@ -19,7 +19,7 @@ export async function createNonprofit(nonprofitCreate: NonprofitCreate) {
   });
 }
 
-/* TODO: need to add profile action to Nonprofit APIWrapper */
+// Note: leaving these even though unused currently since API is going to be refactored a bit
 export async function getNonprofit() {
   return internalRequest<Nonprofit>({
     url: nonprofitAPI + "?action=profile",

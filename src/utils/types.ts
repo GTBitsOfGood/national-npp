@@ -41,7 +41,7 @@ export interface Nonprofit {
   name: string;
   address: Address;
   isVerified: boolean;
-  contact: string;
+  contact: Types.ObjectId;
   website?: string;
   mission?: string;
 }

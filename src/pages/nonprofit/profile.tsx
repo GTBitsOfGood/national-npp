@@ -12,6 +12,7 @@ import {
   Button,
   Textarea,
 } from "@chakra-ui/react";
+import { Types } from "mongoose";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
@@ -28,6 +29,12 @@ import {
   User,
   UserUpdate,
 } from "src/utils/types";
+import {
+  maxInput,
+  maxTextArea,
+  phoneNumberPattern,
+  zipCodePattern,
+} from "src/utils/validation";
 
 interface FormData {
   name: string;
@@ -98,7 +105,7 @@ function NonprofitProfilePage() {
 
     const nonprofitUpdate: NonprofitUpdate = {
       name: data.nonprofitName,
-      contact: data.contact,
+      contact: Types.ObjectId(data.contact),
       address: {
         street: data.street,
         city: data.city,
@@ -159,6 +166,7 @@ function NonprofitProfilePage() {
                       <Input
                         id="name"
                         width={320}
+                        maxLength={maxInput}
                         {...register("name", {
                           required: "Please enter a name.",
                         })}
@@ -173,8 +181,13 @@ function NonprofitProfilePage() {
                     <Input
                       id="phoneNumber"
                       width={320}
+                      placeholder="XXX-XXX-XXXX"
                       {...register("phoneNumber", {
                         required: "Please enter a phone number.",
+                        pattern: {
+                          value: phoneNumberPattern,
+                          message: "Please format phone number correctly.",
+                        },
                       })}
                     />
                     <FormErrorMessage>
@@ -199,6 +212,7 @@ function NonprofitProfilePage() {
                       <Input
                         id="nonprofitName"
                         width={320}
+                        maxLength={maxInput}
                         {...register("nonprofitName", {
                           required: "Please enter a nonprofit name.",
                         })}
@@ -213,6 +227,7 @@ function NonprofitProfilePage() {
                         <Input
                           id="street"
                           width={320}
+                          maxLength={maxInput}
                           placeholder="Street"
                           {...register("street", {
                             required: "Please enter a street.",
@@ -223,6 +238,7 @@ function NonprofitProfilePage() {
                         <Input
                           id="city"
                           width={320}
+                          maxLength={maxInput}
                           placeholder="City"
                           {...register("city", {
                             required: "Please enter a city.",
@@ -253,6 +269,10 @@ function NonprofitProfilePage() {
                             placeholder="Zip code"
                             {...register("zipCode", {
                               required: "Please enter a zip code.",
+                              pattern: {
+                                value: zipCodePattern,
+                                message: "Please enter a valid zip code.",
+                              },
                             })}
                           />
                         </FormControl>
@@ -310,9 +330,8 @@ function NonprofitProfilePage() {
                       <Input
                         id="website"
                         width={320}
-                        {...register("website", {
-                          required: "Please enter a website.",
-                        })}
+                        maxLength={maxInput}
+                        {...register("website")}
                       />
                       <FormErrorMessage>
                         {errors.website && errors.website.message}
@@ -326,9 +345,8 @@ function NonprofitProfilePage() {
                 <Textarea
                   id="mission"
                   resize="none"
-                  {...register("mission", {
-                    required: "Please enter a mission statement.",
-                  })}
+                  maxLength={maxTextArea}
+                  {...register("mission")}
                 />
                 <FormErrorMessage>
                   {errors.mission && errors.mission.message}
