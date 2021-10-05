@@ -12,10 +12,12 @@ const UserSchema = new Schema<User>(
       type: Date,
       required: true,
     },
-    name: String,
+    name: {
+      type: String,
+      required: true,
+    },
     image: String,
     phoneNum: String,
-    calendly: String,
     roles: {
       type: [String],
       required: true,

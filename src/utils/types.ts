@@ -13,10 +13,9 @@ export interface User {
   id: string;
   email: string;
   emailVerified: Date;
-  name?: string;
+  name: string;
   image?: string;
   phoneNum?: string;
-  calendly?: string;
   roles: Array<Role>;
   chapter?: Chapter | Types.ObjectId;
   nonprofit?: Nonprofit | Types.ObjectId;
@@ -28,14 +27,13 @@ export interface Chapter {
   _id: Types.ObjectId | string;
   name: string;
   email: string;
+  contact: Types.ObjectId;
   address: Address;
-  calendly?: string;
-  projectProcess: Array<DisplayableProjectStage>;
-  projectTypes: Array<ProjectType>;
-  projectLimit: number;
   website?: string;
   facebook?: string;
   instagram?: string;
+  maintenanceTypes: Array<MaintenanceType>;
+  maintenancePeriod: number;
 }
 
 export interface Nonprofit {
@@ -142,10 +140,7 @@ export type ProjectCreate = Pick<
 export type NonprofitProjectUpdate = Pick<Partial<Project>, "status">;
 export type ChapterProjectUpdate = Pick<Partial<Project>, "status" | "contact">;
 
-export type UserUpdate = Pick<
-  Partial<User>,
-  "name" | "image" | "phoneNum" | "calendly"
->;
+export type UserUpdate = Pick<Partial<User>, "name" | "image" | "phoneNum">;
 
 export type ChapterUpdate = Omit<Partial<Chapter>, "_id">;
 
@@ -158,6 +153,11 @@ export enum ProjectType {
   WEBSITE = "Website",
   WEB_APP = "Web app",
   MOBILE_APP = "Mobile app",
+}
+
+export enum MaintenanceType {
+  BUG_FIXES = "Bug Fixes",
+  NEW_FEATURES = "New Features",
 }
 
 export enum DisplayableProjectStage {

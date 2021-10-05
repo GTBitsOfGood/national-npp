@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import { updateChapter } from "server/mongodb/actions/Chapter";
 import { updateNonprofit } from "server/mongodb/actions/Nonprofit";
 import {
@@ -5,6 +6,7 @@ import {
   getNonprofitUser,
   updateChapterUser,
   updateNonprofitUser,
+  getChapterUsers,
 } from "server/mongodb/actions/User";
 import APIWrapper from "server/utils/APIWrapper";
 import { ChapterUpdate, NonprofitUpdate, UserUpdate } from "src/utils/types";
@@ -31,6 +33,22 @@ export default APIWrapper({
         if (chapterId) {
           const user = await getChapterUser(userId);
           return user;
+        }
+
+        throw new Error("User does not belong to a chapter or nonprofit.");
+      } else if (action == "users") {
+        const userId = user.id;
+        const chapterId = user.chapter;
+        const nonprofitId = user.nonprofit;
+
+        if (nonprofitId) {
+          throw new Error("Not implemented for nonprofit users yet.");
+        }
+
+        if (chapterId) {
+          const users = await getChapterUsers(chapterId);
+
+          return users;
         }
 
         throw new Error("User does not belong to a chapter or nonprofit.");
@@ -64,6 +82,12 @@ export default APIWrapper({
 
         if (chapterId) {
           const chapterUpdate = req.body.chapterUpdate as ChapterUpdate;
+          if (chapterUpdate.contact) {
+            chapterUpdate.contact = Types.ObjectId(
+              chapterUpdate.contact.toString()
+            );
+          }
+
           await updateChapter(chapterId, chapterUpdate);
 
           const user = await updateChapterUser(userId, userUpdate);
