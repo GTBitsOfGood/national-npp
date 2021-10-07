@@ -4,15 +4,17 @@ import {
   HttpMethod,
   NonprofitProjectUpdate,
   Project,
-  ProjectCreate,
+  NonprofitProjectCreate,
 } from "src/utils/types";
 import urls from "src/utils/urls";
 
 const projectAPI = urls.baseUrl + urls.api.projects;
 
-export async function createProject(projectCreate: ProjectCreate) {
+export async function createNonprofitProject(
+  projectCreate: NonprofitProjectCreate
+) {
   return internalRequest<Project>({
-    url: projectAPI,
+    url: projectAPI + "/nonprofit",
     method: HttpMethod.POST,
     body: {
       projectCreate,
@@ -22,7 +24,7 @@ export async function createProject(projectCreate: ProjectCreate) {
 
 export async function getChapterProjects() {
   return internalRequest<Array<Project>>({
-    url: projectAPI + "?action=chapter",
+    url: projectAPI + "/chapter",
     method: HttpMethod.GET,
   });
 }
@@ -36,9 +38,8 @@ export async function getChapterProject(projectId: string) {
 
 export async function getNonprofitProjects(active?: boolean) {
   return internalRequest<Project>({
-    url: projectAPI,
+    url: projectAPI + "/nonprofit",
     queryParams: {
-      action: "nonprofit",
       active,
     },
     method: HttpMethod.GET,

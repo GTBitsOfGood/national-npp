@@ -134,7 +134,7 @@ export interface InternalResponseData<T> {
   payload?: T;
 }
 
-export type ProjectCreate = Pick<
+export type NonprofitProjectCreate = Pick<
   Required<Project>,
   "chapter" | "name" | "type"
 >;
