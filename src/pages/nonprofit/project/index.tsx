@@ -57,10 +57,10 @@ function NonprofitProjectPage() {
 
   return (
     <Flex
-      minH="100%"
-      justifyContent="center"
-      overflowY="auto"
+      minH="100vh"
+      overflow="scroll"
       w="100%"
+      justifyContent={{ lg: "center" }}
       bgColor={{ base: "surface", md: "inherit" }}
       direction={{ base: "column", lg: "row" }}
       px={5}
