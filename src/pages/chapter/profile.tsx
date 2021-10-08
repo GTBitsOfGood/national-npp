@@ -24,10 +24,11 @@ import { Types } from "mongoose";
 import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { BsInfoCircle } from "react-icons/bs";
+import { updateChapter } from "src/actions/Chapter";
 import {
-  getUserProfile,
   getChapterUsers,
-  updateUserProfile,
+  getChapterUser,
+  updateChapterUser,
 } from "src/actions/User";
 import { states, countries } from "src/utils/constants";
 import { showError, showInfo } from "src/utils/notifications";
@@ -75,7 +76,7 @@ function ChapterProfilePage() {
 
   useEffect(() => {
     async function preloadFields() {
-      const user = await getUserProfile();
+      const user = await getChapterUser();
       const chapter = user.chapter as Chapter;
 
       const contacts: User[] = await getChapterUsers();
@@ -136,7 +137,9 @@ function ChapterProfilePage() {
     };
 
     try {
-      await updateUserProfile(userUpdate, chapterUpdate);
+      const user = await updateChapterUser(userUpdate);
+      const chapter = user.chapter as Chapter;
+      await updateChapter(chapter._id.toString(), chapterUpdate);
       showInfo("Successfully updated profile.");
     } catch (e) {
       const error = e as Error;

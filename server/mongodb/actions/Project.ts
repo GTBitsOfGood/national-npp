@@ -7,12 +7,12 @@ import {
   DisplayableProjectStage,
   NonprofitProjectUpdate,
   Project,
-  ProjectCreate,
+  NonprofitProjectCreate,
 } from "src/utils/types";
 
 export async function createNonprofitProject(
   nonprofitId: Types.ObjectId,
-  projectCreate: ProjectCreate
+  projectCreate: NonprofitProjectCreate
 ) {
   await dbConnect();
 

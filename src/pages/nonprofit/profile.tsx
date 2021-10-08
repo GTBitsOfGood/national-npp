@@ -15,10 +15,11 @@ import {
 import { Types } from "mongoose";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { updateNonprofit } from "src/actions/Nonprofit";
 import {
+  getNonprofitUser,
   getNonprofitUsers,
-  getUserProfile,
-  updateUserProfile,
+  updateNonprofitUser,
 } from "src/actions/User";
 import { states, countries } from "src/utils/constants";
 import { showError, showInfo } from "src/utils/notifications";
@@ -62,7 +63,7 @@ function NonprofitProfilePage() {
 
   useEffect(() => {
     async function preloadData() {
-      const user = await getUserProfile();
+      const user = await getNonprofitUser();
       const nonprofit = user.nonprofit as Nonprofit;
 
       const contacts: User[] = await getNonprofitUsers();
@@ -118,7 +119,9 @@ function NonprofitProfilePage() {
     };
 
     try {
-      await updateUserProfile(userUpdate, {}, nonprofitUpdate);
+      const user = await updateNonprofitUser(userUpdate);
+      const nonprofit = user.nonprofit as Nonprofit;
+      await updateNonprofit(nonprofit._id.toString(), nonprofitUpdate);
       showInfo("Successfully updated profile.");
     } catch (e) {
       const error = e as Error;

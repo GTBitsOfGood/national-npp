@@ -1,4 +1,3 @@
-import { Types } from "mongoose";
 import {
   getNonprofitUser,
   updateNonprofitUser,
@@ -12,12 +11,7 @@ export default APIWrapper({
       requireSession: true,
     },
     handler: async (req) => {
-      const claimedUserId = req.query.id as string;
       const nonprofitId = req.user.nonprofit;
-
-      if (Types.ObjectId(claimedUserId) != req.user.id) {
-        throw new Error("User does not have access to this data.");
-      }
 
       if (!nonprofitId) {
         throw new Error("User does not belong to a nonprofit.");
@@ -32,12 +26,7 @@ export default APIWrapper({
       requireSession: true,
     },
     handler: async (req) => {
-      const claimedUserId = req.query.id as string;
       const nonprofitId = req.user.nonprofit;
-
-      if (Types.ObjectId(claimedUserId) != req.user.id) {
-        throw new Error("User does not have access to this data.");
-      }
 
       if (!nonprofitId) {
         throw new Error("User does not belong to a nonprofit.");

@@ -11,7 +11,7 @@ const nonprofitAPI = urls.baseUrl + urls.api.nonprofits;
 
 export async function createNonprofit(nonprofitCreate: NonprofitCreate) {
   return internalRequest<Nonprofit>({
-    url: nonprofitAPI,
+    url: nonprofitAPI + "/nonprofit",
     method: HttpMethod.POST,
     body: {
       nonprofitCreate,
@@ -19,17 +19,12 @@ export async function createNonprofit(nonprofitCreate: NonprofitCreate) {
   });
 }
 
-// Note: leaving these even though unused currently since API is going to be refactored a bit
-export async function getNonprofit() {
+export async function updateNonprofit(
+  nonprofitId: string,
+  nonprofitUpdate: NonprofitUpdate
+) {
   return internalRequest<Nonprofit>({
-    url: nonprofitAPI + "?action=profile",
-    method: HttpMethod.GET,
-  });
-}
-
-export async function updateNonprofit(nonprofitUpdate: NonprofitUpdate) {
-  return internalRequest<Nonprofit>({
-    url: nonprofitAPI + "?action=profile",
+    url: nonprofitAPI + `/${nonprofitId}/nonprofit`,
     method: HttpMethod.PATCH,
     body: {
       nonprofitUpdate,

@@ -1,48 +1,53 @@
 import { internalRequest } from "src/utils/requests";
-import {
-  User,
-  HttpMethod,
-  UserUpdate,
-  ChapterUpdate,
-  NonprofitUpdate,
-} from "src/utils/types";
+import { User, HttpMethod, UserUpdate } from "src/utils/types";
 import urls from "src/utils/urls";
 
 const userAPI = urls.baseUrl + urls.api.users;
 
-export async function getUserProfile() {
+export async function getNonprofitUser() {
   return internalRequest<User>({
-    url: userAPI + "?action=profile",
+    url: userAPI + `/personal/nonprofit`,
+    method: HttpMethod.GET,
+  });
+}
+
+export async function getChapterUser() {
+  return internalRequest<User>({
+    url: userAPI + `/personal/chapter`,
     method: HttpMethod.GET,
   });
 }
 
 export async function getChapterUsers() {
   return internalRequest<User[]>({
-    url: userAPI + "?action=users",
+    url: userAPI + "/chapter",
     method: HttpMethod.GET,
   });
 }
 
 export async function getNonprofitUsers() {
   return internalRequest<User[]>({
-    url: userAPI + "?action=users",
+    url: userAPI + "/nonprofit",
     method: HttpMethod.GET,
   });
 }
 
-export async function updateUserProfile(
-  userUpdate: UserUpdate,
-  chapterUpdate?: ChapterUpdate,
-  nonprofitUpdate?: NonprofitUpdate
-) {
+export function updateNonprofitUser(userUpdate: UserUpdate) {
   return internalRequest<User>({
-    url: userAPI + "?action=profile",
+    url: userAPI + `/personal/nonprofit`,
     method: HttpMethod.PATCH,
     body: {
       userUpdate,
-      chapterUpdate,
-      nonprofitUpdate,
+    },
+  });
+}
+
+export function updateChapterUser(userUpdate: UserUpdate) {
+  return internalRequest<User>({
+    url: userAPI + `/personal/chapter`,
+    method: HttpMethod.PATCH,
+    body: {
+      userUpdate,
     },
   });
 }

@@ -31,7 +31,7 @@ export async function getChapterProjects() {
 
 export async function getChapterProject(projectId: string) {
   return internalRequest<Project>({
-    url: projectAPI + `/${projectId}` + "?action=chapter",
+    url: projectAPI + `/${projectId}/chapter`,
     method: HttpMethod.GET,
   });
 }
@@ -51,7 +51,7 @@ export async function updateChapterProject(
   projectUpdate: ChapterProjectUpdate
 ) {
   return internalRequest<Project>({
-    url: projectAPI + `/${projectId}` + "?action=chapter",
+    url: projectAPI + `/${projectId}/chapter`,
     method: HttpMethod.PATCH,
     body: {
       projectUpdate,
@@ -60,10 +60,11 @@ export async function updateChapterProject(
 }
 
 export async function updateNonprofitProject(
+  projectId: string,
   projectUpdate: NonprofitProjectUpdate
 ) {
   return internalRequest<Project>({
-    url: projectAPI + "?action=nonprofit",
+    url: projectAPI + `/${projectId}/nonprofit`,
     method: HttpMethod.PATCH,
     body: {
       projectUpdate,
