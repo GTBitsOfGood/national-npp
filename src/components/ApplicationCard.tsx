@@ -11,11 +11,14 @@ import {
   Button,
   Textarea,
 } from "@chakra-ui/react";
-import { User, ProjectType } from "src/utils/types";
-const user = ["Liv2VGirl"];
-const appType = ["Mobile App"];
-const maxTextArea = 500;
-function ApplicationCard() {
+import { User, ProjectType, Nonprofit } from "src/utils/types";
+
+function ApplicationCard(props: { isRead: boolean }) {
+  const name = "Liv2VGirl";
+  const appType = "Mobile App";
+  const maxTextArea = 500;
+  const isVerified = false;
+  const { isRead } = props;
   return (
     <VStack
       minW={{ base: 425, md: 800 }}
@@ -36,33 +39,37 @@ function ApplicationCard() {
       >
         <HStack spacing={3}>
           <Text color="white" fontSize="md" fontWeight={700} marginLeft={7}>
-            {user[0]}
+            {name}
           </Text>
           <Text color="white" fontSize="md" fontWeight={700} marginLeft={7}>
-            {appType[0]}
+            {appType}
           </Text>
         </HStack>
       </Box>
       <VStack align="stretch" p={12} spacing={12}>
-        <VStack align="start" spacing={5}>
-          <Text alignSelf="flex-start" fontSize="md" fontWeight={700}>
-            Nonprofit Verification
-          </Text>
-          <FormControl>
-            <FormLabel fontSize="sm">Question 1</FormLabel>
-            <VStack align="flex-start" spacing={4}>
-              <FormHelperText fontSize="sm">
-                Enter your EIN so we can verify you as a nonprofit.
-              </FormHelperText>
-              <Input id="EIN" placeholder="00-0000000" />
-            </VStack>
-          </FormControl>
-        </VStack>
+        {isVerified && (
+          <VStack align="start" spacing={5}>
+            <Text alignSelf="flex-start" fontSize="md" fontWeight={700}>
+              Nonprofit Verification
+            </Text>
+
+            <FormControl isReadOnly={isRead}>
+              <FormLabel fontSize="sm">Question 1</FormLabel>
+              <VStack align="flex-start" spacing={4}>
+                <FormHelperText fontSize="sm">
+                  Enter your EIN so we can verify you as a nonprofit.
+                </FormHelperText>
+                <Input id="EIN" placeholder="00-0000000" />
+              </VStack>
+            </FormControl>
+          </VStack>
+        )}
+
         <VStack align="start" spacing={5}>
           <Text alignSelf="flex-start" fontSize="md" fontWeight={700}>
             About Your Organization
           </Text>
-          <FormControl>
+          <FormControl isReadOnly={isRead}>
             <FormLabel fontSize="sm">Question 1</FormLabel>
             <VStack align="flex-start" spacing={4}>
               <FormHelperText fontSize="sm">
@@ -77,7 +84,7 @@ function ApplicationCard() {
               />
             </VStack>
           </FormControl>
-          <FormControl>
+          <FormControl isReadOnly={isRead}>
             <FormLabel fontSize="sm">Question 2</FormLabel>
             <VStack align="flex-start" spacing={4}>
               <FormHelperText fontSize="sm">
@@ -92,7 +99,7 @@ function ApplicationCard() {
               />
             </VStack>
           </FormControl>
-          <FormControl>
+          <FormControl isReadOnly={isRead}>
             <FormLabel fontSize="sm">Question 3</FormLabel>
             <VStack align="flex-start" spacing={4}>
               <FormHelperText fontSize="sm">
@@ -112,7 +119,7 @@ function ApplicationCard() {
               />
             </VStack>
           </FormControl>
-          <FormControl>
+          <FormControl isReadOnly={isRead}>
             <FormLabel fontSize="sm">Question 4</FormLabel>
             <VStack align="flex-start" spacing={4}>
               <FormHelperText fontSize="sm">
@@ -133,7 +140,7 @@ function ApplicationCard() {
           <Text alignSelf="flex-start" fontSize="md" fontWeight={700}>
             Your Product Needs
           </Text>
-          <FormControl>
+          <FormControl isReadOnly={isRead}>
             <FormLabel fontSize="sm">Question 1</FormLabel>
             <VStack align="flex-start" spacing={4}>
               <FormHelperText fontSize="sm">
@@ -148,7 +155,7 @@ function ApplicationCard() {
               />
             </VStack>
           </FormControl>
-          <FormControl>
+          <FormControl isReadOnly={isRead}>
             <FormLabel fontSize="sm">Question 2</FormLabel>
             <VStack align="flex-start" spacing={4}>
               <FormHelperText fontSize="sm">
@@ -163,7 +170,7 @@ function ApplicationCard() {
               />
             </VStack>
           </FormControl>
-          <FormControl>
+          <FormControl isReadOnly={isRead}>
             <FormLabel fontSize="sm">Question 3</FormLabel>
             <VStack align="flex-start" spacing={4}>
               <FormHelperText fontSize="sm">
@@ -180,7 +187,7 @@ function ApplicationCard() {
               />
             </VStack>
           </FormControl>
-          <FormControl>
+          <FormControl isReadOnly={isRead}>
             <FormLabel fontSize="sm">Question 4</FormLabel>
             <VStack align="flex-start" spacing={4}>
               <FormHelperText fontSize="sm">
@@ -197,7 +204,7 @@ function ApplicationCard() {
               />
             </VStack>
           </FormControl>
-          <FormControl>
+          <FormControl isReadOnly={isRead}>
             <FormLabel fontSize="sm">Question 5</FormLabel>
             <VStack align="flex-start" spacing={4}>
               <FormHelperText fontSize="sm">

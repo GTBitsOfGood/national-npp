@@ -5,7 +5,7 @@ function NonprofitApplicationPage() {
   return (
     <Flex height="100%" width="100%">
       <Flex margin="auto">
-        <ApplicationCard />
+        <ApplicationCard isRead={true} />
       </Flex>
     </Flex>
   );
