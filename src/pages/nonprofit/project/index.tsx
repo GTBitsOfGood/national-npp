@@ -30,6 +30,7 @@ import { getNonprofitProjects } from "src/actions/Project";
 import ProjectCards from "src/components/nonprofit/project/ProjectCards";
 import StepCard from "src/components/nonprofit/project/StepCard";
 import { getStepCardData } from "src/components/nonprofit/project/StepCardData";
+import ConfirmAlert from "src/components/shared/ConfirmAlert";
 import { chapterStageToDisplayableProjectStage } from "src/utils/stages";
 import { Chapter, DisplayableProjectStage, Project } from "src/utils/types";
 
@@ -66,27 +67,14 @@ function NonprofitProjectPage() {
       px={5}
       py={10}
     >
-      <Modal isOpen={isOpen} onClose={onClose} isCentered>
-        <ModalOverlay />
-        <ModalContent maxW={{ base: "20rem", md: "35rem" }}>
-          <ModalHeader fontSize="2xl">Cancel Project</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Text>Are you sure you want to cancel your project?</Text>
-            <Text paddingBottom={3}>
-              All of your responses will be permanently deleted.
-            </Text>
-          </ModalBody>
-          <ModalFooter>
-            <Button variant="danger" mr={3} onClick={cancelProject}>
-              Cancel Project
-            </Button>
-            <Button variant="secondary" onClick={onClose}>
-              Close
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      <ConfirmAlert
+        title="Cancel Project"
+        description="Are you sure you want to cancel this project?"
+        confirmText="Cancel Project"
+        onConfirm={cancelProject}
+        isOpen={isOpen}
+        onClose={onClose}
+      />
       {/* project selection */}
       <Stack
         w={{ base: "full", lg: "33%" }}
