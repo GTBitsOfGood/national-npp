@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
 import { updateChapter } from "server/mongodb/actions/Chapter";
 import APIWrapper from "server/utils/APIWrapper";
-import { ChapterUpdate } from "src/utils/types";
+import { ChapterUpdate, Role } from "src/utils/types";
 
 export default APIWrapper({
   PATCH: {
