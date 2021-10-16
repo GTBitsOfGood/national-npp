@@ -1,0 +1,40 @@
+doctype html
+// all styles/assets need to be relative to the "emails" directory AKA /emails
+link(rel="stylesheet", href="/shared/style.css", data-inline)
+html
+    body
+        - const emailAssetsUrl = `${baseUrl}/emails`
+        table
+            tbody
+                tr
+                    td
+                        - const placeholderURL = `${emailAssetsUrl}/header.png`
+                        img(id="header" src=placeholderURL)
+                tr
+                    td
+                        block address
+                            p Dear #{name},
+                tr
+                    td
+                        block content
+                tr
+                    td
+                        block signature
+                            p - Bits of Good Team
+                tr
+                    td
+                        div(id="footer" style={ "background-image": `url("${emailAssetsUrl}/footer.jpg")` })
+                            h1(id="copyright") © 2021 Bits of Good | bitsofgood.org
+                            div(id="socials")
+                                - const facebookLogoURL = `${emailAssetsUrl}/facebook.png`
+                                - const twitterLogoURL = `${emailAssetsUrl}/twitter.png`
+                                - const instagramLogoURL = `${emailAssetsUrl}/instagram.png`
+                                - const linkedinLogoURL = `${emailAssetsUrl}/linkedin.png`
+                                a(href="https://www.facebook.com/GTBitsOfGood/")
+                                    img(class="social right" src=facebookLogoURL)
+                                a(href="https://twitter.com/gtbitsofgood")
+                                    img(class="social left right" src=twitterLogoURL)
+                                a(href="https://www.instagram.com/gtbitsofgood/")
+                                    img(class="social left right" src=instagramLogoURL)
+                                a(href="https://www.linkedin.com/company/gtbitsofgood/about/")
+                                    img(class="social left" src=linkedinLogoURL)
