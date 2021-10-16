@@ -19,6 +19,7 @@ function ApplicationCard(props: { isRead: boolean }) {
   const maxTextArea = 500;
   const isVerified = false;
   const { isRead } = props;
+
   return (
     <VStack
       minW={{ base: 425, md: 800 }}
@@ -47,7 +48,7 @@ function ApplicationCard(props: { isRead: boolean }) {
         </HStack>
       </Box>
       <VStack align="stretch" p={12} spacing={12}>
-        {isVerified && (
+        {!isVerified && (
           <VStack align="start" spacing={5}>
             <Text alignSelf="flex-start" fontSize="md" fontWeight={700}>
               Nonprofit Verification
