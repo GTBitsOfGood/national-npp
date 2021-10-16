@@ -164,7 +164,7 @@ function NonprofitProfilePage() {
                     mr={{ base: 0, md: 5 }}
                     mb={{ base: 5, md: 0 }}
                   >
-                    <FormControl isInvalid={errors.name}>
+                    <FormControl isInvalid={errors.name != null}>
                       <FormLabel>Name</FormLabel>
                       <Input
                         id="name"
@@ -179,7 +179,7 @@ function NonprofitProfilePage() {
                       </FormErrorMessage>
                     </FormControl>
                   </VStack>
-                  <FormControl isInvalid={errors.phoneNumber}>
+                  <FormControl isInvalid={errors.phoneNumber != null}>
                     <FormLabel>Phone Number</FormLabel>
                     <Input
                       id="phoneNumber"
@@ -210,7 +210,7 @@ function NonprofitProfilePage() {
                     mr={{ base: 0, md: 5 }}
                     mb={{ base: 5, md: 0 }}
                   >
-                    <FormControl isInvalid={errors.nonprofitName}>
+                    <FormControl isInvalid={errors.nonprofitName != null}>
                       <FormLabel>Nonprofit Name</FormLabel>
                       <Input
                         id="nonprofitName"
@@ -225,7 +225,7 @@ function NonprofitProfilePage() {
                       </FormErrorMessage>
                     </FormControl>
                     <VStack spacing={3}>
-                      <FormControl isInvalid={errors.street}>
+                      <FormControl isInvalid={errors.street != null}>
                         <FormLabel>Address</FormLabel>
                         <Input
                           id="street"
@@ -237,7 +237,7 @@ function NonprofitProfilePage() {
                           })}
                         />
                       </FormControl>
-                      <FormControl isInvalid={errors.city}>
+                      <FormControl isInvalid={errors.city != null}>
                         <Input
                           id="city"
                           width={320}
@@ -249,7 +249,7 @@ function NonprofitProfilePage() {
                         />
                       </FormControl>
                       <HStack>
-                        <FormControl isInvalid={errors.state}>
+                        <FormControl isInvalid={errors.state != null}>
                           <Select
                             id="state"
                             width={190}
@@ -265,7 +265,7 @@ function NonprofitProfilePage() {
                             ))}
                           </Select>
                         </FormControl>
-                        <FormControl isInvalid={errors.zipCode}>
+                        <FormControl isInvalid={errors.zipCode != null}>
                           <Input
                             id="zipCode"
                             width={120}
@@ -280,7 +280,7 @@ function NonprofitProfilePage() {
                           />
                         </FormControl>
                       </HStack>
-                      <FormControl isInvalid={errors.country}>
+                      <FormControl isInvalid={errors.country != null}>
                         <Select
                           id="country"
                           width={320}
@@ -306,7 +306,7 @@ function NonprofitProfilePage() {
                     </VStack>
                   </VStack>
                   <VStack spacing={5}>
-                    <FormControl isInvalid={errors.contact}>
+                    <FormControl isInvalid={errors.contact != null}>
                       <FormLabel>Contact</FormLabel>
                       <Select
                         id="contact"
@@ -328,7 +328,7 @@ function NonprofitProfilePage() {
                         {errors.contact && errors.contact.message}
                       </FormErrorMessage>
                     </FormControl>
-                    <FormControl isInvalid={errors.website}>
+                    <FormControl isInvalid={errors.website != null}>
                       <FormLabel>Website URL (Optional)</FormLabel>
                       <Input
                         id="website"
@@ -343,7 +343,7 @@ function NonprofitProfilePage() {
                   </VStack>
                 </Flex>
               </VStack>
-              <FormControl isInvalid={errors.mission}>
+              <FormControl isInvalid={errors.mission != null}>
                 <FormLabel>Organization Mission (Optional)</FormLabel>
                 <Textarea
                   id="mission"
