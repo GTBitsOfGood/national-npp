@@ -205,3 +205,8 @@ export interface ChapterProject {
   lastUpdated: Date;
   status: string;
 }
+
+export interface Email {
+  data: Record<string, unknown>; // data contains the the variables for the template
+  templateName: string; // templateName is the the name of the directory within `emails/` containing the template resources
+}
