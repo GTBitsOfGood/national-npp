@@ -7,9 +7,7 @@ export default APIWrapper({
   PATCH: {
     config: {
       requireSession: true,
-      roles: [
-        Role.NONPROFIT_ADMIN
-      ]
+      roles: [Role.NONPROFIT_ADMIN],
     },
     handler: async (req) => {
       const claimedNonprofitId = req.query.id as string;

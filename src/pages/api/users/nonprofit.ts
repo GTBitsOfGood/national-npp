@@ -6,9 +6,7 @@ export default APIWrapper({
   GET: {
     config: {
       requireSession: true,
-      roles: [
-        Role.NONPROFIT_MEMBER,
-      ]
+      roles: [Role.NONPROFIT_MEMBER],
     },
     handler: async (req) => {
       const nonprofitId = req.user.nonprofit;

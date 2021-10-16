@@ -7,9 +7,7 @@ export default APIWrapper({
   PATCH: {
     config: {
       requireSession: true,
-      roles: [
-        Role.NONPROFIT_MEMBER,
-      ]
+      roles: [Role.NONPROFIT_MEMBER],
     },
     handler: async (req) => {
       const projectId = req.query.id as string;
