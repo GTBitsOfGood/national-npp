@@ -27,7 +27,7 @@ export interface Chapter {
   _id: Types.ObjectId | string;
   name: string;
   email: string;
-  contact: Types.ObjectId;
+  contact: User | Types.ObjectId;
   address: Address;
   website?: string;
   facebook?: string;
@@ -41,7 +41,7 @@ export interface Nonprofit {
   name: string;
   address: Address;
   isVerified: boolean;
-  contact: Types.ObjectId;
+  contact: User | Types.ObjectId;
   website?: string;
   mission?: string;
 }
@@ -153,9 +153,12 @@ export type NonprofitProjectCreate = Pick<
   "chapter" | "name" | "type"
 >;
 export type NonprofitProjectUpdate = Pick<Partial<Project>, "status">;
-export type ChapterProjectUpdate = Pick<Partial<Project>, "status" | "contact">;
+export type ChapterProjectUpdate = Pick<
+  Partial<Project>,
+  "status" | "contact" | "chapter"
+>;
 
-export type NonprofitApplicationCreate = Omit<Application, "_id">;
+export type NonprofitApplicationCreate = Omit<Application, "_id" | "project">;
 
 export type UserUpdate = Pick<Partial<User>, "name" | "image" | "phoneNum">;
 

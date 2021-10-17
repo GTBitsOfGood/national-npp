@@ -12,11 +12,51 @@ import {
   Button,
   Textarea,
 } from "@chakra-ui/react";
+import { useState, useEffect } from "react";
+import { getNonprofitProject } from "src/actions/Project";
+import { showError, showInfo } from "src/utils/notifications";
 import { User, ProjectType, Nonprofit } from "src/utils/types";
-function NonprofitInfoCard() {
-  const name = "Liv2BGirl";
-  const appType = "Mobile App";
-  const isVerified = false;
+function NonprofitInfoCard(props: { projectId: string }) {
+  const { projectId } = props;
+
+  const [projectName, setProjectName] = useState("");
+  const [nonprofitName, setNonprofitName] = useState("");
+  const [contactName, setContactName] = useState("");
+  const [contactEmail, setContactEmail] = useState("");
+  const [contactPhone, setContactPhone] = useState("");
+  const [street, setStreet] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [zipCode, setZipCode] = useState("");
+  const [mission, setMission] = useState("");
+  const [appType, setAppType] = useState("");
+  const [isVerified, setIsVerified] = useState(false);
+
+  useEffect(() => {
+    async function preloadFields() {
+      const project = await getNonprofitProject(projectId);
+      const nonprofit = project.nonprofit as Nonprofit;
+      const contact = nonprofit.contact as User;
+      const address = nonprofit.address;
+
+      setProjectName(project.name);
+      setNonprofitName(nonprofit.name);
+      setContactName(contact.name);
+      setContactEmail(contact.email);
+      setContactPhone(contact.phoneNum ?? "");
+      setStreet(address.street);
+      setCity(address.city);
+      setState(address.state);
+      setZipCode(address.zipCode);
+      setMission(nonprofit.mission ?? "");
+      setAppType(project.type ?? "");
+      setIsVerified(nonprofit.isVerified);
+    }
+
+    preloadFields().catch((error: Error) => {
+      showError(error.message);
+    });
+  }, []);
 
   return (
     <VStack
@@ -46,7 +86,7 @@ function NonprofitInfoCard() {
           </VStack>
         )}
         <Heading alignSelf="flex-start" fontSize="3xl" fontWeight={700}>
-          Liv2BGirl Mobile App
+          {projectName}
         </Heading>
 
         <VStack align="start" spacing={5}>
@@ -56,7 +96,7 @@ function NonprofitInfoCard() {
               Nonprofit
             </Text>
             <Text alignSelf="flex-start" fontSize="lg" fontWeight={100}>
-              {name}
+              {nonprofitName}
             </Text>
           </VStack>
           <VStack align="start">
@@ -64,13 +104,13 @@ function NonprofitInfoCard() {
               Nonprofit Contact
             </Text>
             <Text alignSelf="flex-start" fontSize="lg" fontWeight={100}>
-              First Last
+              {contactName}
             </Text>
             <Text alignSelf="flex-start" fontSize="lg" fontWeight={100}>
-              example@gmail.com
+              {contactEmail}
             </Text>
             <Text alignSelf="flex-start" fontSize="lg" fontWeight={100}>
-              XXX-XXX-XXXX
+              {contactPhone}
             </Text>
           </VStack>
           <VStack align="start">
@@ -78,10 +118,10 @@ function NonprofitInfoCard() {
               Address
             </Text>
             <Text alignSelf="flex-start" fontSize="lg" fontWeight={100}>
-              000 Address Street
+              {street}
             </Text>
             <Text alignSelf="flex-start" fontSize="lg" fontWeight={100}>
-              Atlanta GA, 30332
+              {city} {state}, {zipCode}
             </Text>
           </VStack>
           <VStack align="start">
@@ -89,7 +129,7 @@ function NonprofitInfoCard() {
               Mission
             </Text>
             <Text alignSelf="flex-start" fontSize="lg" fontWeight={100}>
-              This is a bio
+              {mission}
             </Text>
           </VStack>
           <VStack align="start">

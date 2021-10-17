@@ -23,7 +23,6 @@ export default APIWrapper({
 
       const project = await updateNonprofitProject(
         Types.ObjectId(projectId),
-        nonprofitId,
         projectUpdate
       );
 

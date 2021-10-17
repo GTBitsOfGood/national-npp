@@ -34,9 +34,8 @@ function QuestionCard(props: {
             maxLength={maxTextArea}
             placeholder="Type Answer Here"
             fontSize="sm"
-          >
-            {answer}
-          </Textarea>
+            value={answer}
+          />
         )}
         {!isRead && (
           <Textarea

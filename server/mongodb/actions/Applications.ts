@@ -4,14 +4,14 @@ import dbConnect from "server/utils/dbConnect";
 import { NonprofitApplicationCreate } from "src/utils/types";
 
 export async function createNonprofitApplication(
-  nonprofitId: Types.ObjectId,
+  projectId: Types.ObjectId,
   applicationCreate: NonprofitApplicationCreate
 ) {
   await dbConnect();
 
   const application = await ApplicationModel.create({
+    project: projectId,
     ...applicationCreate,
-    nonprofit: nonprofitId,
   });
 
   return application;

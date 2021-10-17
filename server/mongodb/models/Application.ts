@@ -19,7 +19,7 @@ const ApplicationSchema = new Schema<Application>({
 });
 
 const ApplicationModel =
-  (mongoose.models.Project as mongoose.Model<Application>) ||
+  (mongoose.models.Application as mongoose.Model<Application>) ||
   mongoose.model<Application>("Application", ApplicationSchema);
 
 export default ApplicationModel;

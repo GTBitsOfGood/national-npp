@@ -9,12 +9,14 @@ import urls from "src/utils/urls";
 const applicationAPI = urls.baseUrl + urls.api.applications;
 
 export async function createNonprofitApplication(
+  projectId: string,
   applicationCreate: NonprofitApplicationCreate
 ) {
   return internalRequest<Application>({
     url: applicationAPI + "/application",
     method: HttpMethod.POST,
     body: {
+      projectId,
       applicationCreate,
     },
   });

@@ -12,21 +12,15 @@ export default APIWrapper({
       requireSession: true,
     },
     handler: async (req) => {
-      const nonprofitId = req.user.nonprofit;
-
-      console.log(req.user);
-
-      if (!nonprofitId) {
-        throw new Error("User does not belong to a nonprofit.");
-      }
-
       const applicationCreate = req.body
         .applicationCreate as NonprofitApplicationCreate;
+      const projectId = req.body.projectId as string;
 
       const application = await createNonprofitApplication(
-        nonprofitId,
+        Types.ObjectId(projectId),
         applicationCreate
       );
+
       return application;
     },
   },

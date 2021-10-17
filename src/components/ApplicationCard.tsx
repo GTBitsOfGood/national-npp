@@ -78,7 +78,6 @@ function ApplicationCard(props: { isRead: boolean; projectId: string }) {
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     const applicationCreate: NonprofitApplicationCreate = {
-      project: Types.ObjectId(projectId),
       aboutQ1: aboutQ1 !== "" ? aboutQ1 : undefined,
       aboutQ2: aboutQ2 !== "" ? aboutQ2 : undefined,
       aboutQ3: aboutQ3 !== "" ? aboutQ3 : undefined,
@@ -91,7 +90,7 @@ function ApplicationCard(props: { isRead: boolean; projectId: string }) {
     };
 
     try {
-      await createNonprofitApplication(applicationCreate);
+      await createNonprofitApplication(projectId, applicationCreate);
       showInfo("Successfully submitted application.");
     } catch (e) {
       const error = e as Error;
@@ -196,9 +195,8 @@ function ApplicationCard(props: { isRead: boolean; projectId: string }) {
                   maxLength={maxTextArea}
                   placeholder="Type Answer Here"
                   fontSize="sm"
-                >
-                  {aboutQ3}
-                </Textarea>
+                  value={aboutQ3}
+                />
               )}
               {!isRead && (
                 <Textarea

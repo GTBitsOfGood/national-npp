@@ -1,6 +1,7 @@
 import { FilterQuery, Types } from "mongoose";
 import NonprofitModel from "server/mongodb/models/Nonprofit";
 import ProjectModel from "server/mongodb/models/Project";
+import UserModel from "server/mongodb/models/User";
 import dbConnect from "server/utils/dbConnect";
 import { displayableProjectStageToProjectStages } from "src/utils/stages";
 import {
@@ -53,6 +54,10 @@ export async function getNonprofitProject(projectId: Types.ObjectId) {
   const project = await ProjectModel.findOne({ _id: projectId }).populate({
     path: "nonprofit",
     model: NonprofitModel,
+    populate: {
+      path: "contact",
+      model: UserModel,
+    },
   });
 
   return project;
@@ -89,13 +94,12 @@ export async function getNonprofitProjects(
 
 export async function updateNonprofitProject(
   projectId: Types.ObjectId,
-  nonprofitId: Types.ObjectId,
   projectUpdate: NonprofitProjectUpdate
 ) {
   await dbConnect();
 
   const project = await ProjectModel.findOneAndUpdate(
-    { _id: projectId, nonprofit: nonprofitId },
+    { _id: projectId },
     projectUpdate,
     { new: true }
   );
@@ -105,13 +109,12 @@ export async function updateNonprofitProject(
 
 export async function updateChapterProject(
   projectId: Types.ObjectId,
-  chapterId: Types.ObjectId,
   projectUpdate: ChapterProjectUpdate
 ) {
   await dbConnect();
 
   const project = await ProjectModel.findOneAndUpdate(
-    { _id: projectId, chapter: chapterId },
+    { _id: projectId },
     projectUpdate,
     { new: true }
   );
