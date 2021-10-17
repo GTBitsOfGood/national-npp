@@ -17,12 +17,16 @@ export default APIWrapper({
       console.log(req.user);
 
       if (!nonprofitId) {
-      throw new Error("User does not belong to a nonprofit.");
+        throw new Error("User does not belong to a nonprofit.");
       }
 
-      const applicationCreate = req.body.applicationCreate as NonprofitApplicationCreate;
+      const applicationCreate = req.body
+        .applicationCreate as NonprofitApplicationCreate;
 
-      const application = await createNonprofitApplication(nonprofitId, applicationCreate);
+      const application = await createNonprofitApplication(
+        nonprofitId,
+        applicationCreate
+      );
       return application;
     },
   },
@@ -33,9 +37,7 @@ export default APIWrapper({
     handler: async (req) => {
       const projectId = req.query.projectId as string;
 
-      const application = await getApplication(
-        Types.ObjectId(projectId),
-      );
+      const application = await getApplication(Types.ObjectId(projectId));
 
       return application;
     },

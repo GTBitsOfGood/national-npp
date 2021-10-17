@@ -11,37 +11,39 @@ import {
   Button,
   Textarea,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
 import { Types } from "mongoose";
-import QuestionCard from "src/components/QuestionCard";
+import React, { useEffect, useState } from "react";
 import {
   createNonprofitApplication,
   getApplication,
 } from "src/actions/Application";
-import { getNonprofitProject } from "src/actions/Project"
+import { getNonprofitProject } from "src/actions/Project";
+import QuestionCard from "src/components/QuestionCard";
+import { showError, showInfo } from "src/utils/notifications";
 import {
   NonprofitApplicationCreate,
+  User,
+  ProjectType,
+  Nonprofit,
 } from "src/utils/types";
-import { showError, showInfo } from "src/utils/notifications";
-import { User, ProjectType, Nonprofit } from "src/utils/types";
 
-function ApplicationCard(props: { isRead: boolean, projectId: string }) {
+function ApplicationCard(props: { isRead: boolean; projectId: string }) {
   const { isRead, projectId } = props;
 
-  const [ projectName, setProjectName ] = useState("");
-  const [ appType, setAppType ] = useState("");
-  const [ isVerified, setIsVerified ] = useState(false);
-  
-  const [ ein, setEin ] = useState("");
-  const [ aboutQ1, setAboutQ1 ] = useState("");
-  const [ aboutQ2, setAboutQ2 ] = useState("");
-  const [ aboutQ3, setAboutQ3 ] = useState("");
-  const [ aboutQ4, setAboutQ4 ] = useState("");
-  const [ needsQ1, setNeedsQ1 ] = useState("");
-  const [ needsQ2, setNeedsQ2 ] = useState("");
-  const [ needsQ3, setNeedsQ3 ] = useState("");
-  const [ needsQ4, setNeedsQ4 ] = useState("");
-  const [ needsQ5, setNeedsQ5 ] = useState("");
+  const [projectName, setProjectName] = useState("");
+  const [appType, setAppType] = useState("");
+  const [isVerified, setIsVerified] = useState(false);
+
+  const [ein, setEin] = useState("");
+  const [aboutQ1, setAboutQ1] = useState("");
+  const [aboutQ2, setAboutQ2] = useState("");
+  const [aboutQ3, setAboutQ3] = useState("");
+  const [aboutQ4, setAboutQ4] = useState("");
+  const [needsQ1, setNeedsQ1] = useState("");
+  const [needsQ2, setNeedsQ2] = useState("");
+  const [needsQ3, setNeedsQ3] = useState("");
+  const [needsQ4, setNeedsQ4] = useState("");
+  const [needsQ5, setNeedsQ5] = useState("");
 
   const maxTextArea = 500;
 

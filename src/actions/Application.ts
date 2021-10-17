@@ -1,4 +1,4 @@
-import { internalRequest, } from "src/utils/requests";
+import { internalRequest } from "src/utils/requests";
 import {
   HttpMethod,
   Application,

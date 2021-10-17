@@ -4,8 +4,8 @@ import ApplicationCard from "src/components/ApplicationCard";
 import NonprofitInfoCard from "src/components/NonprofitInfoCard";
 
 function NonprofitApplicationPage() {
-  // Todo: pass in the current project's id 
-  const projectId: string = "616ba502a1667f4a0eadcfa1";
+  // Todo: pass in the current project's id
+  const projectId = "616ba502a1667f4a0eadcfa1";
 
   return (
     <Flex height="100%" width="100%" marginTop={10}>
