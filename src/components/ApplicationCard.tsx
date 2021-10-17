@@ -12,7 +12,7 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 import QuestionCard from "src/components/QuestionCard";
-import { User, ProjectType, Nonprofit } from "src/utils/types";
+// import { User, ProjectType, Nonprofit } from "src/utils/types";
 
 function ApplicationCard(props: { isRead: boolean }) {
   const name = "Liv2BGirl";
@@ -63,8 +63,7 @@ function ApplicationCard(props: { isRead: boolean }) {
         </HStack>
       </Box>
       <VStack align="stretch" p={12} spacing={12}>
-        {!isVerified && (
-          <VStack align="start" spacing={5}>
+        {!isRead && (<VStack align="start" spacing={5}>
             <Text alignSelf="flex-start" fontSize="md" fontWeight={700}>
               Nonprofit Verification
             </Text>
@@ -75,26 +74,15 @@ function ApplicationCard(props: { isRead: boolean }) {
                 <FormHelperText fontSize="sm">
                   Enter your EIN so we can verify you as a nonprofit.
                 </FormHelperText>
-                {isRead && (
-                  <Input
-                    pattern="^[0-9]{2}-[0-9]{7}$"
-                    id="EIN"
-                    placeholder="00-0000000"
-                    value={answers.questionA1}
-                  />
-                )}
-                {!isRead && (
                   <Input
                     pattern="^[0-9]{2}-[0-9]{7}$"
                     id="EIN"
                     placeholder="00-0000000"
                   />
-                )}
+
               </VStack>
             </FormControl>
-          </VStack>
-        )}
-
+          </VStack>)}
         <VStack align="start" spacing={5}>
           <Text alignSelf="flex-start" fontSize="md" fontWeight={700}>
             About Your Organization
