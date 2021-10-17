@@ -21,7 +21,9 @@ interface Route<T> {
   ) => Promise<T>;
 }
 
-function APIWrapper<T>(routeHandlers: Partial<Record<HttpMethod, Route<T>>>) {
+function APIWrapper(
+  routeHandlers: Partial<Record<HttpMethod, Route<unknown>>>
+) {
   return async (req: InternalRequest, res: NextApiResponse) => {
     const method = req.method;
     const route = routeHandlers[method as HttpMethod];
