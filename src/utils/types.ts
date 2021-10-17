@@ -58,6 +58,18 @@ export interface Project {
   updatedAt: Date;
 }
 
+export interface Application {
+  _id: Types.ObjectId;
+  chapter: Chapter | Types.ObjectId;
+  nonprofit: Nonprofit | Types.ObjectId;
+  name: string;
+  status: ProjectStage;
+  type?: ProjectType;
+  contact?: User | Types.ObjectId;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export interface Address {
   street: string;
   city: string;
