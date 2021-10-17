@@ -9,14 +9,14 @@ function NonprofitApplicationPage() {
 
   return (
     <Flex height="100%" width="100%" marginTop={10}>
-      <VStack>
-        <HStack>
+      <VStack align="stretch" margin="auto">
+        <HStack spacing="90px">
           <Link color="blue" href="/chapter/projects">
             My Projects
           </Link>
           <Heading fontSize="3xl">Application Form</Heading>
         </HStack>
-        <Flex>
+        <Flex paddingLeft="125px">
           <ApplicationCard isRead={false} projectId={projectId} />
         </Flex>
       </VStack>
