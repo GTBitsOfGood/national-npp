@@ -20,7 +20,7 @@ function ChapterApplicationPage() {
             <NonprofitInfoCard />
           </Flex>
           <Flex>
-            <ApplicationCard isRead={true} />
+            <ApplicationCard isRead={true}/>
           </Flex>
         </HStack>
       </VStack>

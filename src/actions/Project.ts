@@ -36,6 +36,13 @@ export async function getChapterProject(projectId: string) {
   });
 }
 
+export async function getNonprofitProject(projectId: string) {
+  return internalRequest<Project>({
+    url: projectAPI + `${projectId}/nonprofit`,
+    method: HttpMethod.GET,
+  });
+}
+
 export async function getNonprofitProjects(active?: boolean) {
   return internalRequest<Project>({
     url: projectAPI + "/nonprofit",

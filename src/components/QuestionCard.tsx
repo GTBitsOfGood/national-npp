@@ -17,11 +17,9 @@ function QuestionCard(props: {
   number: string;
   question: string;
   answer: string;
+  onChangeHandler?: (value: React.SetStateAction<string>) => void;
 }) {
-  const { isRead } = props;
-  const { number } = props;
-  const { question } = props;
-  const { answer } = props;
+  const { isRead, number, question, answer, onChangeHandler } = props;
   const maxTextArea = 500;
   return (
     <FormControl isReadOnly={isRead}>
@@ -46,6 +44,7 @@ function QuestionCard(props: {
             maxLength={maxTextArea}
             placeholder="Type Answer Here"
             fontSize="sm"
+            onChange={(e) => onChangeHandler && onChangeHandler(e.target.value)}
           />
         )}
       </VStack>

@@ -60,14 +60,16 @@ export interface Project {
 
 export interface Application {
   _id: Types.ObjectId;
-  chapter: Chapter | Types.ObjectId;
-  nonprofit: Nonprofit | Types.ObjectId;
-  name: string;
-  status: ProjectStage;
-  type?: ProjectType;
-  contact?: User | Types.ObjectId;
-  createdAt: Date;
-  updatedAt: Date;
+  project: Project | Types.ObjectId;
+  aboutQ1?: string;
+  aboutQ2?: string;
+  aboutQ3?: string;
+  aboutQ4?: string;
+  needsQ1?: string;
+  needsQ2?: string;
+  needsQ3?: string;
+  needsQ4?: string;
+  needsQ5?: string;
 }
 
 export interface Address {
@@ -152,6 +154,8 @@ export type NonprofitProjectCreate = Pick<
 >;
 export type NonprofitProjectUpdate = Pick<Partial<Project>, "status">;
 export type ChapterProjectUpdate = Pick<Partial<Project>, "status" | "contact">;
+
+export type NonprofitApplicationCreate = Omit<Application, "_id">;
 
 export type UserUpdate = Pick<Partial<User>, "name" | "image" | "phoneNum">;
 

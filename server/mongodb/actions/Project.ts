@@ -1,4 +1,5 @@
 import { FilterQuery, Types } from "mongoose";
+import NonprofitModel from "server/mongodb/models/Nonprofit";
 import ProjectModel from "server/mongodb/models/Project";
 import dbConnect from "server/utils/dbConnect";
 import { displayableProjectStageToProjectStages } from "src/utils/stages";
@@ -41,6 +42,17 @@ export async function getChapterProject(
   const project = await ProjectModel.findOne({
     _id: projectId,
     chapter: chapterId,
+  });
+
+  return project;
+}
+
+export async function getNonprofitProject(projectId: Types.ObjectId) {
+  await dbConnect();
+
+  const project = await ProjectModel.findOne({ _id: projectId }).populate({
+    path: "nonprofit",
+    model: NonprofitModel,
   });
 
   return project;
