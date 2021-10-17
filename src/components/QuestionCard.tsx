@@ -30,18 +30,24 @@ function QuestionCard(props: {
         <FormHelperText fontSize="sm">
           <Text>{question}</Text>
         </FormHelperText>
-        {isRead && (<Textarea
-          resize="none"
-          maxLength={maxTextArea}
-          placeholder="Type Answer Here"
-          fontSize="sm"
-        >{answer}</Textarea>)}
-        {!isRead && (<Textarea
-          resize="none"
-          maxLength={maxTextArea}
-          placeholder="Type Answer Here"
-          fontSize="sm" />)}
-        
+        {isRead && (
+          <Textarea
+            resize="none"
+            maxLength={maxTextArea}
+            placeholder="Type Answer Here"
+            fontSize="sm"
+          >
+            {answer}
+          </Textarea>
+        )}
+        {!isRead && (
+          <Textarea
+            resize="none"
+            maxLength={maxTextArea}
+            placeholder="Type Answer Here"
+            fontSize="sm"
+          />
+        )}
       </VStack>
     </FormControl>
   );
