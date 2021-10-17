@@ -8,6 +8,7 @@ import {
   Link,
   Button,
   Flex,
+  Box,
 } from "@chakra-ui/react";
 import { ObjectID } from "bson";
 import { useEffect, useState } from "react";
@@ -34,10 +35,11 @@ function ChapterApplicationsPage() {
         (app) => app.status === ProjectStage.APPLICATION_REVIEW
       );
 
-      /* Nonprofit name doesn't appear on the portal because this is 
+      /* Nonprofit name + email doesn't appear on the portal because this is 
          undefined (even though the db structure looks okay)
          Not sure why this is happening so just leaving this here for now 
       */
+      console.log((filteredApps[0].contact as User).email);
       console.log((filteredApps[0].nonprofit as Nonprofit).name);
       setApplications(filteredApps);
     }
@@ -52,15 +54,15 @@ function ChapterApplicationsPage() {
     <Flex
       height="100%"
       width="100%"
-      justifyContent="center"
       alignItems="stretch"
       overflow="auto"
+      p={50}
     >
       <Flex
         minH="600px"
         maxW="1200px"
         maxH="1000px"
-        margin={50}
+        marginX="auto"
         padding={50}
         border="1px solid #657788"
         borderRadius={10}
@@ -70,9 +72,7 @@ function ChapterApplicationsPage() {
         justifyContent="center"
         alignItems="stretch"
       >
-        <Table
-          variant="unstyled"
-          size="lg"
+        <Flex
           backgroundColor="surface"
           border="1px solid #E2E8F0"
           borderBottomLeftRadius={10}
@@ -80,70 +80,67 @@ function ChapterApplicationsPage() {
           borderBottomRightRadius={10}
           flex="1 1 auto"
           overflowX="hidden"
+          overflowY="auto"
         >
-          <Thead color="#999999" borderBottom="1px solid #E2E8F0">
-            <Tr height="100px">
-              <Th paddingInlineStart={5} paddingInlineEnd={4}>
-                Organization
-              </Th>
-              <Th paddingInlineStart={4} paddingInlineEnd={4}>
-                Project Name
-              </Th>
-              <Th paddingInlineStart={4} paddingInlineEnd={4}>
-                Contact Email
-              </Th>
-              <Th paddingInlineStart={4} paddingInlineEnd={4}>
-                Project Type
-              </Th>
-              <Th paddingInlineStart={4} paddingInlineEnd={4}>
-                Status
-              </Th>
-            </Tr>
-          </Thead>
-          <Tbody overflowY="auto">
-            {applications &&
-              applications.length !== 0 &&
-              applications.map((application, index) => (
-                <Tr
-                  key={index}
-                  height="100px"
-                  cursor="pointer"
-                  _hover={{ backgroundColor: "rgba(0, 105, 202, 0.05)" }}
-                >
-                  {console.log((application.nonprofit as Nonprofit).name)}
-                  <Td
-                    paddingInlineStart={5}
-                    paddingInlineEnd={4}
-                    fontWeight={600}
+          <Table variant="unstyled" size="lg">
+            <Thead color="#999999" borderBottom="1px solid #E2E8F0">
+              <Tr height="100px">
+                <Th paddingInlineStart={5} paddingInlineEnd={4}>
+                  Organization
+                </Th>
+                <Th paddingInlineStart={4} paddingInlineEnd={4}>
+                  Project Name
+                </Th>
+                <Th paddingInlineStart={4} paddingInlineEnd={4}>
+                  Contact Email
+                </Th>
+                <Th paddingInlineStart={4} paddingInlineEnd={4}>
+                  Project Type
+                </Th>
+                <Th paddingInlineStart={4} paddingInlineEnd={4}>
+                  Status
+                </Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {applications &&
+                applications.length !== 0 &&
+                applications.map((application, index) => (
+                  <Tr
+                    key={index}
+                    height="100px"
+                    cursor="pointer"
+                    _hover={{ backgroundColor: "rgba(0, 105, 202, 0.05)" }}
                   >
-                    {(application.nonprofit as Nonprofit).name}
-                  </Td>
-                  <Td paddingInlineStart={4} paddingInlineEnd={4}>
-                    {application.name}
-                  </Td>
-                  <Td paddingInlineStart={4} paddingInlineEnd={4}>
-                    <Link
-                      href={`mailto:${(application.contact as User).email}`}
-                      isExternal
+                    <Td
+                      paddingInlineStart={5}
+                      paddingInlineEnd={4}
+                      fontWeight={600}
                     >
-                      {(application.contact as User).email}
-                    </Link>
-                  </Td>
-                  <Td paddingInlineStart={4} paddingInlineEnd={4}>
-                    {application.type}
-                  </Td>
-                  <Td paddingInlineStart={4} paddingInlineEnd={4}>
-                    <Button
-                      colorScheme="blue"
-                      onClick={() => console.log("redirecting to new page!")}
-                    >
-                      View Application
-                    </Button>
-                  </Td>
-                </Tr>
-              ))}
-          </Tbody>
-        </Table>
+                      {(application.nonprofit as Nonprofit).name}
+                    </Td>
+                    <Td paddingInlineStart={4} paddingInlineEnd={4}>
+                      {application.name}
+                    </Td>
+                    <Td paddingInlineStart={4} paddingInlineEnd={4}>
+                      <Link
+                        href={`mailto:${(application.contact as User).email}`}
+                        isExternal
+                      >
+                        {(application.contact as User).email}
+                      </Link>
+                    </Td>
+                    <Td paddingInlineStart={4} paddingInlineEnd={4}>
+                      {application.type}
+                    </Td>
+                    <Td paddingInlineStart={4} paddingInlineEnd={4}>
+                      <Button colorScheme="blue">View Application</Button>
+                    </Td>
+                  </Tr>
+                ))}
+            </Tbody>
+          </Table>
+        </Flex>
       </Flex>
     </Flex>
   );
