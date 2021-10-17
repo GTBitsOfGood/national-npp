@@ -26,9 +26,7 @@ export async function createNonprofitProject(
 
 export async function getChapterProjects(chapterId: Types.ObjectId) {
   await dbConnect();
-
-  const projects = await ProjectModel.find({ chapterId });
-
+  const projects = await ProjectModel.find({ chapter: chapterId });
   return projects;
 }
 

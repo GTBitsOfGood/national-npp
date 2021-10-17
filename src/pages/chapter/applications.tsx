@@ -11,6 +11,9 @@ import {
 } from "@chakra-ui/react";
 import { ObjectID } from "bson";
 import { useEffect, useState } from "react";
+import { getChapterProjects } from "src/actions/Project";
+import { getChapterUser } from "src/actions/User";
+import { showError } from "src/utils/notifications";
 import {
   User,
   Nonprofit,
@@ -18,50 +21,33 @@ import {
   ProjectStage,
   Role,
   ProjectType,
+  Chapter,
 } from "src/utils/types";
 
 function ChapterApplicationsPage() {
   const [applications, setApplications] = useState<Partial<Project>[]>([]);
 
   useEffect(() => {
-    // fetch applications from database here
-    const newApps: Project[] = [];
-    for (let i = 0; i < 20; i += 1) {
-      newApps.push({
-        _id: new ObjectID("7B39BDDDC643564D877D7770"),
-        nonprofit: {
-          _id: new ObjectID("7B39BDDDC643564D877D7770"),
-          contact: new ObjectID("7B39BDDDC643564D877D7770"),
-          name: "Liv2BGirl",
-          address: {
-            city: "Sydney",
-            street: "42 Wallaby Way",
-            state: "New South Wales",
-            zipCode: "50679",
-            country: "Australia",
-          },
-          isVerified: false,
-        },
-        contact: {
-          _id: new ObjectID("7B39BDDDC643564D877D7770"),
-          id: "test",
-          email: "test@xyz.com",
-          emailVerified: new Date(),
-          name: "Saurav Ghosal",
-          roles: [Role.CHAPTER_MEMBER],
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        type: ProjectType.WEBSITE,
-        chapter: new ObjectID("7B39BDDDC643564D877D7770"),
-        name: "test project",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        status: ProjectStage.SUBMIT_APPLICATION,
-      });
+    async function loadProjects() {
+      const newApps: Project[] = await getChapterProjects();
+      const filteredApps = newApps.filter(
+        (app) => app.status === ProjectStage.APPLICATION_REVIEW
+      );
+
+      /* Nonprofit name doesn't appear on the portal because this is 
+         undefined (even though the db structure looks okay)
+         Not sure why this is happening so just leaving this here for now 
+      */
+      console.log((filteredApps[0].nonprofit as Nonprofit).name);
+      setApplications(filteredApps);
     }
-    setApplications(newApps);
+
+    loadProjects().catch((e) => {
+      const error = e as Error;
+      showError(error.message);
+    });
   }, []);
+
   return (
     <Flex
       height="100%"
@@ -124,7 +110,7 @@ function ChapterApplicationsPage() {
                   cursor="pointer"
                   _hover={{ backgroundColor: "rgba(0, 105, 202, 0.05)" }}
                 >
-                  {console.log(application.contact)}
+                  {console.log((application.nonprofit as Nonprofit).name)}
                   <Td
                     paddingInlineStart={5}
                     paddingInlineEnd={4}
