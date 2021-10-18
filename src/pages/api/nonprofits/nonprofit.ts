@@ -6,6 +6,7 @@ export default APIWrapper({
   POST: {
     config: {
       requireSession: true,
+      roles:[Role.NONPROFIT_ADMIN]
     },
     handler: async (req) => {
       const nonprofitCreate = req.body.nonprofitCreate as NonprofitCreate;
