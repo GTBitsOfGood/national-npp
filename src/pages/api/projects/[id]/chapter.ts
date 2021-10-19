@@ -40,12 +40,10 @@ export default APIWrapper({
       }
 
       const projectUpdate = req.body.projectUpdate as ChapterProjectUpdate;
-
-      const project = await updateChapterProject(
-        Types.ObjectId(projectId),
-        chapterId,
-        projectUpdate
-      );
+      const project = await updateChapterProject(Types.ObjectId(projectId), {
+        ...projectUpdate,
+        chapter: chapterId,
+      });
 
       return project;
     },

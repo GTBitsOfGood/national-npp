@@ -1,5 +1,8 @@
 import { Types } from "mongoose";
-import { updateNonprofitProject } from "server/mongodb/actions/Project";
+import {
+  updateNonprofitProject,
+  getNonprofitProject,
+} from "server/mongodb/actions/Project";
 import APIWrapper from "server/utils/APIWrapper";
 import { NonprofitProjectUpdate } from "src/utils/types";
 
@@ -20,9 +23,20 @@ export default APIWrapper({
 
       const project = await updateNonprofitProject(
         Types.ObjectId(projectId),
-        nonprofitId,
         projectUpdate
       );
+
+      return project;
+    },
+  },
+  GET: {
+    config: {
+      requireSession: true,
+    },
+    handler: async (req) => {
+      const projectId = req.query.id as string;
+
+      const project = await getNonprofitProject(Types.ObjectId(projectId));
 
       return project;
     },
