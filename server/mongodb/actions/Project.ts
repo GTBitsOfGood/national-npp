@@ -8,6 +8,7 @@ import {
   NonprofitProjectUpdate,
   Project,
   NonprofitProjectCreate,
+  ProjectStage,
 } from "src/utils/types";
 
 export async function createNonprofitProject(
@@ -22,6 +23,12 @@ export async function createNonprofitProject(
   });
 
   return project;
+}
+
+export async function getProjects(stage: ProjectStage){
+  await dbConnect();
+  const projects = await ProjectModel.find({status: stage});
+  return projects;
 }
 
 export async function getChapterProjects(chapterId: Types.ObjectId) {
