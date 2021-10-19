@@ -1,5 +1,8 @@
 const urls = {
-  baseUrl: "http://localhost:3000",
+  baseUrl:
+    process.env.VERCEL_URL != undefined
+      ? `https://${process.env.VERCEL_URL}`
+      : "http://localhost:3000",
   pages: {},
   api: {
     projects: "/api/projects",
