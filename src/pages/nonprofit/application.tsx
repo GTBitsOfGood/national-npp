@@ -1,4 +1,6 @@
-import { Flex, VStack, HStack, Link, Heading } from "@chakra-ui/react";
+import { ArrowBackIcon } from "@chakra-ui/icons";
+import { Flex, VStack, HStack, Heading, Button } from "@chakra-ui/react";
+import Link from "next/link";
 import ApplicationCard from "src/components/ApplicationCard";
 
 function NonprofitApplicationPage() {
@@ -7,14 +9,20 @@ function NonprofitApplicationPage() {
 
   return (
     <Flex height="100%" width="100%" marginTop={10}>
-      <VStack align="stretch" margin="auto">
-        <HStack spacing="90px">
-          <Link color="blue" href="/chapter/projects">
-            My Projects
+      <VStack spacing={8} margin="auto" align="start">
+        <HStack spacing={12}>
+          <Link href="/chapter/projects">
+            <Button
+              leftIcon={<ArrowBackIcon />}
+              colorScheme="blue"
+              variant="link"
+            >
+              <i className="fa fa-angle-left" /> My Projects
+            </Button>
           </Link>
           <Heading fontSize="3xl">Application Form</Heading>
         </HStack>
-        <Flex paddingX={{ base: "0px", md: "100px" }}>
+        <Flex margin="auto" paddingX={{ base: "0px", md: "150px" }}>
           <ApplicationCard isRead={false} projectId={projectId} />
         </Flex>
       </VStack>
