@@ -1,21 +1,9 @@
-import {
-  Text,
-  VStack,
-  Heading,
-  Box,
-  HStack,
-  Link,
-  FormControl,
-  FormHelperText,
-  FormLabel,
-  Input,
-  Button,
-  Textarea,
-} from "@chakra-ui/react";
+import { Text, VStack, Heading } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import { getNonprofitProject } from "src/actions/Project";
-import { showError, showInfo } from "src/utils/notifications";
-import { User, ProjectType, Nonprofit } from "src/utils/types";
+import { showError } from "src/utils/notifications";
+import { User, Nonprofit } from "src/utils/types";
+
 function NonprofitInfoCard(props: { projectId: string }) {
   const { projectId } = props;
 
@@ -72,7 +60,7 @@ function NonprofitInfoCard(props: { projectId: string }) {
       align="stretch"
     >
       <VStack align="stretch" p={10} spacing={10}>
-        {!isVerified && (
+        {isVerified && (
           <VStack align="start" spacing={5}>
             <Text
               alignSelf="flex-start"
@@ -90,7 +78,6 @@ function NonprofitInfoCard(props: { projectId: string }) {
         </Heading>
 
         <VStack align="start" spacing={5}>
-          {/* Import info from nonprofit profile, now only hardcoded like figma */}
           <VStack align="start">
             <Text alignSelf="flex-start" fontSize="sm" fontWeight={500}>
               Nonprofit

@@ -2,7 +2,6 @@ import {
   Text,
   VStack,
   Box,
-  HStack,
   Link,
   FormControl,
   FormHelperText,
@@ -11,7 +10,6 @@ import {
   Button,
   Textarea,
 } from "@chakra-ui/react";
-import { Types } from "mongoose";
 import React, { useEffect, useState } from "react";
 import {
   createNonprofitApplication,
@@ -20,18 +18,12 @@ import {
 import { getNonprofitProject } from "src/actions/Project";
 import QuestionCard from "src/components/QuestionCard";
 import { showError, showInfo } from "src/utils/notifications";
-import {
-  NonprofitApplicationCreate,
-  User,
-  ProjectType,
-  Nonprofit,
-} from "src/utils/types";
+import { NonprofitApplicationCreate, Nonprofit } from "src/utils/types";
 
 function ApplicationCard(props: { isRead: boolean; projectId: string }) {
   const { isRead, projectId } = props;
 
   const [projectName, setProjectName] = useState("");
-  const [appType, setAppType] = useState("");
   const [isVerified, setIsVerified] = useState(false);
 
   const [ein, setEin] = useState("");
@@ -53,7 +45,6 @@ function ApplicationCard(props: { isRead: boolean; projectId: string }) {
       const nonprofit = project.nonprofit as Nonprofit;
 
       setProjectName(project.name);
-      setAppType(project.type ?? "");
       setIsVerified(nonprofit.isVerified);
 
       if (isRead) {
@@ -100,12 +91,9 @@ function ApplicationCard(props: { isRead: boolean; projectId: string }) {
 
   return (
     <VStack
-      minW={{ base: 425, md: 800 }}
-      //p={12}
-      m={12}
+      maxW="1000px"
       border="1px solid #BCC5D1"
       borderRadius={10}
-      direction="column"
       backgroundColor="surface"
       spacing={3}
       align="stretch"
@@ -116,50 +104,32 @@ function ApplicationCard(props: { isRead: boolean; projectId: string }) {
         backgroundColor="primary"
         p={3}
       >
-        <HStack spacing={3}>
-          <Text color="white" fontSize="md" fontWeight={700} marginLeft={7}>
-            {projectName}
-          </Text>
-          <Text color="white" fontSize="md" fontWeight={700} marginLeft={7}>
-            {appType}
-          </Text>
-        </HStack>
+        <Text color="white" fontSize="md" fontWeight={700} marginLeft={7}>
+          {projectName}
+        </Text>
       </Box>
       <VStack align="stretch" p={12} spacing={12}>
-        {!isVerified && (
+        {!isRead && !isVerified && (
           <VStack align="start" spacing={5}>
             <Text alignSelf="flex-start" fontSize="md" fontWeight={700}>
               Nonprofit Verification
             </Text>
-
             <FormControl isReadOnly={isRead}>
               <FormLabel fontSize="sm">Question 1</FormLabel>
               <VStack align="flex-start" spacing={4}>
                 <FormHelperText fontSize="sm">
                   Enter your EIN so we can verify you as a nonprofit.
                 </FormHelperText>
-                {/* {remove this idRead part vvvvv, this shouldn't show up once read, ein isnt stored in backend} */}
-                {isRead && (
-                  <Input
-                    pattern="^[0-9]{2}-[0-9]{7}$"
-                    id="EIN"
-                    placeholder="00-0000000"
-                    value={ein}
-                  />
-                )}
-                {!isRead && (
-                  <Input
-                    pattern="^[0-9]{2}-[0-9]{7}$"
-                    id="EIN"
-                    placeholder="00-0000000"
-                    onChange={(e) => setEin(e.target.value)}
-                  />
-                )}
+                <Input
+                  pattern="^[0-9]{2}-[0-9]{7}$"
+                  id="EIN"
+                  placeholder="00-0000000"
+                  onChange={(e) => setEin(e.target.value)}
+                />
               </VStack>
             </FormControl>
           </VStack>
         )}
-
         <VStack align="start" spacing={5}>
           <Text alignSelf="flex-start" fontSize="md" fontWeight={700}>
             About Your Organization

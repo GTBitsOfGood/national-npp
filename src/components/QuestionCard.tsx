@@ -1,14 +1,9 @@
 import {
   Text,
   VStack,
-  Box,
-  HStack,
-  Link,
   FormControl,
   FormHelperText,
   FormLabel,
-  Input,
-  Button,
   Textarea,
 } from "@chakra-ui/react";
 
