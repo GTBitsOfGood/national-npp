@@ -1,9 +1,5 @@
 import { Email } from "src/utils/types";
-
-const APP_BASE_URL =
-  process.env.NODE_ENV == "development"
-    ? "http://localhost:3000"
-    : `https://${process.env.VERCEL_URL as string}`;
+import urls from "src/utils/urls";
 
 /**
  * Used to send an email from the backend
@@ -17,7 +13,7 @@ export async function sendEmail(to: string, email: Email): Promise<void> {
       data: {
         // default locals
         ...{
-          baseUrl: APP_BASE_URL,
+          baseUrl: urls.baseUrl,
         },
         // template data
         ...email.data,
@@ -31,7 +27,7 @@ async function sendEmailThroughMicroservice(
   email: Email,
   to: string
 ): Promise<void> {
-  const fetchResult = await fetch(`${APP_BASE_URL}/api/email`, {
+  const fetchResult = await fetch(`${urls.baseUrl}/api/email`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
