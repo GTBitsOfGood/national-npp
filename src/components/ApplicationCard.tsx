@@ -17,9 +17,6 @@ import {
 } from "src/actions/Application";
 import { getNonprofitProject } from "src/actions/Project";
 import QuestionCard from "src/components/QuestionCard";
-<<<<<<< HEAD
-// import { User, ProjectType, Nonprofit } from "src/utils/types";
-=======
 import { showError, showInfo } from "src/utils/notifications";
 import { NonprofitApplicationCreate, Nonprofit } from "src/utils/types";
 
@@ -39,7 +36,6 @@ function ApplicationCard(props: { isRead: boolean; projectId: string }) {
   const [needsQ3, setNeedsQ3] = useState("");
   const [needsQ4, setNeedsQ4] = useState("");
   const [needsQ5, setNeedsQ5] = useState("");
->>>>>>> 451b7fcbaabc2a312f3c01644c8521d194f3be1e
 
   const maxTextArea = 500;
 
@@ -113,12 +109,8 @@ function ApplicationCard(props: { isRead: boolean; projectId: string }) {
         </Text>
       </Box>
       <VStack align="stretch" p={12} spacing={12}>
-<<<<<<< HEAD
-        {!isRead && (<VStack align="start" spacing={5}>
-=======
         {!isRead && !isVerified && (
           <VStack align="start" spacing={5}>
->>>>>>> 451b7fcbaabc2a312f3c01644c8521d194f3be1e
             <Text alignSelf="flex-start" fontSize="md" fontWeight={700}>
               Nonprofit Verification
             </Text>
@@ -128,17 +120,6 @@ function ApplicationCard(props: { isRead: boolean; projectId: string }) {
                 <FormHelperText fontSize="sm">
                   Enter your EIN so we can verify you as a nonprofit.
                 </FormHelperText>
-<<<<<<< HEAD
-                  <Input
-                    pattern="^[0-9]{2}-[0-9]{7}$"
-                    id="EIN"
-                    placeholder="00-0000000"
-                  />
-
-              </VStack>
-            </FormControl>
-          </VStack>)}
-=======
                 <Input
                   pattern="^[0-9]{2}-[0-9]{7}$"
                   id="EIN"
@@ -149,7 +130,6 @@ function ApplicationCard(props: { isRead: boolean; projectId: string }) {
             </FormControl>
           </VStack>
         )}
->>>>>>> 451b7fcbaabc2a312f3c01644c8521d194f3be1e
         <VStack align="start" spacing={5}>
           <Text alignSelf="flex-start" fontSize="md" fontWeight={700}>
             About Your Organization
