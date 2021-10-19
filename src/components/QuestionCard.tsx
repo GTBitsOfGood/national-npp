@@ -6,22 +6,26 @@ import {
   FormLabel,
   Textarea,
 } from "@chakra-ui/react";
+import { Props } from "framer-motion/types/types";
+import { maxTextArea } from "src/utils/validation";
 
 function QuestionCard(props: {
   isRead: boolean;
   number: string;
   question: string;
   answer: string;
+  //children: React.ReactNode;
+  //children: Element;
   onChangeHandler?: (value: React.SetStateAction<string>) => void;
 }) {
-  const { isRead, number, question, answer, onChangeHandler } = props;
-  const maxTextArea = 500;
+  const { isRead, number, answer, question, onChangeHandler } = props;
+
   return (
     <FormControl isReadOnly={isRead}>
       <FormLabel fontSize="sm">{number} </FormLabel>
       <VStack align="flex-start" spacing={4}>
         <FormHelperText fontSize="sm">
-          <Text>{question}</Text>
+          <Text> {question} </Text>
         </FormHelperText>
         {isRead && (
           <Textarea

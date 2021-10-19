@@ -19,6 +19,7 @@ import { getNonprofitProject } from "src/actions/Project";
 import QuestionCard from "src/components/QuestionCard";
 import { showError, showInfo } from "src/utils/notifications";
 import { NonprofitApplicationCreate, Nonprofit } from "src/utils/types";
+import { maxTextArea } from "src/utils/validation";
 
 function ApplicationCard(props: { isRead: boolean; projectId: string }) {
   const { isRead, projectId } = props;
@@ -36,8 +37,6 @@ function ApplicationCard(props: { isRead: boolean; projectId: string }) {
   const [needsQ3, setNeedsQ3] = useState("");
   const [needsQ4, setNeedsQ4] = useState("");
   const [needsQ5, setNeedsQ5] = useState("");
-
-  const maxTextArea = 500;
 
   useEffect(() => {
     async function preloadFields() {
@@ -121,7 +120,6 @@ function ApplicationCard(props: { isRead: boolean; projectId: string }) {
                   Enter your EIN so we can verify you as a nonprofit.
                 </FormHelperText>
                 <Input
-                  pattern="^[0-9]{2}-[0-9]{7}$"
                   id="EIN"
                   placeholder="00-0000000"
                   onChange={(e) => setEin(e.target.value)}
