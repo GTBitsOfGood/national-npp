@@ -135,56 +135,48 @@ function ApplicationCard(props: { isRead: boolean; projectId: string }) {
           <QuestionCard
             isRead={isRead}
             number="Question 1"
-            question="Who do you care to serve?"
             answer={aboutQ1}
             onChangeHandler={setAboutQ1}
-          />
+          >
+            <Text>Who do you care to serve?</Text>
+          </QuestionCard>
           <QuestionCard
             isRead={isRead}
             number="Question 2"
-            question="What services do you provide to the community?"
             answer={aboutQ2}
             onChangeHandler={setAboutQ2}
-          />
-          <FormControl isReadOnly={isRead}>
-            <FormLabel fontSize="sm">Question 3</FormLabel>
-            <VStack align="flex-start" spacing={4}>
-              <FormHelperText fontSize="sm">
-                Does your organization target solving any of the UN Sustainable
-                Development Goals? If so, which ones? (See{" "}
-                <Link color="primary" href="sdgs.un.org/goals">
-                  sdgs.un.org/goals
-                </Link>{" "}
-                for more information on the goals).
-              </FormHelperText>
-              {isRead && (
-                <Textarea
-                  resize="none"
-                  maxLength={maxTextArea}
-                  placeholder="Type Answer Here"
-                  fontSize="sm"
-                  value={aboutQ3}
-                />
-              )}
-              {!isRead && (
-                <Textarea
-                  resize="none"
-                  maxLength={maxTextArea}
-                  placeholder="Type Answer Here"
-                  fontSize="sm"
-                  onChange={(e) => setAboutQ3(e.target.value)}
-                />
-              )}
-            </VStack>
-          </FormControl>
+          >
+            <Text fontsize="sm">
+              {" "}
+              What services do you provide to the community?
+            </Text>
+          </QuestionCard>
+          <QuestionCard
+            isRead={isRead}
+            number="Question 3"
+            answer={aboutQ2}
+            onChangeHandler={setAboutQ2}
+          >
+            <Text fontsize="sm">
+              {" "}
+              Does your organization target solving any of the UN Sustainable
+              Development Goals? If so, which ones? (See{" "}
+              <Link color="primary" href="sdgs.un.org/goals">
+                sdgs.un.org/goals
+              </Link>{" "}
+            </Text>
+          </QuestionCard>
           <QuestionCard
             isRead={isRead}
             number="Question 4"
-            question="How would the collaboration with Hack4Impact help achieve your
-                mission?"
             answer={aboutQ4}
             onChangeHandler={setAboutQ4}
-          />
+          >
+            <Text fontsize="sm">
+              How would the collaboration with Hack4Impact help achieve your
+              mission?
+            </Text>
+          </QuestionCard>
         </VStack>
         <VStack align="start" spacing={5}>
           <Text alignSelf="flex-start" fontSize="md" fontWeight={700}>
@@ -193,38 +185,61 @@ function ApplicationCard(props: { isRead: boolean; projectId: string }) {
           <QuestionCard
             isRead={isRead}
             number="Question 1"
-            question="What problem are you hoping to solve with this technology?"
             answer={needsQ1}
             onChangeHandler={setNeedsQ1}
-          />
+          >
+            <Text fontSize="sm">
+              {" "}
+              What problem are you hoping to solve with this technology?
+            </Text>
+          </QuestionCard>
           <QuestionCard
             isRead={isRead}
             number="Question 2"
-            question="What is the current stage of product development?"
             answer={needsQ2}
             onChangeHandler={setNeedsQ2}
-          />
+          >
+            <Text fontSize="sm">
+              {" "}
+              What is the current stage of product development?
+            </Text>
+          </QuestionCard>
           <QuestionCard
             isRead={isRead}
             number="Question 3"
-            question="What is your availability to work with us in the upcoming semester? The time you devote to us may directly influence the success of the project."
             answer={needsQ3}
             onChangeHandler={setNeedsQ3}
-          />
+          >
+            <Text fontSize="sm">
+              What is your availability to work with us in the upcoming
+              semester? The time you devote to us may directly influence the
+              success of the project.
+            </Text>
+          </QuestionCard>
           <QuestionCard
             isRead={isRead}
             number="Question 4"
-            question="Can you provide a field tour for us to get to know more about your organization and users? (i.e. observe or interview the users?)"
             answer={needsQ4}
             onChangeHandler={setNeedsQ4}
-          />
+          >
+            <Text fontSize="sm">
+              {" "}
+              Can you provide a field tour for us to get to know more about your
+              organization and users? (i.e. observe or interview the users?)
+            </Text>
+          </QuestionCard>
           <QuestionCard
             isRead={isRead}
             number="Question 5"
-            question="Is there anything else related to your product that you would like to share?"
             answer={needsQ5}
             onChangeHandler={setNeedsQ5}
-          />
+          >
+            <Text fontSize="sm">
+              {" "}
+              Is there anything else related to your product that you would like
+              to share?
+            </Text>
+          </QuestionCard>
         </VStack>
         <VStack align="start" fontSize="sm" fontWeight={700} spacing={0}>
           <Text>

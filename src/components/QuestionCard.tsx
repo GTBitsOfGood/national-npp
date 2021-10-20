@@ -12,21 +12,17 @@ import { maxTextArea } from "src/utils/validation";
 function QuestionCard(props: {
   isRead: boolean;
   number: string;
-  question: string;
   answer: string;
-  //children: React.ReactNode;
-  //children: Element;
+  children: React.ReactChild;
   onChangeHandler?: (value: React.SetStateAction<string>) => void;
 }) {
-  const { isRead, number, answer, question, onChangeHandler } = props;
+  const { isRead, number, answer, onChangeHandler } = props;
 
   return (
     <FormControl isReadOnly={isRead}>
       <FormLabel fontSize="sm">{number} </FormLabel>
       <VStack align="flex-start" spacing={4}>
-        <FormHelperText fontSize="sm">
-          <Text> {question} </Text>
-        </FormHelperText>
+        <FormHelperText fontSize="sm">{props.children}</FormHelperText>
         {isRead && (
           <Textarea
             resize="none"
