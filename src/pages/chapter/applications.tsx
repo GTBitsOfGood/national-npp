@@ -26,7 +26,7 @@ import {
 } from "src/utils/types";
 
 function ChapterApplicationsPage() {
-  const [applications, setApplications] = useState<Partial<Project>[]>([]);
+  const [applications, setApplications] = useState<Project[] | []>([]);
 
   useEffect(() => {
     async function loadProjects() {
@@ -60,8 +60,8 @@ function ChapterApplicationsPage() {
     >
       <Flex
         minH="600px"
-        maxW="1200px"
-        maxH="1000px"
+        maxW="1250px"
+        maxH="900px"
         marginX="auto"
         padding={50}
         border="1px solid #657788"
@@ -80,7 +80,6 @@ function ChapterApplicationsPage() {
           borderBottomRightRadius={10}
           flex="1 1 auto"
           overflowX="hidden"
-          overflowY="auto"
         >
           <Table variant="unstyled" size="lg">
             <Thead color="#999999" borderBottom="1px solid #E2E8F0">
@@ -97,47 +96,51 @@ function ChapterApplicationsPage() {
                 <Th paddingInlineStart={4} paddingInlineEnd={4}>
                   Project Type
                 </Th>
-                <Th paddingInlineStart={4} paddingInlineEnd={4}>
-                  Status
-                </Th>
+                <Th paddingInlineStart={4} paddingInlineEnd={4}></Th>
               </Tr>
             </Thead>
-            <Tbody>
-              {applications &&
-                applications.length !== 0 &&
-                applications.map((application, index) => (
-                  <Tr
-                    key={index}
-                    height="100px"
-                    cursor="pointer"
-                    _hover={{ backgroundColor: "rgba(0, 105, 202, 0.05)" }}
-                  >
-                    <Td
-                      paddingInlineStart={5}
-                      paddingInlineEnd={4}
-                      fontWeight={600}
-                    >
-                      {(application.nonprofit as Nonprofit).name}
-                    </Td>
-                    <Td paddingInlineStart={4} paddingInlineEnd={4}>
-                      {application.name}
-                    </Td>
-                    <Td paddingInlineStart={4} paddingInlineEnd={4}>
-                      <Link
-                        href={`mailto:${(application.contact as User).email}`}
-                        isExternal
+            <Tbody overflowY="auto" height="fit-content">
+              {applications && applications.length !== 0 ? (
+                applications.map((application, index) => {
+                  const projectNonprofit = application.nonprofit as Nonprofit;
+                  const projectContact = application.contact as User;
+
+                  return (
+                    <Tr key={index} height="100px">
+                      <Td
+                        paddingInlineStart={5}
+                        paddingInlineEnd={4}
+                        fontWeight={600}
                       >
-                        {(application.contact as User).email}
-                      </Link>
-                    </Td>
-                    <Td paddingInlineStart={4} paddingInlineEnd={4}>
-                      {application.type}
-                    </Td>
-                    <Td paddingInlineStart={4} paddingInlineEnd={4}>
-                      <Button colorScheme="blue">View Application</Button>
-                    </Td>
-                  </Tr>
-                ))}
+                        {projectNonprofit.name}
+                      </Td>
+                      <Td paddingInlineStart={4} paddingInlineEnd={4}>
+                        {application.name}
+                      </Td>
+                      <Td paddingInlineStart={4} paddingInlineEnd={4}>
+                        <Link
+                          href={`mailto:${projectContact.email}`}
+                          isExternal
+                        >
+                          {projectContact.email}
+                        </Link>
+                      </Td>
+                      <Td paddingInlineStart={4} paddingInlineEnd={4}>
+                        {application.type}
+                      </Td>
+                      <Td paddingInlineStart={4} paddingInlineEnd={4}>
+                        <Button variant="primary">View Application</Button>
+                      </Td>
+                    </Tr>
+                  );
+                })
+              ) : (
+                <Tr>
+                  <Td colSpan={5} textAlign="center">
+                    There are no new projects
+                  </Td>
+                </Tr>
+              )}
             </Tbody>
           </Table>
         </Flex>
