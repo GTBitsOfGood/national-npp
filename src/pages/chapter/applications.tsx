@@ -10,38 +10,27 @@ import {
   Flex,
   Box,
 } from "@chakra-ui/react";
-import { ObjectID } from "bson";
 import { useEffect, useState } from "react";
-import { getChapterProjects } from "src/actions/Project";
-import { getChapterUser } from "src/actions/User";
+import { getProjects } from "src/actions/Project";
 import { showError } from "src/utils/notifications";
-import {
-  User,
-  Nonprofit,
-  Project,
-  ProjectStage,
-  Role,
-  ProjectType,
-  Chapter,
-} from "src/utils/types";
+import { User, Nonprofit, Project, ProjectStage } from "src/utils/types";
 
 function ChapterApplicationsPage() {
   const [applications, setApplications] = useState<Project[] | []>([]);
 
   useEffect(() => {
     async function loadProjects() {
-      const newApps: Project[] = await getChapterProjects();
-      const filteredApps = newApps.filter(
-        (app) => app.status === ProjectStage.APPLICATION_REVIEW
+      const newApps: Project[] = await getProjects(
+        ProjectStage.APPLICATION_REVIEW
       );
 
       /* Nonprofit name + email doesn't appear on the portal because this is 
          undefined (even though the db structure looks okay)
          Not sure why this is happening so just leaving this here for now 
       */
-      console.log((filteredApps[0].contact as User).email);
-      console.log((filteredApps[0].nonprofit as Nonprofit).name);
-      setApplications(filteredApps);
+      console.log((newApps[0].contact as User).email);
+      console.log((newApps[0].nonprofit as Nonprofit).name);
+      setApplications(newApps);
     }
 
     loadProjects().catch((e) => {
