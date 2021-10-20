@@ -1,3 +1,4 @@
+import { ArrowBackIcon } from "@chakra-ui/icons";
 import { Button, Flex, HStack, Link, VStack } from "@chakra-ui/react";
 import React from "react";
 import { updateChapterProject } from "src/actions/Project";
@@ -27,15 +28,25 @@ function ChapterApplicationPage() {
 
   return (
     <Flex height="100%" width="100%" marginTop={10}>
-      <VStack margin="auto">
-        <HStack spacing={1125}>
-          <Link color="blue" href="/chapter/projects">
-            Nonprofit Applications
+      <VStack border="dotted" align="stretch" margin="auto">
+        <Flex
+          paddingLeft={{ base: "0px", md: "50px" }}
+          border="solid"
+          justifyContent="space-between"
+        >
+          <Link href="/chapter/projects">
+            <Button
+              leftIcon={<ArrowBackIcon />}
+              colorScheme="blue"
+              variant="link"
+            >
+              <i className="fa fa-angle-left" /> Nonprofit Applications
+            </Button>
           </Link>
           <Button color="white" bgColor="primary" onClick={handleClaimProject}>
             Claim Project
           </Button>
-        </HStack>
+        </Flex>
         <HStack align="start">
           <NonprofitInfoCard projectId={projectId} />
           <ApplicationCard isRead={true} projectId={projectId} />
