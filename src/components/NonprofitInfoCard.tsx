@@ -1,11 +1,10 @@
 import { Text, VStack, Heading } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
-import { getNonprofitProject } from "src/actions/Project";
 import { showError } from "src/utils/notifications";
-import { User, Nonprofit } from "src/utils/types";
+import { User, Nonprofit, Project } from "src/utils/types";
 
-function NonprofitInfoCard(props: { projectId: string }) {
-  const { projectId } = props;
+function NonprofitInfoCard(props: { project: Project | undefined }) {
+  const { project } = props;
 
   const [projectName, setProjectName] = useState("");
   const [nonprofitName, setNonprofitName] = useState("");
@@ -22,29 +21,30 @@ function NonprofitInfoCard(props: { projectId: string }) {
 
   useEffect(() => {
     async function preloadFields() {
-      const project = await getNonprofitProject(projectId);
-      const nonprofit = project.nonprofit as Nonprofit;
-      const contact = nonprofit.contact as User;
-      const address = nonprofit.address;
+      if (project !== undefined) {
+        const nonprofit = project.nonprofit as Nonprofit;
+        const contact = nonprofit.contact as User;
+        const address = nonprofit.address;
 
-      setProjectName(project.name);
-      setNonprofitName(nonprofit.name);
-      setContactName(contact.name);
-      setContactEmail(contact.email);
-      setContactPhone(contact.phoneNum ?? "");
-      setStreet(address.street);
-      setCity(address.city);
-      setState(address.state);
-      setZipCode(address.zipCode);
-      setMission(nonprofit.mission ?? "");
-      setAppType(project.type ?? "");
-      setIsVerified(nonprofit.isVerified);
+        setProjectName(project.name);
+        setNonprofitName(nonprofit.name);
+        setContactName(contact.name);
+        setContactEmail(contact.email);
+        setContactPhone(contact.phoneNum ?? "");
+        setStreet(address.street);
+        setCity(address.city);
+        setState(address.state);
+        setZipCode(address.zipCode);
+        setMission(nonprofit.mission ?? "");
+        setAppType(project.type ?? "");
+        setIsVerified(nonprofit.isVerified);
+      }
     }
 
     preloadFields().catch((error: Error) => {
       showError(error.message);
     });
-  }, []);
+  }, [project]);
 
   return (
     <VStack

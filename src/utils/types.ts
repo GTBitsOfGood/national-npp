@@ -60,7 +60,7 @@ export interface Project {
 
 export interface Application {
   _id: Types.ObjectId;
-  project: Project | Types.ObjectId;
+  project: Types.ObjectId;
   aboutQ1?: string;
   aboutQ2?: string;
   aboutQ3?: string;

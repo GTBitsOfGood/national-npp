@@ -5,7 +5,6 @@ const ApplicationSchema = new Schema<Application>({
   project: {
     type: Schema.Types.ObjectId,
     required: true,
-    ref: "Project",
   },
   aboutQ1: String,
   aboutQ2: String,

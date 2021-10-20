@@ -24,6 +24,10 @@ export default APIWrapper({
         chapterId
       );
 
+      if (!project || chapterId !== project?.chapter) {
+        throw new Error("User does not belong to this project's chapter.");
+      }
+
       return project;
     },
   },
@@ -44,6 +48,10 @@ export default APIWrapper({
         ...projectUpdate,
         chapter: chapterId,
       });
+
+      if (!project || chapterId !== project?.chapter) {
+        throw new Error("User does not belong to this project's chapter.");
+      }
 
       return project;
     },

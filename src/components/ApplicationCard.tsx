@@ -15,14 +15,20 @@ import {
   createNonprofitApplication,
   getApplication,
 } from "src/actions/Application";
-import { getNonprofitProject } from "src/actions/Project";
 import QuestionCard from "src/components/QuestionCard";
 import { showError, showInfo } from "src/utils/notifications";
-import { NonprofitApplicationCreate, Nonprofit } from "src/utils/types";
-import { maxTextArea } from "src/utils/validation";
+import {
+  NonprofitApplicationCreate,
+  Nonprofit,
+  Project,
+} from "src/utils/types";
 
-function ApplicationCard(props: { isRead: boolean; projectId: string }) {
-  const { isRead, projectId } = props;
+function ApplicationCard(props: {
+  isRead: boolean;
+  projectId: string;
+  project: Project | undefined;
+}) {
+  const { isRead, projectId, project } = props;
 
   const [projectName, setProjectName] = useState("");
   const [isVerified, setIsVerified] = useState(false);
@@ -40,33 +46,40 @@ function ApplicationCard(props: { isRead: boolean; projectId: string }) {
 
   useEffect(() => {
     async function preloadFields() {
-      const project = await getNonprofitProject(projectId);
-      const nonprofit = project.nonprofit as Nonprofit;
+      if (project !== undefined) {
+        const nonprofit = project.nonprofit as Nonprofit;
 
-      setProjectName(project.name);
-      setIsVerified(nonprofit.isVerified);
+        setProjectName(project.name);
+        setIsVerified(nonprofit.isVerified);
 
-      if (isRead) {
-        const application = await getApplication(projectId);
+        if (isRead) {
+          const application = await getApplication(projectId);
 
-        setAboutQ1(application.aboutQ1 ?? "");
-        setAboutQ2(application.aboutQ2 ?? "");
-        setAboutQ3(application.aboutQ3 ?? "");
-        setAboutQ4(application.aboutQ4 ?? "");
-        setNeedsQ1(application.needsQ1 ?? "");
-        setNeedsQ2(application.needsQ2 ?? "");
-        setNeedsQ3(application.needsQ3 ?? "");
-        setNeedsQ4(application.needsQ4 ?? "");
-        setNeedsQ5(application.needsQ5 ?? "");
+          setAboutQ1(application.aboutQ1 ?? "");
+          setAboutQ2(application.aboutQ2 ?? "");
+          setAboutQ3(application.aboutQ3 ?? "");
+          setAboutQ4(application.aboutQ4 ?? "");
+          setNeedsQ1(application.needsQ1 ?? "");
+          setNeedsQ2(application.needsQ2 ?? "");
+          setNeedsQ3(application.needsQ3 ?? "");
+          setNeedsQ4(application.needsQ4 ?? "");
+          setNeedsQ5(application.needsQ5 ?? "");
+        }
       }
     }
 
     preloadFields().catch((error: Error) => {
       showError(error.message);
     });
-  }, []);
+  }, [project]);
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    const einRegex = /^[0-9]{2}-[0-9]{7}$/;
+    if (!einRegex.test(ein)) {
+      showError("EIN has an invalid format.");
+      return;
+    }
+
     const applicationCreate: NonprofitApplicationCreate = {
       aboutQ1: aboutQ1 !== "" ? aboutQ1 : undefined,
       aboutQ2: aboutQ2 !== "" ? aboutQ2 : undefined,

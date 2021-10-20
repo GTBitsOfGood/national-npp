@@ -26,6 +26,10 @@ export default APIWrapper({
         projectUpdate
       );
 
+      if (!project || nonprofitId !== project?.nonprofit) {
+        throw new Error("User does not belong to this project's nonprofit.");
+      }
+
       return project;
     },
   },
@@ -35,8 +39,13 @@ export default APIWrapper({
     },
     handler: async (req) => {
       const projectId = req.query.id as string;
+      const nonprofitId = req.user.nonprofit;
 
       const project = await getNonprofitProject(Types.ObjectId(projectId));
+
+      if (nonprofitId && nonprofitId !== project?.nonprofit) {
+        throw new Error("User does not belong to this project's nonprofit.");
+      }
 
       return project;
     },

@@ -13,7 +13,7 @@ export async function createNonprofitApplication(
   applicationCreate: NonprofitApplicationCreate
 ) {
   return internalRequest<Application>({
-    url: applicationAPI + "/application",
+    url: applicationAPI,
     method: HttpMethod.POST,
     body: {
       projectId,
@@ -24,10 +24,7 @@ export async function createNonprofitApplication(
 
 export async function getApplication(projectId: string) {
   return internalRequest<Application>({
-    url: applicationAPI + "/application",
-    queryParams: {
-      projectId,
-    },
+    url: applicationAPI + `/${projectId}`,
     method: HttpMethod.GET,
   });
 }
