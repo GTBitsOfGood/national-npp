@@ -4,12 +4,13 @@ import {
   updateChapterProject,
 } from "server/mongodb/actions/Project";
 import APIWrapper from "server/utils/APIWrapper";
-import { ChapterProjectUpdate } from "src/utils/types";
+import { ChapterProjectUpdate, Role } from "src/utils/types";
 
 export default APIWrapper({
   GET: {
     config: {
       requireSession: true,
+      roles: [Role.CHAPTER_MEMBER],
     },
     handler: async (req) => {
       const projectId = req.query.id as string;
@@ -30,6 +31,7 @@ export default APIWrapper({
   PATCH: {
     config: {
       requireSession: true,
+      roles: [Role.CHAPTER_MEMBER],
     },
     handler: async (req) => {
       const projectId = req.query.id as string;

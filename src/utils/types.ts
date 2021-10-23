@@ -184,6 +184,7 @@ export enum ProjectStage {
 
 export enum Role {
   CHAPTER_MEMBER = "Chapter Member",
+  CHAPTER_ADMIN = "Chapter Admin",
   NONPROFIT_MEMBER = "Nonprofit Member",
   NONPROFIT_ADMIN = "Nonprofit Admin",
 }
