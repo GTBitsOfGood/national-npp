@@ -9,8 +9,8 @@ import ScheduleMeetingImage from "public/images/nonprofit/project/schedule_meeti
 import SubmitApplicationImage from "public/images/nonprofit/project/submit_application.svg";
 import { ProjectStage } from "src/utils/types";
 
-export const getStepCardData = (chapterStage: ProjectStage) => {
-  switch (chapterStage) {
+export const getStepCardData = (projectStage: ProjectStage) => {
+  switch (projectStage) {
     case ProjectStage.SUBMIT_APPLICATION:
       return {
         actionRequired: true,

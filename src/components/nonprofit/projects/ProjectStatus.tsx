@@ -1,9 +1,11 @@
 import { Tag } from "@chakra-ui/react";
 import { ProjectStage } from "src/utils/types";
+
 interface StatusProps {
   text: string;
   rgb: number[];
 }
+
 const STATUS_MAP: { [key: string]: StatusProps } = {
   [ProjectStage.SUBMIT_APPLICATION]: {
     text: "Application",
@@ -33,12 +35,13 @@ const STATUS_MAP: { [key: string]: StatusProps } = {
 function ProjectStatus(props: { status: string }) {
   const { status } = props;
   const { text, rgb } = STATUS_MAP[status];
+
   return (
     <Tag
       backgroundColor={`rgba(${rgb[0]},${rgb[1]},${rgb[2]}, 0.1)`}
       color={`rgb(${rgb[0]},${rgb[1]},${rgb[2]})`}
       width="fit-content"
-      fontWeight={600}
+      fontWeight="bold"
     >
       {text}
     </Tag>

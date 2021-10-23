@@ -36,7 +36,7 @@ export async function getChapterProject(projectId: string) {
 }
 
 export async function getNonprofitProjects(active?: boolean) {
-  return internalRequest<Project>({
+  return internalRequest<Project[]>({
     url: projectAPI,
     queryParams: {
       action: "nonprofit",

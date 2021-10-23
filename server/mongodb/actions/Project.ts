@@ -1,19 +1,20 @@
 import { FilterQuery, Types } from "mongoose";
 import ChapterModel from "server/mongodb/models/Chapter";
 import ProjectModel from "server/mongodb/models/Project";
+import UserModel from "server/mongodb/models/User";
 import dbConnect from "server/utils/dbConnect";
-import { displayableProjectStageToChapterStages } from "src/utils/stages";
+import { displayableProjectStageToProjectStages } from "src/utils/stages";
 import {
   ChapterProjectUpdate,
   DisplayableProjectStage,
   NonprofitProjectUpdate,
   Project,
-  ProjectCreate,
+  NonprofitProjectCreate,
 } from "src/utils/types";
 
 export async function createProject(
   nonprofitId: Types.ObjectId,
-  projectCreate: ProjectCreate
+  projectCreate: NonprofitProjectCreate
 ) {
   await dbConnect();
 
@@ -60,12 +61,12 @@ export async function getNonprofitProjects(
   if (active != undefined) {
     filter["status"] = active
       ? {
-          $nin: displayableProjectStageToChapterStages(
+          $nin: displayableProjectStageToProjectStages(
             DisplayableProjectStage.COMPLETE
           ),
         }
       : {
-          $in: displayableProjectStageToChapterStages(
+          $in: displayableProjectStageToProjectStages(
             DisplayableProjectStage.COMPLETE
           ),
         };
@@ -74,6 +75,10 @@ export async function getNonprofitProjects(
   const projects = await ProjectModel.find(filter).populate({
     path: "chapter",
     model: ChapterModel,
+    populate: {
+      path: "contact",
+      model: UserModel,
+    },
   });
 
   return projects;
