@@ -1,12 +1,13 @@
 import { Types } from "mongoose";
 import { updateNonprofit } from "server/mongodb/actions/Nonprofit";
 import APIWrapper from "server/utils/APIWrapper";
-import { NonprofitUpdate } from "src/utils/types";
+import { NonprofitUpdate, Role } from "src/utils/types";
 
 export default APIWrapper({
   PATCH: {
     config: {
       requireSession: true,
+      roles: [Role.NONPROFIT_ADMIN],
     },
     handler: async (req) => {
       const claimedNonprofitId = req.query.id as string;

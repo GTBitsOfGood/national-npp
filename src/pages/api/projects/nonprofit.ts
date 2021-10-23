@@ -4,12 +4,13 @@ import {
 } from "server/mongodb/actions/Project";
 import APIWrapper from "server/utils/APIWrapper";
 import { tryToParseBoolean } from "server/utils/req-parameter-validation";
-import { NonprofitProjectCreate } from "src/utils/types";
+import { NonprofitProjectCreate, Role } from "src/utils/types";
 
 export default APIWrapper({
   GET: {
     config: {
       requireSession: true,
+      roles: [Role.NONPROFIT_MEMBER],
     },
     handler: async (req) => {
       const nonprofitId = req.user.nonprofit;
@@ -29,6 +30,7 @@ export default APIWrapper({
   POST: {
     config: {
       requireSession: true,
+      roles: [Role.NONPROFIT_ADMIN],
     },
     handler: async (req) => {
       const nonprofitId = req.user.nonprofit;
