@@ -13,10 +13,9 @@ export interface User {
   id: string;
   email: string;
   emailVerified: Date;
-  name?: string;
+  name: string;
   image?: string;
   phoneNum?: string;
-  calendly?: string;
   roles: Array<Role>;
   chapter?: Chapter | Types.ObjectId;
   nonprofit?: Nonprofit | Types.ObjectId;
@@ -28,14 +27,13 @@ export interface Chapter {
   _id: Types.ObjectId | string;
   name: string;
   email: string;
+  contact: Types.ObjectId;
   address: Address;
-  calendly?: string;
-  projectProcess: Array<DisplayableProjectStage>;
-  projectTypes: Array<ProjectType>;
-  projectLimit: number;
   website?: string;
   facebook?: string;
   instagram?: string;
+  maintenanceTypes: Array<MaintenanceType>;
+  maintenancePeriod: number;
 }
 
 export interface Nonprofit {
@@ -43,6 +41,7 @@ export interface Nonprofit {
   name: string;
   address: Address;
   isVerified: boolean;
+  contact: Types.ObjectId;
   website?: string;
   mission?: string;
 }
@@ -135,17 +134,14 @@ export interface InternalResponseData<T> {
   payload?: T;
 }
 
-export type ProjectCreate = Pick<
+export type NonprofitProjectCreate = Pick<
   Required<Project>,
   "chapter" | "name" | "type"
 >;
 export type NonprofitProjectUpdate = Pick<Partial<Project>, "status">;
 export type ChapterProjectUpdate = Pick<Partial<Project>, "status" | "contact">;
 
-export type UserUpdate = Pick<
-  Partial<User>,
-  "name" | "image" | "phoneNum" | "calendly"
->;
+export type UserUpdate = Pick<Partial<User>, "name" | "image" | "phoneNum">;
 
 export type ChapterUpdate = Omit<Partial<Chapter>, "_id">;
 
@@ -158,6 +154,11 @@ export enum ProjectType {
   WEBSITE = "Website",
   WEB_APP = "Web app",
   MOBILE_APP = "Mobile app",
+}
+
+export enum MaintenanceType {
+  BUG_FIXES = "Bug Fixes",
+  NEW_FEATURES = "New Features",
 }
 
 export enum DisplayableProjectStage {
@@ -184,6 +185,13 @@ export enum ProjectStage {
 export enum Role {
   CHAPTER_MEMBER = "Chapter Member",
   NONPROFIT_MEMBER = "Nonprofit Member",
+  NONPROFIT_ADMIN = "Nonprofit Admin",
+}
+
+export interface Contact {
+  id: string;
+  name: string;
+  email: string;
 }
 
 // TODO: Remove this type and update chapter projects table

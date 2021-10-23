@@ -25,7 +25,6 @@ const SHARED_RULES = {
         "button",
         "center",
         "div",
-        "form",
         "h1",
         "h2",
         "h3",

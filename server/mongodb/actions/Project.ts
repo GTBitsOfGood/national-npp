@@ -12,7 +12,7 @@ import {
   NonprofitProjectCreate,
 } from "src/utils/types";
 
-export async function createProject(
+export async function createNonprofitProject(
   nonprofitId: Types.ObjectId,
   projectCreate: NonprofitProjectCreate
 ) {
@@ -85,13 +85,14 @@ export async function getNonprofitProjects(
 }
 
 export async function updateNonprofitProject(
+  projectId: Types.ObjectId,
   nonprofitId: Types.ObjectId,
   projectUpdate: NonprofitProjectUpdate
 ) {
   await dbConnect();
 
   const project = await ProjectModel.findOneAndUpdate(
-    { nonprofitId },
+    { _id: projectId, nonprofit: nonprofitId },
     projectUpdate,
     { new: true }
   );

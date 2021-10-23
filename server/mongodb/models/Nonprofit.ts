@@ -11,6 +11,11 @@ const NonprofitSchema = new Schema<Nonprofit>({
     type: AddressSchema,
     required: true,
   },
+  contact: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
   isVerified: {
     type: Boolean,
     default: false,

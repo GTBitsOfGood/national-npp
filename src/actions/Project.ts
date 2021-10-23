@@ -4,16 +4,17 @@ import {
   HttpMethod,
   NonprofitProjectUpdate,
   Project,
-  ProjectCreate,
-  ProjectStatus,
+  NonprofitProjectCreate,
 } from "src/utils/types";
 import urls from "src/utils/urls";
 
 const projectAPI = urls.baseUrl + urls.api.projects;
 
-export async function createProject(projectCreate: ProjectCreate) {
+export async function createNonprofitProject(
+  projectCreate: NonprofitProjectCreate
+) {
   return internalRequest<Project>({
-    url: projectAPI,
+    url: projectAPI + "/nonprofit",
     method: HttpMethod.POST,
     body: {
       projectCreate,
@@ -23,23 +24,22 @@ export async function createProject(projectCreate: ProjectCreate) {
 
 export async function getChapterProjects() {
   return internalRequest<Array<Project>>({
-    url: projectAPI + "?action=chapter",
+    url: projectAPI + "/chapter",
     method: HttpMethod.GET,
   });
 }
 
 export async function getChapterProject(projectId: string) {
   return internalRequest<Project>({
-    url: projectAPI + `/${projectId}` + "?action=chapter",
+    url: projectAPI + `/${projectId}/chapter`,
     method: HttpMethod.GET,
   });
 }
 
 export async function getNonprofitProjects(active?: boolean) {
-  return internalRequest<Project[]>({
-    url: projectAPI,
+  return internalRequest<Project>({
+    url: projectAPI + "/nonprofit",
     queryParams: {
-      action: "nonprofit",
       active,
     },
     method: HttpMethod.GET,
@@ -51,7 +51,7 @@ export async function updateChapterProject(
   projectUpdate: ChapterProjectUpdate
 ) {
   return internalRequest<Project>({
-    url: projectAPI + `/${projectId}` + "?action=chapter",
+    url: projectAPI + `/${projectId}/chapter`,
     method: HttpMethod.PATCH,
     body: {
       projectUpdate,
@@ -60,10 +60,11 @@ export async function updateChapterProject(
 }
 
 export async function updateNonprofitProject(
+  projectId: string,
   projectUpdate: NonprofitProjectUpdate
 ) {
   return internalRequest<Project>({
-    url: projectAPI + "?action=nonprofit",
+    url: projectAPI + `/${projectId}/nonprofit`,
     method: HttpMethod.PATCH,
     body: {
       projectUpdate,
