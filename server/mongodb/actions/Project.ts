@@ -1,5 +1,7 @@
 import { FilterQuery, Types } from "mongoose";
+import ChapterModel from "server/mongodb/models/Chapter";
 import ProjectModel from "server/mongodb/models/Project";
+import UserModel from "server/mongodb/models/User";
 import dbConnect from "server/utils/dbConnect";
 import { displayableProjectStageToProjectStages } from "src/utils/stages";
 import {
@@ -70,7 +72,14 @@ export async function getNonprofitProjects(
         };
   }
 
-  const projects = await ProjectModel.find(filter);
+  const projects = await ProjectModel.find(filter).populate({
+    path: "chapter",
+    model: ChapterModel,
+    populate: {
+      path: "contact",
+      model: UserModel,
+    },
+  });
 
   return projects;
 }
