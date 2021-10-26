@@ -7,7 +7,7 @@ export default APIWrapper({
   PATCH: {
     config: {
       requireSession: true,
-      roles: [Role.CHAPTER_ADMIN]
+      roles: [Role.CHAPTER_ADMIN],
     },
     handler: async (req) => {
       const claimedChapterId = req.query.id as string;
