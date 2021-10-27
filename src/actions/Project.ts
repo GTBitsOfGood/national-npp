@@ -5,7 +5,7 @@ import {
   NonprofitProjectUpdate,
   Project,
   NonprofitProjectCreate,
-  ProjectStage,
+  ProjectGet,
 } from "src/utils/types";
 import urls from "src/utils/urls";
 
@@ -23,16 +23,16 @@ export async function createNonprofitProject(
   });
 }
 
-export async function getProjects(status: ProjectStage){
+export async function getProjects(projectGet: ProjectGet) {
   return internalRequest<Array<Project>>({
-    url: projectAPI + "/",
+    url: projectAPI,
     queryParams: {
-      status,
+      ...projectGet,
     },
     method: HttpMethod.GET,
   });
-
 }
+
 export async function getChapterProjects() {
   return internalRequest<Array<Project>>({
     url: projectAPI + "/chapter",

@@ -1,19 +1,17 @@
 import { getProjects } from "server/mongodb/actions/Project";
 import APIWrapper from "server/utils/APIWrapper";
-import { ProjectStage } from "src/utils/types";
+import { ProjectGet, Role } from "src/utils/types";
 
 export default APIWrapper({
   GET: {
     config: {
       requireSession: true,
+      roles: [Role.CHAPTER_ADMIN],
     },
     handler: async (req) => {
-      const applicationStatus = req.query.status;
+      const projectGet = { ...req.query } as ProjectGet;
 
-      if (!applicationStatus) {
-        throw new Error("No Application Status Specified");
-      }
-      const projects = await getProjects((applicationStatus as ProjectStage));
+      const projects = await getProjects(projectGet);
       return projects;
     },
   },

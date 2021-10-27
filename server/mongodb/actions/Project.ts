@@ -1,5 +1,6 @@
 import { FilterQuery, Types } from "mongoose";
 import ChapterModel from "server/mongodb/models/Chapter";
+import NonprofitModel from "server/mongodb/models/Nonprofit";
 import ProjectModel from "server/mongodb/models/Project";
 import UserModel from "server/mongodb/models/User";
 import dbConnect from "server/utils/dbConnect";
@@ -11,6 +12,7 @@ import {
   Project,
   NonprofitProjectCreate,
   ProjectStage,
+  ProjectGet,
 } from "src/utils/types";
 
 export async function createNonprofitProject(
@@ -27,9 +29,24 @@ export async function createNonprofitProject(
   return project;
 }
 
-export async function getProjects(stage: ProjectStage){
+export async function getProjects(projectGet: ProjectGet) {
   await dbConnect();
-  const projects = await ProjectModel.find({status: stage});
+
+  const status = projectGet?.status;
+
+  if (!status || status !== ProjectStage.APPLICATION_REVIEW) {
+    throw new Error("Only unassigned projects can be queried at this time.");
+  }
+
+  const projects = await ProjectModel.find({ ...projectGet }).populate({
+    path: "nonprofit",
+    model: NonprofitModel,
+    populate: {
+      path: "contact",
+      model: UserModel,
+    },
+  });
+
   return projects;
 }
 
