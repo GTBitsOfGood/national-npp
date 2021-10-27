@@ -1,14 +1,12 @@
 import {
   Text,
   VStack,
-  Box,
+  Flex,
   Link,
   FormControl,
   FormHelperText,
-  FormLabel,
   Input,
   Button,
-  Textarea,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import {
@@ -23,13 +21,13 @@ import {
   Project,
 } from "src/utils/types";
 
-function ApplicationCard(props: {
+interface Props {
   isRead: boolean;
   projectId: string;
-  project: Project | undefined;
-}) {
-  const { isRead, projectId, project } = props;
+  project?: Project;
+}
 
+function ApplicationCard({ isRead, projectId, project }: Props) {
   const [projectName, setProjectName] = useState("");
   const [isVerified, setIsVerified] = useState(false);
 
@@ -46,37 +44,35 @@ function ApplicationCard(props: {
 
   useEffect(() => {
     async function preloadFields() {
-      if (project !== undefined) {
+      if (isRead && project) {
         const nonprofit = project.nonprofit as Nonprofit;
+
+        const application = await getApplication(projectId);
 
         setProjectName(project.name);
         setIsVerified(nonprofit.isVerified);
 
-        if (isRead) {
-          const application = await getApplication(projectId);
-
-          setAboutQ1(application.aboutQ1 ?? "");
-          setAboutQ2(application.aboutQ2 ?? "");
-          setAboutQ3(application.aboutQ3 ?? "");
-          setAboutQ4(application.aboutQ4 ?? "");
-          setNeedsQ1(application.needsQ1 ?? "");
-          setNeedsQ2(application.needsQ2 ?? "");
-          setNeedsQ3(application.needsQ3 ?? "");
-          setNeedsQ4(application.needsQ4 ?? "");
-          setNeedsQ5(application.needsQ5 ?? "");
-        }
+        setAboutQ1(application.aboutQ1 ?? "");
+        setAboutQ2(application.aboutQ2 ?? "");
+        setAboutQ3(application.aboutQ3 ?? "");
+        setAboutQ4(application.aboutQ4 ?? "");
+        setNeedsQ1(application.needsQ1 ?? "");
+        setNeedsQ2(application.needsQ2 ?? "");
+        setNeedsQ3(application.needsQ3 ?? "");
+        setNeedsQ4(application.needsQ4 ?? "");
+        setNeedsQ5(application.needsQ5 ?? "");
       }
     }
 
     preloadFields().catch((error: Error) => {
       showError(error.message);
     });
-  }, [project]);
+  }, [isRead, projectId, project]);
 
-  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSubmit = async () => {
     const einRegex = /^[0-9]{2}-[0-9]{7}$/;
     if (!einRegex.test(ein)) {
-      showError("EIN has an invalid format.");
+      showError("EIN format is invalid.");
       return;
     }
 
@@ -104,30 +100,31 @@ function ApplicationCard(props: {
   return (
     <VStack
       maxW="1000px"
-      border="1px solid #BCC5D1"
-      borderRadius={10}
+      border="1px solid"
+      borderColor="border"
+      borderRadius="lg"
       backgroundColor="surface"
-      spacing={3}
       align="stretch"
     >
-      <Box
-        borderRadius="10px 10px 0px 0px"
-        border="1px solid #BCC5D1"
+      <Flex
+        height="50px"
+        justify="start"
+        align="center"
+        borderTopRadius="lg"
         backgroundColor="primary"
-        p={3}
+        paddingLeft="40px"
       >
-        <Text color="white" fontSize="md" fontWeight={700} marginLeft={7}>
+        <Text color="white" fontSize="md" fontWeight="bold">
           {projectName}
         </Text>
-      </Box>
-      <VStack align="stretch" p={12} spacing={12}>
+      </Flex>
+      <VStack align="stretch" p="40px" spacing="40px">
         {!isRead && !isVerified && (
           <VStack align="start" spacing={5}>
-            <Text alignSelf="flex-start" fontSize="md" fontWeight={700}>
+            <Text fontSize="lg" fontWeight="bold">
               Nonprofit Verification
             </Text>
-            <FormControl isReadOnly={isRead}>
-              <FormLabel fontSize="sm">Question 1</FormLabel>
+            <FormControl>
               <VStack align="flex-start" spacing={4}>
                 <FormHelperText fontSize="sm">
                   Enter your EIN so we can verify you as a nonprofit.
@@ -142,7 +139,7 @@ function ApplicationCard(props: {
           </VStack>
         )}
         <VStack align="start" spacing={5}>
-          <Text alignSelf="flex-start" fontSize="md" fontWeight={700}>
+          <Text fontSize="lg" fontWeight="bold">
             About Your Organization
           </Text>
           <QuestionCard
@@ -159,10 +156,7 @@ function ApplicationCard(props: {
             answer={aboutQ2}
             onChangeHandler={setAboutQ2}
           >
-            <Text fontsize="sm">
-              {" "}
-              What services do you provide to the community?
-            </Text>
+            <Text>What services do you provide to the community?</Text>
           </QuestionCard>
           <QuestionCard
             isRead={isRead}
@@ -170,13 +164,13 @@ function ApplicationCard(props: {
             answer={aboutQ2}
             onChangeHandler={setAboutQ2}
           >
-            <Text fontsize="sm">
-              {" "}
+            <Text>
               Does your organization target solving any of the UN Sustainable
               Development Goals? If so, which ones? (See{" "}
               <Link color="primary" href="sdgs.un.org/goals">
                 sdgs.un.org/goals
-              </Link>{" "}
+              </Link>
+              )
             </Text>
           </QuestionCard>
           <QuestionCard
@@ -185,14 +179,14 @@ function ApplicationCard(props: {
             answer={aboutQ4}
             onChangeHandler={setAboutQ4}
           >
-            <Text fontsize="sm">
+            <Text>
               How would the collaboration with Hack4Impact help achieve your
               mission?
             </Text>
           </QuestionCard>
         </VStack>
         <VStack align="start" spacing={5}>
-          <Text alignSelf="flex-start" fontSize="md" fontWeight={700}>
+          <Text fontSize="lg" fontWeight="bold">
             Your Product Needs
           </Text>
           <QuestionCard
@@ -201,8 +195,7 @@ function ApplicationCard(props: {
             answer={needsQ1}
             onChangeHandler={setNeedsQ1}
           >
-            <Text fontSize="sm">
-              {" "}
+            <Text>
               What problem are you hoping to solve with this technology?
             </Text>
           </QuestionCard>
@@ -212,10 +205,7 @@ function ApplicationCard(props: {
             answer={needsQ2}
             onChangeHandler={setNeedsQ2}
           >
-            <Text fontSize="sm">
-              {" "}
-              What is the current stage of product development?
-            </Text>
+            <Text>What is the current stage of product development?</Text>
           </QuestionCard>
           <QuestionCard
             isRead={isRead}
@@ -223,7 +213,7 @@ function ApplicationCard(props: {
             answer={needsQ3}
             onChangeHandler={setNeedsQ3}
           >
-            <Text fontSize="sm">
+            <Text>
               What is your availability to work with us in the upcoming
               semester? The time you devote to us may directly influence the
               success of the project.
@@ -235,8 +225,7 @@ function ApplicationCard(props: {
             answer={needsQ4}
             onChangeHandler={setNeedsQ4}
           >
-            <Text fontSize="sm">
-              {" "}
+            <Text>
               Can you provide a field tour for us to get to know more about your
               organization and users? (i.e. observe or interview the users?)
             </Text>
@@ -247,14 +236,13 @@ function ApplicationCard(props: {
             answer={needsQ5}
             onChangeHandler={setNeedsQ5}
           >
-            <Text fontSize="sm">
-              {" "}
+            <Text>
               Is there anything else related to your product that you would like
               to share?
             </Text>
           </QuestionCard>
         </VStack>
-        <VStack align="start" fontSize="sm" fontWeight={700} spacing={0}>
+        <VStack align="start" fontSize="sm" fontWeight="bold" spacing={0}>
           <Text>
             Please let us know if you have any other questions or feedback.
           </Text>
@@ -267,7 +255,6 @@ function ApplicationCard(props: {
         </VStack>
         {!isRead && (
           <Button
-            type="submit"
             variant="primary"
             alignSelf="flex-end"
             size="md"

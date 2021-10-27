@@ -1,12 +1,14 @@
 import { Text, VStack, Heading } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
-import { showError } from "src/utils/notifications";
 import { User, Nonprofit, Project } from "src/utils/types";
 
-function NonprofitInfoCard(props: { project: Project | undefined }) {
-  const { project } = props;
+interface Props {
+  project: Project;
+}
 
+function NonprofitInfoCard({ project }: Props) {
   const [projectName, setProjectName] = useState("");
+  const [projectType, setProjectType] = useState("");
   const [nonprofitName, setNonprofitName] = useState("");
   const [contactName, setContactName] = useState("");
   const [contactEmail, setContactEmail] = useState("");
@@ -16,115 +18,106 @@ function NonprofitInfoCard(props: { project: Project | undefined }) {
   const [state, setState] = useState("");
   const [zipCode, setZipCode] = useState("");
   const [mission, setMission] = useState("");
-  const [appType, setAppType] = useState("");
   const [isVerified, setIsVerified] = useState(false);
 
   useEffect(() => {
-    async function preloadFields() {
-      if (project !== undefined) {
-        const nonprofit = project.nonprofit as Nonprofit;
-        const contact = nonprofit.contact as User;
-        const address = nonprofit.address;
+    const nonprofit = project.nonprofit as Nonprofit;
+    const contact = nonprofit.contact as User;
+    const address = nonprofit.address;
 
-        setProjectName(project.name);
-        setNonprofitName(nonprofit.name);
-        setContactName(contact.name);
-        setContactEmail(contact.email);
-        setContactPhone(contact.phoneNum ?? "");
-        setStreet(address.street);
-        setCity(address.city);
-        setState(address.state);
-        setZipCode(address.zipCode);
-        setMission(nonprofit.mission ?? "");
-        setAppType(project.type ?? "");
-        setIsVerified(nonprofit.isVerified);
-      }
-    }
-
-    preloadFields().catch((error: Error) => {
-      showError(error.message);
-    });
+    setProjectName(project.name);
+    setProjectType(project.type);
+    setNonprofitName(nonprofit.name);
+    setContactName(contact.name);
+    setContactEmail(contact.email);
+    setContactPhone(contact.phoneNum ?? "");
+    setStreet(address.street);
+    setCity(address.city);
+    setState(address.state);
+    setZipCode(address.zipCode);
+    setMission(nonprofit.mission ?? "");
+    setIsVerified(nonprofit.isVerified);
   }, [project]);
 
   return (
     <VStack
-      minW={{ base: 45, md: 100 }}
-      minH={{ base: 45, md: 200 }}
-      p={8}
-      m={12}
-      border="1px solid #BCC5D1"
-      borderRadius={10}
-      direction="column"
+      display={{ base: "none", lg: "flex" }}
+      width="500px"
+      padding="50px 40px"
+      marginRight="40px"
+      border="1px solid"
+      borderColor="border"
+      borderRadius="lg"
       backgroundColor="surface"
-      spacing={3}
       align="stretch"
     >
-      <VStack align="stretch" p={10} spacing={10}>
-        {isVerified && (
-          <VStack align="start" spacing={5}>
+      <VStack align="stretch" spacing="40px">
+        <VStack spacing="15px">
+          {isVerified && (
             <Text
               alignSelf="flex-start"
               fontSize="md"
-              fontWeight={700}
+              fontWeight="bold"
+              padding="5px 10px"
               color="#79c099"
               bgColor="#ecf6f0"
+              borderRadius="md"
             >
               Verified
             </Text>
-          </VStack>
-        )}
-        <Heading alignSelf="flex-start" fontSize="3xl" fontWeight={700}>
-          {projectName}
-        </Heading>
-
-        <VStack align="start" spacing={5}>
+          )}
+          <Heading alignSelf="flex-start" fontSize="3xl">
+            {projectName}
+          </Heading>
+        </VStack>
+        <VStack align="stretch" spacing="20px">
           <VStack align="start">
-            <Text alignSelf="flex-start" fontSize="sm" fontWeight={500}>
+            <Text fontSize="md" fontWeight="semi-bold">
               Nonprofit
             </Text>
-            <Text alignSelf="flex-start" fontSize="lg" fontWeight={100}>
+            <Text fontSize="lg" fontWeight="thin">
               {nonprofitName}
             </Text>
           </VStack>
           <VStack align="start">
-            <Text alignSelf="flex-start" fontSize="sm" fontWeight={500}>
+            <Text fontSize="md" fontWeight="semi-bold">
               Nonprofit Contact
             </Text>
-            <Text alignSelf="flex-start" fontSize="lg" fontWeight={100}>
+            <Text fontSize="lg" fontWeight="thin">
               {contactName}
             </Text>
-            <Text alignSelf="flex-start" fontSize="lg" fontWeight={100}>
+            <Text fontSize="lg" fontWeight="thin">
               {contactEmail}
             </Text>
-            <Text alignSelf="flex-start" fontSize="lg" fontWeight={100}>
+            <Text fontSize="lg" fontWeight="thin">
               {contactPhone}
             </Text>
           </VStack>
           <VStack align="start">
-            <Text alignSelf="flex-start" fontSize="sm" fontWeight={500}>
+            <Text fontSize="md" fontWeight="semi-bold">
               Address
             </Text>
-            <Text alignSelf="flex-start" fontSize="lg" fontWeight={100}>
+            <Text fontSize="lg" fontWeight="thin">
               {street}
             </Text>
-            <Text alignSelf="flex-start" fontSize="lg" fontWeight={100}>
+            <Text fontSize="lg" fontWeight="thin">
               {city} {state}, {zipCode}
             </Text>
           </VStack>
           <VStack align="start">
-            <Text alignSelf="flex-start" fontSize="sm" fontWeight={500}>
+            <Text fontSize="md" fontWeight="semi-bold">
               Mission
             </Text>
-            <Text alignSelf="flex-start" fontSize="lg" fontWeight={100}>
+            <Text fontSize="lg" fontWeight="thin">
               {mission}
             </Text>
           </VStack>
           <VStack align="start">
-            <Text alignSelf="flex-start" fontSize="sm" fontWeight={500}>
+            <Text fontSize="md" fontWeight="semi-bold">
               Product Type
             </Text>
-            <Text alignSelf="flex-start" fontSize="lg" fontWeight={100}>
-              {appType}
+            <Text fontSize="lg" fontWeight="thin">
+              {projectType}
             </Text>
           </VStack>
         </VStack>

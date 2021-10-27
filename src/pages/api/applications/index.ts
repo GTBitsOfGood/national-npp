@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import { createNonprofitApplication } from "server/mongodb/actions/Applications";
+import { createNonprofitApplication } from "server/mongodb/actions/Application";
 import APIWrapper from "server/utils/APIWrapper";
 import { NonprofitApplicationCreate } from "src/utils/types";
 

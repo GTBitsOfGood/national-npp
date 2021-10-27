@@ -52,7 +52,7 @@ export interface Project {
   nonprofit: Nonprofit | Types.ObjectId;
   name: string;
   status: ProjectStage;
-  type?: ProjectType;
+  type: ProjectType;
   contact?: User | Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;

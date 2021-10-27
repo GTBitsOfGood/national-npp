@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import { getApplication } from "server/mongodb/actions/Applications";
+import { getApplication } from "server/mongodb/actions/Application";
 import APIWrapper from "server/utils/APIWrapper";
 
 export default APIWrapper({
