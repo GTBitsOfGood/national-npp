@@ -1,5 +1,6 @@
 import { FilterQuery, Types } from "mongoose";
 import ChapterModel from "server/mongodb/models/Chapter";
+import NonprofitModel from "server/mongodb/models/Nonprofit";
 import ProjectModel from "server/mongodb/models/Project";
 import UserModel from "server/mongodb/models/User";
 import dbConnect from "server/utils/dbConnect";
@@ -10,6 +11,8 @@ import {
   NonprofitProjectUpdate,
   Project,
   NonprofitProjectCreate,
+  ProjectStage,
+  ProjectGet,
 } from "src/utils/types";
 
 export async function createNonprofitProject(
@@ -26,11 +29,30 @@ export async function createNonprofitProject(
   return project;
 }
 
-export async function getChapterProjects(chapterId: Types.ObjectId) {
+export async function getProjects(projectGet: ProjectGet) {
   await dbConnect();
 
-  const projects = await ProjectModel.find({ chapterId });
+  const status = projectGet?.status;
 
+  if (!status || status !== ProjectStage.APPLICATION_REVIEW) {
+    throw new Error("Only unassigned projects can be queried at this time.");
+  }
+
+  const projects = await ProjectModel.find({ ...projectGet }).populate({
+    path: "nonprofit",
+    model: NonprofitModel,
+    populate: {
+      path: "contact",
+      model: UserModel,
+    },
+  });
+
+  return projects;
+}
+
+export async function getChapterProjects(chapterId: Types.ObjectId) {
+  await dbConnect();
+  const projects = await ProjectModel.find({ chapter: chapterId });
   return projects;
 }
 

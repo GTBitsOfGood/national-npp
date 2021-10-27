@@ -27,7 +27,7 @@ export interface Chapter {
   _id: Types.ObjectId | string;
   name: string;
   email: string;
-  contact: Types.ObjectId;
+  contact: User | Types.ObjectId;
   address: Address;
   website?: string;
   facebook?: string;
@@ -41,7 +41,7 @@ export interface Nonprofit {
   name: string;
   address: Address;
   isVerified: boolean;
-  contact: Types.ObjectId;
+  contact: User | Types.ObjectId;
   website?: string;
   mission?: string;
 }
@@ -134,6 +134,7 @@ export interface InternalResponseData<T> {
   payload?: T;
 }
 
+export type ProjectGet = Pick<Partial<Project>, "status">;
 export type NonprofitProjectCreate = Pick<
   Required<Project>,
   "chapter" | "name" | "type"
