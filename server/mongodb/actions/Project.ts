@@ -4,7 +4,6 @@ import NonprofitModel from "server/mongodb/models/Nonprofit";
 import ProjectModel from "server/mongodb/models/Project";
 import UserModel from "server/mongodb/models/User";
 import dbConnect from "server/utils/dbConnect";
-import { tryToParseBoolean } from "server/utils/req-parameter-validation";
 import { displayableProjectStageToProjectStages } from "src/utils/stages";
 import {
   ChapterUpdateProject,
