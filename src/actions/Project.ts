@@ -5,6 +5,7 @@ import {
   NonprofitProjectUpdate,
   Project,
   NonprofitProjectCreate,
+  ProjectGet,
 } from "src/utils/types";
 import urls from "src/utils/urls";
 
@@ -19,6 +20,16 @@ export async function createNonprofitProject(
     body: {
       projectCreate,
     },
+  });
+}
+
+export async function getProjects(projectGet: ProjectGet) {
+  return internalRequest<Array<Project>>({
+    url: projectAPI,
+    queryParams: {
+      ...projectGet,
+    },
+    method: HttpMethod.GET,
   });
 }
 

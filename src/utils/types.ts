@@ -148,6 +148,7 @@ export interface InternalResponseData<T> {
   payload?: T;
 }
 
+export type ProjectGet = Pick<Partial<Project>, "status">;
 export type NonprofitProjectCreate = Pick<
   Required<Project>,
   "chapter" | "name" | "type"
@@ -203,6 +204,7 @@ export enum ProjectStage {
 
 export enum Role {
   CHAPTER_MEMBER = "Chapter Member",
+  CHAPTER_ADMIN = "Chapter Admin",
   NONPROFIT_MEMBER = "Nonprofit Member",
   NONPROFIT_ADMIN = "Nonprofit Admin",
 }
