@@ -3,12 +3,13 @@ import {
   updateNonprofitUser,
 } from "server/mongodb/actions/User";
 import APIWrapper from "server/utils/APIWrapper";
-import { UserUpdate } from "src/utils/types";
+import { Role, UserUpdate } from "src/utils/types";
 
 export default APIWrapper({
   GET: {
     config: {
       requireSession: true,
+      roles: [Role.NONPROFIT_MEMBER],
     },
     handler: async (req) => {
       const nonprofitId = req.user.nonprofit;
@@ -24,6 +25,7 @@ export default APIWrapper({
   PATCH: {
     config: {
       requireSession: true,
+      roles: [Role.NONPROFIT_MEMBER],
     },
     handler: async (req) => {
       const nonprofitId = req.user.nonprofit;

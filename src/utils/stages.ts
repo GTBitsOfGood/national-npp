@@ -54,10 +54,10 @@ const projectStageToDisplayableStage = Object.fromEntries(
 );
 
 export function projectStageToDisplayableProjectStage(
-  chapterStage: ProjectStage
+  projectStage: ProjectStage
 ): DisplayableProjectStage {
   return (
-    projectStageToDisplayableStage[chapterStage] ??
+    projectStageToDisplayableStage[projectStage] ??
     DisplayableProjectStage.APPLICATION
   );
 }

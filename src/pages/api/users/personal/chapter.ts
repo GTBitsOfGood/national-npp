@@ -1,11 +1,12 @@
 import { getChapterUser, updateChapterUser } from "server/mongodb/actions/User";
 import APIWrapper from "server/utils/APIWrapper";
-import { UserUpdate } from "src/utils/types";
+import { Role, UserUpdate } from "src/utils/types";
 
 export default APIWrapper({
   GET: {
     config: {
       requireSession: true,
+      roles: [Role.CHAPTER_MEMBER],
     },
     handler: async (req) => {
       const chapterId = req.user.chapter;
@@ -21,6 +22,7 @@ export default APIWrapper({
   PATCH: {
     config: {
       requireSession: true,
+      roles: [Role.CHAPTER_MEMBER],
     },
     handler: async (req) => {
       const chapterId = req.user.chapter;

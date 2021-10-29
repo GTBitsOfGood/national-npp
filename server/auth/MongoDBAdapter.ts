@@ -9,7 +9,7 @@ import SessionModel from "server/mongodb/models/Session";
 import UserModel from "server/mongodb/models/User";
 import VerificationRequestModel from "server/mongodb/models/VerificationRequest";
 import dbConnect from "server/utils/dbConnect";
-import { User, Session } from "src/utils/types";
+import { User, Session, Role } from "src/utils/types";
 
 /*
     This adapter has not been tested with providers other than email. That is considered future work for now.
@@ -39,7 +39,7 @@ const MongoDBAdapter = () => {
             emailVerified,
             name: "",
             image: "",
-            roles: [],
+            roles: [Role.NONPROFIT_ADMIN],
           });
 
           return newUser;

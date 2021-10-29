@@ -22,8 +22,9 @@ const StepCard = ({
       w="full"
       justifyContent="center"
       bgColor="#0069CA0D"
-      p={10}
+      padding="20px"
       spacing="25px"
+      borderRadius="lg"
     >
       {actionRequired && (
         <Box color="primary" m="0" bgColor="rgba(0, 105, 202, 0.1)" px="2">

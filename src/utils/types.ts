@@ -27,7 +27,7 @@ export interface Chapter {
   _id: Types.ObjectId | string;
   name: string;
   email: string;
-  contact: Types.ObjectId;
+  contact: User | Types.ObjectId;
   address: Address;
   website?: string;
   facebook?: string;
@@ -184,6 +184,7 @@ export enum ProjectStage {
 
 export enum Role {
   CHAPTER_MEMBER = "Chapter Member",
+  CHAPTER_ADMIN = "Chapter Admin",
   NONPROFIT_MEMBER = "Nonprofit Member",
   NONPROFIT_ADMIN = "Nonprofit Admin",
 }

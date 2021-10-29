@@ -1,6 +1,6 @@
 module.exports = {
   reactStrictMode: true,
   experimental: {
-    outputFileTracing: true, // enable includeFiles for vercel lambdas
+    esmExternals: false, // disable to prevent OOM error from Next.js bug
   },
 };

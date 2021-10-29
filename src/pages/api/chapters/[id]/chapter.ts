@@ -1,12 +1,13 @@
 import { Types } from "mongoose";
 import { updateChapter } from "server/mongodb/actions/Chapter";
 import APIWrapper from "server/utils/APIWrapper";
-import { ChapterUpdate } from "src/utils/types";
+import { ChapterUpdate, Role } from "src/utils/types";
 
 export default APIWrapper({
   PATCH: {
     config: {
       requireSession: true,
+      roles: [Role.CHAPTER_ADMIN],
     },
     handler: async (req) => {
       const claimedChapterId = req.query.id as string;
