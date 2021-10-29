@@ -1,4 +1,4 @@
-import { getNonprofitUsers } from "server/mongodb/actions/User";
+import { nonprofitGetUsers } from "server/mongodb/actions/User";
 import APIWrapper from "server/utils/APIWrapper";
 import { Role } from "src/utils/types";
 
@@ -15,7 +15,7 @@ export default APIWrapper({
         throw new Error("User does not belong to a nonprofit.");
       }
 
-      const users = await getNonprofitUsers(nonprofitId);
+      const users = await nonprofitGetUsers(nonprofitId);
       return users;
     },
   },

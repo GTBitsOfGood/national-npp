@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
-import { updateNonprofitProject } from "server/mongodb/actions/Project";
+import { nonprofitUpdateProject } from "server/mongodb/actions/Project";
 import APIWrapper from "server/utils/APIWrapper";
-import { NonprofitProjectUpdate, Role } from "src/utils/types";
+import { NonprofitUpdateProject, Role } from "src/utils/types";
 
 export default APIWrapper({
   PATCH: {
@@ -17,9 +17,9 @@ export default APIWrapper({
         throw new Error("User does not belong to a nonprofit.");
       }
 
-      const projectUpdate = req.body.projectUpdate as NonprofitProjectUpdate;
+      const projectUpdate = req.body.projectUpdate as NonprofitUpdateProject;
 
-      const project = await updateNonprofitProject(
+      const project = await nonprofitUpdateProject(
         Types.ObjectId(projectId),
         nonprofitId,
         projectUpdate

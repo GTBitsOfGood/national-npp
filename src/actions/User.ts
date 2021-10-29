@@ -1,38 +1,43 @@
 import { internalRequest } from "src/utils/requests";
-import { User, HttpMethod, UserUpdate } from "src/utils/types";
+import {
+  User,
+  HttpMethod,
+  NonprofitUpdateUser,
+  ChapterUpdateUser,
+} from "src/utils/types";
 import urls from "src/utils/urls";
 
 const userAPI = urls.baseUrl + urls.api.users;
 
-export async function getNonprofitUser() {
+export async function nonprofitGetUser() {
   return internalRequest<User>({
     url: userAPI + `/personal/nonprofit`,
     method: HttpMethod.GET,
   });
 }
 
-export async function getChapterUser() {
+export async function chapterGetUser() {
   return internalRequest<User>({
     url: userAPI + `/personal/chapter`,
     method: HttpMethod.GET,
   });
 }
 
-export async function getChapterUsers() {
+export async function chapterGetUsers() {
   return internalRequest<User[]>({
     url: userAPI + "/chapter",
     method: HttpMethod.GET,
   });
 }
 
-export async function getNonprofitUsers() {
+export async function nonprofitGetUsers() {
   return internalRequest<User[]>({
     url: userAPI + "/nonprofit",
     method: HttpMethod.GET,
   });
 }
 
-export function updateNonprofitUser(userUpdate: UserUpdate) {
+export function nonprofitUpdateUser(userUpdate: NonprofitUpdateUser) {
   return internalRequest<User>({
     url: userAPI + `/personal/nonprofit`,
     method: HttpMethod.PATCH,
@@ -42,7 +47,7 @@ export function updateNonprofitUser(userUpdate: UserUpdate) {
   });
 }
 
-export function updateChapterUser(userUpdate: UserUpdate) {
+export function chapterUpdateUser(userUpdate: ChapterUpdateUser) {
   return internalRequest<User>({
     url: userAPI + `/personal/chapter`,
     method: HttpMethod.PATCH,

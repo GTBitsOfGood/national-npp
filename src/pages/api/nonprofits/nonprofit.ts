@@ -1,6 +1,6 @@
-import { createNonprofit } from "server/mongodb/actions/Nonprofit";
+import { nonprofitCreateNonprofit } from "server/mongodb/actions/Nonprofit";
 import APIWrapper from "server/utils/APIWrapper";
-import { NonprofitCreate, Role } from "src/utils/types";
+import { NonprofitCreateNonprofit, Role } from "src/utils/types";
 
 export default APIWrapper({
   POST: {
@@ -9,9 +9,10 @@ export default APIWrapper({
       roles: [Role.NONPROFIT_ADMIN],
     },
     handler: async (req) => {
-      const nonprofitCreate = req.body.nonprofitCreate as NonprofitCreate;
+      const nonprofitCreate = req.body
+        .nonprofitCreate as NonprofitCreateNonprofit;
 
-      const nonprofit = await createNonprofit(nonprofitCreate);
+      const nonprofit = await nonprofitCreateNonprofit(nonprofitCreate);
       return nonprofit;
     },
   },

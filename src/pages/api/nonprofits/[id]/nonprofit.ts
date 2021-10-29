@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
-import { updateNonprofit } from "server/mongodb/actions/Nonprofit";
+import { nonprofitUpdateNonprofit } from "server/mongodb/actions/Nonprofit";
 import APIWrapper from "server/utils/APIWrapper";
-import { NonprofitUpdate, Role } from "src/utils/types";
+import { NonprofitUpdateNonprofit, Role } from "src/utils/types";
 
 export default APIWrapper({
   PATCH: {
@@ -10,23 +10,25 @@ export default APIWrapper({
       roles: [Role.NONPROFIT_ADMIN],
     },
     handler: async (req) => {
-      const claimedNonprofitId = req.query.id as string;
       const nonprofitId = req.user.nonprofit;
 
-      if (Types.ObjectId(claimedNonprofitId) != nonprofitId) {
-        throw new Error(
-          "Users cannot update nonprofits that they do not belong to."
-        );
+      if (!nonprofitId) {
+        throw new Error("User does not belong to a nonprofit.");
       }
 
-      const nonprofitUpdate = req.body.nonprofitUpdate as NonprofitUpdate;
+      const nonprofitUpdate = req.body
+        .nonprofitUpdate as NonprofitUpdateNonprofit;
       if (nonprofitUpdate.contact) {
         nonprofitUpdate.contact = Types.ObjectId(
           nonprofitUpdate.contact.toString()
         );
       }
 
-      const nonprofit = await updateNonprofit(nonprofitId, nonprofitUpdate);
+      const nonprofit = await nonprofitUpdateNonprofit(
+        nonprofitId,
+        nonprofitUpdate
+      );
+
       return nonprofit;
     },
   },
