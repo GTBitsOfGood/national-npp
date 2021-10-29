@@ -1,6 +1,6 @@
-import { getChapterUser, updateChapterUser } from "server/mongodb/actions/User";
+import { chapterGetUser, chapterUpdateUser } from "server/mongodb/actions/User";
 import APIWrapper from "server/utils/APIWrapper";
-import { Role, UserUpdate } from "src/utils/types";
+import { ChapterUpdateUser, Role } from "src/utils/types";
 
 export default APIWrapper({
   GET: {
@@ -15,7 +15,7 @@ export default APIWrapper({
         throw new Error("User does not belong to a chapter.");
       }
 
-      const user = await getChapterUser(req.user.id);
+      const user = await chapterGetUser(req.user.id);
       return user;
     },
   },
@@ -31,9 +31,9 @@ export default APIWrapper({
         throw new Error("User does not belong to a chapter.");
       }
 
-      const userUpdate = req.body.userUpdate as UserUpdate;
+      const userUpdate = req.body.userUpdate as ChapterUpdateUser;
 
-      const user = await updateChapterUser(req.user.id, userUpdate);
+      const user = await chapterUpdateUser(req.user.id, userUpdate);
       return user;
     },
   },

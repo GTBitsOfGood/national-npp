@@ -15,20 +15,20 @@ import {
 import { Types } from "mongoose";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { updateNonprofit } from "src/actions/Nonprofit";
+import { nonprofitUpdateNonprofit } from "src/actions/Nonprofit";
 import {
-  getNonprofitUser,
-  getNonprofitUsers,
-  updateNonprofitUser,
+  nonprofitGetUser,
+  nonprofitGetUsers,
+  nonprofitUpdateUser,
 } from "src/actions/User";
 import { states, countries } from "src/utils/constants";
 import { showError, showInfo } from "src/utils/notifications";
 import {
   Contact,
   Nonprofit,
-  NonprofitUpdate,
+  NonprofitUpdateNonprofit,
+  NonprofitUpdateUser,
   User,
-  UserUpdate,
 } from "src/utils/types";
 import {
   maxInput,
@@ -63,10 +63,10 @@ function NonprofitProfilePage() {
 
   useEffect(() => {
     async function preloadData() {
-      const user = await getNonprofitUser();
+      const user = await nonprofitGetUser();
       const nonprofit = user.nonprofit as Nonprofit;
 
-      const contacts: User[] = await getNonprofitUsers();
+      const contacts: User[] = await nonprofitGetUsers();
       setContactList(
         contacts.map((user) => {
           return {
@@ -99,12 +99,12 @@ function NonprofitProfilePage() {
   }, [reset]);
 
   const submitData = async (data: FormData) => {
-    const userUpdate: UserUpdate = {
+    const userUpdate: NonprofitUpdateUser = {
       name: data.name,
       phoneNum: data.phoneNumber,
     };
 
-    const nonprofitUpdate: NonprofitUpdate = {
+    const nonprofitUpdate: NonprofitUpdateNonprofit = {
       name: data.nonprofitName,
       contact: Types.ObjectId(data.contact),
       address: {
@@ -119,9 +119,9 @@ function NonprofitProfilePage() {
     };
 
     try {
-      const user = await updateNonprofitUser(userUpdate);
+      const user = await nonprofitUpdateUser(userUpdate);
       const nonprofit = user.nonprofit as Nonprofit;
-      await updateNonprofit(nonprofit._id.toString(), nonprofitUpdate);
+      await nonprofitUpdateNonprofit(nonprofit._id.toString(), nonprofitUpdate);
       showInfo("Successfully updated profile.");
     } catch (e) {
       const error = e as Error;

@@ -1,4 +1,4 @@
-import { getChapterUsers } from "server/mongodb/actions/User";
+import { chapterGetUsers } from "server/mongodb/actions/User";
 import APIWrapper from "server/utils/APIWrapper";
 import { Role } from "src/utils/types";
 
@@ -15,7 +15,7 @@ export default APIWrapper({
         throw new Error("User does not belong to a chapter.");
       }
 
-      const users = await getChapterUsers(chapterId);
+      const users = await chapterGetUsers(chapterId);
       return users;
     },
   },

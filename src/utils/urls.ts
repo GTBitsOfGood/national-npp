@@ -6,6 +6,7 @@ const urls = {
     chapters: "/api/chapters",
     nonprofits: "/api/nonprofits",
     users: "/api/users",
+    applications: "/api/applications",
   },
 };
 

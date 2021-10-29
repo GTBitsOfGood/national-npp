@@ -3,9 +3,9 @@ import ChapterModel from "server/mongodb/models/Chapter";
 import NonprofitModel from "server/mongodb/models/Nonprofit";
 import UserModel from "server/mongodb/models/User";
 import dbConnect from "server/utils/dbConnect";
-import { UserUpdate } from "src/utils/types";
+import { ChapterUpdateUser, NonprofitUpdateUser } from "src/utils/types";
 
-export async function getChapterUser(userId: Types.ObjectId) {
+export async function chapterGetUser(userId: Types.ObjectId) {
   await dbConnect();
 
   const user = await UserModel.findById(userId).populate({
@@ -16,7 +16,7 @@ export async function getChapterUser(userId: Types.ObjectId) {
   return user;
 }
 
-export async function getNonprofitUser(userId: Types.ObjectId) {
+export async function nonprofitGetUser(userId: Types.ObjectId) {
   await dbConnect();
 
   const user = await UserModel.findById(userId).populate({
@@ -27,7 +27,7 @@ export async function getNonprofitUser(userId: Types.ObjectId) {
   return user;
 }
 
-export async function getChapterUsers(chapterId: Types.ObjectId) {
+export async function chapterGetUsers(chapterId: Types.ObjectId) {
   await dbConnect();
 
   const users = await UserModel.find({ chapter: chapterId });
@@ -35,7 +35,7 @@ export async function getChapterUsers(chapterId: Types.ObjectId) {
   return users;
 }
 
-export async function getNonprofitUsers(nonprofitId: Types.ObjectId) {
+export async function nonprofitGetUsers(nonprofitId: Types.ObjectId) {
   await dbConnect();
 
   const users = await UserModel.find({ nonprofit: nonprofitId });
@@ -43,9 +43,9 @@ export async function getNonprofitUsers(nonprofitId: Types.ObjectId) {
   return users;
 }
 
-export async function updateChapterUser(
+export async function chapterUpdateUser(
   userId: Types.ObjectId,
-  userUpdate: UserUpdate
+  userUpdate: ChapterUpdateUser
 ) {
   await dbConnect();
 
@@ -59,9 +59,9 @@ export async function updateChapterUser(
   return user;
 }
 
-export async function updateNonprofitUser(
+export async function nonprofitUpdateUser(
   userId: Types.ObjectId,
-  userUpdate: UserUpdate
+  userUpdate: NonprofitUpdateUser
 ) {
   await dbConnect();
 

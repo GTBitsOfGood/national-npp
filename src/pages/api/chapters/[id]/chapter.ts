@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
-import { updateChapter } from "server/mongodb/actions/Chapter";
+import { chapterUpdateChapter } from "server/mongodb/actions/Chapter";
 import APIWrapper from "server/utils/APIWrapper";
-import { ChapterUpdate, Role } from "src/utils/types";
+import { ChapterUpdateChapter, Role } from "src/utils/types";
 
 export default APIWrapper({
   PATCH: {
@@ -10,21 +10,20 @@ export default APIWrapper({
       roles: [Role.CHAPTER_ADMIN],
     },
     handler: async (req) => {
-      const claimedChapterId = req.query.id as string;
       const chapterId = req.user.chapter;
 
-      if (Types.ObjectId(claimedChapterId) != chapterId) {
-        throw new Error("Users cannot update chapters they do not belong to.");
+      if (!chapterId) {
+        throw new Error("User does not belong to a chapter.");
       }
 
-      const chapterUpdate = req.body.chapterUpdate as ChapterUpdate;
+      const chapterUpdate = req.body.chapterUpdate as ChapterUpdateChapter;
       if (chapterUpdate.contact) {
         chapterUpdate.contact = Types.ObjectId(
           chapterUpdate.contact.toString()
         );
       }
 
-      const chapter = await updateChapter(chapterId, chapterUpdate);
+      const chapter = await chapterUpdateChapter(chapterId, chapterUpdate);
       return chapter;
     },
   },

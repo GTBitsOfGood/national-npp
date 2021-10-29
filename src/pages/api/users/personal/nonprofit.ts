@@ -1,9 +1,9 @@
 import {
-  getNonprofitUser,
-  updateNonprofitUser,
+  nonprofitGetUser,
+  nonprofitUpdateUser,
 } from "server/mongodb/actions/User";
 import APIWrapper from "server/utils/APIWrapper";
-import { Role, UserUpdate } from "src/utils/types";
+import { NonprofitUpdateUser, Role } from "src/utils/types";
 
 export default APIWrapper({
   GET: {
@@ -18,7 +18,7 @@ export default APIWrapper({
         throw new Error("User does not belong to a nonprofit.");
       }
 
-      const user = await getNonprofitUser(req.user.id);
+      const user = await nonprofitGetUser(req.user.id);
       return user;
     },
   },
@@ -34,9 +34,9 @@ export default APIWrapper({
         throw new Error("User does not belong to a nonprofit.");
       }
 
-      const userUpdate = req.body.userUpdate as UserUpdate;
+      const userUpdate = req.body.userUpdate as NonprofitUpdateUser;
 
-      const user = await updateNonprofitUser(req.user.id, userUpdate);
+      const user = await nonprofitUpdateUser(req.user.id, userUpdate);
       return user;
     },
   },

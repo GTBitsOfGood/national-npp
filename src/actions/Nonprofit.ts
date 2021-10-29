@@ -2,14 +2,16 @@ import { internalRequest } from "src/utils/requests";
 import {
   Nonprofit,
   HttpMethod,
-  NonprofitCreate,
-  NonprofitUpdate,
+  NonprofitCreateNonprofit,
+  NonprofitUpdateNonprofit,
 } from "src/utils/types";
 import urls from "src/utils/urls";
 
 const nonprofitAPI = urls.baseUrl + urls.api.nonprofits;
 
-export async function createNonprofit(nonprofitCreate: NonprofitCreate) {
+export async function nonprofitCreateNonprofit(
+  nonprofitCreate: NonprofitCreateNonprofit
+) {
   return internalRequest<Nonprofit>({
     url: nonprofitAPI + "/nonprofit",
     method: HttpMethod.POST,
@@ -19,9 +21,9 @@ export async function createNonprofit(nonprofitCreate: NonprofitCreate) {
   });
 }
 
-export async function updateNonprofit(
+export async function nonprofitUpdateNonprofit(
   nonprofitId: string,
-  nonprofitUpdate: NonprofitUpdate
+  nonprofitUpdate: NonprofitUpdateNonprofit
 ) {
   return internalRequest<Nonprofit>({
     url: nonprofitAPI + `/${nonprofitId}/nonprofit`,

@@ -18,7 +18,7 @@ import Image from "next/image";
 import SubmitApplicationImage from "public/images/nonprofit/project/submit_application.svg";
 import React, { useEffect, useState } from "react";
 import { BsPlus } from "react-icons/bs";
-import { getNonprofitProjects } from "src/actions/Project";
+import { nonprofitGetProjects } from "src/actions/Project";
 import EmptyProjectCard from "src/components/nonprofit/projects/EmptyProjectCard";
 import ProjectCard from "src/components/nonprofit/projects/ProjectCard";
 import StepCard from "src/components/nonprofit/projects/StepCard";
@@ -48,7 +48,10 @@ function NonprofitProjectsPage() {
 
   useEffect(() => {
     async function fetchProjects() {
-      const projects: Project[] = await getNonprofitProjects(active);
+      const projects: Project[] = await nonprofitGetProjects({
+        active,
+      });
+
       if (projects.length !== 0 && active) {
         setCurrProject(projects[0]);
       }

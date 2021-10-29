@@ -1,10 +1,13 @@
 import {
-  createNonprofitProject,
-  getNonprofitProjects,
+  nonprofitCreateProject,
+  nonprofitGetProjects,
 } from "server/mongodb/actions/Project";
 import APIWrapper from "server/utils/APIWrapper";
-import { tryToParseBoolean } from "server/utils/req-parameter-validation";
-import { NonprofitProjectCreate, Role } from "src/utils/types";
+import {
+  NonprofitCreateProject,
+  NonprofitGetProjects,
+  Role,
+} from "src/utils/types";
 
 export default APIWrapper({
   GET: {
@@ -19,10 +22,9 @@ export default APIWrapper({
         throw new Error("User does not belong to a nonprofit.");
       }
 
-      const projects = await getNonprofitProjects(
-        nonprofitId,
-        tryToParseBoolean(req.query.active)
-      );
+      const projectsGet = { ...req.query } as NonprofitGetProjects;
+
+      const projects = await nonprofitGetProjects(nonprofitId, projectsGet);
 
       return projects;
     },
@@ -39,9 +41,9 @@ export default APIWrapper({
         throw new Error("User does not belong to a nonprofit.");
       }
 
-      const projectCreate = req.body.projectCreate as NonprofitProjectCreate;
+      const projectCreate = req.body.projectCreate as NonprofitCreateProject;
 
-      const project = await createNonprofitProject(nonprofitId, projectCreate);
+      const project = await nonprofitCreateProject(nonprofitId, projectCreate);
       return project;
     },
   },

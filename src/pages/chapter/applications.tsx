@@ -12,7 +12,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { getProjects } from "src/actions/Project";
+import { chapterGetProjects } from "src/actions/Project";
 import { showError } from "src/utils/notifications";
 import { User, Nonprofit, Project, ProjectStage } from "src/utils/types";
 
@@ -21,7 +21,7 @@ function ChapterApplicationsPage() {
 
   useEffect(() => {
     async function loadProjects() {
-      const newProjects: Project[] = await getProjects({
+      const newProjects: Project[] = await chapterGetProjects({
         status: ProjectStage.APPLICATION_REVIEW,
       });
 
