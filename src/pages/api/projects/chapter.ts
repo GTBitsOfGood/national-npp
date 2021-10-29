@@ -1,6 +1,6 @@
-import { getChapterProjects } from "server/mongodb/actions/Project";
+import { chapterGetProjects } from "server/mongodb/actions/Project";
 import APIWrapper from "server/utils/APIWrapper";
-import { Role } from "src/utils/types";
+import { ChapterGetProjects, Role } from "src/utils/types";
 
 export default APIWrapper({
   GET: {
@@ -15,7 +15,9 @@ export default APIWrapper({
         throw new Error("User does not belong to a chapter.");
       }
 
-      const projects = await getChapterProjects(chapterId);
+      const projectsGet = { ...req.query } as ChapterGetProjects;
+
+      const projects = await chapterGetProjects(chapterId, projectsGet);
       return projects;
     },
   },

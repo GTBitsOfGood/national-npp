@@ -2,18 +2,18 @@ import { internalRequest } from "src/utils/requests";
 import {
   HttpMethod,
   Application,
-  NonprofitApplicationCreate,
+  NonprofitCreateApplication,
 } from "src/utils/types";
 import urls from "src/utils/urls";
 
 const applicationAPI = urls.baseUrl + urls.api.applications;
 
-export async function createNonprofitApplication(
+export async function nonprofitCreateApplication(
   projectId: string,
-  applicationCreate: NonprofitApplicationCreate
+  applicationCreate: NonprofitCreateApplication
 ) {
   return internalRequest<Application>({
-    url: applicationAPI,
+    url: applicationAPI + "/nonprofit",
     method: HttpMethod.POST,
     body: {
       projectId,
@@ -22,9 +22,9 @@ export async function createNonprofitApplication(
   });
 }
 
-export async function getApplication(projectId: string) {
+export async function chapterGetApplication(projectId: string) {
   return internalRequest<Application>({
-    url: applicationAPI + `/${projectId}`,
+    url: applicationAPI + `/${projectId}/chapter`,
     method: HttpMethod.GET,
   });
 }

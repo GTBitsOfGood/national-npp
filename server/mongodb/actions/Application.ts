@@ -1,11 +1,11 @@
 import { Types } from "mongoose";
 import ApplicationModel from "server/mongodb/models/Application";
 import dbConnect from "server/utils/dbConnect";
-import { NonprofitApplicationCreate } from "src/utils/types";
+import { NonprofitCreateApplication } from "src/utils/types";
 
-export async function createNonprofitApplication(
+export async function nonprofitCreateApplication(
   projectId: Types.ObjectId,
-  applicationCreate: NonprofitApplicationCreate
+  applicationCreate: NonprofitCreateApplication
 ) {
   await dbConnect();
 
@@ -17,7 +17,7 @@ export async function createNonprofitApplication(
   return application;
 }
 
-export async function getApplication(projectId: Types.ObjectId) {
+export async function chapterGetApplication(projectId: Types.ObjectId) {
   await dbConnect();
 
   const application = await ApplicationModel.findOne({ project: projectId });

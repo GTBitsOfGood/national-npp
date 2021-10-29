@@ -24,17 +24,17 @@ import { Types } from "mongoose";
 import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { BsInfoCircle } from "react-icons/bs";
-import { updateChapter } from "src/actions/Chapter";
+import { chapterUpdateChapter } from "src/actions/Chapter";
 import {
-  getChapterUsers,
-  getChapterUser,
-  updateChapterUser,
+  chapterGetUser,
+  chapterGetUsers,
+  chapterUpdateUser,
 } from "src/actions/User";
 import { states, countries } from "src/utils/constants";
 import { showError, showInfo } from "src/utils/notifications";
 import {
-  UserUpdate,
-  ChapterUpdate,
+  ChapterUpdateUser,
+  ChapterUpdateChapter,
   MaintenanceType,
   Chapter,
   User,
@@ -76,10 +76,10 @@ function ChapterProfilePage() {
 
   useEffect(() => {
     async function preloadFields() {
-      const user = await getChapterUser();
+      const user = await chapterGetUser();
       const chapter = user.chapter as Chapter;
 
-      const contacts: User[] = await getChapterUsers();
+      const contacts: User[] = await chapterGetUsers();
       setContactList(
         contacts.map((user) => {
           return {
@@ -114,12 +114,12 @@ function ChapterProfilePage() {
   }, [reset]);
 
   const submitData = async (values: FormData) => {
-    const userUpdate: UserUpdate = {
+    const userUpdate: ChapterUpdateUser = {
       name: values.name,
       phoneNum: values.phoneNumber,
     };
 
-    const chapterUpdate: ChapterUpdate = {
+    const chapterUpdate: ChapterUpdateChapter = {
       name: values.chapterName,
       contact: Types.ObjectId(values.contact),
       address: {
@@ -137,9 +137,9 @@ function ChapterProfilePage() {
     };
 
     try {
-      const user = await updateChapterUser(userUpdate);
+      const user = await chapterUpdateUser(userUpdate);
       const chapter = user.chapter as Chapter;
-      await updateChapter(chapter._id.toString(), chapterUpdate);
+      await chapterUpdateChapter(chapter._id.toString(), chapterUpdate);
       showInfo("Successfully updated profile.");
     } catch (e) {
       const error = e as Error;

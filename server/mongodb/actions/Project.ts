@@ -4,20 +4,23 @@ import NonprofitModel from "server/mongodb/models/Nonprofit";
 import ProjectModel from "server/mongodb/models/Project";
 import UserModel from "server/mongodb/models/User";
 import dbConnect from "server/utils/dbConnect";
+import { tryToParseBoolean } from "server/utils/req-parameter-validation";
 import { displayableProjectStageToProjectStages } from "src/utils/stages";
 import {
-  ChapterProjectUpdate,
+  ChapterUpdateProject,
   DisplayableProjectStage,
-  NonprofitProjectUpdate,
+  NonprofitUpdateProject,
   Project,
-  NonprofitProjectCreate,
+  NonprofitCreateProject,
   ProjectStage,
-  ProjectGet,
+  ChapterGetProjects,
+  NonprofitGetProjects,
+  ChapterGetProject,
 } from "src/utils/types";
 
-export async function createNonprofitProject(
+export async function nonprofitCreateProject(
   nonprofitId: Types.ObjectId,
-  projectCreate: NonprofitProjectCreate
+  projectCreate: NonprofitCreateProject
 ) {
   await dbConnect();
 
@@ -29,38 +32,58 @@ export async function createNonprofitProject(
   return project;
 }
 
-export async function getProjects(projectGet: ProjectGet) {
+export async function chapterGetProjects(
+  chapterId: Types.ObjectId,
+  projectsGet: ChapterGetProjects
+) {
   await dbConnect();
 
-  const status = projectGet?.status;
+  const status = projectsGet.status;
 
-  if (!status || status !== ProjectStage.APPLICATION_REVIEW) {
-    throw new Error("Only unassigned projects can be queried at this time.");
+  if (status === ProjectStage.APPLICATION_REVIEW) {
+    const projects = await ProjectModel.find({ status }).populate({
+      path: "nonprofit",
+      model: NonprofitModel,
+      populate: {
+        path: "contact",
+        model: UserModel,
+      },
+    });
+
+    return projects;
   }
 
-  const projects = await ProjectModel.find({ ...projectGet }).populate({
-    path: "nonprofit",
-    model: NonprofitModel,
-    populate: {
-      path: "contact",
-      model: UserModel,
-    },
+  const projects = await ProjectModel.find({
+    chapter: chapterId,
   });
 
   return projects;
 }
 
-export async function getChapterProjects(chapterId: Types.ObjectId) {
-  await dbConnect();
-  const projects = await ProjectModel.find({ chapter: chapterId });
-  return projects;
-}
-
-export async function getChapterProject(
+export async function chapterGetProject(
   projectId: Types.ObjectId,
-  chapterId: Types.ObjectId
+  chapterId: Types.ObjectId,
+  projectGet: ChapterGetProject
 ) {
   await dbConnect();
+
+  const status = projectGet.status;
+
+  if (status === ProjectStage.APPLICATION_REVIEW) {
+    const project = await ProjectModel.findOne({
+      _id: projectId,
+      status,
+    }).populate({
+      path: "nonprofit",
+      model: NonprofitModel,
+      populate: {
+        path: "contact",
+        model: UserModel,
+      },
+    });
+
+    return project;
+  }
 
   const project = await ProjectModel.findOne({
     _id: projectId,
@@ -70,30 +93,18 @@ export async function getChapterProject(
   return project;
 }
 
-export async function getNonprofitProject(projectId: Types.ObjectId) {
-  await dbConnect();
-
-  const project = await ProjectModel.findOne({ _id: projectId }).populate({
-    path: "nonprofit",
-    model: NonprofitModel,
-    populate: {
-      path: "contact",
-      model: UserModel,
-    },
-  });
-
-  return project;
-}
-
-export async function getNonprofitProjects(
+export async function nonprofitGetProjects(
   nonprofitId: Types.ObjectId,
-  active?: boolean
+  projectsGet: NonprofitGetProjects
 ) {
   await dbConnect();
 
   const filter: FilterQuery<Project> = {
     nonprofit: nonprofitId,
   };
+
+  const active = projectsGet.active;
+
   // will filter by active or inactive only if filter specified
   if (active != undefined) {
     filter["status"] = active
@@ -121,14 +132,15 @@ export async function getNonprofitProjects(
   return projects;
 }
 
-export async function updateNonprofitProject(
+export async function nonprofitUpdateProject(
   projectId: Types.ObjectId,
-  projectUpdate: NonprofitProjectUpdate
+  nonprofitId: Types.ObjectId,
+  projectUpdate: NonprofitUpdateProject
 ) {
   await dbConnect();
 
   const project = await ProjectModel.findOneAndUpdate(
-    { _id: projectId },
+    { _id: projectId, nonprofit: nonprofitId },
     projectUpdate,
     { new: true }
   );
@@ -136,14 +148,29 @@ export async function updateNonprofitProject(
   return project;
 }
 
-export async function updateChapterProject(
+export async function chapterUpdateProject(
   projectId: Types.ObjectId,
-  projectUpdate: ChapterProjectUpdate
+  chapterId: Types.ObjectId,
+  projectUpdate: ChapterUpdateProject
 ) {
   await dbConnect();
 
+  const status = projectUpdate.status;
+
+  if (status === ProjectStage.SCHEDULE_INTERVIEW) {
+    const project = await ProjectModel.findOneAndUpdate(
+      { _id: projectId, status: ProjectStage.APPLICATION_REVIEW },
+      projectUpdate,
+      {
+        new: true,
+      }
+    );
+
+    return project;
+  }
+
   const project = await ProjectModel.findOneAndUpdate(
-    { _id: projectId },
+    { _id: projectId, chapter: chapterId },
     projectUpdate,
     { new: true }
   );

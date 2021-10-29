@@ -1,11 +1,12 @@
-import { Button, Flex, HStack, Link, VStack } from "@chakra-ui/react";
+import { Button, Flex, HStack, VStack } from "@chakra-ui/react";
+import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import { IoIosArrowRoundBack } from "react-icons/io";
-import { updateChapterProject, getNonprofitProject } from "src/actions/Project";
+import { chapterGetProject, chapterUpdateProject } from "src/actions/Project";
 import ApplicationCard from "src/components/ApplicationCard";
 import NonprofitInfoCard from "src/components/NonprofitInfoCard";
 import { showError, showInfo } from "src/utils/notifications";
-import { ChapterProjectUpdate, ProjectStage, Project } from "src/utils/types";
+import { ProjectStage, Project, ChapterUpdateProject } from "src/utils/types";
 
 function ChapterApplicationPage() {
   // TODO: Pass current project's id
@@ -14,7 +15,10 @@ function ChapterApplicationPage() {
 
   useEffect(() => {
     async function preloadFields() {
-      const project = await getNonprofitProject(projectId);
+      const project = await chapterGetProject(projectId, {
+        status: ProjectStage.APPLICATION_REVIEW,
+      });
+
       setProject(project);
     }
 
@@ -24,12 +28,12 @@ function ChapterApplicationPage() {
   }, []);
 
   const handleClaimProject = async () => {
-    const projectUpdate: ChapterProjectUpdate = {
+    const projectUpdate: ChapterUpdateProject = {
       status: ProjectStage.SCHEDULE_INTERVIEW,
     };
 
     try {
-      await updateChapterProject(projectId, projectUpdate);
+      await chapterUpdateProject(projectId, projectUpdate);
       showInfo("Successfully claimed project.");
     } catch (e) {
       const error = e as Error;

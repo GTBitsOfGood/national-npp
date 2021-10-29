@@ -1,10 +1,10 @@
 import { Types } from "mongoose";
 import {
-  getChapterProject,
-  updateChapterProject,
+  chapterGetProject,
+  chapterUpdateProject,
 } from "server/mongodb/actions/Project";
 import APIWrapper from "server/utils/APIWrapper";
-import { ChapterProjectUpdate, Role } from "src/utils/types";
+import { ChapterGetProject, ChapterUpdateProject, Role } from "src/utils/types";
 
 export default APIWrapper({
   GET: {
@@ -20,14 +20,13 @@ export default APIWrapper({
         throw new Error("User does not belong to a chapter.");
       }
 
-      const project = await getChapterProject(
-        Types.ObjectId(projectId),
-        chapterId
-      );
+      const projectGet = { ...req.query } as ChapterGetProject;
 
-      if (!project || chapterId !== project?.chapter) {
-        throw new Error("User does not belong to this project's chapter.");
-      }
+      const project = await chapterGetProject(
+        Types.ObjectId(projectId),
+        chapterId,
+        projectGet
+      );
 
       return project;
     },
@@ -45,15 +44,12 @@ export default APIWrapper({
         throw new Error("User does not belong to a chapter.");
       }
 
-      const projectUpdate = req.body.projectUpdate as ChapterProjectUpdate;
-      const project = await updateChapterProject(Types.ObjectId(projectId), {
-        ...projectUpdate,
-        chapter: chapterId,
-      });
-
-      if (!project || chapterId !== project?.chapter) {
-        throw new Error("User does not belong to this project's chapter.");
-      }
+      const projectUpdate = req.body.projectUpdate as ChapterUpdateProject;
+      const project = await chapterUpdateProject(
+        Types.ObjectId(projectId),
+        chapterId,
+        projectUpdate
+      );
 
       return project;
     },

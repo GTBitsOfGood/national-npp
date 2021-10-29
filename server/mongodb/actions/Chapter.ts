@@ -1,17 +1,17 @@
 import { Types } from "mongoose";
 import ChapterModel from "server/mongodb/models/Chapter";
 import dbConnect from "server/utils/dbConnect";
-import { ChapterUpdate } from "src/utils/types";
+import { ChapterUpdateChapter } from "src/utils/types";
 
-export async function updateChapter(
+export async function chapterUpdateChapter(
   chapterId: Types.ObjectId,
-  chapter: ChapterUpdate
+  chapterUpdate: ChapterUpdateChapter
 ) {
   await dbConnect();
 
   const updatedChapter = await ChapterModel.findByIdAndUpdate(
     chapterId,
-    chapter,
+    chapterUpdate,
     { new: true }
   );
 

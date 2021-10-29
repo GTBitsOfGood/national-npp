@@ -10,13 +10,13 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import {
-  createNonprofitApplication,
-  getApplication,
+  nonprofitCreateApplication,
+  chapterGetApplication,
 } from "src/actions/Application";
 import QuestionCard from "src/components/QuestionCard";
 import { showError, showInfo } from "src/utils/notifications";
 import {
-  NonprofitApplicationCreate,
+  NonprofitCreateApplication,
   Nonprofit,
   Project,
 } from "src/utils/types";
@@ -47,7 +47,7 @@ function ApplicationCard({ isRead, projectId, project }: Props) {
       if (isRead && project) {
         const nonprofit = project.nonprofit as Nonprofit;
 
-        const application = await getApplication(projectId);
+        const application = await chapterGetApplication(projectId);
 
         setProjectName(project.name);
         setIsVerified(nonprofit.isVerified);
@@ -76,7 +76,7 @@ function ApplicationCard({ isRead, projectId, project }: Props) {
       return;
     }
 
-    const applicationCreate: NonprofitApplicationCreate = {
+    const applicationCreate: NonprofitCreateApplication = {
       aboutQ1: aboutQ1 !== "" ? aboutQ1 : undefined,
       aboutQ2: aboutQ2 !== "" ? aboutQ2 : undefined,
       aboutQ3: aboutQ3 !== "" ? aboutQ3 : undefined,
@@ -89,7 +89,7 @@ function ApplicationCard({ isRead, projectId, project }: Props) {
     };
 
     try {
-      await createNonprofitApplication(projectId, applicationCreate);
+      await nonprofitCreateApplication(projectId, applicationCreate);
       showInfo("Successfully submitted application.");
     } catch (e) {
       const error = e as Error;

@@ -113,10 +113,6 @@ module.exports = {
       ],
       rules: {
         ...SHARED_RULES,
-        "@typescript-eslint/consistent-type-definitions": [
-          "error",
-          "interface",
-        ],
         "@typescript-eslint/explicit-function-return-type": "off",
         "@typescript-eslint/explicit-module-boundary-types": "off",
         "@typescript-eslint/ban-ts-ignore": "off",

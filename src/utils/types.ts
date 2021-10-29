@@ -148,25 +148,37 @@ export interface InternalResponseData<T> {
   payload?: T;
 }
 
-export type ProjectGet = Pick<Partial<Project>, "status">;
-export type NonprofitProjectCreate = Pick<
+export type NonprofitCreateProject = Pick<
   Required<Project>,
   "chapter" | "name" | "type"
 >;
-export type NonprofitProjectUpdate = Pick<Partial<Project>, "status">;
-export type ChapterProjectUpdate = Pick<
+export type ChapterGetProjects = { status?: ProjectStage };
+export type NonprofitGetProjects = { active?: boolean };
+export type NonprofitUpdateProject = Pick<Partial<Project>, "status">;
+export type ChapterGetProject = { status?: ProjectStage };
+export type ChapterUpdateProject = Pick<
   Partial<Project>,
   "status" | "contact" | "chapter"
 >;
 
-export type NonprofitApplicationCreate = Omit<Application, "_id" | "project">;
+export type NonprofitCreateApplication = Omit<Application, "_id" | "project">;
 
-export type UserUpdate = Pick<Partial<User>, "name" | "image" | "phoneNum">;
+export type NonprofitUpdateUser = Pick<
+  Partial<User>,
+  "name" | "image" | "phoneNum"
+>;
+export type ChapterUpdateUser = Pick<
+  Partial<User>,
+  "name" | "image" | "phoneNum"
+>;
 
-export type ChapterUpdate = Omit<Partial<Chapter>, "_id">;
+export type ChapterUpdateChapter = Omit<Partial<Chapter>, "_id">;
 
-export type NonprofitCreate = Omit<Nonprofit, "_id" | "isVerified">;
-export type NonprofitUpdate = Omit<Partial<Nonprofit>, "_id" | "isVerified">;
+export type NonprofitCreateNonprofit = Omit<Nonprofit, "_id" | "isVerified">;
+export type NonprofitUpdateNonprofit = Omit<
+  Partial<Nonprofit>,
+  "_id" | "isVerified"
+>;
 
 /* Enums */
 
