@@ -3,10 +3,11 @@ import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { chapterGetProject, chapterUpdateProject } from "src/actions/Project";
-import ApplicationCard from "src/components/ApplicationCard";
-import NonprofitInfoCard from "src/components/NonprofitInfoCard";
+import NonprofitInfoCard from "src/components/chapter/application/NonprofitInfoCard";
+import ApplicationCard from "src/components/shared/ApplicationCard";
 import { showError, showInfo } from "src/utils/notifications";
 import { ProjectStage, Project, ChapterUpdateProject } from "src/utils/types";
+import urls from "src/utils/urls";
 
 function ChapterApplicationPage() {
   // TODO: Pass current project's id
@@ -49,7 +50,7 @@ function ChapterApplicationPage() {
     >
       <VStack align="stretch" margin="auto" spacing="30px">
         <Flex justifyContent="space-between" paddingX="10px">
-          <Link href="/chapter/applications" passHref={true}>
+          <Link href={urls.pages.chapter.applications.index} passHref={true}>
             <Button leftIcon={<IoIosArrowRoundBack />} variant="secondary">
               Nonprofit Applications
             </Button>

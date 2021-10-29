@@ -2,6 +2,7 @@ import { Flex, Text, Box, Stack, Link } from "@chakra-ui/react";
 import Image from "next/image";
 import NextLink from "next/link";
 import loginImage from "public/images/login/login_first.svg";
+import urls from "src/utils/urls";
 
 function VerifyEmailPage() {
   return (
@@ -51,7 +52,7 @@ function VerifyEmailPage() {
                 >
                   A sign in link has been sent to your email address.
                 </Text>
-                <NextLink href="/login">
+                <NextLink href={urls.pages.login}>
                   <Link
                     fontFamily="Helvetica, sans-serif"
                     color="primary"

@@ -13,7 +13,7 @@ import {
   nonprofitCreateApplication,
   chapterGetApplication,
 } from "src/actions/Application";
-import QuestionCard from "src/components/QuestionCard";
+import QuestionCard from "src/components/shared/QuestionCard";
 import { showError, showInfo } from "src/utils/notifications";
 import {
   NonprofitCreateApplication,

@@ -16,6 +16,7 @@ import SecondLandingImage from "public/images/landing/landing_second.svg";
 import ThirdLandingImage from "public/images/landing/landing_third.svg";
 import FourthLandingImage from "public/images/small_logo.svg";
 import LandingInfoCard from "src/components/landing/LandingInfoCard";
+import urls from "src/utils/urls";
 
 // TODO: Add Landing Banner (banner image is messed up right now)
 function LandingPage() {
@@ -49,7 +50,7 @@ function LandingPage() {
             into real products. If you have an existing project or a team, we
             are happy to get involved in your development cycle.
           </Text>
-          <NextLink href="/login">
+          <NextLink href={urls.pages.login}>
             <Button variant="primary">Log In</Button>
           </NextLink>
         </VStack>

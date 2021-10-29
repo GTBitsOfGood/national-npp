@@ -15,6 +15,7 @@ import { useRouter } from "next/router";
 import loginImage from "public/images/login/login_first.svg";
 import { useState } from "react";
 import { showError } from "src/utils/notifications";
+import urls from "src/utils/urls";
 
 function LoginPage() {
   const router = useRouter();
@@ -37,7 +38,7 @@ function LoginPage() {
         ? showError(response.error)
         : showError("Failed to sign in.");
     } else {
-      await router.replace("/verify");
+      await router.replace(urls.pages.verify);
     }
   };
 

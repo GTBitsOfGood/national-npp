@@ -1,16 +1,6 @@
-import {
-  Link,
-  HStack,
-  Heading,
-  Button,
-  Box,
-  Grid,
-  Text,
-  Input,
-  Flex,
-} from "@chakra-ui/react";
+import { Heading, Button, Box, Grid, Input, Flex } from "@chakra-ui/react";
 import { useState } from "react";
-import ProjectTypeCard from "src/components/nonprofit/project/create/ProjectTypeCard";
+import ProjectTypeCard from "src/components/nonprofit/projects/create/ProjectTypeCard";
 import { ProjectType } from "src/utils/types";
 
 function NonprofitProjectCreationPage() {
@@ -54,17 +44,6 @@ function NonprofitProjectCreationPage() {
         >
           Start a Project Application
         </Heading>
-        <Heading fontSize={{ base: "lg", md: "x-large" }} marginBottom="20px">
-          Chapter Partner
-        </Heading>
-        <HStack spacing="5" marginBottom="70px">
-          <Text fontSize={{ base: "medium", md: "large" }}>{chapter.name}</Text>
-          <Link href="/chapters">
-            <Text fontSize={{ base: "medium", md: "large" }} color="primary">
-              Change
-            </Text>
-          </Link>
-        </HStack>
         <Heading fontSize={{ base: "lg", md: "x-large" }} marginBottom="20px">
           Select a project type
         </Heading>

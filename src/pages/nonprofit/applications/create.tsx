@@ -1,7 +1,8 @@
 import { Flex, VStack, HStack, Heading, Button } from "@chakra-ui/react";
 import Link from "next/link";
 import { IoIosArrowRoundBack } from "react-icons/io";
-import ApplicationCard from "src/components/ApplicationCard";
+import ApplicationCard from "src/components/shared/ApplicationCard";
+import urls from "src/utils/urls";
 
 function NonprofitApplicationPage() {
   // TODO: Pass current project's id
@@ -15,7 +16,7 @@ function NonprofitApplicationPage() {
     >
       <VStack spacing={8} margin="auto" align="start">
         <HStack spacing="30px">
-          <Link href="/nonprofit/projects" passHref={true}>
+          <Link href={urls.pages.nonprofit.projects.index} passHref={true}>
             <Button leftIcon={<IoIosArrowRoundBack />} variant="secondary">
               My Projects
             </Button>

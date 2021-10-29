@@ -19,6 +19,7 @@ import Image from "next/image";
 import NextLink from "next/link";
 import Logo from "public/images/small_logo.svg";
 import { GiHamburgerMenu } from "react-icons/gi";
+import urls from "src/utils/urls";
 
 function Navigation() {
   // Assume that you know this information, nav bar changes based on this information
@@ -72,7 +73,11 @@ function Navigation() {
                 <MenuDivider />
                 <MenuGroup>
                   <NextLink
-                    href={isChapter ? "/chapter/profile" : "/nonprofit/profile"}
+                    href={
+                      isChapter
+                        ? urls.pages.chapter.profile
+                        : urls.pages.nonprofit.profile
+                    }
                   >
                     <MenuItem>My Profile</MenuItem>
                   </NextLink>
@@ -157,7 +162,11 @@ function Navigation() {
               </MenuButton>
               <MenuList>
                 <NextLink
-                  href={isChapter ? "/chapter/profile" : "/nonprofit/profile"}
+                  href={
+                    isChapter
+                      ? urls.pages.chapter.profile
+                      : urls.pages.nonprofit.profile
+                  }
                 >
                   <MenuItem>My Profile</MenuItem>
                 </NextLink>
@@ -173,7 +182,7 @@ function Navigation() {
             direction={"row"}
             spacing={6}
           >
-            <NextLink href="/login">
+            <NextLink href={urls.pages.login}>
               <Button
                 variant="primary"
                 display="inline-flex"
@@ -199,8 +208,8 @@ interface NavItem {
 
 const NAV_ITEMS_NON_PROFIT: Array<NavItem> = [
   {
-    label: "My Project",
-    href: "/nonprofit/project",
+    label: "Projects",
+    href: urls.pages.nonprofit.projects.index,
   },
   {
     label: "Maintenance",
@@ -211,7 +220,7 @@ const NAV_ITEMS_NON_PROFIT: Array<NavItem> = [
 const NAV_ITEMS_ADMIN: Array<NavItem> = [
   {
     label: "Projects",
-    href: "/chapter/projects",
+    href: urls.pages.chapter.projects.index,
   },
   {
     label: "Maintenance",

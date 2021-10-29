@@ -35,6 +35,7 @@ import {
   Project,
   User,
 } from "src/utils/types";
+import urls from "src/utils/urls";
 
 function NonprofitProjectsPage() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -90,7 +91,7 @@ function NonprofitProjectsPage() {
         <VStack align="stretch" spacing="20px" overflow="auto">
           <Flex justify="space-between" align="center">
             <Heading fontSize="2xl">Projects</Heading>
-            <Link href={"/nonprofit/project/create"}>
+            <Link href={urls.pages.nonprofit.projects.create}>
               <Button variant="secondary" leftIcon={<BsPlus />}>
                 New Project
               </Button>
@@ -238,7 +239,7 @@ function NonprofitProjectsPage() {
           <VStack spacing="20px" margin="auto">
             <Image src={SubmitApplicationImage} />
             <Text>Get started on a new project with Hack4Impact!</Text>
-            <Link href={"/nonprofit/project/create"}>
+            <Link href={urls.pages.nonprofit.projects.create}>
               <Button variant="primary">Start a Project</Button>
             </Link>
           </VStack>
