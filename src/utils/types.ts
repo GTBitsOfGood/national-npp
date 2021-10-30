@@ -1,4 +1,5 @@
 import { Types } from "mongoose";
+import { NextComponentType } from "next";
 import { NextApiRequest } from "next-auth/internals/utils";
 
 /*
@@ -148,6 +149,13 @@ export interface InternalResponseData<T> {
   message?: string;
   payload?: T;
 }
+
+export interface PageAuth {
+  requireSession: boolean;
+  roles?: Array<Role>;
+}
+
+export type AuthComponent = NextComponentType & { auth: PageAuth | undefined };
 
 export type NonprofitCreateProject = Pick<
   Required<Project>,
