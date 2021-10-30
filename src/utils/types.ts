@@ -127,6 +127,7 @@ export enum HttpMethod {
   GET = "GET",
   POST = "POST",
   PATCH = "PATCH",
+  PUT = "PUT",
   DELETE = "DELETE",
 }
 
@@ -236,6 +237,16 @@ export interface ChapterProject {
   started: Date;
   lastUpdated: Date;
   status: string;
+}
+
+export interface UploadFileOptions {
+  nameWithoutExtension?: string;
+  onProgress?: (progressPercent: number) => void;
+}
+
+export interface UploadedFile {
+  blobPath: string; // blobPath is the path to the file in the blob storage container (including the file name)
+  name: string; // name is the name of the file in blob storage
 }
 
 export interface Email {

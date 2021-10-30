@@ -11,6 +11,7 @@ import {
 interface RouteConfig {
   requireSession: boolean;
   roles?: Array<Role>;
+  handleResponse?: boolean; // handleResponse if the route handles setting status code and body
 }
 
 interface Route<T> {
@@ -66,6 +67,10 @@ function APIWrapper(
       }
 
       const data = await handler(req, res);
+
+      if (config?.handleResponse) {
+        return;
+      }
 
       return res.status(200).json({ success: true, payload: data });
     } catch (e) {
