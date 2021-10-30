@@ -6,7 +6,7 @@ const urls = {
   pages: {
     home: "/",
     login: "/login",
-    verify: "/verfiy",
+    verify: "/verify",
     chapter: {
       projects: {
         index: "/chapter/projects",
