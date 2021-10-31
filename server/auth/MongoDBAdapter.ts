@@ -37,7 +37,7 @@ const MongoDBAdapter = () => {
           const newUser = await UserModel.create({
             email,
             emailVerified,
-            name: "",
+            name: "Nonprofit User",
             image: "",
             roles: [Role.NONPROFIT_ADMIN],
           });
