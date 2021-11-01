@@ -40,6 +40,7 @@ const urls = {
     chapters: "/api/chapters",
     nonprofits: "/api/nonprofits",
     users: "/api/users",
+    uploads: "/api/uploads",
     applications: "/api/applications",
   },
 };
