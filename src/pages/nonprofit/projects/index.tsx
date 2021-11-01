@@ -159,11 +159,6 @@ function NonprofitProjectsPage() {
             minHeight="700px"
             width="100%"
             align="stretch"
-            border="1px solid"
-            borderColor="border"
-            backgroundColor="surface"
-            borderRadius="lg"
-            padding="20px"
             margin="20px"
             spacing="20px"
           >
@@ -187,12 +182,16 @@ function NonprofitProjectsPage() {
               direction={{ base: "column", lg: "row" }}
               flex="1"
               align="stretch"
+              border="1px solid"
+              borderColor="border"
+              borderRadius="lg"
+              backgroundColor="surface"
             >
               <VStack
                 flex="1"
                 align="start"
                 spacing="20px"
-                paddingX="20px"
+                padding="40px"
                 minWidth="200px"
               >
                 <Heading fontSize="3xl">{currProject.name}</Heading>

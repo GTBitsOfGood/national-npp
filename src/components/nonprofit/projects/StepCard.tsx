@@ -24,7 +24,7 @@ const StepCard = ({
       bgColor="#0069CA0D"
       padding="20px"
       spacing="25px"
-      borderRadius="lg"
+      borderRadiusRight="lg"
     >
       {actionRequired && (
         <Box color="primary" m="0" bgColor="rgba(0, 105, 202, 0.1)" px="2">

@@ -12,8 +12,7 @@ function ProjectCard({ isSelected, project, onClick }: Props) {
   return (
     <Flex
       width="100%"
-      borderRadius="md"
-      border="1px solid"
+      borderBottom="1px solid"
       borderColor="border"
       padding="20px"
       _hover={
