@@ -73,6 +73,20 @@ export interface Application {
   needsQ5?: string;
 }
 
+export interface Issue {
+  _id: Types.ObjectId;
+  project: Types.ObjectId;
+  type: MaintenanceType;
+  title: string;
+  description: string;
+  status: IssueStatus;
+  images?: Array<string>;
+  reviewer?: Types.ObjectId; // The chapter member assigned to this issue
+  createdAt: Date;
+  updatedAt: Date;
+  finishedAt?: Date;
+}
+
 export interface Address {
   street: string;
   city: string;
@@ -221,6 +235,13 @@ export enum ProjectStage {
   COMPLETED = "Completed",
   CANCELLED = "Cancelled",
   REJECTED = "Rejected",
+}
+
+export enum IssueStatus {
+  PENDING = "Pending",
+  IN_PROGRESS = "In Progress",
+  RESOLVED = "Resolved",
+  CLOSED = "Closed",
 }
 
 export enum Role {

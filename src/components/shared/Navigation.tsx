@@ -169,7 +169,7 @@ const nonprofitNavItems: Array<NavItem> = [
   },
   {
     label: "Maintenance",
-    href: "/",
+    href: urls.pages.nonprofit.issues.index,
   },
 ];
 

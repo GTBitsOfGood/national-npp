@@ -9,6 +9,7 @@ function getBaseURL() {
   }
   return "http://localhost:3000";
 }
+
 const urls = {
   baseUrl: getBaseURL(),
   pages: {
@@ -25,6 +26,10 @@ const urls = {
       profile: "/chapter/profile",
     },
     nonprofit: {
+      issues: {
+        index: "/nonprofit/issues",
+        create: "/nonprofit/issues/create",
+      },
       projects: {
         index: "/nonprofit/projects",
         create: "/nonprofit/projects/create",
@@ -42,6 +47,7 @@ const urls = {
     users: "/api/users",
     uploads: "/api/uploads",
     applications: "/api/applications",
+    issues: "/api/issues",
   },
 };
 
