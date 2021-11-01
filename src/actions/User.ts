@@ -4,8 +4,6 @@ import {
   HttpMethod,
   NonprofitUpdateUser,
   ChapterUpdateUser,
-  UploadFileOptions,
-  UploadedFile,
 } from "src/utils/types";
 import urls from "src/utils/urls";
 
