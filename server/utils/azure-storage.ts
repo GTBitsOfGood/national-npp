@@ -16,7 +16,7 @@ export const blobService = new BlobServiceClient(
     process.env.AZURE_STORAGE_KEY as string
   )
 );
-export const containerSerivce = blobService.getContainerClient(
+export const containerService = blobService.getContainerClient(
   UPLOADS_CONTAINER_NAME
 );
 
@@ -31,5 +31,5 @@ export function validateUserAuthAndGetBlobClient(
   if (blobPathParts[0] != user.id.toString()) {
     throw new Error(`User does not have access to blob ${blobPath}`);
   }
-  return containerSerivce.getBlockBlobClient(blobPath);
+  return containerService.getBlockBlobClient(blobPath);
 }

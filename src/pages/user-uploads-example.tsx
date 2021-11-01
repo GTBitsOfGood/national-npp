@@ -2,9 +2,8 @@ import { Button, Flex, FormControl, VStack, Text } from "@chakra-ui/react";
 import Image from "next/image";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { uploadFile } from "src/actions/User";
 import { UploadedFile } from "src/utils/types";
-import { linkToUploadedFile } from "src/utils/uploaded-files";
+import { uploadFile, linkToUploadedFile } from "src/utils/uploaded-files";
 
 function ExamplePage() {
   const { handleSubmit, register } = useForm<{
