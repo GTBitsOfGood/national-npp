@@ -1,8 +1,16 @@
+function getBaseURL() {
+  // if backend
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`;
+  }
+  // if client-side
+  if (process.env.NEXT_PUBLIC_VERCEL_URL) {
+    return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
+  }
+  return "http://localhost:3000";
+}
 const urls = {
-  baseUrl:
-    process.env.VERCEL_URL != undefined
-      ? `https://${process.env.VERCEL_URL}`
-      : "http://localhost:3000",
+  baseUrl: getBaseURL(),
   pages: {
     home: "/",
     login: "/login",
@@ -32,6 +40,7 @@ const urls = {
     chapters: "/api/chapters",
     nonprofits: "/api/nonprofits",
     users: "/api/users",
+    uploads: "/api/uploads",
     applications: "/api/applications",
   },
 };
