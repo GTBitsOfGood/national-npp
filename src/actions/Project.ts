@@ -8,6 +8,7 @@ import {
   ChapterGetProjects,
   NonprofitGetProjects,
   ChapterGetProject,
+  NonprofitGetProject,
 } from "src/utils/types";
 import urls from "src/utils/urls";
 
@@ -31,6 +32,19 @@ export async function chapterGetProject(
 ) {
   return internalRequest<Project>({
     url: projectAPI + `/${projectId}/chapter`,
+    queryParams: {
+      ...projectGet,
+    },
+    method: HttpMethod.GET,
+  });
+}
+
+export async function nonprofitGetProject(
+  projectId: string,
+  projectGet: NonprofitGetProject
+) {
+  return internalRequest<Project>({
+    url: projectAPI + `/${projectId}/nonprofit`,
     queryParams: {
       ...projectGet,
     },

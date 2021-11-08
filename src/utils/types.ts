@@ -175,7 +175,8 @@ export type NonprofitCreateProject = Pick<Required<Project>, "name" | "type">;
 export type ChapterGetProjects = { status?: ProjectStage };
 export type NonprofitGetProjects = { active?: boolean };
 export type NonprofitUpdateProject = Pick<Partial<Project>, "status">;
-export type ChapterGetProject = { status?: ProjectStage };
+export type ChapterGetProject = Pick<Partial<Project>, "status">;
+export type NonprofitGetProject = Pick<Partial<Project>, "status">;
 export type ChapterUpdateProject = Pick<
   Partial<Project>,
   "status" | "contact" | "chapter"
