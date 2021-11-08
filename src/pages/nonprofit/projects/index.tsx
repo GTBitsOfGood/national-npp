@@ -187,48 +187,62 @@ function NonprofitProjectsPage() {
               borderRadius="lg"
               backgroundColor="surface"
             >
-              <VStack
+              <Flex
                 flex="1"
-                align="start"
-                spacing="20px"
-                padding="40px"
                 minWidth="200px"
+                direction="column"
+                justify="space-between"
+                padding="40px"
+                align="flex-start"
               >
-                <Heading fontSize="3xl">{currProject.name}</Heading>
-                <VStack align="start">
-                  <Text fontWeight="bold">Chapter Partner</Text>
-                  <Text>{projectChapter.name}</Text>
-                </VStack>
+                <VStack align="start" spacing="20px">
+                  <Heading fontSize="3xl" marginBottom="30px">
+                    {currProject.name}
+                  </Heading>
+                  {projectChapter && (
+                    <VStack align="start">
+                      <Text fontWeight="bold">Chapter Partner</Text>
+                      <Text>{projectChapter.name}</Text>
+                    </VStack>
+                  )}
 
-                {projectContact ? (
-                  <VStack align="start">
-                    <Text fontWeight="bold">Chapter Contact</Text>
-                    <Text>{projectContact.name}</Text>
-                    <Text>{projectContact.email}</Text>
-                    <Text>{projectContact.phoneNum}</Text>
-                  </VStack>
-                ) : (
-                  <VStack align="start">
-                    <Text fontWeight="bold">Chapter Contact</Text>
-                    <Text>{chapterContact.name}</Text>
-                    <Text>{chapterContact.email}</Text>
-                    <Text>{chapterContact.phoneNum}</Text>
-                  </VStack>
-                )}
+                  {projectContact && (
+                    <VStack align="start">
+                      <Text fontWeight="bold">Chapter Contact</Text>
+                      <Text>{projectContact.name}</Text>
+                      <Text>{projectContact.email}</Text>
+                      <Text>{projectContact.phoneNum}</Text>
+                    </VStack>
+                  )}
 
-                <VStack align="start">
-                  <Text fontWeight="bold">Project Type</Text>
-                  <Text>{currProject.type}</Text>
+                  {!projectContact && projectChapter && (
+                    <VStack align="start">
+                      <Text fontWeight="bold">Chapter Contact</Text>
+                      <Text>{chapterContact.name}</Text>
+                      <Text>{chapterContact.email}</Text>
+                      <Text>{chapterContact.phoneNum}</Text>
+                    </VStack>
+                  )}
+
+                  <VStack align="start">
+                    <Text fontWeight="bold">Project Type</Text>
+                    <Text>{currProject.type}</Text>
+                  </VStack>
                 </VStack>
                 <Button
                   variant="secondary"
                   color="#657788"
                   onClick={onOpen}
                   padding="0px"
+                  _focus={{
+                    boxShadow: "none",
+                  }}
+                  marginTop="20px"
                 >
                   Cancel Project
                 </Button>
-              </VStack>
+              </Flex>
+
               <Flex flex="2">
                 <StepCard {...getStepCardData(currProject?.status)} />
               </Flex>
