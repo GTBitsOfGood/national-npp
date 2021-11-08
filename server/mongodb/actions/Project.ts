@@ -92,6 +92,14 @@ export async function chapterGetProject(
   return project;
 }
 
+export async function nonprofitGetProject(projectId: Types.ObjectId) {
+  await dbConnect();
+
+  const project = await ProjectModel.findById(projectId);
+
+  return project;
+}
+
 export async function nonprofitGetProjects(
   nonprofitId: Types.ObjectId,
   projectsGet: NonprofitGetProjects

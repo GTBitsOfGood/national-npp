@@ -1,13 +1,14 @@
 import { internalRequest } from "src/utils/requests";
 import {
+  ChapterGetProject,
+  ChapterGetProjects,
   ChapterUpdateProject,
   HttpMethod,
+  Issue,
+  NonprofitCreateProject,
+  NonprofitGetProjects,
   NonprofitUpdateProject,
   Project,
-  NonprofitCreateProject,
-  ChapterGetProjects,
-  NonprofitGetProjects,
-  ChapterGetProject,
 } from "src/utils/types";
 import urls from "src/utils/urls";
 
@@ -54,6 +55,13 @@ export async function nonprofitGetProjects(projectsGet: NonprofitGetProjects) {
     queryParams: {
       ...projectsGet,
     },
+    method: HttpMethod.GET,
+  });
+}
+
+export async function nonprofitGetIssues(projectId: string) {
+  return internalRequest<Issue[]>({
+    url: projectAPI + `/${projectId}/issues/nonprofit`,
     method: HttpMethod.GET,
   });
 }

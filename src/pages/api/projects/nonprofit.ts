@@ -3,6 +3,7 @@ import {
   nonprofitGetProjects,
 } from "server/mongodb/actions/Project";
 import APIWrapper from "server/utils/APIWrapper";
+import { tryToParseBoolean } from "server/utils/request-validation";
 import {
   NonprofitCreateProject,
   NonprofitGetProjects,
@@ -22,7 +23,9 @@ export default APIWrapper({
         throw new Error("User does not belong to a nonprofit.");
       }
 
-      const projectsGet = { ...req.query } as NonprofitGetProjects;
+      const projectsGet = {
+        active: tryToParseBoolean(req.query.active),
+      } as NonprofitGetProjects;
 
       const projects = await nonprofitGetProjects(nonprofitId, projectsGet);
 
