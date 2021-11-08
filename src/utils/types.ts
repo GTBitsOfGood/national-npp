@@ -49,7 +49,7 @@ export interface Nonprofit {
 
 export interface Project {
   _id: Types.ObjectId;
-  chapter: Chapter | Types.ObjectId;
+  chapter?: Chapter | Types.ObjectId;
   nonprofit: Nonprofit | Types.ObjectId;
   name: string;
   status: ProjectStage;
@@ -171,10 +171,7 @@ export interface PageAuth {
 
 export type AuthComponent = NextComponentType & { auth: PageAuth | undefined };
 
-export type NonprofitCreateProject = Pick<
-  Required<Project>,
-  "chapter" | "name" | "type"
->;
+export type NonprofitCreateProject = Pick<Required<Project>, "name" | "type">;
 export type ChapterGetProjects = { status?: ProjectStage };
 export type NonprofitGetProjects = { active?: boolean };
 export type NonprofitUpdateProject = Pick<Partial<Project>, "status">;
