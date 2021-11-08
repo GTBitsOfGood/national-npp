@@ -1,10 +1,10 @@
-import { Progress } from "@chakra-ui/react";
 import { useSession } from "next-auth/client";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { showError } from "src/utils/notifications";
 import { PageAuth } from "src/utils/types";
 import urls from "src/utils/urls";
+import LoadingIndicator from "./LoadingIndicator";
 
 interface Props {
   pageAuth: PageAuth | undefined;
@@ -32,9 +32,7 @@ function Auth({ pageAuth, children }: Props) {
   }, [pageAuth, user, isLoading, router]);
 
   if (pageAuth && pageAuth.requireSession && isLoading) {
-    return (
-      <Progress size="xs" width="100%" colorScheme="blue" isIndeterminate />
-    );
+    return <LoadingIndicator />;
   }
 
   return <>{children}</>;
