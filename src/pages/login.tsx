@@ -80,7 +80,7 @@ function LoginPage() {
         >
           <Stack direction={{ base: "column", md: "row" }} spacing="0px">
             <Flex
-              flex={1}
+              flex="1"
               display={{ base: "none", md: "flex" }}
               bgColor="#e6f0fa"
               width="100%"
