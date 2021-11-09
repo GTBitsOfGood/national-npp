@@ -11,10 +11,12 @@ import {
   Select,
   Button,
   Textarea,
+  AvatarBadge,
 } from "@chakra-ui/react";
 import { Types } from "mongoose";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { MdEdit } from "react-icons/md";
 import { nonprofitUpdateNonprofit } from "src/actions/Nonprofit";
 import {
   nonprofitGetUser,
@@ -29,7 +31,9 @@ import {
   NonprofitUpdateNonprofit,
   NonprofitUpdateUser,
   User,
+  // UploadedFile,
 } from "src/utils/types";
+// import { uploadFile, linkToUploadedFile } from "src/utils/uploaded-files";
 import {
   maxInput,
   maxTextArea,
@@ -59,6 +63,19 @@ function NonprofitProfilePage() {
     reset,
   } = useForm<FormData>();
 
+  // const [images, setImages] = useState<UploadedFile[]>([]);
+
+  // const uploadProfileImage = async ({ image }: { image: FileList }) => {
+  //   console.log("hi");
+  //   const result = await uploadFile(image[0], {
+  //     onProgress(percent) {
+  //       console.log(`percent: ${percent}`);
+  //     },
+  //   });
+  //   console.log(`file name: ${result.name}`);
+  //   setImages([...images, result]);
+  // };
+
   const [contactList, setContactList] = useState<Contact[]>([]);
 
   useEffect(() => {
@@ -79,6 +96,7 @@ function NonprofitProfilePage() {
 
       reset({
         name: user.name,
+        // image: user.image,
         phoneNumber: user.phoneNum ?? "",
         nonprofitName: nonprofit.name,
         contact: nonprofit.contact.toString(),
@@ -101,6 +119,7 @@ function NonprofitProfilePage() {
   const submitData = async (data: FormData) => {
     const userUpdate: NonprofitUpdateUser = {
       name: data.name,
+      // image: data.image,
       phoneNum: data.phoneNumber,
     };
 
@@ -152,7 +171,28 @@ function NonprofitProfilePage() {
               spacing={10}
               align="stretch"
             >
-              <Avatar alignSelf="center" width="80px" height="80px" />
+              {/* <FirstNameWatched control={control} /> */}
+              <FormLabel
+                htmlFor="image"
+                style={{
+                  alignSelf: "center",
+                  borderRadius: "50%",
+                  cursor: "pointer",
+                }}
+              >
+                <Avatar style={{ width: "100px", height: "100px" }}>
+                  <AvatarBadge boxSize="1.8em" backgroundColor="#0069CA">
+                    <MdEdit color="white" />
+                  </AvatarBadge>
+                </Avatar>
+              </FormLabel>
+              <Input
+                type="file"
+                id="image"
+                accept="image/*"
+                style={{ display: "none" }}
+                {...register("image")}
+              />
               <VStack align="start" spacing={5}>
                 <Text alignSelf="flex-start" fontSize="lg" fontWeight={700}>
                   User Information
