@@ -14,7 +14,13 @@ import {
 import { useEffect, useState } from "react";
 import { chapterGetProjects } from "src/actions/Project";
 import { showError } from "src/utils/notifications";
-import { User, Nonprofit, Project, ProjectStage } from "src/utils/types";
+import {
+  User,
+  Nonprofit,
+  Project,
+  ProjectStage,
+  SortingOption,
+} from "src/utils/types";
 
 function ChapterApplicationsPage() {
   const [projects, setProjects] = useState<Project[]>();
@@ -22,7 +28,7 @@ function ChapterApplicationsPage() {
   useEffect(() => {
     async function loadProjects() {
       const newProjects: Project[] = await chapterGetProjects({
-        status: ProjectStage.APPLICATION_REVIEW,
+        filterStatus: ProjectStage.APPLICATION_REVIEW,
       });
 
       setProjects(newProjects);

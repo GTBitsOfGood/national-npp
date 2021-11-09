@@ -39,10 +39,74 @@ export async function chapterGetProjects(
 ) {
   await dbConnect();
 
-  const status = projectsGet.status;
+  const filterStatus = projectsGet.filterStatus;
 
-  if (status === ProjectStage.APPLICATION_REVIEW) {
-    const projects = await ProjectModel.find({ status }).populate({
+  const filter: FilterQuery<Project> = {
+    chapter: chapterId,
+  };
+
+  if (filterStatus != undefined) {
+    if (filterStatus === ProjectStage.APPLICATION_REVIEW) {
+      filter["status"] = ProjectStage.APPLICATION_REVIEW;
+    } else if (filterStatus === DisplayableProjectStage.APPLICATION) {
+      filter["status"] = {
+        $in: displayableProjectStageToProjectStages(
+          DisplayableProjectStage.APPLICATION
+        ),
+      };
+    } else if (filterStatus === DisplayableProjectStage.COMPLETE) {
+      filter["status"] = {
+        $in: displayableProjectStageToProjectStages(
+          DisplayableProjectStage.COMPLETE
+        ),
+      };
+    }
+  } else if (filterStatus === DisplayableProjectStage.INTERVIEW) {
+    filter["status"] = {
+      $in: displayableProjectStageToProjectStages(
+        DisplayableProjectStage.INTERVIEW
+      ),
+    };
+  } else if (filterStatus === DisplayableProjectStage.IN_PROGRESS) {
+    filter["status"] = {
+      $in: displayableProjectStageToProjectStages(
+        DisplayableProjectStage.IN_PROGRESS
+      ),
+    };
+  }
+
+  const sorter: { [key: string]: string } = {};
+
+  const createdAt = projectsGet.sortCreatedAt;
+  if (createdAt != undefined) {
+    if (createdAt == SortingOption.ASCENDING) {
+      sorter["createdAt"] = SortingOption.ASCENDING;
+    } else if (createdAt == SortingOption.DESCENDING) {
+      sorter["createdAt"] = SortingOption.DESCENDING;
+    }
+  }
+
+  const updatedAt = projectsGet.sortUpdatedAt;
+  if (updatedAt != undefined) {
+    if (updatedAt == SortingOption.ASCENDING) {
+      sorter["updatedAt"] = SortingOption.ASCENDING;
+    } else if (updatedAt == SortingOption.DESCENDING) {
+      sorter["updatedAt"] = SortingOption.DESCENDING;
+    }
+  }
+
+  const sortStatus = projectsGet.sortStatus;
+  if (sortStatus != undefined) {
+    if (sortStatus == SortingOption.ASCENDING) {
+      sorter["status"] = SortingOption.ASCENDING;
+    } else if (sortStatus == SortingOption.DESCENDING) {
+      sorter["status"] = SortingOption.DESCENDING;
+    }
+  }
+
+  const projects = await ProjectModel.find(filter)
+    .sort(sorter)
+    .populate({
       path: "nonprofit",
       model: NonprofitModel,
       populate: {
@@ -50,13 +114,6 @@ export async function chapterGetProjects(
         model: UserModel,
       },
     });
-
-    return projects;
-  }
-
-  const projects = await ProjectModel.find({
-    chapter: chapterId,
-  });
 
   return projects;
 }
@@ -137,9 +194,38 @@ export async function nonprofitGetProjects(
         };
   }
 
-  const sorter: NonprofitGetProjects = {};
+  const filterStatus = projectsGet.filterStatus;
+  if (filterStatus != undefined) {
+    if (filterStatus === DisplayableProjectStage.APPLICATION) {
+      filter["status"] = {
+        $in: displayableProjectStageToProjectStages(
+          DisplayableProjectStage.APPLICATION
+        ),
+      };
+    } else if (filterStatus === DisplayableProjectStage.COMPLETE) {
+      filter["status"] = {
+        $in: displayableProjectStageToProjectStages(
+          DisplayableProjectStage.COMPLETE
+        ),
+      };
+    }
+  } else if (filterStatus === DisplayableProjectStage.INTERVIEW) {
+    filter["status"] = {
+      $in: displayableProjectStageToProjectStages(
+        DisplayableProjectStage.INTERVIEW
+      ),
+    };
+  } else if (filterStatus === DisplayableProjectStage.IN_PROGRESS) {
+    filter["status"] = {
+      $in: displayableProjectStageToProjectStages(
+        DisplayableProjectStage.IN_PROGRESS
+      ),
+    };
+  }
 
-  const createdAt = projectsGet.createdAt;
+  const sorter: { [key: string]: string } = {};
+
+  const createdAt = projectsGet.sortCreatedAt;
   if (createdAt != undefined) {
     if (createdAt == SortingOption.ASCENDING) {
       sorter["createdAt"] = SortingOption.ASCENDING;
@@ -148,7 +234,7 @@ export async function nonprofitGetProjects(
     }
   }
 
-  const updatedAt = projectsGet.updatedAt;
+  const updatedAt = projectsGet.sortUpdatedAt;
   if (updatedAt != undefined) {
     if (updatedAt == SortingOption.ASCENDING) {
       sorter["updatedAt"] = SortingOption.ASCENDING;
@@ -157,11 +243,11 @@ export async function nonprofitGetProjects(
     }
   }
 
-  const status = projectsGet.status;
-  if (status != undefined) {
-    if (status == SortingOption.ASCENDING) {
+  const sortStatus = projectsGet.sortStatus;
+  if (sortStatus != undefined) {
+    if (sortStatus == SortingOption.ASCENDING) {
       sorter["status"] = SortingOption.ASCENDING;
-    } else if (status == SortingOption.DESCENDING) {
+    } else if (sortStatus == SortingOption.DESCENDING) {
       sorter["status"] = SortingOption.DESCENDING;
     }
   }

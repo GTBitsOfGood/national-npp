@@ -52,7 +52,7 @@ function NonprofitProjectsPage() {
     async function fetchProjects() {
       const projects: Project[] = await nonprofitGetProjects({
         active: active,
-        createdAt: SortingOption.ASCENDING,
+        sortCreatedAt: SortingOption.ASCENDING,
       });
 
       if (projects.length !== 0 && active) {
