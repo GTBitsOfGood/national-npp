@@ -249,6 +249,10 @@ export enum Role {
   NONPROFIT_ADMIN = "Nonprofit Admin",
 }
 
+export enum StepCardEvent {
+  APPLICATION_FORM,
+}
+
 export interface Contact {
   id: string;
   name: string;
