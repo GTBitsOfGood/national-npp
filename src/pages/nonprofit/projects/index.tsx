@@ -34,6 +34,7 @@ import {
   DisplayableProjectStage,
   Project,
   User,
+  SortingOption,
 } from "src/utils/types";
 import urls from "src/utils/urls";
 
@@ -50,7 +51,8 @@ function NonprofitProjectsPage() {
   useEffect(() => {
     async function fetchProjects() {
       const projects: Project[] = await nonprofitGetProjects({
-        active,
+        active: active,
+        createdAt: SortingOption.ASCENDING,
       });
 
       if (projects.length !== 0 && active) {

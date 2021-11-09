@@ -146,6 +146,11 @@ export enum HttpMethod {
   DELETE = "DELETE",
 }
 
+export enum SortingOption {
+  ASCENDING = "ascending",
+  DESCENDING = "descending",
+}
+
 export interface InternalRequest extends NextApiRequest {
   user: SessionUser;
   body: { [key: string]: unknown };
@@ -173,7 +178,12 @@ export type AuthComponent = NextComponentType & { auth: PageAuth | undefined };
 
 export type NonprofitCreateProject = Pick<Required<Project>, "name" | "type">;
 export type ChapterGetProjects = { status?: ProjectStage };
-export type NonprofitGetProjects = { active?: boolean };
+export type NonprofitGetProjects = {
+  active?: boolean;
+  createdAt?: SortingOption;
+  updatedAt?: SortingOption;
+  status?: SortingOption;
+};
 export type NonprofitUpdateProject = Pick<Partial<Project>, "status">;
 export type ChapterGetProject = Pick<Partial<Project>, "status">;
 export type NonprofitGetProject = Pick<Partial<Project>, "status">;

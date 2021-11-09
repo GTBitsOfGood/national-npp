@@ -1,3 +1,4 @@
+import { SortOptionObject, SortValues } from "mongodb";
 import { FilterQuery, Types } from "mongoose";
 import ChapterModel from "server/mongodb/models/Chapter";
 import NonprofitModel from "server/mongodb/models/Nonprofit";
@@ -16,6 +17,7 @@ import {
   NonprofitGetProjects,
   ChapterGetProject,
   NonprofitGetProject,
+  SortingOption,
 } from "src/utils/types";
 
 export async function nonprofitCreateProject(
@@ -136,14 +138,33 @@ export async function nonprofitGetProjects(
         };
   }
 
-  const projects = await ProjectModel.find(filter).populate({
-    path: "chapter",
-    model: ChapterModel,
-    populate: {
-      path: "contact",
-      model: UserModel,
-    },
-  });
+  const sorter: NonprofitGetProjects = {};
+
+  const createdAt = projectsGet.createdAt;
+  if (createdAt != undefined) {
+    sorter["createdAt"] = createdAt;
+  }
+
+  const updatedAt = projectsGet.updatedAt;
+  if (updatedAt != undefined) {
+    sorter["updatedAt"] = updatedAt;
+  }
+
+  const status = projectsGet.status;
+  if (status != undefined) {
+    sorter["status"] = status;
+  }
+
+  const projects = await ProjectModel.find(filter)
+    .sort(sorter)
+    .populate({
+      path: "chapter",
+      model: ChapterModel,
+      populate: {
+        path: "contact",
+        model: UserModel,
+      },
+    });
 
   return projects;
 }
