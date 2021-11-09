@@ -1,4 +1,3 @@
-import { SortOptionObject, SortValues } from "mongodb";
 import { FilterQuery, Types } from "mongoose";
 import ChapterModel from "server/mongodb/models/Chapter";
 import NonprofitModel from "server/mongodb/models/Nonprofit";
@@ -142,17 +141,29 @@ export async function nonprofitGetProjects(
 
   const createdAt = projectsGet.createdAt;
   if (createdAt != undefined) {
-    sorter["createdAt"] = createdAt;
+    if (createdAt == SortingOption.ASCENDING) {
+      sorter["createdAt"] = SortingOption.ASCENDING;
+    } else if (createdAt == SortingOption.DESCENDING) {
+      sorter["createdAt"] = SortingOption.DESCENDING;
+    }
   }
 
   const updatedAt = projectsGet.updatedAt;
   if (updatedAt != undefined) {
-    sorter["updatedAt"] = updatedAt;
+    if (updatedAt == SortingOption.ASCENDING) {
+      sorter["updatedAt"] = SortingOption.ASCENDING;
+    } else if (updatedAt == SortingOption.DESCENDING) {
+      sorter["updatedAt"] = SortingOption.DESCENDING;
+    }
   }
 
   const status = projectsGet.status;
   if (status != undefined) {
-    sorter["status"] = status;
+    if (status == SortingOption.ASCENDING) {
+      sorter["status"] = SortingOption.ASCENDING;
+    } else if (status == SortingOption.DESCENDING) {
+      sorter["status"] = SortingOption.DESCENDING;
+    }
   }
 
   const projects = await ProjectModel.find(filter)
