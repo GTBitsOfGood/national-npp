@@ -3,17 +3,92 @@ import { Heading, Stack, Text, VStack, Link } from "@chakra-ui/layout";
 import { Radio, RadioGroup } from "@chakra-ui/radio";
 import { Flex } from "@chakra-ui/react";
 import { Textarea } from "@chakra-ui/textarea";
+import router from "next/router";
+import { useEffect, useState } from "react";
 import { HiOutlineChevronLeft } from "react-icons/hi";
+import { nonprofitCreateIssue } from "src/actions/Issue";
+import { nonprofitGetProject } from "src/actions/Project";
+import { showError, showInfo } from "src/utils/notifications";
+import {
+  IssueStatus,
+  MaintenanceType,
+  NonprofitCreateIssue,
+  Project,
+  ProjectStage,
+} from "src/utils/types";
 import urls from "src/utils/urls";
 
 function NonprofitIssueCreationPage() {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [issueType, setIssueType] = useState<MaintenanceType>();
+  const [screenshots, setScreenshots] = useState([]); // NOT FINISHED
+  const [project, setProject] = useState<Project>();
+  const [chapterIssueTypes, setChapterIssueTypes] = useState([]); // NOT FINISHED
+
+  useEffect(() => {
+    const projectId = ""; // How do I go about getting this?
+    async function getProject() {
+      const project = await nonprofitGetProject(projectId, {
+        status: ProjectStage.MAINTENANCE,
+      });
+
+      if (!project) {
+        showError("Project does not exist.");
+        return;
+      }
+
+      setProject(project);
+    }
+
+    // async function getChapter() {}
+
+    // getProject();
+  }, []);
+
+  const submitForm = async () => {
+    const projectId = ""; // How do I go about getting this?
+
+    if (!projectId) {
+      showError("Project does not exist.");
+      return;
+    }
+
+    if (title.length === 0) {
+      showError("Please enter a title for your issue.");
+      return;
+    }
+
+    if (description.length === 0) {
+      showError("Please enter a description for your issue.");
+      return;
+    }
+
+    const issueCreate: NonprofitCreateIssue = {
+      type: issueType as MaintenanceType,
+      title: title,
+      description: description,
+      status: IssueStatus.IN_PROGRESS,
+      images: screenshots,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    try {
+      await nonprofitCreateIssue(projectId, issueCreate);
+      showInfo("Successfully created issue.");
+    } catch (e) {
+      const error = e as Error;
+      showError(error.message);
+    }
+    console.log(issueCreate);
+  };
   return (
     <Flex height="100%" width="100%">
       <Flex flexBasis="1000px" margin="auto">
         <VStack spacing={10} marginY={50}>
           <Link
             alignSelf="flex-start"
-            href={urls.pages.nonprofit.issues}
+            href={urls.pages.nonprofit.issues.index}
             passHref={true}
           >
             <Button
@@ -53,10 +128,18 @@ function NonprofitIssueCreationPage() {
               </Stack>
             </RadioGroup>
             <Text fontSize="md">Title</Text>
-            <Textarea placeholder="Enter a short title to describe the issue" />
+            <Textarea
+              value={title}
+              placeholder="Enter a short title to describe the issue"
+              onChange={(e) => setTitle(e.target.value)}
+            />
 
             <Text fontSize="md">Description</Text>
-            <Textarea placeholder="Enter a brief description of the issue with your software. We will do our best to replicate it on our end, and then reach out if we have any questions or have suggestions for how to fix it on your end." />
+            <Textarea
+              value={description}
+              placeholder="Enter a brief description of the issue with your software. We will do our best to replicate it on our end, and then reach out if we have any questions or have suggestions for how to fix it on your end."
+              onChange={(e) => setDescription(e.target.value)}
+            />
 
             <Text fontSize="md">Screenshots (Optional)</Text>
             <Button alignSelf="start" colorScheme="blue" variant="outline">
@@ -77,7 +160,7 @@ function NonprofitIssueCreationPage() {
                 </Link>
               </Text>
             </Stack>
-            <Button alignSelf="end" colorScheme="blue">
+            <Button alignSelf="end" colorScheme="blue" onClick={submitForm}>
               Submit Form
             </Button>
           </VStack>
