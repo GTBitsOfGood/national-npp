@@ -12,14 +12,38 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { HiOutlineChevronLeft } from "react-icons/hi";
+import { nonprofitGetIssue } from "src/actions/Issue";
 import { dateToMMDDYYYY } from "src/utils/dates";
-import { IssueStatus, MaintenanceType } from "src/utils/types";
+import { showError } from "src/utils/notifications";
+import { Issue, IssueStatus, MaintenanceType } from "src/utils/types";
 import urls from "src/utils/urls";
 //import { linkToUploadedFile } from "src/utils/uploaded-files";
 
 function NonprofitIssueViewPage() {
+  const [issueGlobal, setIssue] = useState<Issue>(); // IN PROGRESS
+
+  useEffect(() => {
+    const projectId = "617ea71c069ce109e2ae9f83";
+    const issueId = "618a36ddf227e8d6284b37eb";
+
+    async function getIssue() {
+      const dbIssue = await nonprofitGetIssue(issueId, projectId);
+
+      if (!dbIssue) {
+        showError("Issue does not exist!");
+        return;
+      }
+
+      setIssue(dbIssue);
+    }
+
+    getIssue().catch((error) => {
+      showError(error);
+    });
+  }, []);
+
   const userExample = {
     name: "First Last",
     email: "example@gmail.com",
