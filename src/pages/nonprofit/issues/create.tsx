@@ -27,7 +27,7 @@ function NonprofitIssueCreationPage() {
   const [chapterIssueTypes, setChapterIssueTypes] = useState([]); // NOT FINISHED
 
   useEffect(() => {
-    const projectId = ""; // How do I go about getting this?
+    const projectId = "617ea71c069ce109e2ae9f83"; // How do I go about getting this?
     async function getProject() {
       const project = await nonprofitGetProject(projectId, {
         status: ProjectStage.MAINTENANCE,
