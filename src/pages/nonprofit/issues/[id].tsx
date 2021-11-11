@@ -23,7 +23,6 @@ import urls from "src/utils/urls";
 
 function NonprofitIssueViewPage() {
   const [issueGlobal, setIssue] = useState<Issue>(); // IN PROGRESS
-
   useEffect(() => {
     const projectId = "617ea71c069ce109e2ae9f83";
     const issueId = "618a36ddf227e8d6284b37eb";
@@ -60,7 +59,7 @@ function NonprofitIssueViewPage() {
   const issue = {
     _id: "00000",
     title: "Issue Name",
-    status: IssueStatus.CLOSED,
+    status: IssueStatus.PENDING,
     createdAt: new Date(),
     updatedAt: new Date(),
     finishedAt: new Date(),
@@ -107,41 +106,28 @@ function NonprofitIssueViewPage() {
           //spacing={10}
         >
           <HStack spacing={2}>
-            {issue.status == IssueStatus.CLOSED && (
-              <Text
-                fontSize="sm"
-                fontWeight="bold"
-                padding="5px 10px"
-                color="#79c099"
-                bgColor="#ecf6f0"
-                borderRadius="md"
-              >
-                Complete
-              </Text>
-            )}
-            {issue.status == IssueStatus.PENDING && (
-              <Text
-                fontSize="sm"
-                fontWeight="bold"
-                padding="5px 10px"
-                color="#cf7f21"
-                bgColor="#f0eae3"
-                borderRadius="md"
-              >
-                {issue.status}
-              </Text>
-            )}
-            {issue.status == IssueStatus.CLOSED && (
-              <Text fontSize="sm" color="#657788">
-                Issued {dateToMMDDYYYY(issue.createdAt)}, Closed{" "}
-                {dateToMMDDYYYY(issue.finishedAt)}
-              </Text>
-            )}
-            {issue.status == IssueStatus.PENDING && (
+            <Text
+              fontSize="sm"
+              fontWeight="bold"
+              padding="5px 10px"
+              color={issue.status == IssueStatus.CLOSED ? "#79c099" : "#cf7f21"}
+              bgColor={
+                issue.status == IssueStatus.CLOSED ? "#ecf6f0" : "#f0eae3"
+              }
+              borderRadius="md"
+            >
+              {issue.status == IssueStatus.CLOSED ? "Complete" : "Pending"}
+            </Text>
+            <HStack spacing={1}>
               <Text fontSize="sm" color="#657788">
                 Issued {dateToMMDDYYYY(issue.createdAt)}
               </Text>
-            )}
+              {issue.status == IssueStatus.CLOSED && (
+                <Text fontSize="sm" color="#657788">
+                  , Closed {dateToMMDDYYYY(issue.finishedAt)}
+                </Text>
+              )}
+            </HStack>
           </HStack>
           {issue.status == IssueStatus.PENDING && (
             <Link href={urls.pages.nonprofit.issues.index} passHref={true}>
