@@ -8,6 +8,7 @@ import {
   Input,
   Button,
 } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import {
   nonprofitCreateApplication,
@@ -20,16 +21,20 @@ import {
   Nonprofit,
   Project,
 } from "src/utils/types";
+import urls from "src/utils/urls";
+import { einPattern } from "src/utils/validation";
 
 interface Props {
   isRead: boolean;
-  projectId: string;
-  project?: Project;
+  project: Project;
 }
 
-function ApplicationCard({ isRead, projectId, project }: Props) {
+function ApplicationCard({ isRead, project }: Props) {
+  const router = useRouter();
+
   const [projectName, setProjectName] = useState("");
   const [isVerified, setIsVerified] = useState(false);
+  const [isSaving, setSaving] = useState(false);
 
   const [ein, setEin] = useState("");
   const [aboutQ1, setAboutQ1] = useState("");
@@ -43,35 +48,33 @@ function ApplicationCard({ isRead, projectId, project }: Props) {
   const [needsQ5, setNeedsQ5] = useState("");
 
   useEffect(() => {
-    async function preloadFields() {
-      if (isRead && project) {
-        const nonprofit = project.nonprofit as Nonprofit;
+    async function getApplication() {
+      const application = await chapterGetApplication(project._id.toString());
 
-        const application = await chapterGetApplication(projectId);
-
-        setProjectName(project.name);
-        setIsVerified(nonprofit.isVerified);
-
-        setAboutQ1(application.aboutQ1 ?? "");
-        setAboutQ2(application.aboutQ2 ?? "");
-        setAboutQ3(application.aboutQ3 ?? "");
-        setAboutQ4(application.aboutQ4 ?? "");
-        setNeedsQ1(application.needsQ1 ?? "");
-        setNeedsQ2(application.needsQ2 ?? "");
-        setNeedsQ3(application.needsQ3 ?? "");
-        setNeedsQ4(application.needsQ4 ?? "");
-        setNeedsQ5(application.needsQ5 ?? "");
-      }
+      setAboutQ1(application.aboutQ1 ?? "");
+      setAboutQ2(application.aboutQ2 ?? "");
+      setAboutQ3(application.aboutQ3 ?? "");
+      setAboutQ4(application.aboutQ4 ?? "");
+      setNeedsQ1(application.needsQ1 ?? "");
+      setNeedsQ2(application.needsQ2 ?? "");
+      setNeedsQ3(application.needsQ3 ?? "");
+      setNeedsQ4(application.needsQ4 ?? "");
+      setNeedsQ5(application.needsQ5 ?? "");
     }
 
-    preloadFields().catch((error: Error) => {
-      showError(error.message);
-    });
-  }, [isRead, projectId, project]);
+    const nonprofit = project.nonprofit as Nonprofit;
+    setProjectName(project.name);
+    setIsVerified(nonprofit.isVerified);
+
+    if (isRead) {
+      getApplication().catch((error: Error) => {
+        showError(error.message);
+      });
+    }
+  }, [isRead, project]);
 
   const handleSubmit = async () => {
-    const einRegex = /^[0-9]{2}-[0-9]{7}$/;
-    if (!einRegex.test(ein)) {
+    if (!isVerified && !einPattern.test(ein)) {
       showError("EIN format is invalid.");
       return;
     }
@@ -88,13 +91,22 @@ function ApplicationCard({ isRead, projectId, project }: Props) {
       needsQ5: needsQ5 !== "" ? needsQ5 : undefined,
     };
 
+    setSaving(true);
+
     try {
-      await nonprofitCreateApplication(projectId, applicationCreate);
+      await nonprofitCreateApplication(
+        project._id.toString(),
+        applicationCreate
+      );
+
       showInfo("Successfully submitted application.");
+      await router.replace(urls.pages.nonprofit.projects.index);
     } catch (e) {
       const error = e as Error;
       showError(error.message);
     }
+
+    setSaving(false);
   };
 
   return (
@@ -126,8 +138,8 @@ function ApplicationCard({ isRead, projectId, project }: Props) {
             </Text>
             <FormControl>
               <VStack align="flex-start" spacing={4}>
-                <FormHelperText fontSize="sm">
-                  Enter your EIN so we can verify you as a nonprofit.
+                <FormHelperText fontSize="sm" color="primaryText">
+                  Please enter your EIN so we can verify your nonprofit.
                 </FormHelperText>
                 <Input
                   id="EIN"
@@ -260,6 +272,7 @@ function ApplicationCard({ isRead, projectId, project }: Props) {
             size="md"
             fontSize="md"
             onClick={handleSubmit}
+            isLoading={isSaving}
           >
             Submit Form
           </Button>

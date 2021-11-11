@@ -61,11 +61,7 @@ function ChapterApplicationPage() {
         </Flex>
         <HStack align="start">
           {project && <NonprofitInfoCard project={project} />}
-          <ApplicationCard
-            isRead={true}
-            projectId={projectId}
-            project={project}
-          />
+          {project && <ApplicationCard isRead={true} project={project} />}
         </HStack>
       </VStack>
     </Flex>

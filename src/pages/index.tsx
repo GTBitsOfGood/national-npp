@@ -1,6 +1,7 @@
 import {
   Text,
   Box,
+  Flex,
   Heading,
   Button,
   VStack,
@@ -18,32 +19,34 @@ import FourthLandingImage from "public/images/small_logo.svg";
 import LandingInfoCard from "src/components/landing/LandingInfoCard";
 import urls from "src/utils/urls";
 
-// TODO: Add Landing Banner (banner image is messed up right now)
 function LandingPage() {
   return (
-    <VStack
-      h="100%"
-      p={{ base: 10, md: 0 }}
-      spacing={5}
+    <Flex
+      direction="column"
+      justify="space-between"
+      height="100%"
+      width="100%"
       backgroundColor="surface"
       overflow="auto"
     >
       <Stack
+        backgroundColor="#E6F7FF"
         justifyContent="center"
         alignItems="center"
         direction={{ base: "column-reverse", md: "row" }}
-        minH={500}
+        padding="80px 40px"
       >
         <VStack
-          maxW={{ base: "full", md: "30%" }}
-          spacing={5}
+          maxW={{ base: "100%", md: "30%" }}
+          spacing="20px"
           align="flex-start"
-          mr={{ base: 0, md: 20 }}
+          mr={{ base: "0px", md: "60px" }}
+          mt={{ base: "20px", md: "0px" }}
         >
           <Heading
             fontSize={{ base: "x-large", md: "xx-large", lg: "xxx-large" }}
           >
-            Non-profit Portal
+            Nonprofit Portal
           </Heading>
           <Text fontSize="medium">
             We build software, websites, and mobile apps to turn your ideas into
@@ -54,14 +57,16 @@ function LandingPage() {
             <Button variant="primary">Log In</Button>
           </NextLink>
         </VStack>
-        <Image
-          src={FirstLandingImage}
-          alt="Building software"
-          width={350}
-          height={350}
-        />
+        <Box>
+          <Image
+            src={FirstLandingImage}
+            alt="Building software"
+            width={380}
+            height={380}
+          />
+        </Box>
       </Stack>
-      <Box align="flex-start" maxW={{ base: "full", md: "80%" }}>
+      <VStack align="center" marginX="auto" padding="60px 40px" spacing="20px">
         <LandingInfoCard
           title="Start a New Project with us"
           description="Have a great idea for how a website or mobile application can help
@@ -77,32 +82,34 @@ function LandingPage() {
           image={ThirdLandingImage}
           alt="Maintaining a project"
         />
-      </Box>
-      <Box paddingX={20} w="full">
-        <Divider borderColor="border" />
-      </Box>
-      <HStack justifyContent="center" spacing={10} w="full">
-        <Image
-          src={FourthLandingImage}
-          alt="Build Websites"
-          width={120}
-          height={70}
-        />
-        <Box>
-          <Text fontSize="small">
-            Couldn&apos;t find what you&apos;re looking for? Contact us through
-            email to get in touch!
-          </Text>
-          <Link
-            fontSize="small"
-            color="primary"
-            href="mailto:contact@hack4impact.org"
-          >
-            contact@hack4impact.org
-          </Link>
+      </VStack>
+      <Box>
+        <Box paddingX="20px" width="100%">
+          <Divider borderColor="border" />
         </Box>
-      </HStack>
-    </VStack>
+        <HStack justifyContent="center" spacing="40px" padding="20px 40px">
+          <Image
+            src={FourthLandingImage}
+            alt="Build Websites"
+            width={120}
+            height={80}
+          />
+          <Box>
+            <Text fontSize="sm">
+              Couldn&apos;t find what you&apos;re looking for? Contact us
+              through email to get in touch!
+            </Text>
+            <Link
+              fontSize="sm"
+              color="primary"
+              href="mailto:contact@hack4impact.org"
+            >
+              contact@hack4impact.org
+            </Link>
+          </Box>
+        </HStack>
+      </Box>
+    </Flex>
   );
 }
 

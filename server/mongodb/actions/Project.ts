@@ -15,6 +15,7 @@ import {
   ChapterGetProjects,
   NonprofitGetProjects,
   ChapterGetProject,
+  NonprofitGetProject,
 } from "src/utils/types";
 
 export async function nonprofitCreateProject(
@@ -88,6 +89,22 @@ export async function chapterGetProject(
     _id: projectId,
     chapter: chapterId,
   });
+
+  return project;
+}
+
+export async function nonprofitGetProject(
+  projectId: Types.ObjectId,
+  nonprofitId: Types.ObjectId,
+  projectGet: NonprofitGetProject
+) {
+  await dbConnect();
+
+  const project = await ProjectModel.findOne({
+    _id: projectId,
+    nonprofit: nonprofitId,
+    ...projectGet,
+  }).populate({ path: "nonprofit", model: NonprofitModel });
 
   return project;
 }

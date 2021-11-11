@@ -11,17 +11,20 @@ interface Props {
 function LandingInfoCard({ title, description, image, alt }: Props) {
   return (
     <Stack
+      width="100%"
       justifyContent="center"
       alignItems="center"
       direction={{ base: "column", md: "row" }}
-      spacing={{ base: 0, md: 20 }}
+      spacing={{ base: "20px", md: "80px" }}
     >
-      <Image src={image} alt={alt} width={250} height={250} />
-      <Box w={{ base: "full", md: "40%" }}>
-        <Heading fontSize="xl" color="primary" marginBottom="5">
+      <Box>
+        <Image src={image} alt={alt} width={250} height={250} />
+      </Box>
+      <Box width={{ base: "full", md: "40%" }}>
+        <Heading fontSize="xl" color="primary" marginBottom="20px">
           {title}
         </Heading>
-        <Text fontSize="md">{description}</Text>
+        <Text>{description}</Text>
       </Box>
     </Stack>
   );

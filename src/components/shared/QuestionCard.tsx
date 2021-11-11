@@ -26,7 +26,9 @@ function QuestionCard({
     <FormControl isReadOnly={isRead}>
       <FormLabel fontSize="sm">{number}</FormLabel>
       <VStack align="flex-start" spacing={4}>
-        <FormHelperText fontSize="sm">{children}</FormHelperText>
+        <FormHelperText fontSize="sm" color="primaryText">
+          {children}
+        </FormHelperText>
         {isRead && (
           <Textarea
             resize="none"
