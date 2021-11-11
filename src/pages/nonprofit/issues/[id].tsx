@@ -12,37 +12,46 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { HiOutlineChevronLeft } from "react-icons/hi";
-import { nonprofitGetIssue } from "src/actions/Issue";
+import { nonprofitGetIssue, nonprofitUpdateIssue } from "src/actions/Issue";
 import { dateToMMDDYYYY } from "src/utils/dates";
 import { showError } from "src/utils/notifications";
 import { Issue, IssueStatus, MaintenanceType } from "src/utils/types";
 import urls from "src/utils/urls";
-//import { linkToUploadedFile } from "src/utils/uploaded-files";
 
 function NonprofitIssueViewPage() {
-  const [issueGlobal, setIssue] = useState<Issue>(); // IN PROGRESS
+  const [issue2, setIssue] = useState<Issue>(); // IN PROGRESS
+  const router = useRouter();
+  const [projectId, setProjectId] =  useState("617ea71c069ce109e2ae9f83");
+
+  const closeIssue = async  () => {
+    const issueId = router.query.id as string;
+    const issueClosed = await nonprofitUpdateIssue(issueId ,projectId, {status: 
+      IssueStatus.CLOSED, 
+      finishedAt: new Date()});
+  }  
 
   useEffect(() => {
-    const projectId = "617ea71c069ce109e2ae9f83";
-    const issueId = "618a36ddf227e8d6284b37eb";
-
-    async function getIssue() {
+    if (!router.isReady) {
+      return;
+    }
+    
+    async function loadIssue() {
+      const issueId = router.query.id as string;
       const dbIssue = await nonprofitGetIssue(issueId, projectId);
-
       if (!dbIssue) {
         showError("Issue does not exist!");
         return;
       }
-
       setIssue(dbIssue);
     }
-
-    getIssue().catch((error) => {
-      showError(error);
+    
+    loadIssue().catch((error) => {
+      console.log(error);
     });
-  }, []);
+  },[router]);
 
   const userExample = {
     name: "First Last",
@@ -60,7 +69,7 @@ function NonprofitIssueViewPage() {
   const issue = {
     _id: "00000",
     title: "Issue Name",
-    status: IssueStatus.CLOSED,
+    status: IssueStatus.PENDING,
     createdAt: new Date(),
     updatedAt: new Date(),
     finishedAt: new Date(),
@@ -145,7 +154,7 @@ function NonprofitIssueViewPage() {
           </HStack>
           {issue.status == IssueStatus.PENDING && (
             <Link href={urls.pages.nonprofit.issues.index} passHref={true}>
-              <Button variant="secondary" fontSize="sm">
+              <Button variant="secondary" fontSize="sm" onClick={closeIssue}>
                 Cancel Request
               </Button>
             </Link>
