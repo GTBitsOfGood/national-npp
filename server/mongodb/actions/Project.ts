@@ -1,22 +1,26 @@
-import { FilterQuery, Types } from "mongoose";
+import { Types } from "mongoose";
 import ChapterModel from "server/mongodb/models/Chapter";
 import NonprofitModel from "server/mongodb/models/Nonprofit";
 import ProjectModel from "server/mongodb/models/Project";
 import UserModel from "server/mongodb/models/User";
 import dbConnect from "server/utils/dbConnect";
-import { displayableProjectStageToProjectStages } from "src/utils/stages";
+import {
+  chapterGetProjectsFilter,
+  nonprofitGetProjectsFilter,
+} from "src/utils/filter/Project";
+import {
+  chapterGetProjectsSorter,
+  nonprofitGetProjectsSorter,
+} from "src/utils/sorting/Project";
 import {
   ChapterUpdateProject,
-  DisplayableProjectStage,
   NonprofitUpdateProject,
-  Project,
   NonprofitCreateProject,
   ProjectStage,
   ChapterGetProjects,
   NonprofitGetProjects,
   ChapterGetProject,
   NonprofitGetProject,
-  SortingOption,
 } from "src/utils/types";
 
 export async function nonprofitCreateProject(
@@ -39,70 +43,9 @@ export async function chapterGetProjects(
 ) {
   await dbConnect();
 
-  const filterStatus = projectsGet.filterStatus;
+  const filter = chapterGetProjectsFilter(chapterId, projectsGet);
 
-  const filter: FilterQuery<Project> = {
-    chapter: chapterId,
-  };
-
-  if (filterStatus != undefined) {
-    if (filterStatus === ProjectStage.APPLICATION_REVIEW) {
-      filter["status"] = ProjectStage.APPLICATION_REVIEW;
-    } else if (filterStatus === DisplayableProjectStage.APPLICATION) {
-      filter["status"] = {
-        $in: displayableProjectStageToProjectStages(
-          DisplayableProjectStage.APPLICATION
-        ),
-      };
-    } else if (filterStatus === DisplayableProjectStage.COMPLETE) {
-      filter["status"] = {
-        $in: displayableProjectStageToProjectStages(
-          DisplayableProjectStage.COMPLETE
-        ),
-      };
-    }
-  } else if (filterStatus === DisplayableProjectStage.INTERVIEW) {
-    filter["status"] = {
-      $in: displayableProjectStageToProjectStages(
-        DisplayableProjectStage.INTERVIEW
-      ),
-    };
-  } else if (filterStatus === DisplayableProjectStage.IN_PROGRESS) {
-    filter["status"] = {
-      $in: displayableProjectStageToProjectStages(
-        DisplayableProjectStage.IN_PROGRESS
-      ),
-    };
-  }
-
-  const sorter: { [key: string]: string } = {};
-
-  const createdAt = projectsGet.sortCreatedAt;
-  if (createdAt != undefined) {
-    if (createdAt == SortingOption.ASCENDING) {
-      sorter["createdAt"] = SortingOption.ASCENDING;
-    } else if (createdAt == SortingOption.DESCENDING) {
-      sorter["createdAt"] = SortingOption.DESCENDING;
-    }
-  }
-
-  const updatedAt = projectsGet.sortUpdatedAt;
-  if (updatedAt != undefined) {
-    if (updatedAt == SortingOption.ASCENDING) {
-      sorter["updatedAt"] = SortingOption.ASCENDING;
-    } else if (updatedAt == SortingOption.DESCENDING) {
-      sorter["updatedAt"] = SortingOption.DESCENDING;
-    }
-  }
-
-  const sortStatus = projectsGet.sortStatus;
-  if (sortStatus != undefined) {
-    if (sortStatus == SortingOption.ASCENDING) {
-      sorter["status"] = SortingOption.ASCENDING;
-    } else if (sortStatus == SortingOption.DESCENDING) {
-      sorter["status"] = SortingOption.DESCENDING;
-    }
-  }
+  const sorter = chapterGetProjectsSorter(projectsGet);
 
   const projects = await ProjectModel.find(filter)
     .sort(sorter)
@@ -173,84 +116,9 @@ export async function nonprofitGetProjects(
 ) {
   await dbConnect();
 
-  const filter: FilterQuery<Project> = {
-    nonprofit: nonprofitId,
-  };
+  const filter = nonprofitGetProjectsFilter(nonprofitId, projectsGet);
 
-  const active = projectsGet.active;
-
-  // will filter by active or inactive only if filter specified
-  if (active != undefined) {
-    filter["status"] = active
-      ? {
-          $nin: displayableProjectStageToProjectStages(
-            DisplayableProjectStage.COMPLETE
-          ),
-        }
-      : {
-          $in: displayableProjectStageToProjectStages(
-            DisplayableProjectStage.COMPLETE
-          ),
-        };
-  }
-
-  const filterStatus = projectsGet.filterStatus;
-  if (filterStatus != undefined) {
-    if (filterStatus === DisplayableProjectStage.APPLICATION) {
-      filter["status"] = {
-        $in: displayableProjectStageToProjectStages(
-          DisplayableProjectStage.APPLICATION
-        ),
-      };
-    } else if (filterStatus === DisplayableProjectStage.COMPLETE) {
-      filter["status"] = {
-        $in: displayableProjectStageToProjectStages(
-          DisplayableProjectStage.COMPLETE
-        ),
-      };
-    }
-  } else if (filterStatus === DisplayableProjectStage.INTERVIEW) {
-    filter["status"] = {
-      $in: displayableProjectStageToProjectStages(
-        DisplayableProjectStage.INTERVIEW
-      ),
-    };
-  } else if (filterStatus === DisplayableProjectStage.IN_PROGRESS) {
-    filter["status"] = {
-      $in: displayableProjectStageToProjectStages(
-        DisplayableProjectStage.IN_PROGRESS
-      ),
-    };
-  }
-
-  const sorter: { [key: string]: string } = {};
-
-  const createdAt = projectsGet.sortCreatedAt;
-  if (createdAt != undefined) {
-    if (createdAt == SortingOption.ASCENDING) {
-      sorter["createdAt"] = SortingOption.ASCENDING;
-    } else if (createdAt == SortingOption.DESCENDING) {
-      sorter["createdAt"] = SortingOption.DESCENDING;
-    }
-  }
-
-  const updatedAt = projectsGet.sortUpdatedAt;
-  if (updatedAt != undefined) {
-    if (updatedAt == SortingOption.ASCENDING) {
-      sorter["updatedAt"] = SortingOption.ASCENDING;
-    } else if (updatedAt == SortingOption.DESCENDING) {
-      sorter["updatedAt"] = SortingOption.DESCENDING;
-    }
-  }
-
-  const sortStatus = projectsGet.sortStatus;
-  if (sortStatus != undefined) {
-    if (sortStatus == SortingOption.ASCENDING) {
-      sorter["status"] = SortingOption.ASCENDING;
-    } else if (sortStatus == SortingOption.DESCENDING) {
-      sorter["status"] = SortingOption.DESCENDING;
-    }
-  }
+  const sorter = nonprofitGetProjectsSorter(projectsGet);
 
   const projects = await ProjectModel.find(filter)
     .sort(sorter)

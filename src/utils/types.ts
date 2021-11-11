@@ -173,7 +173,8 @@ export type AuthComponent = NextComponentType & { auth: PageAuth | undefined };
 
 export type NonprofitCreateProject = Pick<Required<Project>, "name" | "type">;
 export type ChapterGetProjects = {
-  filterStatus?: ProjectStage | DisplayableProjectStage;
+  filterStatus?: ProjectStage;
+  filterDisplayableStatus?: DisplayableProjectStage;
   sortStatus?: SortingOption;
   sortCreatedAt?: SortingOption;
   sortUpdatedAt?: SortingOption;
@@ -182,6 +183,11 @@ export type NonprofitGetProjects = {
   active?: boolean;
   filterStatus?: DisplayableProjectStage;
   sortStatus?: SortingOption;
+  sortCreatedAt?: SortingOption;
+  sortUpdatedAt?: SortingOption;
+};
+export type ProjectGetIssues = {
+  filterStatus?: IssueStatus;
   sortCreatedAt?: SortingOption;
   sortUpdatedAt?: SortingOption;
 };
