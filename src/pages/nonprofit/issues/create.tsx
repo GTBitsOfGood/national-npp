@@ -3,13 +3,13 @@ import { Heading, Stack, Text, VStack, Link } from "@chakra-ui/layout";
 import { Radio, RadioGroup } from "@chakra-ui/radio";
 import { Flex } from "@chakra-ui/react";
 import { Textarea } from "@chakra-ui/textarea";
-import router from "next/router";
 import { useEffect, useState } from "react";
 import { HiOutlineChevronLeft } from "react-icons/hi";
 import { nonprofitCreateIssue } from "src/actions/Issue";
 import { nonprofitGetProject } from "src/actions/Project";
 import { showError, showInfo } from "src/utils/notifications";
 import {
+  Chapter,
   IssueStatus,
   MaintenanceType,
   NonprofitCreateIssue,
@@ -22,12 +22,14 @@ function NonprofitIssueCreationPage() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [issueType, setIssueType] = useState<MaintenanceType>();
-  const [screenshots, setScreenshots] = useState([]); // NOT FINISHED
+  const [screenshots, setScreenshots] = useState([]);
   const [project, setProject] = useState<Project>();
-  const [chapterIssueTypes, setChapterIssueTypes] = useState([]); // NOT FINISHED
+  const [chapterIssueTypes, setChapterIssueTypes] = useState<MaintenanceType[]>(
+    []
+  );
 
   useEffect(() => {
-    const projectId = "617ea71c069ce109e2ae9f83"; // How do I go about getting this?
+    const projectId = "617ea71c069ce109e2ae9f83";
     async function getProject() {
       const project = await nonprofitGetProject(projectId, {
         status: ProjectStage.MAINTENANCE,
@@ -41,13 +43,20 @@ function NonprofitIssueCreationPage() {
       setProject(project);
     }
 
-    // async function getChapter() {}
-
-    // getProject();
+    getProject()
+      .then(() => {
+        if (project) {
+          const chapter = project.chapter as Chapter;
+          setChapterIssueTypes(chapter.maintenanceTypes);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
 
   const submitForm = async () => {
-    const projectId = ""; // How do I go about getting this?
+    const projectId = "617ea71c069ce109e2ae9f83"; // How do I go about getting this?
 
     if (!projectId) {
       showError("Project does not exist.");
@@ -80,7 +89,6 @@ function NonprofitIssueCreationPage() {
       const error = e as Error;
       showError(error.message);
     }
-    console.log(issueCreate);
   };
   return (
     <Flex height="100%" width="100%">
