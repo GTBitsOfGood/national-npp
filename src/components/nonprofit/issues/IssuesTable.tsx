@@ -1,4 +1,6 @@
-import { Table, Tbody, Thead, Td, Tr, Th } from "@chakra-ui/react";
+import { Table, Tbody, Thead, Td, Tr, Th, Tag } from "@chakra-ui/react";
+import { BsChevronRight } from "react-icons/bs";
+import { dateToMMDDYYYY } from "src/utils/dates";
 import { Issue } from "src/utils/types";
 
 interface Props {
@@ -22,11 +24,25 @@ function IssuesTable({ issues }: Props) {
           <Tr key={issue.title}>
             <Td>{issue.type}</Td>
             <Td>{issue.title}</Td>
-            <Td>{issue.createdAt.toLocaleDateString()}</Td>
+            <Td>{dateToMMDDYYYY(new Date(issue.createdAt))}</Td>
             <Td>
-              {issue.finishedAt ? issue.finishedAt.toLocaleDateString() : "-"}
+              {issue.finishedAt
+                ? dateToMMDDYYYY(new Date(issue.finishedAt))
+                : "-"}
             </Td>
-            <Td>{issue.status}</Td>
+            <Td>
+              <Tag
+                backgroundColor={`rgba(${214},${158},${46}, 0.1)`}
+                color={`rgba(${214},${158},${46})`}
+                width="fit-content"
+                fontWeight="bold"
+              >
+                {issue.status}
+              </Tag>
+            </Td>
+            <Td>
+              <BsChevronRight />
+            </Td>
           </Tr>
         ))}
       </Tbody>
