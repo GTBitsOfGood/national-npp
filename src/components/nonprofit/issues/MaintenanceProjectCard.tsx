@@ -5,9 +5,15 @@ interface Props {
   isSelected: boolean;
   project: Project;
   onClick: (project: Project) => void;
+  remainingDays?: number;
 }
 
-function MaintenanceProjectCard({ isSelected, project, onClick }: Props) {
+function MaintenanceProjectCard({
+  isSelected,
+  project,
+  onClick,
+  remainingDays,
+}: Props) {
   return (
     <Flex
       width="100%"
@@ -29,7 +35,7 @@ function MaintenanceProjectCard({ isSelected, project, onClick }: Props) {
           width="fit-content"
           fontWeight="bold"
         >
-          25 days remaining
+          {remainingDays} Days Remaining
         </Tag>
       </VStack>
     </Flex>
