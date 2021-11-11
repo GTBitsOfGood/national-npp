@@ -55,6 +55,9 @@ export interface Project {
   status: ProjectStage;
   type: ProjectType;
   contact?: User | Types.ObjectId;
+  maintenanceStart?: Date;
+  maintenanceEnd?: Date;
+  remainingDays?: number;
   createdAt: Date;
   updatedAt: Date;
 }
