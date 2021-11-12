@@ -72,7 +72,7 @@ function NonprofitIssueCreationPage() {
   }, []);
   const uploadImages = async ({ imageList }: { imageList: File[] }) => {
     if (imageList.length > 4) {
-      throw new Error("Cannot upload more than 4 images!");
+      showError("Cannot upload more than 4 images!");
     }
 
     for (let i = 0; i < imageList.length; i++) {
