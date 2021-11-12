@@ -15,26 +15,32 @@ import {
   NonprofitCreateIssue,
   Project,
   ProjectStage,
+  UploadedFile,
 } from "src/utils/types";
+import { uploadFile } from "src/utils/uploaded-files";
 import urls from "src/utils/urls";
 
 function NonprofitIssueCreationPage() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [issueType, setIssueType] = useState<MaintenanceType>();
-  const [screenshots, setScreenshots] = useState([]);
   const [project, setProject] = useState<Project>();
+  const [images, setImages] = useState<UploadedFile[]>([]);
   const [chapterIssueTypes, setChapterIssueTypes] = useState<MaintenanceType[]>(
-    []
+    [MaintenanceType.BUG_FIXES, MaintenanceType.NEW_FEATURES]
   );
 
   useEffect(() => {
     const projectId = "617ea71c069ce109e2ae9f83";
     async function getProject() {
-      const project = await nonprofitGetProject(projectId, {
-        status: ProjectStage.MAINTENANCE,
-      });
-
+      let project;
+      try {
+        project = await nonprofitGetProject(projectId, {
+          status: ProjectStage.MAINTENANCE,
+        });
+      } catch (e) {
+        showError((e as Error).message);
+      }
       if (!project) {
         showError("Project does not exist.");
         return;
@@ -46,14 +52,37 @@ function NonprofitIssueCreationPage() {
     getProject()
       .then(() => {
         if (project) {
+          /**
+           * project.chapter as Chapter does not currently work either but when it will change:
+           * setChapterIssueTypes([MaintenanceType.BUG_FIXES, MaintenanceType.NEW_FEATURES]);
+           * to
+           * setChapterIssueTypes(chapter.maintenanceTypes;);
+           */
           const chapter = project.chapter as Chapter;
-          setChapterIssueTypes(chapter.maintenanceTypes);
+          setChapterIssueTypes([
+            MaintenanceType.BUG_FIXES,
+            MaintenanceType.NEW_FEATURES,
+          ]);
         }
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
+  const uploadImages = async ({ imageList }: { imageList: FileList }) => {
+    if (imageList.length > 4) {
+      throw new Error("Cannot upload more than 4 images!");
+    }
+
+    for (let i = 0; i < imageList.length; i++) {
+      const result = await uploadFile(imageList[i], {
+        onProgress(percent) {
+          console.log(percent);
+        },
+      });
+      setImages([...images, result]);
+    }
+  };
 
   const submitForm = async () => {
     const projectId = "617ea71c069ce109e2ae9f83"; // How do I go about getting this?
@@ -72,13 +101,13 @@ function NonprofitIssueCreationPage() {
       showError("Please enter a description for your issue.");
       return;
     }
-
+    const blobPaths = images.map(({ blobPath }) => blobPath);
     const issueCreate: NonprofitCreateIssue = {
       type: issueType as MaintenanceType,
       title: title,
       description: description,
       status: IssueStatus.IN_PROGRESS,
-      images: screenshots,
+      images: blobPaths,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -125,14 +154,17 @@ function NonprofitIssueCreationPage() {
             alignSelf="stretch"
           >
             <Text fontSize="md">Issue Type</Text>
-            <RadioGroup>
+            <RadioGroup
+              onChange={(value) => {
+                setIssueType(value as MaintenanceType);
+              }}
+            >
               <Stack direction="row" spacing={5}>
-                <Radio fontSize="lg" value="1">
-                  Bug Fixes
-                </Radio>
-                <Radio fontSize="lg" value="2">
-                  New Features
-                </Radio>
+                {chapterIssueTypes.map((issueType, index) => (
+                  <Radio fontSize="lg" value={issueType} key={index}>
+                    {issueType}
+                  </Radio>
+                ))}
               </Stack>
             </RadioGroup>
             <Text fontSize="md">Title</Text>
