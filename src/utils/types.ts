@@ -56,8 +56,6 @@ export interface Project {
   type: ProjectType;
   contact?: User | Types.ObjectId;
   maintenanceStart?: Date;
-  maintenanceEnd?: Date;
-  remainingDays?: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -173,6 +171,12 @@ export interface PageAuth {
 }
 
 export type AuthComponent = NextComponentType & { auth: PageAuth | undefined };
+
+export type MaintenanceProject = Project & {
+  maintenanceStart: Date;
+  maintenanceEnd: Date;
+  remainingDays: number;
+};
 
 export type NonprofitCreateProject = Pick<
   Required<Project>,
