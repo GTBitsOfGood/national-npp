@@ -1,4 +1,3 @@
-import { watchFile } from "fs";
 import {
   Flex,
   Text,
@@ -13,10 +12,8 @@ import {
   Button,
   Textarea,
   AvatarBadge,
-  Box,
 } from "@chakra-ui/react";
 import { Types } from "mongoose";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { MdEdit } from "react-icons/md";
@@ -34,7 +31,6 @@ import {
   NonprofitUpdateNonprofit,
   NonprofitUpdateUser,
   User,
-  UploadedFile,
 } from "src/utils/types";
 import { uploadFile, linkToUploadedFile } from "src/utils/uploaded-files";
 import {
@@ -46,7 +42,6 @@ import {
 
 interface FormData {
   name: string;
-  image: string;
   phoneNumber: string;
   nonprofitName: string;
   contact: string;
@@ -65,21 +60,9 @@ function NonprofitProfilePage() {
     register,
     formState: { errors, isSubmitting },
     reset,
-    watch,
   } = useForm<FormData>();
 
-  const [images, setImages] = useState<UploadedFile[]>([]);
-
-  // const uploadProfileImage = async ({ image }: { image: FileList }) => {
-  //   console.log("hi");
-  //   const result = await uploadFile(image[0], {
-  //     onProgress(percent) {
-  //       console.log(`percent: ${percent}`);
-  //     },
-  //   });
-  //   console.log(`file name: ${result.name}`);
-  //   setImages([...images, result]);
-  // };
+  const [image, setImage] = useState<string>();
 
   const [contactList, setContactList] = useState<Contact[]>([]);
 
@@ -87,6 +70,8 @@ function NonprofitProfilePage() {
     async function preloadData() {
       const user = await nonprofitGetUser();
       const nonprofit = user.nonprofit as Nonprofit;
+
+      setImage(user.image);
 
       const contacts: User[] = await nonprofitGetUsers();
       setContactList(
@@ -98,10 +83,9 @@ function NonprofitProfilePage() {
           };
         })
       );
-
+      
       reset({
         name: user.name,
-        image: user.image,
         phoneNumber: user.phoneNum ?? "",
         nonprofitName: nonprofit.name,
         contact: nonprofit.contact.toString(),
@@ -124,7 +108,7 @@ function NonprofitProfilePage() {
   const submitData = async (data: FormData) => {
     const userUpdate: NonprofitUpdateUser = {
       name: data.name,
-      image: data.image,
+      image: image,
       phoneNum: data.phoneNumber,
     };
 
@@ -147,13 +131,12 @@ function NonprofitProfilePage() {
       const nonprofit = user.nonprofit as Nonprofit;
       await nonprofitUpdateNonprofit(nonprofit._id.toString(), nonprofitUpdate);
       showInfo("Successfully updated profile.");
-    } catch (e) {
+    } 
+    catch (e) {
       const error = e as Error;
       showError(error.message);
     }
   };
-
-  // const watchImage = watch("image");
 
   return (
     <Flex height="100%" width="100%">
@@ -186,60 +169,32 @@ function NonprofitProfilePage() {
                   cursor: "pointer",
                 }}
               >
-                {"hello"}
-                <Box
-                  style={{
-                    borderRadius: 100 / 2,
-                    overflow: "hidden",
-                    width: 100,
-                    height: 100,
-                  }}
-                >
-                  {images[0] && (
-                    <Image
-                      src={linkToUploadedFile(images[0].blobPath)}
-                      unoptimized={true}
-                      objectFit="cover"
-                    />
-                  )}
-                </Box>
-                {/* } */}
-                {/* <Avatar
+                 <Avatar
+                  src={image}
                   style={{ width: "100px", height: "100px" }}
                 >
                   <AvatarBadge boxSize="1.8em" backgroundColor="#0069CA">
                     <MdEdit color="white" />
                   </AvatarBadge>
-                </Avatar> */}
+                </Avatar>
               </FormLabel>
               <Input
                 type="file"
                 id="image"
                 accept="image/*"
                 style={{ display: "none" }}
-                onChange={async (e) => {
-                  console.log("hi");
-                  if (e.target && e.target.files) {
-                    // console.log(e.target.value);
-                    // // const result = await uploadFile(e.target.files[0], {
-                    // //   onProgress(percent) {
-                    // //     console.log(`percent: ${percent}`);
-                    // //   },
-                    // // });
-                    // // console.log(`file name: ${result.name}`);
-                    // // setImages([...images, result]);
-                    // setImage([image, e.target.files[0][0]]);
-                    // console.log(images[0][0]);
-                    const image = e.target.files;
+                onChange={async (e)=>{
+                  const image = e.target.files;
+                  if (image) {
                     const result = await uploadFile(image[0], {
                       onProgress(percent) {
-                        console.log(percent);
+                        console.log(`${percent*100}% of image uploaded`);
                       },
                     });
-                    setImages([...images, result]);
+                    const fileLink = linkToUploadedFile(result.blobPath);
+                    setImage(fileLink);
                   }
                 }}
-                // {...register("image")}
               />
               <VStack align="start" spacing={5}>
                 <Text alignSelf="flex-start" fontSize="lg" fontWeight={700}>
