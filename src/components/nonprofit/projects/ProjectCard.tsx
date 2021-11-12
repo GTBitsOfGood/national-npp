@@ -15,11 +15,8 @@ function ProjectCard({ isSelected, project, onClick }: Props) {
       borderBottom="1px solid"
       borderColor="border"
       padding="20px"
-      _hover={
-        isSelected
-          ? { cursor: "default" }
-          : { cursor: "pointer", boxShadow: "base" }
-      }
+      _hover={isSelected ? { cursor: "default" } : { cursor: "pointer" }}
+      backgroundColor={isSelected ? "gray.50" : "surface"}
       onClick={() => onClick(project)}
     >
       <VStack align="stretch" spacing="15px" overflow="hidden">

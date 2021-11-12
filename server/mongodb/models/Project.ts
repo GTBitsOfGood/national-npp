@@ -5,7 +5,6 @@ const ProjectSchema = new Schema<Project>(
   {
     chapter: {
       type: Schema.Types.ObjectId,
-      required: true,
       ref: "Chapter",
     },
     nonprofit: {
@@ -25,6 +24,7 @@ const ProjectSchema = new Schema<Project>(
     },
     type: {
       type: String,
+      required: true,
       enum: Object.values(ProjectType),
     },
     contact: {

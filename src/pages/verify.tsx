@@ -1,27 +1,27 @@
-import { Flex, Text, Box, Stack, Link } from "@chakra-ui/react";
+import { Button, Flex, Heading, Text, Box, Stack } from "@chakra-ui/react";
 import Image from "next/image";
-import NextLink from "next/link";
+import Link from "next/link";
 import loginImage from "public/images/login/login_first.svg";
 import urls from "src/utils/urls";
 
 function VerifyEmailPage() {
   return (
     <Flex height="100%" width="100%">
-      <Flex margin="auto" borderRadius="10px">
+      <Flex margin="auto" paddingY="40px">
         <Flex
           flex="1"
-          rounded={"lg"}
-          border="1px"
+          rounded="lg"
+          border="1px solid"
           borderColor="border"
+          borderRadius="lg"
           width={{ base: "100%", md: "70%" }}
-          borderRadius="10px"
         >
-          <Stack minH={"50vh"} direction="row" spacing={0}>
+          <Stack direction={{ base: "column", md: "row" }} spacing="0px">
             <Flex
-              flex={1}
+              flex="1"
               display={{ base: "none", md: "flex" }}
-              bg={"#e6f0fa"}
-              width={"100%"}
+              bgColor="#e6f0fa"
+              width="100%"
               roundedLeft="lg"
             >
               <Box position="relative" left="10%" marginY="auto">
@@ -29,40 +29,22 @@ function VerifyEmailPage() {
               </Box>
             </Flex>
             <Flex
-              p={8}
-              flex={1}
-              align={"center"}
-              justify={"center"}
-              bg={"#FFFFFF"}
-              roundedLeft={{ base: "lg", md: "none" }}
+              padding="40px"
+              flex="1"
+              align="center"
+              justify="center"
+              backgroundColor="surface"
               roundedRight="lg"
+              roundedLeft={{ base: "lg", md: "none" }}
             >
-              <Stack spacing={2} w={"100%"} maxW={"md"} p={{ base: 5, md: 14 }}>
-                <Text
-                  fontFamily="Helvetica, sans-serif"
-                  fontSize={"28"}
-                  fontWeight="700"
-                >
-                  Check your email
-                </Text>
-                <Text
-                  fontFamily="Helvetica, sans-serif"
-                  fontSize="17"
-                  fontWeight="400"
-                >
-                  A sign in link has been sent to your email address.
-                </Text>
-                <NextLink href={urls.pages.login}>
-                  <Link
-                    fontFamily="Helvetica, sans-serif"
-                    color="primary"
-                    fontWeight={"600"}
-                    fontSize="16"
-                    py={2}
-                  >
-                    Resend Email
-                  </Link>
-                </NextLink>
+              <Stack spacing="15px" width="100%" maxW="md" padding="40px">
+                <Heading fontSize="2xl">Check your email</Heading>
+                <Text>A sign-in link has been sent to your email address.</Text>
+                <Link href={urls.pages.login} passHref>
+                  <Button width="fit-content" variant="secondary" padding="0px">
+                    Retry email
+                  </Button>
+                </Link>
               </Stack>
             </Flex>
           </Stack>

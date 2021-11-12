@@ -1,9 +1,39 @@
 import { Types } from "mongoose";
-import { nonprofitUpdateProject } from "server/mongodb/actions/Project";
+import {
+  nonprofitGetProject,
+  nonprofitUpdateProject,
+} from "server/mongodb/actions/Project";
 import APIWrapper from "server/utils/APIWrapper";
-import { NonprofitUpdateProject, Role } from "src/utils/types";
+import {
+  NonprofitGetProject,
+  NonprofitUpdateProject,
+  Role,
+} from "src/utils/types";
 
 export default APIWrapper({
+  GET: {
+    config: {
+      requireSession: true,
+      roles: [Role.NONPROFIT_MEMBER],
+    },
+    handler: async (req) => {
+      const projectId = req.query.id as string;
+      const nonprofitId = req.user.nonprofit;
+
+      if (!nonprofitId) {
+        throw new Error("User does not belong to a nonprofit");
+      }
+
+      const projectGet = req.query.projectGet as NonprofitGetProject;
+      const project = await nonprofitGetProject(
+        Types.ObjectId(projectId),
+        nonprofitId,
+        projectGet
+      );
+
+      return project;
+    },
+  },
   PATCH: {
     config: {
       requireSession: true,
