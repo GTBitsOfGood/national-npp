@@ -28,15 +28,17 @@ function NonprofitIssueViewPage() {
   const router = useRouter();
   const [projectId, setProjectId] = useState("617ea71c069ce109e2ae9f83");
   const [isLoading, setLoading] = useState(true);
-  const [hasReviewer, setHasReviwer] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const closeIssue = async () => {
     const issueId = router.query.id as string;
+    try{
     const issueClosed = await nonprofitUpdateIssue(issueId, projectId, {
       status: IssueStatus.CLOSED,
       finishedAt: new Date(),
-    });
+    });} catch (e){
+      showError((e as Error).message)
+    }
   };
 
   useEffect(() => {
@@ -45,16 +47,19 @@ function NonprofitIssueViewPage() {
     }
 
     async function loadIssue() {
-      const issueId = router.query.id as string;
-      const dbIssue = await nonprofitGetIssue(issueId, projectId);
-      if (!dbIssue) {
-        showError("Issue does not exist!");
-        return;
+      let dbIssue;
+      try{
+        const issueId = router.query.id as string;
+        dbIssue = await nonprofitGetIssue(issueId, projectId);
+      } catch(e){
+        const error = e as Error;
+        showError(error.message);
       }
-      setIssue(dbIssue);
-      if (dbIssue.reviewer) {
-        setHasReviwer(true);
-      }
+        if (!dbIssue) {
+          showError("Issue does not exist!");
+          throw new Error("Issue does not exist!")
+        }
+        setIssue(dbIssue);  
     }
 
     setLoading(true);
@@ -66,7 +71,7 @@ function NonprofitIssueViewPage() {
         console.log(error);
       });
   }, [router]);
-
+  
   return (
     <Flex height="100%" width="100%">
       {isLoading ? (
@@ -199,11 +204,12 @@ function NonprofitIssueViewPage() {
 
                 <HStack />
               </VStack>
-              {hasReviewer && (
+              {issue.reviewer && (
                 <VStack align="stretch">
                   <Text fontSize="sm" fontWeight="bold">
                     Who To Contact
                   </Text>
+                  
                   <Text fontSize="sm">{(issue.reviewer as User).name}</Text>
                   <Text fontSize="sm">{(issue.reviewer as User).email}</Text>
                   <Text fontSize="sm">{(issue.reviewer as User).phoneNum}</Text>
