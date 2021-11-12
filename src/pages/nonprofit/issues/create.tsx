@@ -25,7 +25,7 @@ function NonprofitIssueCreationPage() {
   const [description, setDescription] = useState("");
   const [issueType, setIssueType] = useState<MaintenanceType>();
   const [project, setProject] = useState<Project>();
-  const [preUploadImages, setPreUploadImages] = useState<File[]>([]);
+  const [preUploadImages, setPreUploadImages] = useState<FileList>();
   const [images, setImages] = useState<UploadedFile[]>([]);
   const [chapterIssueTypes, setChapterIssueTypes] = useState<MaintenanceType[]>(
     [MaintenanceType.BUG_FIXES, MaintenanceType.NEW_FEATURES]
@@ -70,7 +70,11 @@ function NonprofitIssueCreationPage() {
         console.log(error);
       });
   }, []);
-  const uploadImages = async ({ imageList }: { imageList: File[] }) => {
+  const uploadImages = async ({ imageList }: { imageList: FileList }) => {
+    if (!imageList){
+      return;
+    }
+
     if (imageList.length > 4) {
       showError("Cannot upload more than 4 images!");
     }
@@ -101,21 +105,23 @@ function NonprofitIssueCreationPage() {
       return;
     }
 
-    let blobPaths;
-    uploadImages({ imageList: preUploadImages })
-      .then(() => {
-        blobPaths = images.map(({ blobPath }) => blobPath);
-      })
-      .catch((e) => {
-        showError((e as Error).message);
-      });
+    let blobPaths = [] as string[];
+    if (preUploadImages){
+      uploadImages({imageList: preUploadImages})
+        .then(() => {
+          blobPaths = images.map(({ blobPath }) => blobPath);
+        })
+        .catch((e) => {
+          showError((e as Error).message);
+        });
+    }
 
     const issueCreate: NonprofitCreateIssue = {
       type: issueType as MaintenanceType,
       title: title,
       description: description,
       status: IssueStatus.IN_PROGRESS,
-      images: [],
+      images: blobPaths,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
