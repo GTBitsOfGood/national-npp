@@ -83,7 +83,7 @@ function NonprofitProfilePage() {
           };
         })
       );
-      
+
       reset({
         name: user.name,
         phoneNumber: user.phoneNum ?? "",
@@ -131,8 +131,7 @@ function NonprofitProfilePage() {
       const nonprofit = user.nonprofit as Nonprofit;
       await nonprofitUpdateNonprofit(nonprofit._id.toString(), nonprofitUpdate);
       showInfo("Successfully updated profile.");
-    } 
-    catch (e) {
+    } catch (e) {
       const error = e as Error;
       showError(error.message);
     }
@@ -169,10 +168,7 @@ function NonprofitProfilePage() {
                   cursor: "pointer",
                 }}
               >
-                 <Avatar
-                  src={image}
-                  style={{ width: "100px", height: "100px" }}
-                >
+                <Avatar src={image} style={{ width: "100px", height: "100px" }}>
                   <AvatarBadge boxSize="1.8em" backgroundColor="#0069CA">
                     <MdEdit color="white" />
                   </AvatarBadge>
@@ -183,12 +179,12 @@ function NonprofitProfilePage() {
                 id="image"
                 accept="image/*"
                 style={{ display: "none" }}
-                onChange={async (e)=>{
+                onChange={async (e) => {
                   const image = e.target.files;
                   if (image) {
                     const result = await uploadFile(image[0], {
                       onProgress(percent) {
-                        console.log(`${percent*100}% of image uploaded`);
+                        console.log(`${percent * 100}% of image uploaded`);
                       },
                     });
                     const fileLink = linkToUploadedFile(result.blobPath);

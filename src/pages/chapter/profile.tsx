@@ -19,6 +19,7 @@ import {
   NumberInputField,
   NumberInputStepper,
   Tooltip,
+  AvatarBadge,
 } from "@chakra-ui/react";
 import { Types } from "mongoose";
 import React, { useEffect, useState } from "react";
@@ -45,6 +46,8 @@ import {
   phoneNumberPattern,
   zipCodePattern,
 } from "src/utils/validation";
+import { MdEdit } from "react-icons/md";
+import { uploadFile, linkToUploadedFile } from "src/utils/uploaded-files";
 
 interface FormData {
   name: string;
@@ -72,12 +75,16 @@ function ChapterProfilePage() {
     reset,
   } = useForm<FormData>();
 
+  const [image, setImage] = useState<string>();
+
   const [contactList, setContactList] = useState<Contact[]>([]);
 
   useEffect(() => {
     async function preloadFields() {
       const user = await chapterGetUser();
       const chapter = user.chapter as Chapter;
+
+      setImage(user.image);
 
       const contacts: User[] = await chapterGetUsers();
       setContactList(
@@ -116,6 +123,7 @@ function ChapterProfilePage() {
   const submitData = async (values: FormData) => {
     const userUpdate: ChapterUpdateUser = {
       name: values.name,
+      image: image,
       phoneNum: values.phoneNumber,
     };
 
@@ -170,7 +178,38 @@ function ChapterProfilePage() {
               spacing={10}
               align="stretch"
             >
-              <Avatar alignSelf="center" width="80px" height="80px" />
+              <FormLabel
+                htmlFor="image"
+                style={{
+                  alignSelf: "center",
+                  borderRadius: "50%",
+                  cursor: "pointer",
+                }}
+              >
+                <Avatar src={image} style={{ width: "100px", height: "100px" }}>
+                  <AvatarBadge boxSize="1.8em" backgroundColor="#0069CA">
+                    <MdEdit color="white" />
+                  </AvatarBadge>
+                </Avatar>
+              </FormLabel>
+              <Input
+                type="file"
+                id="image"
+                accept="image/*"
+                style={{ display: "none" }}
+                onChange={async (e) => {
+                  const image = e.target.files;
+                  if (image) {
+                    const result = await uploadFile(image[0], {
+                      onProgress(percent) {
+                        console.log(`${percent * 100}% of image uploaded`);
+                      },
+                    });
+                    const fileLink = linkToUploadedFile(result.blobPath);
+                    setImage(fileLink);
+                  }
+                }}
+              />
               <VStack align="start" spacing={5}>
                 <Text alignSelf="flex-start" fontSize="lg" fontWeight={700}>
                   User Information
