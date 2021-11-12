@@ -1,5 +1,8 @@
 import { Types } from "mongoose";
-import { nonprofitGetIssue, nonprofitUpdateIssue } from "server/mongodb/actions/Issue";
+import {
+  nonprofitGetIssue,
+  nonprofitUpdateIssue,
+} from "server/mongodb/actions/Issue";
 import APIWrapper from "server/utils/APIWrapper";
 import { NonprofitUpdateIssue, Role } from "src/utils/types";
 
@@ -39,5 +42,5 @@ export default APIWrapper({
 
       return issue;
     },
-  }
+  },
 });

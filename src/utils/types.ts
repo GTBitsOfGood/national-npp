@@ -201,7 +201,10 @@ export type NonprofitUpdateNonprofit = Omit<
   "_id" | "isVerified"
 >;
 
-export type NonprofitUpdateIssue = Pick<Partial<Issue>, "status" | "finishedAt">;
+export type NonprofitUpdateIssue = Pick<
+  Partial<Issue>,
+  "status" | "finishedAt"
+>;
 
 /* Enums */
 

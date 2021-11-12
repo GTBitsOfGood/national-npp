@@ -18,13 +18,14 @@ export async function nonprofitUpdateIssue(
   issueId: Types.ObjectId,
   projectId: Types.ObjectId,
   issueUpdate: NonprofitUpdateIssue
-  ) {
-    await dbConnect();
-  
-    const issue = await IssueModel.findOneAndUpdate(
-      { _id: issueId, project: projectId },
-      issueUpdate, 
-      { new: true });
-  
-    return issue;
-  }
+) {
+  await dbConnect();
+
+  const issue = await IssueModel.findOneAndUpdate(
+    { _id: issueId, project: projectId },
+    issueUpdate,
+    { new: true }
+  );
+
+  return issue;
+}
