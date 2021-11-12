@@ -25,6 +25,7 @@ import { Types } from "mongoose";
 import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { BsInfoCircle } from "react-icons/bs";
+import { MdEdit } from "react-icons/md";
 import { chapterUpdateChapter } from "src/actions/Chapter";
 import {
   chapterGetUser,
@@ -41,13 +42,12 @@ import {
   User,
   Contact,
 } from "src/utils/types";
+import { uploadFile, linkToUploadedFile } from "src/utils/uploaded-files";
 import {
   maxInput,
   phoneNumberPattern,
   zipCodePattern,
 } from "src/utils/validation";
-import { MdEdit } from "react-icons/md";
-import { uploadFile, linkToUploadedFile } from "src/utils/uploaded-files";
 
 interface FormData {
   name: string;
