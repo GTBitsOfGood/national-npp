@@ -25,13 +25,14 @@ function NonprofitIssueCreationPage() {
   const [description, setDescription] = useState("");
   const [issueType, setIssueType] = useState<MaintenanceType>();
   const [project, setProject] = useState<Project>();
+  const [preUploadImages, setPreUploadImages] = useState<File[]>([]);
   const [images, setImages] = useState<UploadedFile[]>([]);
   const [chapterIssueTypes, setChapterIssueTypes] = useState<MaintenanceType[]>(
     [MaintenanceType.BUG_FIXES, MaintenanceType.NEW_FEATURES]
   );
+  const [projectId, setProjectId] = useState("617ea71c069ce109e2ae9f83");
 
   useEffect(() => {
-    const projectId = "617ea71c069ce109e2ae9f83";
     async function getProject() {
       let project;
       try {
@@ -69,7 +70,7 @@ function NonprofitIssueCreationPage() {
         console.log(error);
       });
   }, []);
-  const uploadImages = async ({ imageList }: { imageList: FileList }) => {
+  const uploadImages = async ({ imageList }: { imageList: File[] }) => {
     if (imageList.length > 4) {
       throw new Error("Cannot upload more than 4 images!");
     }
@@ -85,8 +86,6 @@ function NonprofitIssueCreationPage() {
   };
 
   const submitForm = async () => {
-    const projectId = "617ea71c069ce109e2ae9f83"; // How do I go about getting this?
-
     if (!projectId) {
       showError("Project does not exist.");
       return;
@@ -101,13 +100,22 @@ function NonprofitIssueCreationPage() {
       showError("Please enter a description for your issue.");
       return;
     }
-    const blobPaths = images.map(({ blobPath }) => blobPath);
+
+    let blobPaths;
+    uploadImages({ imageList: preUploadImages })
+      .then(() => {
+        blobPaths = images.map(({ blobPath }) => blobPath);
+      })
+      .catch((e) => {
+        showError((e as Error).message);
+      });
+
     const issueCreate: NonprofitCreateIssue = {
       type: issueType as MaintenanceType,
       title: title,
       description: description,
       status: IssueStatus.IN_PROGRESS,
-      images: blobPaths,
+      images: [],
       createdAt: new Date(),
       updatedAt: new Date(),
     };
