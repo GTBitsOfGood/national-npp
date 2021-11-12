@@ -49,7 +49,7 @@ export interface Nonprofit {
 
 export interface Project {
   _id: Types.ObjectId;
-  chapter: Chapter | Types.ObjectId;
+  chapter?: Chapter | Types.ObjectId;
   nonprofit: Nonprofit | Types.ObjectId;
   name: string;
   status: ProjectStage;
@@ -174,16 +174,14 @@ export interface PageAuth {
 
 export type AuthComponent = NextComponentType & { auth: PageAuth | undefined };
 
-export type NonprofitCreateProject = Pick<
-  Required<Project>,
-  "chapter" | "name" | "type"
->;
+export type NonprofitCreateProject = Pick<Required<Project>, "name" | "type">;
 export type ChapterGetProjects = { status?: ProjectStage };
 export type NonprofitGetProjects = Pick<Partial<Project>, "status"> & {
   active?: boolean;
 };
 export type NonprofitUpdateProject = Pick<Partial<Project>, "status">;
-export type ChapterGetProject = { status?: ProjectStage };
+export type ChapterGetProject = Pick<Partial<Project>, "status">;
+export type NonprofitGetProject = Pick<Partial<Project>, "status">;
 export type ChapterUpdateProject = Pick<
   Partial<Project>,
   "status" | "contact" | "chapter"
@@ -254,6 +252,10 @@ export enum Role {
   CHAPTER_ADMIN = "Chapter Admin",
   NONPROFIT_MEMBER = "Nonprofit Member",
   NONPROFIT_ADMIN = "Nonprofit Admin",
+}
+
+export enum StepCardEvent {
+  APPLICATION_FORM,
 }
 
 export interface Contact {

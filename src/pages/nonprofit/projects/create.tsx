@@ -1,84 +1,104 @@
-import { Heading, Button, Box, Grid, Input, Flex } from "@chakra-ui/react";
+import {
+  Heading,
+  Button,
+  Input,
+  Flex,
+  Text,
+  VStack,
+  Wrap,
+  WrapItem,
+} from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { useState } from "react";
+import { nonprofitCreateProject } from "src/actions/Project";
 import ProjectTypeCard from "src/components/nonprofit/projects/create/ProjectTypeCard";
-import { ProjectType } from "src/utils/types";
+import { showError, showInfo } from "src/utils/notifications";
+import { NonprofitCreateProject, ProjectType } from "src/utils/types";
+import urls from "src/utils/urls";
+import { maxInput } from "src/utils/validation";
 
 function NonprofitProjectCreationPage() {
-  const chapter = {
-    _id: `1`,
-    name: "Georgia Tech",
-    email: "gt@hack4impact.org",
-    address: {
-      street: "7 Fake Street",
-      city: "Atlanta",
-      state: "GA",
-      zipCode: "30303",
-      country: "USA",
-    },
-    projectProcess: [],
-    projectTypes: [ProjectType.WEBSITE, ProjectType.MOBILE_APP],
-    projectLimit: 5,
-    website: "bitsofgood.org",
-    facebook: "bitsofgood",
-    instagram: "bitsofgood",
+  const router = useRouter();
+
+  const [name, setName] = useState("");
+  const [selectedType, setSelectedType] = useState<ProjectType>();
+  const [isSaving, setSaving] = useState(false);
+
+  const createProject = async () => {
+    if (name.length === 0) {
+      showError("Please enter a name for your project.");
+      return;
+    }
+
+    if (!selectedType) {
+      showError("Please select a project type.");
+      return;
+    }
+
+    const projectCreate: NonprofitCreateProject = { name, type: selectedType };
+
+    setSaving(true);
+
+    try {
+      await nonprofitCreateProject(projectCreate);
+      showInfo("Successfully created project.");
+      await router.replace(urls.pages.nonprofit.projects.index);
+    } catch (e) {
+      const error = e as Error;
+      showError(error.message);
+    }
+
+    setSaving(false);
   };
 
-  const [selected, setSelected] = useState<ProjectType>();
-  function onProjectTypeCardClick(projectType: ProjectType) {
-    setSelected(projectType);
-  }
-
   return (
-    <Flex
-      direction="column"
-      justify="space-between"
-      padding="60px"
-      height="100%"
-      width="100%"
-      overflow="auto"
-    >
-      <Box>
-        <Heading
-          fontSize={{ base: "x-large", md: "xx-large" }}
-          marginBottom="50px"
-        >
-          Start a Project Application
-        </Heading>
-        <Heading fontSize={{ base: "lg", md: "x-large" }} marginBottom="20px">
-          Select a project type
-        </Heading>
-        <Grid
-          gridTemplateColumns="repeat(auto-fill, 400px)"
-          columnGap="60px"
-          rowGap="40px"
-          marginBottom="70px"
-        >
-          {chapter.projectTypes.map((projectType) => (
-            <ProjectTypeCard
-              key={projectType}
-              projectType={projectType}
-              isSelected={projectType === selected}
-              onClick={onProjectTypeCardClick}
+    <Flex height="100%" width="100%" padding="40px">
+      <Flex flexBasis="1200px" margin="auto">
+        <VStack width="100%" align="stretch" spacing="60px">
+          <Heading>Start a Project</Heading>
+          <VStack align="stretch" spacing="20px">
+            <Text fontSize="2xl" fontWeight="bold">
+              Give your project a name
+            </Text>
+            <Input
+              value={name}
+              maxLength={maxInput}
+              maxWidth="500px"
+              placeholder="Project Name"
+              size="md"
+              variant="outline"
+              backgroundColor="surface"
+              borderColor="border"
+              onChange={(e) => setName(e.target.value)}
             />
-          ))}
-        </Grid>
-        <Heading fontSize={{ base: "lg", md: "x-large" }} marginBottom="20px">
-          Give your project a name
-        </Heading>
-        <Box width={{ base: "300px", md: "600px" }}>
-          <Input
-            placeholder="Project Name"
-            size="md"
-            variant="outline"
-            backgroundColor="surface"
-            borderColor="border"
-          />
-        </Box>
-      </Box>
-
-      <Box align="right" marginTop="40px">
-        <Button variant="primary">Get Started</Button>
-      </Box>
+          </VStack>
+          <VStack align="stretch" spacing="20px">
+            <Text fontSize="2xl" fontWeight="bold">
+              Select a project type
+            </Text>
+            <Wrap spacing="20px">
+              {Object.values(ProjectType).map((type) => (
+                <WrapItem key={type}>
+                  <ProjectTypeCard
+                    isSelected={selectedType === type}
+                    projectType={type}
+                    onClick={() => setSelectedType(type)}
+                  />
+                </WrapItem>
+              ))}
+            </Wrap>
+          </VStack>
+          <Button
+            alignSelf="flex-end"
+            width="150px"
+            variant="primary"
+            onClick={createProject}
+            isLoading={isSaving}
+          >
+            Create Project
+          </Button>
+        </VStack>
+      </Flex>
     </Flex>
   );
 }

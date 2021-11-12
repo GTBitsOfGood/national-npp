@@ -9,10 +9,12 @@ import {
   FormLabel,
   Input,
   Select,
+  Stack,
   Button,
   Textarea,
 } from "@chakra-ui/react";
 import { Types } from "mongoose";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { nonprofitUpdateNonprofit } from "src/actions/Nonprofit";
@@ -21,6 +23,7 @@ import {
   nonprofitGetUsers,
   nonprofitUpdateUser,
 } from "src/actions/User";
+import LoadingIndicator from "src/components/shared/LoadingIndicator";
 import { states, countries } from "src/utils/constants";
 import { showError, showInfo } from "src/utils/notifications";
 import {
@@ -55,14 +58,18 @@ function NonprofitProfilePage() {
   const {
     handleSubmit,
     register,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     reset,
   } = useForm<FormData>();
 
+  const router = useRouter();
+
   const [contactList, setContactList] = useState<Contact[]>([]);
+  const [isLoading, setLoading] = useState(true);
+  const [isSaving, setSaving] = useState(false);
 
   useEffect(() => {
-    async function preloadData() {
+    async function getProfile() {
       const user = await nonprofitGetUser();
       const nonprofit = user.nonprofit as Nonprofit;
 
@@ -92,13 +99,20 @@ function NonprofitProfilePage() {
       });
     }
 
-    preloadData().catch((e) => {
-      const error = e as Error;
-      showError(error.message);
-    });
-  }, [reset]);
+    setLoading(true);
 
-  const submitData = async (data: FormData) => {
+    getProfile()
+      .then(() => setLoading(false))
+      .catch((e) => {
+        const error = e as Error;
+        showError(error.message);
+        router.back();
+      });
+  }, [reset, router]);
+
+  const saveProfile = async (data: FormData) => {
+    setSaving(true);
+
     const userUpdate: NonprofitUpdateUser = {
       name: data.name,
       phoneNum: data.phoneNumber,
@@ -127,66 +141,53 @@ function NonprofitProfilePage() {
       const error = e as Error;
       showError(error.message);
     }
+
+    setSaving(false);
   };
 
   return (
     <Flex height="100%" width="100%">
-      <Flex margin="auto">
-        <VStack marginY={50}>
-          <Text
-            alignSelf="flex-start"
-            pl={4}
-            fontSize="xx-large"
-            fontWeight={700}
-          >
-            Profile
-          </Text>
-          <form onSubmit={handleSubmit(submitData)}>
+      {isLoading ? (
+        <LoadingIndicator />
+      ) : (
+        <Flex margin="auto">
+          <form onSubmit={handleSubmit(saveProfile)}>
             <VStack
-              minW={{ base: 425, md: 800 }}
-              p={12}
-              border="1px solid #BCC5D1"
-              borderRadius={10}
-              direction="column"
+              maxWidth="850px"
+              marginY="40px"
+              padding="40px 60px"
+              border="1px solid"
+              borderColor="border"
+              borderRadius="lg"
               backgroundColor="surface"
-              spacing={10}
+              spacing="40px"
               align="stretch"
             >
-              <Avatar alignSelf="center" width="80px" height="80px" />
-              <VStack align="start" spacing={5}>
-                <Text alignSelf="flex-start" fontSize="lg" fontWeight={700}>
+              <Avatar alignSelf="center" width="90px" height="90px" />
+              <VStack align="stretch" spacing="20px">
+                <Text alignSelf="flex-start" fontSize="lg" fontWeight="bold">
                   User Information
                 </Text>
-                <Flex direction={{ base: "column", md: "row" }}>
-                  <VStack
-                    direction="column"
-                    spacing={5}
-                    mr={{ base: 0, md: 5 }}
-                    mb={{ base: 5, md: 0 }}
-                  >
-                    <FormControl isInvalid={Boolean(errors.name)}>
-                      <FormLabel>Name</FormLabel>
-                      <Input
-                        id="name"
-                        width={320}
-                        maxLength={maxInput}
-                        {...register("name", {
-                          required: "Please enter a name.",
-                        })}
-                      />
-                      <FormErrorMessage>
-                        {errors.name && errors.name.message}
-                      </FormErrorMessage>
-                    </FormControl>
-                  </VStack>
+                <Stack direction={{ base: "column", md: "row" }} spacing="20px">
+                  <FormControl isInvalid={Boolean(errors.name)}>
+                    <FormLabel>Name</FormLabel>
+                    <Input
+                      id="name"
+                      maxLength={maxInput}
+                      {...register("name", {
+                        required: "Please enter a name.",
+                      })}
+                    />
+                    <FormErrorMessage>
+                      {errors.name && errors.name.message}
+                    </FormErrorMessage>
+                  </FormControl>
                   <FormControl isInvalid={Boolean(errors.phoneNumber)}>
                     <FormLabel>Phone Number</FormLabel>
                     <Input
                       id="phoneNumber"
-                      width={320}
                       placeholder="XXX-XXX-XXXX"
                       {...register("phoneNumber", {
-                        required: "Please enter a phone number.",
                         pattern: {
                           value: phoneNumberPattern,
                           message: "Please format phone number correctly.",
@@ -197,24 +198,18 @@ function NonprofitProfilePage() {
                       {errors.phoneNumber && errors.phoneNumber.message}
                     </FormErrorMessage>
                   </FormControl>
-                </Flex>
+                </Stack>
               </VStack>
-              <VStack align="start" spacing={5}>
-                <Text alignSelf="flex-start" fontSize="lg" fontWeight={700}>
+              <VStack align="stretch" spacing="20px">
+                <Text alignSelf="flex-start" fontSize="lg" fontWeight="bold">
                   Nonprofit Information
                 </Text>
-                <Flex direction={{ base: "column", md: "row" }}>
-                  <VStack
-                    direction="column"
-                    spacing={5}
-                    mr={{ base: 0, md: 5 }}
-                    mb={{ base: 5, md: 0 }}
-                  >
+                <Stack direction={{ base: "column", md: "row" }} spacing="20px">
+                  <VStack spacing="20px" flex="1">
                     <FormControl isInvalid={Boolean(errors.nonprofitName)}>
-                      <FormLabel>Nonprofit Name</FormLabel>
+                      <FormLabel>Name</FormLabel>
                       <Input
                         id="nonprofitName"
-                        width={320}
                         maxLength={maxInput}
                         {...register("nonprofitName", {
                           required: "Please enter a nonprofit name.",
@@ -224,12 +219,11 @@ function NonprofitProfilePage() {
                         {errors.nonprofitName && errors.nonprofitName.message}
                       </FormErrorMessage>
                     </FormControl>
-                    <VStack spacing={3}>
+                    <VStack>
                       <FormControl isInvalid={Boolean(errors.street)}>
                         <FormLabel>Address</FormLabel>
                         <Input
                           id="street"
-                          width={320}
                           maxLength={maxInput}
                           placeholder="Street"
                           {...register("street", {
@@ -240,7 +234,6 @@ function NonprofitProfilePage() {
                       <FormControl isInvalid={Boolean(errors.city)}>
                         <Input
                           id="city"
-                          width={320}
                           maxLength={maxInput}
                           placeholder="City"
                           {...register("city", {
@@ -249,10 +242,9 @@ function NonprofitProfilePage() {
                         />
                       </FormControl>
                       <HStack>
-                        <FormControl isInvalid={Boolean(errors.state)}>
+                        <FormControl flex="2" isInvalid={Boolean(errors.state)}>
                           <Select
                             id="state"
-                            width={190}
                             placeholder="State"
                             {...register("state", {
                               required: "Please enter a state.",
@@ -265,10 +257,12 @@ function NonprofitProfilePage() {
                             ))}
                           </Select>
                         </FormControl>
-                        <FormControl isInvalid={Boolean(errors.zipCode)}>
+                        <FormControl
+                          flex="1"
+                          isInvalid={Boolean(errors.zipCode)}
+                        >
                           <Input
                             id="zipCode"
-                            width={120}
                             placeholder="Zip code"
                             {...register("zipCode", {
                               required: "Please enter a zip code.",
@@ -283,7 +277,6 @@ function NonprofitProfilePage() {
                       <FormControl isInvalid={Boolean(errors.country)}>
                         <Select
                           id="country"
-                          width={320}
                           placeholder="Country"
                           {...register("country", {
                             required: "Please enter a country.",
@@ -305,12 +298,11 @@ function NonprofitProfilePage() {
                       </FormControl>
                     </VStack>
                   </VStack>
-                  <VStack spacing={5}>
+                  <VStack spacing="20px" flex="1">
                     <FormControl isInvalid={Boolean(errors.contact)}>
                       <FormLabel>Contact</FormLabel>
                       <Select
                         id="contact"
-                        width={320}
                         placeholder="Contact"
                         {...register("contact", {
                           required: "Please select a contact.",
@@ -329,10 +321,9 @@ function NonprofitProfilePage() {
                       </FormErrorMessage>
                     </FormControl>
                     <FormControl isInvalid={Boolean(errors.website)}>
-                      <FormLabel>Website URL (Optional)</FormLabel>
+                      <FormLabel>Website</FormLabel>
                       <Input
                         id="website"
-                        width={320}
                         maxLength={maxInput}
                         {...register("website")}
                       />
@@ -341,33 +332,33 @@ function NonprofitProfilePage() {
                       </FormErrorMessage>
                     </FormControl>
                   </VStack>
-                </Flex>
+                </Stack>
+                <FormControl isInvalid={Boolean(errors.mission)}>
+                  <FormLabel>Mission</FormLabel>
+                  <Textarea
+                    id="mission"
+                    resize="none"
+                    maxLength={maxTextArea}
+                    {...register("mission")}
+                  />
+                  <FormErrorMessage>
+                    {errors.mission && errors.mission.message}
+                  </FormErrorMessage>
+                </FormControl>
               </VStack>
-              <FormControl isInvalid={Boolean(errors.mission)}>
-                <FormLabel>Organization Mission (Optional)</FormLabel>
-                <Textarea
-                  id="mission"
-                  resize="none"
-                  maxLength={maxTextArea}
-                  {...register("mission")}
-                />
-                <FormErrorMessage>
-                  {errors.mission && errors.mission.message}
-                </FormErrorMessage>
-              </FormControl>
               <Button
                 type="submit"
                 variant="primary"
                 alignSelf="flex-end"
                 size="md"
-                isLoading={isSubmitting}
+                isLoading={isSaving}
               >
                 Save Changes
               </Button>
             </VStack>
           </form>
-        </VStack>
-      </Flex>
+        </Flex>
+      )}
     </Flex>
   );
 }

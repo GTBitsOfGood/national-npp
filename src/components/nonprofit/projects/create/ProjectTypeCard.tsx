@@ -1,48 +1,46 @@
-import { Box, Heading, Text, VStack } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text, VStack } from "@chakra-ui/react";
 import { BsCircleFill } from "react-icons/bs";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { ProjectType } from "src/utils/types";
 
-function ProjectTypeCard(props: {
+interface Props {
   projectType: ProjectType;
   isSelected: boolean;
-  onClick: (projectType: ProjectType) => void;
-}) {
-  const { projectType, isSelected, onClick: _onClick } = props;
+  onClick: () => void;
+}
 
-  function onClick() {
-    if (!isSelected) {
-      _onClick(projectType);
-    }
-  }
-
+function ProjectTypeCard({ projectType, isSelected, onClick }: Props) {
   let description = "";
 
   switch (projectType) {
     case ProjectType.WEB_APP:
-      description = "This is the description for web app";
+      description =
+        "Quisque ultricies facilisis posuere. Sed ante mi, efficitur id tempus vitae, interdum nec leo. Mauris sollicitudin dui vel velit dapibus accumsan. Sed in odio viverra, euismod enim in, vestibulum ante. Nunc feugiat metus leo, nec maximus nisl commodo sit amet. Donec dapibus leo sed facilisis rhoncus. Sed dictum sed neque id dictum.";
       break;
     case ProjectType.WEBSITE:
-      description = "This is the description for website";
+      description =
+        "Quisque ultricies facilisis posuere. Sed ante mi, efficitur id tempus vitae, interdum nec leo. Mauris sollicitudin dui vel velit dapibus accumsan. Sed in odio viverra, euismod enim in, vestibulum ante. Nunc feugiat metus leo, nec maximus nisl commodo sit amet.";
       break;
     case ProjectType.MOBILE_APP:
-      description = "This is the description for mobile app";
+      description =
+        "Quisque ultricies facilisis posuere. Sed ante mi, efficitur id tempus vitae, interdum nec leo. Mauris sollicitudin dui vel velit dapibus accumsan. Sed in odio viverra, euismod enim in, vestibulum ante.";
       break;
     default:
+      description = "Unknown project type.";
       break;
   }
 
   return (
-    <Box
-      display="flex"
+    <Flex
       flexDirection="column"
       justifyContent="space-between"
-      width="400px"
-      minHeight="160px"
+      width="350px"
+      height="100%"
       padding={isSelected ? "28px" : "30px"}
       backgroundColor="surface"
-      border={isSelected ? "3px solid #0069CA" : "1px solid #657788"}
-      borderRadius="15px"
+      border={isSelected ? "3px solid" : "1px solid"}
+      borderColor={isSelected ? "primary" : "border"}
+      borderRadius="lg"
       position="relative"
       onClick={onClick}
       _hover={{ cursor: isSelected ? "default" : "pointer" }}
@@ -57,13 +55,11 @@ function ProjectTypeCard(props: {
           </Box>
         </Box>
       )}
-      <VStack align="left" spacing="1px">
-        <Heading fontSize="lg" marginBottom="1px">
-          {projectType}
-        </Heading>
+      <VStack align="left" spacing="10px">
+        <Heading fontSize="lg">{projectType}</Heading>
         <Text color="secondaryText">{description}</Text>
       </VStack>
-    </Box>
+    </Flex>
   );
 }
 
