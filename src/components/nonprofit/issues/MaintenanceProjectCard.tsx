@@ -1,10 +1,10 @@
 import { Flex, Heading, Tag, VStack } from "@chakra-ui/react";
-import { Project } from "src/utils/types";
+import { MaintenanceProject } from "src/utils/types";
 
 interface Props {
   isSelected: boolean;
-  project: Project;
-  onClick: (project: Project) => void;
+  project: MaintenanceProject;
+  onClick: (project: MaintenanceProject) => void;
   remainingDays?: number;
 }
 

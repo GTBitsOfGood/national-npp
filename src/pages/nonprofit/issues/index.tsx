@@ -23,36 +23,41 @@ import {
   Chapter,
   Project,
   ProjectStage,
+  MaintenanceProject,
 } from "src/utils/types";
 import urls from "src/utils/urls";
 
 function NonprofitIssuesPage() {
-  const [projects, setProjects] = useState<Project[]>();
-  const [currProject, setCurrProject] = useState<Project>();
+  const [projects, setProjects] = useState<MaintenanceProject[]>();
+  const [currProject, setCurrProject] = useState<MaintenanceProject>();
   const [issues, setIssues] = useState<Issue[]>();
 
   useEffect(() => {
     async function fetchProjects() {
-      let projects: Project[] = await nonprofitGetProjects({
+      const projects: Project[] = await nonprofitGetProjects({
         status: ProjectStage.MAINTENANCE,
       });
 
-      projects = projects.map((project) => {
-        // maintenance start will never be undefined if stage is maintenance
-        const endDate = new Date(project.maintenanceStart!);
-        endDate.setDate(
-          endDate.getDate() + (project.chapter as Chapter).maintenancePeriod
-        );
-        return {
-          ...project,
-          maintenanceEnd: endDate,
-          remainingDays: dateDiffInDays(new Date(), endDate),
-        };
-      });
-      if (projects.length !== 0) {
-        setCurrProject(projects[0]);
+      const maintenanceProjects: MaintenanceProject[] = projects.map(
+        (project) => {
+          // maintenance start will never be undefined if stage is maintenance
+          const endDate = new Date(project.maintenanceStart!);
+          endDate.setDate(
+            endDate.getDate() + (project.chapter as Chapter).maintenancePeriod
+          );
+          return {
+            ...project,
+            maintenanceStart: project.maintenanceStart!,
+            maintenanceEnd: endDate,
+            remainingDays: dateDiffInDays(new Date(), endDate),
+          };
+        }
+      );
+
+      if (maintenanceProjects.length !== 0) {
+        setCurrProject(maintenanceProjects[0]);
       }
-      setProjects(projects);
+      setProjects(maintenanceProjects);
     }
 
     fetchProjects().catch((error: Error) => showError(error.message));
@@ -95,12 +100,9 @@ function NonprofitIssuesPage() {
             Projects Open for Maintenance
           </Heading>
           <VStack>
-            {projects?.map((project: Project) => (
+            {projects?.map((project: MaintenanceProject) => (
               <MaintenanceProjectCard
-                remainingDays={dateDiffInDays(
-                  new Date(),
-                  project.maintenanceEnd!
-                )}
+                remainingDays={project.remainingDays}
                 key={project.name}
                 isSelected={project._id === currProject?._id}
                 project={project}
@@ -135,8 +137,8 @@ function NonprofitIssuesPage() {
               <Text fontWeight="bold">
                 Maintenance Period:{" "}
                 {currProject &&
-                  dateToMMDDYYYY(new Date(currProject.maintenanceStart!))}{" "}
-                - {currProject && dateToMMDDYYYY(currProject.maintenanceEnd!)}
+                  dateToMMDDYYYY(new Date(currProject.maintenanceStart))}{" "}
+                - {currProject && dateToMMDDYYYY(currProject.maintenanceEnd)}
               </Text>
               <Link href={urls.pages.nonprofit.issues.create} passHref>
                 <Button variant="primary">File a Maintenance Request</Button>
