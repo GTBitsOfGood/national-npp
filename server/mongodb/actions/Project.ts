@@ -13,7 +13,7 @@ import {
   NonprofitCreateProject,
   ProjectStage,
   ChapterGetProjects,
-  NonprofitGetProjects,
+  NonprofitProjectsListQuery,
   ChapterGetProject,
   NonprofitGetProject,
 } from "src/utils/types";
@@ -113,7 +113,7 @@ export async function nonprofitGetProject(
 
 export async function nonprofitGetProjects(
   nonprofitId: Types.ObjectId,
-  projectsGet: NonprofitGetProjects
+  { filters: { status } }: NonprofitProjectsListQuery
 ) {
   await dbConnect();
 
@@ -121,24 +121,22 @@ export async function nonprofitGetProjects(
     nonprofit: nonprofitId,
   };
 
-  const status = projectsGet.status;
-  const active = projectsGet.active;
-
-  // will filter by active or inactive only if filter specified
-  if (active != undefined) {
-    filter["status"] = active
-      ? {
-          $nin: displayableProjectStageToProjectStages(
-            DisplayableProjectStage.COMPLETE
-          ),
-        }
-      : {
-          $in: displayableProjectStageToProjectStages(
-            DisplayableProjectStage.COMPLETE
-          ),
-        };
-  } else if (status) {
-    filter["status"] = status;
+  if (status != undefined) {
+    if ("$active" in status) {
+      filter["status"] = status.$active
+        ? {
+            $nin: displayableProjectStageToProjectStages(
+              DisplayableProjectStage.COMPLETE
+            ),
+          }
+        : {
+            $in: displayableProjectStageToProjectStages(
+              DisplayableProjectStage.COMPLETE
+            ),
+          };
+    } else {
+      filter["status"] = status.$eq;
+    }
   }
 
   const projects = await ProjectModel.find(filter).populate({

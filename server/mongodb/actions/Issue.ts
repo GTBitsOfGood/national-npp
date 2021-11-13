@@ -7,7 +7,7 @@ import {
   NonprofitUpdateIssue,
   Issue,
   IssueStatus,
-  NonprofitGetIssues,
+  NonprofitIssuesListQuery,
 } from "src/utils/types";
 
 export async function nonprofitCreateIssue(
@@ -24,20 +24,18 @@ export async function nonprofitCreateIssue(
   return issue;
 }
 
-export async function nonprofitGetIssues(
-  projectId: Types.ObjectId,
-  issuesGet: NonprofitGetIssues
-) {
+export async function nonprofitGetIssues({
+  id: projectId,
+  filters: { status },
+}: NonprofitIssuesListQuery) {
   await dbConnect();
 
   const filter: FilterQuery<Issue> = {
     project: projectId,
   };
 
-  const open = issuesGet.open;
-
-  if (open != undefined) {
-    filter["status"] = open
+  if (status?.$open != undefined) {
+    filter["status"] = status.$open
       ? {
           $in: [IssueStatus.PENDING, IssueStatus.IN_PROGRESS],
         }

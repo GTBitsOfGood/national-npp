@@ -58,7 +58,7 @@ function NonprofitIssuesPage() {
   useEffect(() => {
     async function getProjects() {
       const projects: Project[] = await nonprofitGetProjects({
-        status: ProjectStage.MAINTENANCE,
+        filters: { status: { $eq: ProjectStage.MAINTENANCE, type: "$eq" } },
       });
 
       const maintenanceProjects: MaintenanceProject[] = projects.map(
@@ -113,10 +113,14 @@ function NonprofitIssuesPage() {
   useEffect(() => {
     async function getIssues() {
       if (currProject) {
-        const issues: Issue[] = await nonprofitGetIssues(
-          currProject._id.toString(),
-          { open }
-        );
+        const issues: Issue[] = await nonprofitGetIssues({
+          id: currProject._id.toString(),
+          filters: {
+            status: {
+              $open: open,
+            },
+          },
+        });
 
         setIssues(issues);
       }

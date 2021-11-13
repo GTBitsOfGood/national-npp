@@ -1,37 +1,78 @@
+import { JTDSchemaType } from "ajv/lib/types/jtd-schema";
 import { Types } from "mongoose";
 import {
   nonprofitCreateIssue,
   nonprofitGetIssues,
 } from "server/mongodb/actions/Issue";
 import { nonprofitGetProject } from "server/mongodb/actions/Project";
-import APIWrapper from "server/utils/APIWrapper";
-import { tryToParseBoolean } from "server/utils/request-validation";
+import { APIWrapper } from "server/utils/APIWrapper";
+import { ID_QUERY_SCHEMA, IDQuery } from "server/utils/request-validation";
 import {
+  InternalRequest,
+  IssueStatus,
+  MaintenanceType,
   NonprofitCreateIssue,
-  NonprofitGetIssues,
+  NonprofitIssuesListQuery,
   Role,
 } from "src/utils/types";
+
+const GET_QUERY_SCHEMA: JTDSchemaType<NonprofitIssuesListQuery> = {
+  properties: {
+    id: { type: "string" },
+    filters: {
+      optionalProperties: {
+        status: {
+          properties: {
+            $open: {
+              type: "boolean",
+            },
+          },
+        },
+      },
+    },
+  },
+};
+
+const POST_BODY_SCHEMA: JTDSchemaType<NonprofitCreateIssue> = {
+  properties: {
+    type: {
+      enum: Object.values(MaintenanceType),
+    },
+    title: {
+      type: "string",
+    },
+    description: {
+      type: "string",
+    },
+    status: {
+      enum: Object.values(IssueStatus),
+    },
+  },
+  optionalProperties: {
+    images: {
+      elements: { type: "string" },
+    },
+  },
+};
 
 export default APIWrapper({
   GET: {
     config: {
       requireSession: true,
       roles: [Role.NONPROFIT_MEMBER],
+      querySchema: GET_QUERY_SCHEMA,
     },
-    handler: async (req) => {
-      const projectId = req.query.id as string;
+    handler: async (
+      req: InternalRequest<NonprofitIssuesListQuery, undefined>
+    ) => {
       const nonprofitId = req.user.nonprofit;
 
       if (!nonprofitId) {
         throw new Error("User does not belong to a nonprofit.");
       }
 
-      const issuesGet = {
-        open: tryToParseBoolean(req.query.open),
-      } as NonprofitGetIssues;
-
       const project = await nonprofitGetProject(
-        Types.ObjectId(projectId),
+        Types.ObjectId(req.query.id),
         nonprofitId,
         {}
       );
@@ -40,10 +81,7 @@ export default APIWrapper({
         throw new Error("Nonprofit does not have access to this project");
       }
 
-      const issues = await nonprofitGetIssues(
-        Types.ObjectId(projectId),
-        issuesGet
-      );
+      const issues = await nonprofitGetIssues(req.query);
 
       return issues;
     },
@@ -52,10 +90,11 @@ export default APIWrapper({
     config: {
       requireSession: true,
       roles: [Role.NONPROFIT_MEMBER],
+      querySchema: ID_QUERY_SCHEMA,
+      bodySchema: POST_BODY_SCHEMA,
     },
-    handler: async (req) => {
-      const issueCreate = req.body.issueCreate as NonprofitCreateIssue;
-      const projectId = Types.ObjectId(req.query.id as string);
+    handler: async (req: InternalRequest<IDQuery, NonprofitCreateIssue>) => {
+      const projectId = Types.ObjectId(req.query.id);
       const nonprofitId = req.user.nonprofit;
 
       if (!nonprofitId) {
@@ -68,7 +107,7 @@ export default APIWrapper({
         throw new Error("Nonprofit does not own this project!");
       }
 
-      const issue = await nonprofitCreateIssue(projectId, issueCreate);
+      const issue = await nonprofitCreateIssue(projectId, req.body);
 
       return issue;
     },
