@@ -7,9 +7,15 @@ import MeetingScheduledImage from "public/images/nonprofit/project/meeting_sched
 import RejectedImage from "public/images/nonprofit/project/rejected.svg";
 import ScheduleMeetingImage from "public/images/nonprofit/project/schedule_meeting.svg";
 import SubmitApplicationImage from "public/images/nonprofit/project/submit_application.svg";
-import { ProjectStage } from "src/utils/types";
+import { ProjectStage, StepCardEvent } from "src/utils/types";
 
-export const getStepCardData = (projectStage: ProjectStage) => {
+// Cannot do some actions like routing here, so using onEvent to tell nonprofit projects page to do something
+interface StepCardParams {
+  projectStage: ProjectStage;
+  onEvent: (event: StepCardEvent) => void;
+}
+
+export const getStepCardData = ({ projectStage, onEvent }: StepCardParams) => {
   switch (projectStage) {
     case ProjectStage.SUBMIT_APPLICATION:
       return {
@@ -23,7 +29,7 @@ export const getStepCardData = (projectStage: ProjectStage) => {
         title: "Submit Application Form",
         buttons: [
           <Button
-            onClick={() => console.log("redirecting to form")}
+            onClick={() => onEvent(StepCardEvent.APPLICATION_FORM)}
             variant="primary"
             key="first-button"
           >
@@ -53,7 +59,7 @@ export const getStepCardData = (projectStage: ProjectStage) => {
         title: "Schedule an Interview",
         buttons: [
           <Button
-            onClick={() => console.log("scheduling interview")}
+            onClick={() => console.log("Go to schedule meeting page.")}
             variant="primary"
             key="first-button"
           >
@@ -69,14 +75,16 @@ export const getStepCardData = (projectStage: ProjectStage) => {
         title: "Interview Scheduled",
         buttons: [
           <Button
-            onClick={() => console.log("rescheduling interview")}
+            onClick={() =>
+              console.log("Cancel meeting and go to schedule meeting page.")
+            }
             variant="secondary"
             key="first-button"
           >
             Reschedule Interview
           </Button>,
           <Button
-            onClick={() => console.log("cancelling interview")}
+            onClick={() => console.log("Cancel Meeting")}
             variant="secondary"
             key="second-button"
           >
@@ -97,7 +105,7 @@ export const getStepCardData = (projectStage: ProjectStage) => {
       };
     case ProjectStage.SCHEDULE_MEETING:
       return {
-        actionRequired: false,
+        actionRequired: true,
         text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, \
             sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \
             Nam aliquam sem et tortor consequat id porta nibh venenatis. Vitae \
@@ -106,7 +114,7 @@ export const getStepCardData = (projectStage: ProjectStage) => {
         title: "Schedule a Meeting",
         buttons: [
           <Button
-            onClick={() => console.log("scheduling meeting")}
+            onClick={() => console.log("Go to schedule meeting page.")}
             variant="primary"
             key="first-button"
           >
@@ -122,14 +130,16 @@ export const getStepCardData = (projectStage: ProjectStage) => {
         title: "Meeting Scheduled",
         buttons: [
           <Button
-            onClick={() => console.log("rescheduling meeting")}
+            onClick={() =>
+              console.log("Cancel meeting and go to schedule meeting page.")
+            }
             variant="secondary"
             key="first-button"
           >
             Reschedule Meeting
           </Button>,
           <Button
-            onClick={() => console.log("cancelling meeting")}
+            onClick={() => console.log("Cancel Meeting")}
             variant="secondary"
             key="second-button"
           >
@@ -147,15 +157,7 @@ export const getStepCardData = (projectStage: ProjectStage) => {
             elementum curabitur vitae nunc.",
         image: CompletedImage,
         title: "Project Complete!",
-        buttons: [
-          <Button
-            onClick={() => console.log("returning to home")}
-            variant="primary"
-            key="first-button"
-          >
-            Return to Home
-          </Button>,
-        ],
+        buttons: [],
       };
     case ProjectStage.REJECTED:
       return {
@@ -166,15 +168,7 @@ export const getStepCardData = (projectStage: ProjectStage) => {
             elementum curabitur vitae nunc.",
         image: RejectedImage,
         title: "Project Rejected",
-        buttons: [
-          <Button
-            onClick={() => console.log("returning to home")}
-            variant="primary"
-            key="first-button"
-          >
-            Return to Home
-          </Button>,
-        ],
+        buttons: [],
       };
     case ProjectStage.CANCELLED:
       return {
@@ -185,15 +179,7 @@ export const getStepCardData = (projectStage: ProjectStage) => {
             elementum curabitur vitae nunc.",
         image: CancelledImage,
         title: "Project Cancelled",
-        buttons: [
-          <Button
-            onClick={() => console.log("returning to home")}
-            variant="primary"
-            key="first-button"
-          >
-            Return to Home
-          </Button>,
-        ],
+        buttons: [],
       };
     default:
       return {
@@ -205,15 +191,7 @@ export const getStepCardData = (projectStage: ProjectStage) => {
             dui sapien eget mi proin sed libero.",
         image: SubmitApplicationImage,
         title: "Submit Application Form",
-        buttons: [
-          <Button
-            onClick={() => console.log("redirecting to form")}
-            variant="primary"
-            key="first-button"
-          >
-            Go to Form
-          </Button>,
-        ],
+        buttons: [],
       };
   }
 };

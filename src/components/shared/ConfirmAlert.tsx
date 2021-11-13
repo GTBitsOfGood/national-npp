@@ -20,6 +20,11 @@ interface Props {
 }
 
 function ConfirmAlert(props: Props) {
+  const onConfirm = () => {
+    props.onConfirm();
+    props.onClose();
+  };
+
   return (
     <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered>
       <ModalOverlay />
@@ -30,7 +35,7 @@ function ConfirmAlert(props: Props) {
           <Text fontSize="lg">{props.description}</Text>
         </ModalBody>
         <ModalFooter>
-          <Button variant="danger" mr="10px" onClick={props.onConfirm}>
+          <Button variant="danger" mr="10px" onClick={onConfirm}>
             {props.confirmText}
           </Button>
           <Button variant="secondary" onClick={props.onClose}>
