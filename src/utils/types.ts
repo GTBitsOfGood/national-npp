@@ -81,7 +81,7 @@ export interface Issue {
   description: string;
   status: IssueStatus;
   images?: Array<string>;
-  reviewer?: Types.ObjectId; // The chapter member assigned to this issue
+  reviewer?: Types.ObjectId | User; // The chapter member assigned to this issue
   createdAt: Date;
   updatedAt: Date;
   finishedAt?: Date;

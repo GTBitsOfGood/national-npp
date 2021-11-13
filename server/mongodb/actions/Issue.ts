@@ -1,5 +1,6 @@
 import { Types } from "mongoose";
 import IssueModel from "server/mongodb/models/Issue";
+import UserModel from "server/mongodb/models/User";
 import dbConnect from "server/utils/dbConnect";
 import { NonprofitUpdateIssue } from "src/utils/types";
 
@@ -9,7 +10,10 @@ export async function nonprofitGetIssue(
 ) {
   await dbConnect();
 
-  const issue = await IssueModel.findOne({ _id: issueId, project: projectId });
+  const issue = await IssueModel.findOne({
+    _id: issueId,
+    project: projectId,
+  }).populate({ path: "reviewer", model: UserModel });
 
   return issue;
 }
