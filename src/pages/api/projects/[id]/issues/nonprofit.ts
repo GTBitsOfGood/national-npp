@@ -22,7 +22,7 @@ export default APIWrapper({
       const project = await nonprofitGetProject(projectId, nonprofitId, {});
 
       if (!project) {
-        throw new Error("Nonprofit does not own project!");
+        throw new Error("Nonprofit does not own this project!");
       }
 
       const issue = await nonprofitCreateIssue(projectId, issueCreate);

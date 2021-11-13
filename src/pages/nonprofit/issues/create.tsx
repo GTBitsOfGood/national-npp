@@ -25,9 +25,7 @@ function NonprofitIssueCreationPage() {
   const [issueType, setIssueType] = useState<MaintenanceType>();
   const [preUploadImages, setPreUploadImages] = useState<FileList>();
   const [images, setImages] = useState<UploadedFile[]>([]);
-  const [chapterIssueTypes, setChapterIssueTypes] = useState<MaintenanceType[]>(
-    [MaintenanceType.BUG_FIXES, MaintenanceType.NEW_FEATURES]
-  );
+  const [chapterIssueTypes, setChapterIssueTypes] = useState<MaintenanceType[]>([]);
   const [projectId, setProjectId] = useState("617ea659069ce109e2ae9f76");
 
   useEffect(() => {
