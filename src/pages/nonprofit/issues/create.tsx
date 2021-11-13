@@ -13,7 +13,6 @@ import {
   IssueStatus,
   MaintenanceType,
   NonprofitCreateIssue,
-  Project,
   ProjectStage,
   UploadedFile,
 } from "src/utils/types";
@@ -24,54 +23,31 @@ function NonprofitIssueCreationPage() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [issueType, setIssueType] = useState<MaintenanceType>();
-  const [project, setProject] = useState<Project>();
   const [preUploadImages, setPreUploadImages] = useState<FileList>();
   const [images, setImages] = useState<UploadedFile[]>([]);
   const [chapterIssueTypes, setChapterIssueTypes] = useState<MaintenanceType[]>(
     [MaintenanceType.BUG_FIXES, MaintenanceType.NEW_FEATURES]
   );
-  const [projectId, setProjectId] = useState("617ea71c069ce109e2ae9f83");
+  const [projectId, setProjectId] = useState("617ea659069ce109e2ae9f76");
 
   useEffect(() => {
     async function getProject() {
-      let project;
-      try {
-        project = await nonprofitGetProject(projectId, {
-          status: ProjectStage.MAINTENANCE,
-        });
-      } catch (e) {
-        showError((e as Error).message);
-      }
+      const project = await nonprofitGetProject(projectId, {
+        status: ProjectStage.MAINTENANCE,
+      });
+
       if (!project) {
         showError("Project does not exist.");
-        return;
       }
-
-      setProject(project);
+      setChapterIssueTypes((project.chapter as Chapter).maintenanceTypes);
     }
 
-    getProject()
-      .then(() => {
-        if (project) {
-          /**
-           * project.chapter as Chapter does not currently work either but when it will change:
-           * setChapterIssueTypes([MaintenanceType.BUG_FIXES, MaintenanceType.NEW_FEATURES]);
-           * to
-           * setChapterIssueTypes(chapter.maintenanceTypes;);
-           */
-          const chapter = project.chapter as Chapter;
-          setChapterIssueTypes([
-            MaintenanceType.BUG_FIXES,
-            MaintenanceType.NEW_FEATURES,
-          ]);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    getProject().catch((error) => {
+      showError((error as Error).message);
+    });
   }, []);
   const uploadImages = async ({ imageList }: { imageList: FileList }) => {
-    if (!imageList){
+    if (!imageList) {
       return;
     }
 
@@ -85,7 +61,6 @@ function NonprofitIssueCreationPage() {
           console.log(percent);
         },
       });
-      setImages([...images, result]);
     }
   };
 
@@ -106,8 +81,8 @@ function NonprofitIssueCreationPage() {
     }
 
     let blobPaths = [] as string[];
-    if (preUploadImages){
-      uploadImages({imageList: preUploadImages})
+    if (preUploadImages) {
+      uploadImages({ imageList: preUploadImages })
         .then(() => {
           blobPaths = images.map(({ blobPath }) => blobPath);
         })
@@ -120,10 +95,8 @@ function NonprofitIssueCreationPage() {
       type: issueType as MaintenanceType,
       title: title,
       description: description,
-      status: IssueStatus.IN_PROGRESS,
+      status: IssueStatus.PENDING,
       images: blobPaths,
-      createdAt: new Date(),
-      updatedAt: new Date(),
     };
     try {
       await nonprofitCreateIssue(projectId, issueCreate);

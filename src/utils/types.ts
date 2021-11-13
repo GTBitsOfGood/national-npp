@@ -200,7 +200,10 @@ export type NonprofitUpdateNonprofit = Omit<
   Partial<Nonprofit>,
   "_id" | "isVerified"
 >;
-export type NonprofitCreateIssue = Omit<Issue, "_id" | "project">;
+export type NonprofitCreateIssue = Omit<
+  Issue,
+  "_id" | "project" | "createdAt" | "updatedAt"
+>;
 
 /* Enums */
 
