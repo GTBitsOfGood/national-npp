@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { showError } from "src/utils/notifications";
 import { PageAuth } from "src/utils/types";
 import urls from "src/utils/urls";
-import LoadingIndicator from "./LoadingIndicator";
+import PageLoadingIndicator from "./PageLoadingIndicator";
 
 interface Props {
   pageAuth: PageAuth | undefined;
@@ -32,7 +32,7 @@ function Auth({ pageAuth, children }: Props) {
   }, [pageAuth, user, isLoading, router]);
 
   if (pageAuth && pageAuth.requireSession && isLoading) {
-    return <LoadingIndicator />;
+    return <PageLoadingIndicator />;
   }
 
   return <>{children}</>;

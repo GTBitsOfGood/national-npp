@@ -55,6 +55,7 @@ export interface Project {
   status: ProjectStage;
   type: ProjectType;
   contact?: User | Types.ObjectId;
+  maintenanceStart?: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -173,7 +174,9 @@ export type AuthComponent = NextComponentType & { auth: PageAuth | undefined };
 
 export type NonprofitCreateProject = Pick<Required<Project>, "name" | "type">;
 export type ChapterGetProjects = { status?: ProjectStage };
-export type NonprofitGetProjects = { active?: boolean };
+export type NonprofitGetProjects = Pick<Partial<Project>, "status"> & {
+  active?: boolean;
+};
 export type NonprofitUpdateProject = Pick<Partial<Project>, "status">;
 export type ChapterGetProject = Pick<Partial<Project>, "status">;
 export type NonprofitGetProject = Pick<Partial<Project>, "status">;
@@ -183,6 +186,8 @@ export type ChapterUpdateProject = Pick<
 >;
 
 export type NonprofitCreateApplication = Omit<Application, "_id" | "project">;
+
+export type NonprofitGetIssues = { open?: boolean };
 
 export type NonprofitUpdateUser = Pick<
   Partial<User>,
@@ -258,6 +263,11 @@ export interface Contact {
   name: string;
   email: string;
 }
+
+export type MaintenanceProject = Project & {
+  maintenanceEnd: Date;
+  remainingDays: number;
+};
 
 // TODO: Remove this type and update chapter projects table
 export interface ChapterProject {
