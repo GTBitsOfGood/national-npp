@@ -6,10 +6,6 @@ import {
   VStack,
   Text,
   HStack,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalBody,
   useDisclosure,
 } from "@chakra-ui/react";
 import Link from "next/link";
@@ -17,6 +13,8 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { HiOutlineChevronLeft } from "react-icons/hi";
 import { nonprofitGetIssue, nonprofitUpdateIssue } from "src/actions/Issue";
+import ImageModal from "src/components/shared/ImageModal";
+import IssueStatusTag from "src/components/shared/IssueStatusTag";
 import LoadingIndicator from "src/components/shared/LoadingIndicator";
 import { dateToMMDDYYYY } from "src/utils/dates";
 import { showError } from "src/utils/notifications";
@@ -29,6 +27,7 @@ function NonprofitIssueViewPage() {
   const router = useRouter();
   const [isLoading, setLoading] = useState(true);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [currImagePath, setCurrImagePath] = useState("");
 
   const reviewer = issue?.reviewer as User;
 
@@ -45,6 +44,11 @@ function NonprofitIssueViewPage() {
       const error = e as Error;
       showError(error.message);
     }
+  };
+
+  const showImage = (imagePath: string) => {
+    setCurrImagePath(imagePath);
+    onOpen();
   };
 
   useEffect(() => {
@@ -89,136 +93,121 @@ function NonprofitIssueViewPage() {
       {isLoading ? (
         <LoadingIndicator />
       ) : (
-        <VStack
-          align="stretch"
-          margin="auto"
-          flexBasis="850px"
-          padding="40px 20px"
-          spacing="20px"
-        >
-          <Link href={urls.pages.nonprofit.issues.index} passHref>
-            <Button
-              leftIcon={<HiOutlineChevronLeft />}
-              variant="secondary"
-              padding="0px"
-              alignSelf="start"
-            >
-              Maintenance
-            </Button>
-          </Link>
-          <HStack
-            border="1px solid"
-            borderColor="border"
-            borderRadius="lg"
-            backgroundColor="surface"
-            align="stretch"
-            justifyContent="space-between"
-            padding="15px 30px"
-          >
-            <HStack spacing="20px">
-              <Text
-                fontWeight="bold"
-                padding="5px 10px"
-                color={
-                  issue?.status == IssueStatus.CLOSED ? "#79c099" : "#cf7f21"
-                }
-                bgColor={
-                  issue?.status == IssueStatus.CLOSED ? "#ecf6f0" : "#f0eae3"
-                }
-                borderRadius="md"
-              >
-                {issue?.status == IssueStatus.CLOSED ? "Complete" : "Pending"}
-              </Text>
-              <HStack>
-                {issue?.createdAt && (
-                  <Text color="secondaryText">
-                    Issued {dateToMMDDYYYY(new Date(issue.createdAt))},
-                  </Text>
-                )}
-                {issue?.finishedAt && (
-                  <Text color="secondaryText">
-                    Closed {dateToMMDDYYYY(new Date(issue.finishedAt))}
-                  </Text>
-                )}
-              </HStack>
-            </HStack>
-            {!issue?.finishedAt && (
-              <Button variant="secondary" onClick={closeIssue}>
-                Close Issue
-              </Button>
-            )}
-          </HStack>
-
+        <>
+          <ImageModal
+            imagePath={currImagePath}
+            isOpen={isOpen}
+            onClose={onClose}
+          />
           <VStack
-            border="1px solid"
-            borderColor="border"
-            borderRadius="lg"
-            backgroundColor="surface"
             align="stretch"
-            padding="30px"
+            margin="auto"
+            flexBasis="850px"
+            padding="40px 20px"
             spacing="20px"
           >
-            <VStack align="stretch">
-              <Text fontWeight="bold">Issue ID</Text>
-              <Text>{issue?._id}</Text>
-            </VStack>
-            <VStack align="stretch">
-              <Text fontWeight="bold">Title</Text>
-              <Text>{issue?.title}</Text>
-            </VStack>
-            <VStack align="stretch">
-              <Text fontWeight="bold">Description</Text>
-              <Text>{issue?.description}</Text>
-            </VStack>
-            <VStack align="stretch">
-              <Text fontWeight="bold">Type</Text>
-              <Text>{issue?.type}</Text>
-            </VStack>
-            {issue?.images && (
-              <VStack align="stretch">
-                <Text fontWeight="bold">Screenshots</Text>
+            <Link href={urls.pages.nonprofit.issues.index} passHref>
+              <Button
+                leftIcon={<HiOutlineChevronLeft />}
+                variant="secondary"
+                padding="0px"
+                alignSelf="start"
+              >
+                Maintenance
+              </Button>
+            </Link>
+            <HStack
+              border="1px solid"
+              borderColor="border"
+              borderRadius="lg"
+              backgroundColor="surface"
+              align="stretch"
+              justifyContent="space-between"
+              padding="15px 30px"
+            >
+              <HStack spacing="20px">
+                {issue?.status && (
+                  <IssueStatusTag status={IssueStatus.CLOSED} />
+                )}
                 <HStack>
-                  {issue.images.map((image) => (
-                    <VStack key={image} align="start">
-                      <Box
-                        width="150px"
-                        height="150px"
-                        onClick={onOpen}
-                        cursor="pointer"
-                      >
-                        <Image
-                          src={image}
-                          //src={linkToUploadedFile(image.blobPath)}
-                        />
-                      </Box>
-
-                      <Modal isOpen={isOpen} onClose={onClose}>
-                        <ModalOverlay />
-                        <ModalContent margin="auto">
-                          <ModalBody>
-                            <Image
-                              src={image}
-                              //src={linkToUploadedFile(image.blobPath)}/>
-                            />
-                          </ModalBody>
-                        </ModalContent>
-                      </Modal>
-                    </VStack>
-                  ))}
+                  {issue?.createdAt && (
+                    <Text color="secondaryText">
+                      Issued {dateToMMDDYYYY(new Date(issue.createdAt))},
+                    </Text>
+                  )}
+                  {issue?.finishedAt && (
+                    <Text color="secondaryText">
+                      Closed {dateToMMDDYYYY(new Date(issue.finishedAt))}
+                    </Text>
+                  )}
                 </HStack>
-                <HStack />
-              </VStack>
-            )}
-            {reviewer && (
+              </HStack>
+              {!issue?.finishedAt && (
+                <Button variant="secondary" onClick={closeIssue}>
+                  Close Issue
+                </Button>
+              )}
+            </HStack>
+
+            <VStack
+              border="1px solid"
+              borderColor="border"
+              borderRadius="lg"
+              backgroundColor="surface"
+              align="stretch"
+              padding="30px"
+              spacing="20px"
+            >
               <VStack align="stretch">
-                <Text fontWeight="bold">Reviewer</Text>
-                <Text>{reviewer.name}</Text>
-                <Text>{reviewer.email}</Text>
-                <Text>{reviewer.phoneNum}</Text>
+                <Text fontWeight="bold">Issue ID</Text>
+                <Text>{issue?._id}</Text>
               </VStack>
-            )}
+              <VStack align="stretch">
+                <Text fontWeight="bold">Title</Text>
+                <Text>{issue?.title}</Text>
+              </VStack>
+              <VStack align="stretch">
+                <Text fontWeight="bold">Description</Text>
+                <Text>{issue?.description}</Text>
+              </VStack>
+              <VStack align="stretch">
+                <Text fontWeight="bold">Type</Text>
+                <Text>{issue?.type}</Text>
+              </VStack>
+              {issue?.images && (
+                <VStack align="stretch">
+                  <Text fontWeight="bold">Screenshots</Text>
+                  <HStack>
+                    {issue.images.map((image) => (
+                      <VStack key={image} align="start">
+                        <Box
+                          width="150px"
+                          height="150px"
+                          onClick={() => showImage(image)}
+                          cursor="pointer"
+                        >
+                          <Image
+                            src={image}
+                            //src={linkToUploadedFile(image.blobPath)}
+                          />
+                        </Box>
+                      </VStack>
+                    ))}
+                  </HStack>
+                  <HStack />
+                </VStack>
+              )}
+              {reviewer && (
+                <VStack align="stretch">
+                  <Text fontWeight="bold">Reviewer</Text>
+                  <Text>{reviewer.name}</Text>
+                  <Text>{reviewer.email}</Text>
+                  <Text>{reviewer.phoneNum}</Text>
+                </VStack>
+              )}
+            </VStack>
           </VStack>
-        </VStack>
+        </>
       )}
     </Flex>
   );
