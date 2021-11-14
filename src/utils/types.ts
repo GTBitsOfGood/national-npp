@@ -172,10 +172,7 @@ export interface PageAuth {
 
 export type AuthComponent = NextComponentType & { auth: PageAuth | undefined };
 
-export type NonprofitCreateProject = Pick<
-  Required<Project>,
-  "chapter" | "name" | "type"
->;
+export type NonprofitCreateProject = Pick<Required<Project>, "name" | "type">;
 export type ChapterGetProjects = { status?: ProjectStage };
 export type NonprofitGetProjects = Pick<Partial<Project>, "status"> & {
   active?: boolean;

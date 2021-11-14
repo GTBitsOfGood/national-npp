@@ -1,10 +1,6 @@
 import { Text, VStack } from "@chakra-ui/react";
 
-interface Props {
-  active: boolean;
-}
-
-function EmptyProjectCard({ active }: Props) {
+function EmptyProjectCard() {
   return (
     <VStack
       height="120px"
@@ -18,7 +14,7 @@ function EmptyProjectCard({ active }: Props) {
       align="center"
       backgroundColor="inherit"
     >
-      <Text>You have no {active ? "active " : "closed "} projects.</Text>
+      <Text>No projects to see here.</Text>
     </VStack>
   );
 }
