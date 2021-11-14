@@ -172,12 +172,6 @@ export interface PageAuth {
 
 export type AuthComponent = NextComponentType & { auth: PageAuth | undefined };
 
-export type MaintenanceProject = Project & {
-  maintenanceStart: Date;
-  maintenanceEnd: Date;
-  remainingDays: number;
-};
-
 export type NonprofitCreateProject = Pick<
   Required<Project>,
   "chapter" | "name" | "type"
@@ -195,6 +189,8 @@ export type ChapterUpdateProject = Pick<
 >;
 
 export type NonprofitCreateApplication = Omit<Application, "_id" | "project">;
+
+export type NonprofitGetIssues = { open?: boolean };
 
 export type NonprofitUpdateUser = Pick<
   Partial<User>,
@@ -270,6 +266,11 @@ export interface Contact {
   name: string;
   email: string;
 }
+
+export type MaintenanceProject = Project & {
+  maintenanceEnd: Date;
+  remainingDays: number;
+};
 
 // TODO: Remove this type and update chapter projects table
 export interface ChapterProject {
