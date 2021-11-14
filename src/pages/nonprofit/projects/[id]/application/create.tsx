@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { HiOutlineChevronLeft } from "react-icons/hi";
 import { nonprofitGetProject } from "src/actions/Project";
 import ApplicationCard from "src/components/shared/ApplicationCard";
-import LoadingIndicator from "src/components/shared/LoadingIndicator";
+import PageLoadingIndicator from "src/components/shared/PageLoadingIndicator";
 import { showError } from "src/utils/notifications";
 import { Project, ProjectStage } from "src/utils/types";
 import urls from "src/utils/urls";
@@ -48,7 +48,7 @@ function NonprofitApplicationPage() {
   return (
     <Flex height="100%" width="100%">
       {isLoading ? (
-        <LoadingIndicator />
+        <PageLoadingIndicator />
       ) : (
         <VStack spacing="20px" margin="auto" align="start" paddingY="40px">
           <Link href={urls.pages.nonprofit.projects.index} passHref={true}>

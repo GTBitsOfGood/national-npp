@@ -1,5 +1,6 @@
 import {
   Button,
+  Center,
   Flex,
   Divider,
   Heading,
@@ -17,7 +18,8 @@ import { useCallback, useEffect, useState } from "react";
 import { nonprofitGetIssues, nonprofitGetProjects } from "src/actions/Project";
 import IssuesTable from "src/components/nonprofit/issues/IssuesTable";
 import MaintenanceProjectCard from "src/components/nonprofit/issues/MaintenanceProjectCard";
-import LoadingIndicator from "src/components/shared/LoadingIndicator";
+import LoadingSpinner from "src/components/shared/LoadingSpinner";
+import PageLoadingIndicator from "src/components/shared/PageLoadingIndicator";
 import { dateDiffInDays, dateToMMDDYYYY } from "src/utils/dates";
 import { showError } from "src/utils/notifications";
 import {
@@ -62,7 +64,8 @@ function NonprofitIssuesPage() {
           // All projects in maintenance stage will have maintenance start
           const startDate = new Date(project.maintenanceStart as Date);
 
-          const endDate = new Date(
+          const endDate = new Date();
+          endDate.setDate(
             startDate.getDate() + projectChapter.maintenancePeriod
           );
 
@@ -126,7 +129,7 @@ function NonprofitIssuesPage() {
   return (
     <Flex height="100%" width="100%" overflow="auto">
       {projectsLoading ? (
-        <LoadingIndicator />
+        <PageLoadingIndicator />
       ) : (
         <>
           <Flex
@@ -214,10 +217,20 @@ function NonprofitIssuesPage() {
                       padding="15px 0px"
                       overflow="scroll"
                     >
-                      {issues.length > 0 ? (
-                        <IssuesTable issues={issues} />
+                      {issuesLoading ? (
+                        <Center height="100%">
+                          <LoadingSpinner />
+                        </Center>
                       ) : (
-                        <Text alignSelf="center">No Open Issues</Text>
+                        <>
+                          {issues.length > 0 ? (
+                            <IssuesTable issues={issues} />
+                          ) : (
+                            <Center height="100%">
+                              <Text>No Open Issues</Text>
+                            </Center>
+                          )}
+                        </>
                       )}
                     </TabPanel>
                     <TabPanel
@@ -225,10 +238,20 @@ function NonprofitIssuesPage() {
                       padding="15px 0px"
                       overflow="scroll"
                     >
-                      {issues.length > 0 ? (
-                        <IssuesTable issues={issues} />
+                      {issuesLoading ? (
+                        <Center height="100%">
+                          <LoadingSpinner />
+                        </Center>
                       ) : (
-                        <Text>No Closed Issues</Text>
+                        <>
+                          {issues.length > 0 ? (
+                            <IssuesTable issues={issues} />
+                          ) : (
+                            <Center height="100%">
+                              <Text>No Closed Issues</Text>
+                            </Center>
+                          )}
+                        </>
                       )}
                     </TabPanel>
                   </TabPanels>

@@ -28,7 +28,7 @@ import ProjectCard from "src/components/nonprofit/projects/ProjectCard";
 import StepCard from "src/components/nonprofit/projects/StepCard";
 import { getStepCardData } from "src/components/nonprofit/projects/StepCardData";
 import ConfirmAlert from "src/components/shared/ConfirmAlert";
-import LoadingIndicator from "src/components/shared/LoadingIndicator";
+import PageLoadingIndicator from "src/components/shared/PageLoadingIndicator";
 import { showError } from "src/utils/notifications";
 import {
   displayableProjectStageOrder,
@@ -120,7 +120,7 @@ function NonprofitProjectsPage() {
   return (
     <Flex height="100%" width="100%">
       {isLoading ? (
-        <LoadingIndicator />
+        <PageLoadingIndicator />
       ) : (
         <>
           <ConfirmAlert
