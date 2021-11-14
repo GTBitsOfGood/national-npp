@@ -1,7 +1,7 @@
 import { Button } from "@chakra-ui/button";
 import { Heading, Stack, Text, VStack, Link } from "@chakra-ui/layout";
 import { Radio, RadioGroup } from "@chakra-ui/radio";
-import { Flex } from "@chakra-ui/react";
+import { Flex, Input, FormControl } from "@chakra-ui/react";
 import { Textarea } from "@chakra-ui/textarea";
 import { useEffect, useState } from "react";
 import { HiOutlineChevronLeft } from "react-icons/hi";
@@ -172,7 +172,19 @@ function NonprofitIssueCreationPage() {
             />
 
             <Text fontSize="md">Screenshots (Optional)</Text>
-            <Button alignSelf="start" colorScheme="blue" variant="outline">
+              <Flex>
+              <FormControl>
+                {/* eslint-disable-next-line react/forbid-elements */}
+                <input style={{fontSize: "14px"}} type="file" accept="image/*" />
+              </FormControl>
+            </Flex>
+            <Flex>
+              <FormControl>
+                {/* eslint-disable-next-line react/forbid-elements */}
+                <input style={{fontSize: "14px"}} type="file" accept="image/*" />
+              </FormControl>
+            </Flex>
+            <Button type="submit" alignSelf="start" colorScheme="blue" variant="outline">
               Upload File
             </Button>
             <Stack>
