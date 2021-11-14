@@ -25,7 +25,9 @@ function NonprofitIssueCreationPage() {
   const [issueType, setIssueType] = useState<MaintenanceType>();
   const [preUploadImages, setPreUploadImages] = useState<FileList>();
   const [images, setImages] = useState<UploadedFile[]>([]);
-  const [chapterIssueTypes, setChapterIssueTypes] = useState<MaintenanceType[]>([]);
+  const [chapterIssueTypes, setChapterIssueTypes] = useState<MaintenanceType[]>(
+    []
+  );
   const [projectId, setProjectId] = useState("617ea659069ce109e2ae9f76");
 
   useEffect(() => {
@@ -59,6 +61,9 @@ function NonprofitIssueCreationPage() {
           console.log(percent);
         },
       });
+      if (result) {
+        setImages([...images, result]);
+      }
     }
   };
 
