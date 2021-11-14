@@ -1,6 +1,7 @@
 import {
   Button,
   Flex,
+  Divider,
   Heading,
   Text,
   VStack,
@@ -138,18 +139,16 @@ function NonprofitIssuesPage() {
             backgroundColor="surface"
             padding="30px"
           >
-            <VStack align="stretch">
-              <Heading fontSize={{ base: "md", md: "lg" }}>
-                Projects Open for Maintenance
-              </Heading>
+            <VStack align="stretch" spacing="30px">
+              <Heading fontSize="lg">Projects Open for Maintenance</Heading>
               <VStack>
+                <Divider borderColor="border" />
                 {projects?.map((project: MaintenanceProject) => (
                   <MaintenanceProjectCard
-                    remainingDays={project.remainingDays}
                     key={project.name}
                     isSelected={project._id === currProject?._id}
                     project={project}
-                    onClick={() => setCurrProject(project)}
+                    onClick={() => switchProject(project._id.toString())}
                   />
                 ))}
               </VStack>
@@ -157,7 +156,7 @@ function NonprofitIssuesPage() {
           </Flex>
           <Flex flexBasis="1000px" margin="auto" paddingX="30px">
             <VStack align="stretch" spacing="20px">
-              <Heading>Maintenance for {currProject?.name}</Heading>
+              <Heading fontSize="3xl">{currProject?.name}</Heading>
               <Text>
                 Experiencing issues with your current Hack4Impact product? Are
                 loading times too long, or are your users facing bugs? Let us
@@ -165,6 +164,7 @@ function NonprofitIssuesPage() {
                 a fix.
               </Text>
               <VStack
+                width="100%"
                 align="stretch"
                 backgroundColor="surface"
                 padding="15px 30px"
@@ -178,19 +178,15 @@ function NonprofitIssuesPage() {
                   borderColor="border"
                   paddingY="15px"
                 >
-                  <Text fontWeight="bold">
-                    Maintenance Period:{" "}
-                    {currProject?.maintenanceStart &&
-                      dateToMMDDYYYY(
-                        new Date(currProject.maintenanceStart)
-                      )}{" "}
-                    -{" "}
-                    {currProject && dateToMMDDYYYY(currProject.maintenanceEnd)}
-                  </Text>
+                  {currProject?.maintenanceStart && (
+                    <Text fontWeight="bold">
+                      {`Maintenance Period: ${dateToMMDDYYYY(
+                        currProject.maintenanceStart
+                      )} - ${dateToMMDDYYYY(currProject.maintenanceEnd)}`}
+                    </Text>
+                  )}
                   <Link href={urls.pages.nonprofit.issues.create} passHref>
-                    <Button variant="primary">
-                      File a Maintenance Request
-                    </Button>
+                    <Button variant="primary">Request Help</Button>
                   </Link>
                 </Flex>
                 <Tabs>
@@ -214,7 +210,7 @@ function NonprofitIssuesPage() {
                   </TabList>
                   <TabPanels>
                     <TabPanel
-                      height="500px"
+                      height="450px"
                       padding="15px 0px"
                       overflow="scroll"
                     >
@@ -225,7 +221,7 @@ function NonprofitIssuesPage() {
                       )}
                     </TabPanel>
                     <TabPanel
-                      height="500px"
+                      height="450px"
                       padding="15px 0px"
                       overflow="scroll"
                     >

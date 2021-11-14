@@ -5,26 +5,17 @@ interface Props {
   isSelected: boolean;
   project: MaintenanceProject;
   onClick: (project: MaintenanceProject) => void;
-  remainingDays?: number;
 }
 
-function MaintenanceProjectCard({
-  isSelected,
-  project,
-  onClick,
-  remainingDays,
-}: Props) {
+function MaintenanceProjectCard({ isSelected, project, onClick }: Props) {
   return (
     <Flex
       width="100%"
       borderBottom="1px solid"
       borderColor="border"
       padding="20px"
-      _hover={
-        isSelected
-          ? { cursor: "default" }
-          : { cursor: "pointer", boxShadow: "base" }
-      }
+      _hover={isSelected ? { cursor: "default" } : { cursor: "pointer" }}
+      backgroundColor={isSelected ? "gray.50" : "surface"}
       onClick={() => onClick(project)}
     >
       <VStack align="stretch" spacing="15px" overflow="hidden">
@@ -35,7 +26,7 @@ function MaintenanceProjectCard({
           width="fit-content"
           fontWeight="bold"
         >
-          {remainingDays} Days Remaining
+          {project.remainingDays} Days Remaining
         </Tag>
       </VStack>
     </Flex>

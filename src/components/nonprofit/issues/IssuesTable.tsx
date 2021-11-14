@@ -1,5 +1,5 @@
-import { Table, Tbody, Thead, Td, Tr, Th, Tag } from "@chakra-ui/react";
-import { BsChevronRight } from "react-icons/bs";
+import { Table, Tbody, Thead, Td, Tr, Th } from "@chakra-ui/react";
+import IssueStatusTag from "src/components/shared/IssueStatusTag";
 import { dateToMMDDYYYY } from "src/utils/dates";
 import { Issue } from "src/utils/types";
 
@@ -12,8 +12,8 @@ function IssuesTable({ issues }: Props) {
     <Table size="lg">
       <Thead>
         <Tr>
-          <Th>Issue Type</Th>
           <Th>Title</Th>
+          <Th>Issue Type</Th>
           <Th>Issued</Th>
           <Th>Resolved</Th>
           <Th>Status</Th>
@@ -21,9 +21,13 @@ function IssuesTable({ issues }: Props) {
       </Thead>
       <Tbody>
         {issues.map((issue) => (
-          <Tr key={issue.title}>
-            <Td>{issue.type}</Td>
+          <Tr
+            key={issue.title}
+            cursor="pointer"
+            _hover={{ backgroundColor: "rgba(0, 105, 202, 0.05)" }}
+          >
             <Td>{issue.title}</Td>
+            <Td>{issue.type}</Td>
             <Td>{dateToMMDDYYYY(new Date(issue.createdAt))}</Td>
             <Td>
               {issue.finishedAt
@@ -31,17 +35,7 @@ function IssuesTable({ issues }: Props) {
                 : "-"}
             </Td>
             <Td>
-              <Tag
-                backgroundColor={`rgba(${214},${158},${46}, 0.1)`}
-                color={`rgba(${214},${158},${46})`}
-                width="fit-content"
-                fontWeight="bold"
-              >
-                {issue.status}
-              </Tag>
-            </Td>
-            <Td>
-              <BsChevronRight />
+              <IssueStatusTag status={issue.status} />
             </Td>
           </Tr>
         ))}
