@@ -15,7 +15,8 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
-import { nonprofitGetIssues, nonprofitGetProjects } from "src/actions/Project";
+import { nonprofitGetIssues } from "src/actions/Issue";
+import { nonprofitGetProjects } from "src/actions/Project";
 import IssuesTable from "src/components/nonprofit/issues/IssuesTable";
 import MaintenanceProjectCard from "src/components/nonprofit/issues/MaintenanceProjectCard";
 import LoadingSpinner from "src/components/shared/LoadingSpinner";
