@@ -23,7 +23,7 @@ import {
   nonprofitGetUsers,
   nonprofitUpdateUser,
 } from "src/actions/User";
-import LoadingIndicator from "src/components/shared/LoadingIndicator";
+import PageLoadingIndicator from "src/components/shared/PageLoadingIndicator";
 import { states, countries } from "src/utils/constants";
 import { showError, showInfo } from "src/utils/notifications";
 import {
@@ -148,7 +148,7 @@ function NonprofitProfilePage() {
   return (
     <Flex height="100%" width="100%">
       {isLoading ? (
-        <LoadingIndicator />
+        <PageLoadingIndicator />
       ) : (
         <Flex margin="auto">
           <form onSubmit={handleSubmit(saveProfile)}>

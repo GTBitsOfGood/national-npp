@@ -22,7 +22,7 @@ const StepCard = ({
       w="full"
       justifyContent="center"
       bgColor="#0069CA0D"
-      padding="20px"
+      padding="40px"
       spacing="25px"
       borderRadiusRight="lg"
     >
@@ -40,7 +40,7 @@ const StepCard = ({
       <Text noOfLines={6} textAlign="center">
         {text}
       </Text>
-      {buttons}
+      <VStack>{buttons}</VStack>
     </VStack>
   );
 };

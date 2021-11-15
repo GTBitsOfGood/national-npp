@@ -1,7 +1,7 @@
 import { Progress } from "@chakra-ui/react";
 
-function LoadingIndicator() {
+function PageLoadingIndicator() {
   return <Progress size="xs" width="100%" colorScheme="blue" isIndeterminate />;
 }
 
-export default LoadingIndicator;
+export default PageLoadingIndicator;
