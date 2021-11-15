@@ -31,6 +31,10 @@ const ProjectSchema = new Schema<Project>(
       type: Schema.Types.ObjectId,
       ref: "User",
     },
+    maintenanceStart: {
+      type: Date,
+      immutable: true,
+    },
     createdAt: {
       type: Date,
       immutable: true,

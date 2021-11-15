@@ -6,3 +6,7 @@ export function dateToMMDDYYYY(date: Date) {
 
   return `${month}/${day}/${year}`;
 }
+
+export function dateDiffInDays(a: Date, b: Date) {
+  return Math.round(Math.abs(a.getTime() - b.getTime()) / 86400000);
+}

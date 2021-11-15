@@ -24,7 +24,7 @@ export default NextAuth({
   callbacks: {
     async session(session, user) {
       const sessionUser = {
-        id: user._id,
+        id: Types.ObjectId(user._id as string),
         email: user.email,
         name: user.name,
         image: user.image,
@@ -32,9 +32,9 @@ export default NextAuth({
       } as SessionUser;
 
       if (user.chapter) {
-        sessionUser.chapter = user.chapter as Types.ObjectId;
+        sessionUser.chapter = Types.ObjectId(user.chapter as string);
       } else if (user.nonprofit) {
-        sessionUser.nonprofit = user.nonprofit as Types.ObjectId;
+        sessionUser.nonprofit = Types.ObjectId(user.nonprofit as string);
       }
 
       session.user = sessionUser;
