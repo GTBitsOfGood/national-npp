@@ -15,7 +15,7 @@ import { HiOutlineChevronLeft } from "react-icons/hi";
 import { nonprofitGetIssue, nonprofitUpdateIssue } from "src/actions/Issue";
 import ImageModal from "src/components/shared/ImageModal";
 import IssueStatusTag from "src/components/shared/IssueStatusTag";
-import LoadingIndicator from "src/components/shared/LoadingIndicator";
+import PageLoadingIndicator from "src/components/shared/PageLoadingIndicator";
 import { dateToMMDDYYYY } from "src/utils/dates";
 import { showError } from "src/utils/notifications";
 import { Issue, IssueStatus, User } from "src/utils/types";
@@ -91,7 +91,7 @@ function NonprofitIssueViewPage() {
   return (
     <Flex height="100%" width="100%">
       {isLoading ? (
-        <LoadingIndicator />
+        <PageLoadingIndicator />
       ) : (
         <>
           <ImageModal
