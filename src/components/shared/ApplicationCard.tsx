@@ -14,12 +14,14 @@ import {
   nonprofitCreateApplication,
   chapterGetApplication,
 } from "src/actions/Application";
+import { nonprofitUpdateProject } from "src/actions/Project";
 import QuestionCard from "src/components/shared/QuestionCard";
 import { showError, showInfo } from "src/utils/notifications";
 import {
   NonprofitCreateApplication,
   Nonprofit,
   Project,
+  ProjectStage,
 } from "src/utils/types";
 import urls from "src/utils/urls";
 import { einPattern } from "src/utils/validation";
@@ -94,13 +96,18 @@ function ApplicationCard({ isRead, project }: Props) {
     setSaving(true);
 
     try {
-      await nonprofitCreateApplication(
-        project._id.toString(),
-        applicationCreate
-      );
+      const projectId = project._id.toString();
+
+      await nonprofitCreateApplication(projectId, applicationCreate);
+
+      await nonprofitUpdateProject(projectId, {
+        status: ProjectStage.APPLICATION_REVIEW,
+      });
 
       showInfo("Successfully submitted application.");
-      await router.replace(urls.pages.nonprofit.projects.index);
+      await router.replace(
+        urls.pages.nonprofit.projects.index + `?projectId=${projectId}`
+      );
     } catch (e) {
       const error = e as Error;
       showError(error.message);

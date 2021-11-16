@@ -37,7 +37,7 @@ import urls from "src/utils/urls";
 
 function NonprofitIssuesPage() {
   const router = useRouter();
-  const [projects, setProjects] = useState<MaintenanceProject[]>([]);
+  const [mainProjects, setMainProjects] = useState<MaintenanceProject[]>([]);
   const [currProject, setCurrProject] = useState<MaintenanceProject>();
   const [issues, setIssues] = useState<Issue[]>([]);
   const [open, setOpen] = useState(true);
@@ -82,7 +82,7 @@ function NonprofitIssuesPage() {
         }
       );
 
-      setProjects(maintenanceProjects);
+      setMainProjects(maintenanceProjects);
     }
 
     setProjectsLoading(true);
@@ -92,11 +92,11 @@ function NonprofitIssuesPage() {
   }, []);
 
   useEffect(() => {
-    if (projects.length !== 0) {
+    if (mainProjects.length !== 0) {
       const { projectId } = router.query;
 
       if (projectId) {
-        const selectedProject = projects.find(
+        const selectedProject = mainProjects.find(
           (project) => project._id.toString() == projectId
         );
 
@@ -106,9 +106,9 @@ function NonprofitIssuesPage() {
         }
       }
 
-      switchProject(projects[0]._id.toString());
+      switchProject(mainProjects[0]._id.toString());
     }
-  }, [projects, router, switchProject]);
+  }, [mainProjects, router, switchProject]);
 
   useEffect(() => {
     async function getIssues() {
@@ -150,8 +150,8 @@ function NonprofitIssuesPage() {
               <Heading fontSize="lg">Projects Open for Maintenance</Heading>
               <VStack>
                 <Divider borderColor="border" />
-                {projects?.length !== 0 ? (
-                  projects.map((project: MaintenanceProject) => (
+                {mainProjects?.length !== 0 ? (
+                  mainProjects.map((project: MaintenanceProject) => (
                     <MaintenanceProjectCard
                       key={project.name}
                       isSelected={project._id === currProject?._id}
@@ -197,7 +197,13 @@ function NonprofitIssuesPage() {
                         )} - ${dateToMMDDYYYY(currProject.maintenanceEnd)}`}
                       </Text>
                     )}
-                    <Link href={urls.pages.nonprofit.issues.create} passHref>
+                    <Link
+                      href={
+                        urls.pages.nonprofit.projects.index +
+                        `/${currProject._id.toString()}/issues/create`
+                      }
+                      passHref
+                    >
                       <Button variant="primary">Request Help</Button>
                     </Link>
                   </Flex>

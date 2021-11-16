@@ -121,6 +121,7 @@ export async function nonprofitGetProjects(
     nonprofit: nonprofitId,
   };
 
+  const status = projectsGet.status;
   const active = projectsGet.active;
 
   // will filter by active or inactive only if filter specified
@@ -136,6 +137,8 @@ export async function nonprofitGetProjects(
             DisplayableProjectStage.COMPLETE
           ),
         };
+  } else if (status) {
+    filter["status"] = status;
   }
 
   const projects = await ProjectModel.find(filter).populate({

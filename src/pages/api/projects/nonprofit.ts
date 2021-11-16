@@ -7,6 +7,7 @@ import { tryToParseBoolean } from "server/utils/request-validation";
 import {
   NonprofitCreateProject,
   NonprofitGetProjects,
+  ProjectStage,
   Role,
 } from "src/utils/types";
 
@@ -23,9 +24,16 @@ export default APIWrapper({
         throw new Error("User does not belong to a nonprofit.");
       }
 
-      const projectsGet = {
-        active: tryToParseBoolean(req.query.active),
-      } as NonprofitGetProjects;
+      const projectsGet = {} as NonprofitGetProjects;
+
+      const active = req.query.active;
+      const status = req.query.status as string;
+
+      if (active) {
+        projectsGet.active = tryToParseBoolean(active);
+      } else if (status) {
+        projectsGet.status = status as ProjectStage;
+      }
 
       const projects = await nonprofitGetProjects(nonprofitId, projectsGet);
 

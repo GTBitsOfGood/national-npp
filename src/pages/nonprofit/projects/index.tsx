@@ -39,6 +39,7 @@ import {
   DisplayableProjectStage,
   Project,
   ProjectStage,
+  StepCardEvent,
   User,
 } from "src/utils/types";
 import urls from "src/utils/urls";
@@ -114,6 +115,18 @@ function NonprofitProjectsPage() {
     } catch (e) {
       const error = e as Error;
       showError(error.message);
+    }
+  };
+
+  const handleEvent = async (event: StepCardEvent) => {
+    const projectId = router.query.projectId as string;
+
+    if (event === StepCardEvent.APPLICATION_FORM) {
+      await router.push(
+        urls.pages.nonprofit.projects.index +
+          `/${projectId}` +
+          "/application/create"
+      );
     }
   };
 
@@ -306,7 +319,7 @@ function NonprofitProjectsPage() {
                     <StepCard
                       {...getStepCardData({
                         projectStage: currProject?.status,
-                        onEvent: (event) => console.log(event),
+                        onEvent: handleEvent,
                       })}
                     />
                   </Flex>

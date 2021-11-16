@@ -126,18 +126,16 @@ function NonprofitIssueViewPage() {
               padding="15px 30px"
             >
               <HStack spacing="20px">
-                {issue?.status && (
-                  <IssueStatusTag status={IssueStatus.CLOSED} />
-                )}
-                <HStack>
+                {issue?.status && <IssueStatusTag status={issue.status} />}
+                <HStack spacing="0px">
                   {issue?.createdAt && (
                     <Text color="secondaryText">
-                      Issued {dateToMMDDYYYY(new Date(issue.createdAt))},
+                      Issued {dateToMMDDYYYY(new Date(issue.createdAt))}
                     </Text>
                   )}
                   {issue?.finishedAt && (
                     <Text color="secondaryText">
-                      Closed {dateToMMDDYYYY(new Date(issue.finishedAt))}
+                      , Closed {dateToMMDDYYYY(new Date(issue.finishedAt))}
                     </Text>
                   )}
                 </HStack>
