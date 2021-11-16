@@ -16,10 +16,7 @@ export async function projectGetIssues(
 
   const sorter = projectGetIssuesSorter(issuesGet);
 
-  const issues = await IssueModel.find(filter).sort(sorter).populate({
-    path: "project",
-    model: ProjectModel,
-  });
+  const issues = await IssueModel.find(filter).sort(sorter);
 
   return issues;
 }

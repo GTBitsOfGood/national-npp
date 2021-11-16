@@ -11,6 +11,7 @@ import {
 import {
   chapterGetProjectsSorter,
   nonprofitGetProjectsSorter,
+  projectStageToInt,
 } from "src/utils/sorting/Project";
 import {
   ChapterUpdateProject,
@@ -21,6 +22,7 @@ import {
   NonprofitGetProjects,
   ChapterGetProject,
   NonprofitGetProject,
+  SortingOption,
 } from "src/utils/types";
 
 export async function nonprofitCreateProject(
@@ -57,6 +59,18 @@ export async function chapterGetProjects(
         model: UserModel,
       },
     });
+
+  if (projectsGet.sortStatus != undefined) {
+    projects.sort((a, b) => {
+      if (projectsGet.sortStatus === SortingOption.ASCENDING) {
+        return projectStageToInt(a.status) - projectStageToInt(b.status);
+      } else if (projectsGet.sortStatus === SortingOption.DESCENDING) {
+        return projectStageToInt(b.status) - projectStageToInt(a.status);
+      } else {
+        return projectStageToInt(a.status) - projectStageToInt(b.status);
+      }
+    });
+  }
 
   return projects;
 }
