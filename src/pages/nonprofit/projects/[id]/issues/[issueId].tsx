@@ -2,12 +2,12 @@ import {
   Box,
   Button,
   Flex,
-  Image,
   VStack,
   Text,
   HStack,
   useDisclosure,
 } from "@chakra-ui/react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -19,8 +19,8 @@ import PageLoadingIndicator from "src/components/shared/PageLoadingIndicator";
 import { dateToMMDDYYYY } from "src/utils/dates";
 import { showError } from "src/utils/notifications";
 import { Issue, IssueStatus, User } from "src/utils/types";
+import { linkToUploadedFile } from "src/utils/uploaded-files";
 import urls from "src/utils/urls";
-// import Image from "next/image";
 
 function NonprofitIssueViewPage() {
   const [issue, setIssue] = useState<Issue>();
@@ -180,15 +180,11 @@ function NonprofitIssueViewPage() {
                   <HStack>
                     {issue.images.map((image) => (
                       <VStack key={image} align="start">
-                        <Box
-                          width="150px"
-                          height="150px"
-                          onClick={() => showImage(image)}
-                          cursor="pointer"
-                        >
+                        <Box onClick={() => showImage(image)} cursor="pointer">
                           <Image
-                            src={image}
-                            //src={linkToUploadedFile(image.blobPath)}
+                            height={150}
+                            width={150}
+                            src={linkToUploadedFile(image)}
                           />
                         </Box>
                       </VStack>
