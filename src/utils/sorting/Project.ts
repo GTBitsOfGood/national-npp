@@ -77,14 +77,5 @@ export function nonprofitGetProjectsSorter(projectsGet: NonprofitGetProjects) {
     }
   }
 
-  const sortStatus = projectsGet.sortStatus;
-  if (sortStatus != undefined) {
-    if (sortStatus == SortingOption.ASCENDING) {
-      sorter["status"] = SortingOption.ASCENDING;
-    } else if (sortStatus == SortingOption.DESCENDING) {
-      sorter["status"] = SortingOption.DESCENDING;
-    }
-  }
-
   return sorter;
 }
