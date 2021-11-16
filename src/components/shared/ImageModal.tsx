@@ -1,12 +1,11 @@
 import {
-  Box,
+  Center,
   Modal,
   ModalOverlay,
   ModalContent,
   ModalBody,
-  Image,
 } from "@chakra-ui/react";
-// import Image from "next/image";
+import Image from "next/image";
 import { linkToUploadedFile } from "src/utils/uploaded-files";
 
 interface Props {
@@ -21,12 +20,13 @@ function ImageModal({ imagePath, isOpen, onClose }: Props) {
       <ModalOverlay />
       <ModalContent backgroundColor="transparent" boxShadow="none">
         <ModalBody>
-          <Box>
+          <Center>
             <Image
-              src={imagePath}
-              //src={linkToUploadedFile(blobPath)}/>
+              width={500}
+              height={500}
+              src={linkToUploadedFile(imagePath)}
             />
-          </Box>
+          </Center>
         </ModalBody>
       </ModalContent>
     </Modal>

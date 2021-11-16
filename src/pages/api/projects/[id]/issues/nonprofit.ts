@@ -1,9 +1,16 @@
 import { Types } from "mongoose";
-import { nonprofitGetIssues } from "server/mongodb/actions/Issue";
+import {
+  nonprofitCreateIssue,
+  nonprofitGetIssues,
+} from "server/mongodb/actions/Issue";
 import { nonprofitGetProject } from "server/mongodb/actions/Project";
 import APIWrapper from "server/utils/APIWrapper";
 import { tryToParseBoolean } from "server/utils/request-validation";
-import { NonprofitGetIssues, Role } from "src/utils/types";
+import {
+  NonprofitCreateIssue,
+  NonprofitGetIssues,
+  Role,
+} from "src/utils/types";
 
 export default APIWrapper({
   GET: {
@@ -39,6 +46,31 @@ export default APIWrapper({
       );
 
       return issues;
+    },
+  },
+  POST: {
+    config: {
+      requireSession: true,
+      roles: [Role.NONPROFIT_MEMBER],
+    },
+    handler: async (req) => {
+      const issueCreate = req.body.issueCreate as NonprofitCreateIssue;
+      const projectId = Types.ObjectId(req.query.id as string);
+      const nonprofitId = req.user.nonprofit;
+
+      if (!nonprofitId) {
+        throw new Error("User is not part of a Nonprofit!");
+      }
+
+      const project = await nonprofitGetProject(projectId, nonprofitId, {});
+
+      if (!project) {
+        throw new Error("Nonprofit does not own this project!");
+      }
+
+      const issue = await nonprofitCreateIssue(projectId, issueCreate);
+
+      return issue;
     },
   },
 });

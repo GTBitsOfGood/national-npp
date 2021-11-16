@@ -2,12 +2,26 @@ import { internalRequest } from "src/utils/requests";
 import {
   HttpMethod,
   Issue,
+  NonprofitCreateIssue,
   NonprofitUpdateIssue,
   NonprofitGetIssues,
 } from "src/utils/types";
 import urls from "src/utils/urls";
 
 const projectAPI = urls.baseUrl + urls.api.projects;
+
+export async function nonprofitCreateIssue(
+  projectId: string,
+  issueCreate: NonprofitCreateIssue
+) {
+  return internalRequest<Issue>({
+    url: projectAPI + `/${projectId}/issues/nonprofit`,
+    method: HttpMethod.POST,
+    body: {
+      issueCreate,
+    },
+  });
+}
 
 export async function nonprofitGetIssues(
   projectId: string,

@@ -3,11 +3,26 @@ import IssueModel from "server/mongodb/models/Issue";
 import UserModel from "server/mongodb/models/User";
 import dbConnect from "server/utils/dbConnect";
 import {
+  NonprofitCreateIssue,
   NonprofitUpdateIssue,
   Issue,
   IssueStatus,
   NonprofitGetIssues,
 } from "src/utils/types";
+
+export async function nonprofitCreateIssue(
+  projectId: Types.ObjectId,
+  issueCreate: NonprofitCreateIssue
+) {
+  await dbConnect();
+
+  const issue = await IssueModel.create({
+    project: projectId,
+    ...issueCreate,
+  });
+
+  return issue;
+}
 
 export async function nonprofitGetIssues(
   projectId: Types.ObjectId,
