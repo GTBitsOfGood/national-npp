@@ -104,7 +104,9 @@ export async function nonprofitGetProject(
     _id: projectId,
     nonprofit: nonprofitId,
     ...projectGet,
-  }).populate({ path: "nonprofit", model: NonprofitModel });
+  })
+    .populate({ path: "nonprofit", model: NonprofitModel })
+    .populate({ path: "chapter", model: ChapterModel });
 
   return project;
 }
