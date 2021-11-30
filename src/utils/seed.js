@@ -9,9 +9,66 @@ const ObjectID = mongo.ObjectID;
 // You can't import these from types.ts because this is a js file right?
 const issueStatuses = ["Pending", "In Progress", "Resolved", "Closed"];
 const maintenanceTypes = ["Bug Fixes", "New Features"];
+const projectTypes = ["Website", "Web app", "Mobile app"];
+const projectStages = [
+  "Submit Application",
+  "Application Review",
+  "Schedule Interview",
+  "Interview Scheduled",
+  "Interview Review",
+  "Schedule Meeting",
+  "Meeting Scheduled",
+  "Maintenance",
+  "Completed",
+  "Cancelled",
+  "Rejected",
+];
+const statusesWithChapter = [
+  "Application Review",
+  "Schedule Interview",
+  "Interview Scheduled",
+  "Interview Review",
+  "Schedule Meeting",
+  "Meeting Scheduled",
+  "Maintenance",
+  "Completed",
+  "Cancelled",
+  "Rejected",
+];
+const statusesWithMaintenanceStart = ["Maintenance"];
 
-async function seedProjects(client) {
-  console.log(client);
+async function seedProjects(client, count) {
+  const collection = client.db("national-npp-test").collection("projects");
+  let projectData = [];
+  // collection.drop();
+
+  for (let i = 0; i < count; i++) {
+    const status = faker.random.arrayElement(projectStages);
+    const project = {
+      nonprofit: new ObjectID("617ea509069ce109e2ae9f65"),
+      name: faker.company.companyName(),
+      status: status,
+      type: faker.random.arrayElement(projectTypes),
+      contact: new ObjectID("618a38bd87e3273af4e55579"),
+      createdAt: faker.date.past(),
+      updatedAt: faker.date.recent(),
+    };
+
+    // depending on the status, we might not have a chapter assigned, we might not have a maintenanceStart
+    if (statusesWithChapter.indexOf(status) !== -1) {
+      project["chapter"] = new ObjectID("61a5bf09f65bd23af098be59");
+    }
+    if (statusesWithMaintenanceStart.indexOf(status) !== -1) {
+      project["maintenanceStart"] = faker.date.between(
+        project["createdAt"],
+        Date.now()
+      );
+    }
+
+    projectData.push(project);
+  }
+
+  collection.insertMany(projectData);
 }
 
 async function seedChapters(client, count) {
@@ -75,7 +132,7 @@ async function seedIssues(client, count) {
   for (let i = 0; i < count; i++) {
     issueData.push({
       name: faker.company.companyName(),
-      project: ObjectID("619431b93f659442b0cca964"),
+      project: new ObjectID("619431b93f659442b0cca964"),
       address: {
         street: faker.address.streetName(),
         city: faker.address.cityName(),
@@ -113,7 +170,7 @@ async function seedDB() {
 
     console.log("Connected correctly to server");
 
-    seedProjects(client);
+    seedProjects(client, 1);
     seedChapters(client, 1);
     seedNonprofits(client, 1);
     seedIssues(client, 1);
