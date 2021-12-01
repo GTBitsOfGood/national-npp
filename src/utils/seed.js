@@ -42,10 +42,23 @@ async function seedProjects(client, count) {
   let projectData = [];
   collection.drop();
 
+  const nonprofit = await client
+    .db("national-npp-test")
+    .collection("nonprofits")
+    .aggregate([{ $sample: { size: 1 } }])
+    .toArray()
+    .then((nonprofits) => nonprofits[0]);
+  const chapters = await client
+    .db("national-npp-test")
+    .collection("chapters")
+    .aggregate([{ $sample: { size: 1 } }])
+    .toArray()
+    .then((chapters) => chapters[0]);
+
   for (let i = 0; i < count; i++) {
     const status = faker.random.arrayElement(projectStages);
     const project = {
-      nonprofit: new ObjectID("617ea509069ce109e2ae9f65"),
+      nonprofit: nonprofit._id,
       name: faker.company.companyName(),
       status: status,
       type: faker.random.arrayElement(projectTypes),
@@ -56,7 +69,7 @@ async function seedProjects(client, count) {
 
     // depending on the status, we might not have a chapter assigned, we might not have a maintenanceStart
     if (statusesWithChapter.indexOf(status) !== -1) {
-      project["chapter"] = new ObjectID("61a5bf09f65bd23af098be59");
+      project["chapter"] = chapters._id;
     }
     if (statusesWithMaintenanceStart.indexOf(status) !== -1) {
       project["maintenanceStart"] = faker.date.between(
@@ -128,11 +141,17 @@ async function seedIssues(client, count) {
   const collection = client.db("national-npp-test").collection("issues");
   let issueData = [];
   collection.drop();
-
   for (let i = 0; i < count; i++) {
+    const project = await client
+      .db("national-npp-test")
+      .collection("projects")
+      .aggregate([{ $sample: { size: 1 } }])
+      .toArray()
+      .then((projects) => projects[0]);
+
     issueData.push({
       name: faker.company.companyName(),
-      project: new ObjectID("619431b93f659442b0cca964"),
+      project: project._id,
       address: {
         street: faker.address.streetName(),
         city: faker.address.cityName(),
@@ -140,18 +159,14 @@ async function seedIssues(client, count) {
         zipCode: faker.address.zipCode(),
         country: faker.address.country(),
       },
-      type: maintenanceTypes[
-        Math.floor(Math.random() * maintenanceTypes.length)
-      ],
+      type: faker.random.arrayElement(maintenanceTypes),
       title: faker.lorem.words(3),
       description: faker.lorem.paragraph(3),
-      status: issueStatuses[Math.floor(Math.random() * issueStatuses.length)],
+      status: faker.random.arrayElement(issueStatuses),
       createdAt: faker.date.past(),
       updatedAt: faker.date.recent(),
     });
   }
-
-  collection.insertMany(issueData);
 }
 
 async function seedApplications(client, count) {
@@ -160,8 +175,15 @@ async function seedApplications(client, count) {
   collection.drop();
 
   for (let i = 0; i < count; i++) {
+    const project = await client
+      .db("national-npp-test")
+      .collection("projects")
+      .aggregate([{ $sample: { size: 1 } }])
+      .toArray()
+      .then((projects) => projects[0]);
+
     const application = {
-      project: new ObjectID("619431b93f659442b0cca964"),
+      project: proj._id,
     };
 
     if (Math.random() >= 0.5) {
@@ -194,8 +216,6 @@ async function seedApplications(client, count) {
 
     applicationData.push(application);
   }
-
-  collection.insertMany(applicationData);
 }
 
 async function seedDB() {
@@ -210,14 +230,13 @@ async function seedDB() {
 
     console.log("Connected correctly to server");
 
-    seedNonprofits(client, 1);
-    seedChapters(client, 1);
-    seedProjects(client, 1);
-    seedIssues(client, 1);
-    seedApplications(client, 1);
+    await seedProjects(client, 1);
+    await seedChapters(client, 1);
+    await seedNonprofits(client, 1);
+    await seedIssues(client, 1);
+    await seedApplications(client);
 
     console.log("Database seeded!");
-
     client.close();
   } catch (err) {
     console.log(err.stack);
