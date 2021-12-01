@@ -48,7 +48,7 @@ async function seedProjects(client, count) {
     .aggregate([{ $sample: { size: 1 } }])
     .toArray()
     .then((nonprofits) => nonprofits[0]);
-  const chapters = await client
+  const chapter = await client
     .db("national-npp-test")
     .collection("chapters")
     .aggregate([{ $sample: { size: 1 } }])
@@ -69,7 +69,7 @@ async function seedProjects(client, count) {
 
     // depending on the status, we might not have a chapter assigned, we might not have a maintenanceStart
     if (statusesWithChapter.indexOf(status) !== -1) {
-      project["chapter"] = chapters._id;
+      project["chapter"] = chapter._id;
     }
     if (statusesWithMaintenanceStart.indexOf(status) !== -1) {
       project["maintenanceStart"] = faker.date.between(
@@ -104,7 +104,7 @@ async function seedChapters(client, count) {
       website: faker.internet.domainName(),
       facebook: faker.internet.userName(),
       instagram: faker.internet.userName(),
-      maintenanceTypes: maintenanceTypes,
+      maintenanceTypes: faker.random.arrayElements(maintenanceTypes, 1 + Math.floor(Math.random() * (maintenanceTypes.length))),
       maintenancePeriod: faker.datatype.number(90),
     });
   }
@@ -141,6 +141,7 @@ async function seedIssues(client, count) {
   const collection = client.db("national-npp-test").collection("issues");
   let issueData = [];
   collection.drop();
+
   for (let i = 0; i < count; i++) {
     const project = await client
       .db("national-npp-test")
@@ -167,6 +168,8 @@ async function seedIssues(client, count) {
       updatedAt: faker.date.recent(),
     });
   }
+
+  collection.insertMany(issueData);
 }
 
 async function seedApplications(client, count) {
@@ -183,7 +186,7 @@ async function seedApplications(client, count) {
       .then((projects) => projects[0]);
 
     const application = {
-      project: proj._id,
+      project: project._id,
     };
 
     if (Math.random() >= 0.5) {
@@ -216,6 +219,8 @@ async function seedApplications(client, count) {
 
     applicationData.push(application);
   }
+
+  collection.insertMany(applicationData);
 }
 
 async function seedDB() {
@@ -234,7 +239,7 @@ async function seedDB() {
     await seedChapters(client, 1);
     await seedNonprofits(client, 1);
     await seedIssues(client, 1);
-    await seedApplications(client);
+    await seedApplications(client, 1);
 
     console.log("Database seeded!");
     client.close();
