@@ -104,7 +104,10 @@ async function seedChapters(client, count) {
       website: faker.internet.domainName(),
       facebook: faker.internet.userName(),
       instagram: faker.internet.userName(),
-      maintenanceTypes: faker.random.arrayElements(maintenanceTypes, 1 + Math.floor(Math.random() * (maintenanceTypes.length))),
+      maintenanceTypes: faker.random.arrayElements(
+        maintenanceTypes,
+        1 + Math.floor(Math.random() * maintenanceTypes.length)
+      ),
       maintenancePeriod: faker.datatype.number(90),
     });
   }
@@ -235,11 +238,11 @@ async function seedDB() {
 
     console.log("Connected correctly to server");
 
-    await seedProjects(client, 1);
-    await seedChapters(client, 1);
-    await seedNonprofits(client, 1);
-    await seedIssues(client, 1);
-    await seedApplications(client, 1);
+    await seedProjects(client, 10);
+    await seedChapters(client, 3);
+    await seedNonprofits(client, 10);
+    await seedIssues(client, 20);
+    await seedApplications(client, 5);
 
     console.log("Database seeded!");
     client.close();
