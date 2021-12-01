@@ -127,31 +127,41 @@ async function seedNonprofits(client, count) {
 async function seedIssues(client, count) {
   const collection = client.db("national-npp-test").collection("issues");
   let issueData = [];
-  collection.drop();
-
+  // collection.drop();
   for (let i = 0; i < count; i++) {
-    issueData.push({
-      name: faker.company.companyName(),
-      project: new ObjectID("619431b93f659442b0cca964"),
-      address: {
-        street: faker.address.streetName(),
-        city: faker.address.cityName(),
-        state: faker.address.state(),
-        zipCode: faker.address.zipCode(),
-        country: faker.address.country(),
-      },
-      type: maintenanceTypes[
-        Math.floor(Math.random() * maintenanceTypes.length)
-      ],
-      title: faker.lorem.words(3),
-      description: faker.lorem.paragraph(3),
-      status: issueStatuses[Math.floor(Math.random() * issueStatuses.length)],
-      createdAt: faker.date.past(),
-      updatedAt: faker.date.recent(),
-    });
+    await client
+      .db("national-npp-test")
+      .collection("projects")
+      .aggregate([{ $sample: { size: 1 } }])
+      .toArray()
+      .then((projs) => {
+        for (const proj of projs) {
+          issueData.push({
+            name: faker.company.companyName(),
+            project: proj._id,
+            address: {
+              street: faker.address.streetName(),
+              city: faker.address.cityName(),
+              state: faker.address.state(),
+              zipCode: faker.address.zipCode(),
+              country: faker.address.country(),
+            },
+            type: maintenanceTypes[
+              Math.floor(Math.random() * maintenanceTypes.length)
+            ],
+            title: faker.lorem.words(3),
+            description: faker.lorem.paragraph(3),
+            status:
+              issueStatuses[Math.floor(Math.random() * issueStatuses.length)],
+            createdAt: faker.date.past(),
+            updatedAt: faker.date.recent(),
+          });
+        }
+        if (issueData.length > 0) {
+          collection.insertMany(issueData);
+        }
+      });
   }
-
-  collection.insertMany(issueData);
 }
 
 async function seedApplications(client) {
@@ -173,11 +183,10 @@ async function seedDB() {
     seedProjects(client, 1);
     seedChapters(client, 1);
     seedNonprofits(client, 1);
-    seedIssues(client, 1);
+    await seedIssues(client, 1);
     seedApplications(client);
 
     console.log("Database seeded!");
-
     client.close();
   } catch (err) {
     console.log(err.stack);
