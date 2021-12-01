@@ -40,7 +40,7 @@ const statusesWithMaintenanceStart = ["Maintenance"];
 async function seedProjects(client, count) {
   const collection = client.db("national-npp-test").collection("projects");
   let projectData = [];
-  // collection.drop();
+  collection.drop();
 
   for (let i = 0; i < count; i++) {
     const status = faker.random.arrayElement(projectStages);
@@ -154,8 +154,48 @@ async function seedIssues(client, count) {
   collection.insertMany(issueData);
 }
 
-async function seedApplications(client) {
-  console.log(client);
+async function seedApplications(client, count) {
+  const collection = client.db("national-npp-test").collection("applications");
+  let applicationData = [];
+  collection.drop();
+
+  for (let i = 0; i < count; i++) {
+    const application = {
+      project: new ObjectID("619431b93f659442b0cca964"),
+    };
+
+    if (Math.random() >= 0.5) {
+      application["aboutQ1"] = faker.lorem.paragraph(3);
+    }
+    if (Math.random() >= 0.5) {
+      application["aboutQ2"] = faker.lorem.paragraph(3);
+    }
+    if (Math.random() >= 0.5) {
+      application["aboutQ3"] = faker.lorem.paragraph(3);
+    }
+    if (Math.random() >= 0.5) {
+      application["aboutQ4"] = faker.lorem.paragraph(3);
+    }
+    if (Math.random() >= 0.5) {
+      application["needsQ1"] = faker.lorem.paragraph(3);
+    }
+    if (Math.random() >= 0.5) {
+      application["needsQ2"] = faker.lorem.paragraph(3);
+    }
+    if (Math.random() >= 0.5) {
+      application["needsQ3"] = faker.lorem.paragraph(3);
+    }
+    if (Math.random() >= 0.5) {
+      application["needsQ4"] = faker.lorem.paragraph(3);
+    }
+    if (Math.random() >= 0.5) {
+      application["needsQ5"] = faker.lorem.paragraph(3);
+    }
+
+    applicationData.push(application);
+  }
+
+  collection.insertMany(applicationData);
 }
 
 async function seedDB() {
@@ -170,11 +210,11 @@ async function seedDB() {
 
     console.log("Connected correctly to server");
 
-    seedProjects(client, 1);
-    seedChapters(client, 1);
     seedNonprofits(client, 1);
+    seedChapters(client, 1);
+    seedProjects(client, 1);
     seedIssues(client, 1);
-    seedApplications(client);
+    seedApplications(client, 1);
 
     console.log("Database seeded!");
 
