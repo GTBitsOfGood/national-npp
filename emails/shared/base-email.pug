@@ -24,17 +24,17 @@ html
                 tr
                     td
                         div(id="footer" style={ "background-image": `url("${emailAssetsUrl}/footer.jpg")` })
-                            h1(id="copyright") © 2021 Bits of Good | bitsofgood.org
+                            div 
+                                p(class="thank-you") Thank you!
+                                p Hack4Impact Team
                             div(id="socials")
                                 - const facebookLogoURL = `${emailAssetsUrl}/facebook.png`
                                 - const twitterLogoURL = `${emailAssetsUrl}/twitter.png`
                                 - const instagramLogoURL = `${emailAssetsUrl}/instagram.png`
                                 - const linkedinLogoURL = `${emailAssetsUrl}/linkedin.png`
-                                a(href="https://www.facebook.com/GTBitsOfGood/")
+                                a(href="https://hack4impact.org/")
                                     img(class="social right" src=facebookLogoURL)
-                                a(href="https://twitter.com/gtbitsofgood")
-                                    img(class="social left right" src=twitterLogoURL)
-                                a(href="https://www.instagram.com/gtbitsofgood/")
+                                a(href="https://www.instagram.com/hack4impact/")
                                     img(class="social left right" src=instagramLogoURL)
-                                a(href="https://www.linkedin.com/company/gtbitsofgood/about/")
+                                a(href="https://www.linkedin.com/company/hack4impact/")
                                     img(class="social left" src=linkedinLogoURL)
