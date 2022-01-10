@@ -16,19 +16,19 @@ import { Step, Steps } from "chakra-ui-steps";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import SubmitApplicationImage from "public/images/nonprofit/project/submit_application.svg";
+import RejectedImage from "public/images/nonprofit/project/rejected.svg";
 import React, { useCallback, useEffect, useState } from "react";
 import { BsPlus } from "react-icons/bs";
 import {
   nonprofitGetProjects,
   nonprofitUpdateProject,
 } from "src/actions/Project";
-import EmptyProjectCard from "src/components/nonprofit/projects/EmptyProjectCard";
 import ProjectCard from "src/components/nonprofit/projects/ProjectCard";
 import StepCard from "src/components/nonprofit/projects/StepCard";
 import { getStepCardData } from "src/components/nonprofit/projects/StepCardData";
 import ConfirmAlert from "src/components/shared/ConfirmAlert";
-import LoadingIndicator from "src/components/shared/LoadingIndicator";
+import EmptyProjectCard from "src/components/shared/EmptyProjectCard";
+import PageLoadingIndicator from "src/components/shared/PageLoadingIndicator";
 import { showError } from "src/utils/notifications";
 import {
   displayableProjectStageOrder,
@@ -39,6 +39,7 @@ import {
   DisplayableProjectStage,
   Project,
   ProjectStage,
+  StepCardEvent,
   User,
 } from "src/utils/types";
 import urls from "src/utils/urls";
@@ -117,10 +118,22 @@ function NonprofitProjectsPage() {
     }
   };
 
+  const handleEvent = async (event: StepCardEvent) => {
+    const projectId = router.query.projectId as string;
+
+    if (event === StepCardEvent.APPLICATION_FORM) {
+      await router.push(
+        urls.pages.nonprofit.projects.index +
+          `/${projectId}` +
+          "/application/create"
+      );
+    }
+  };
+
   return (
     <Flex height="100%" width="100%">
       {isLoading ? (
-        <LoadingIndicator />
+        <PageLoadingIndicator />
       ) : (
         <>
           <ConfirmAlert
@@ -184,7 +197,7 @@ function NonprofitProjectsPage() {
                           />
                         ))
                       ) : (
-                        <EmptyProjectCard active={true} />
+                        <EmptyProjectCard />
                       )}
                     </VStack>
                   </TabPanel>
@@ -202,7 +215,7 @@ function NonprofitProjectsPage() {
                           />
                         ))
                       ) : (
-                        <EmptyProjectCard active={false} />
+                        <EmptyProjectCard />
                       )}
                     </VStack>
                   </TabPanel>
@@ -306,7 +319,7 @@ function NonprofitProjectsPage() {
                     <StepCard
                       {...getStepCardData({
                         projectStage: currProject?.status,
-                        onEvent: (event) => console.log(event),
+                        onEvent: handleEvent,
                       })}
                     />
                   </Flex>
@@ -314,7 +327,7 @@ function NonprofitProjectsPage() {
               </VStack>
             ) : (
               <VStack spacing="20px" margin="auto">
-                <Image src={SubmitApplicationImage} />
+                <Image src={RejectedImage} />
                 <Text>Get started on a new project with Hack4Impact!</Text>
                 <Link href={urls.pages.nonprofit.projects.create} passHref>
                   <Button variant="primary">Start a Project</Button>

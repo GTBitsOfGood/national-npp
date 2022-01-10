@@ -40,9 +40,12 @@ function NonprofitProjectCreationPage() {
     setSaving(true);
 
     try {
-      await nonprofitCreateProject(projectCreate);
+      const project = await nonprofitCreateProject(projectCreate);
       showInfo("Successfully created project.");
-      await router.replace(urls.pages.nonprofit.projects.index);
+      await router.replace(
+        urls.pages.nonprofit.projects.index +
+          `?projectId=${project._id.toString()}`
+      );
     } catch (e) {
       const error = e as Error;
       showError(error.message);

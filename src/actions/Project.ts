@@ -1,13 +1,13 @@
 import { internalRequest } from "src/utils/requests";
 import {
+  ChapterGetProject,
+  ChapterGetProjects,
   ChapterUpdateProject,
   HttpMethod,
+  NonprofitCreateProject,
+  NonprofitGetProjects,
   NonprofitUpdateProject,
   Project,
-  NonprofitCreateProject,
-  ChapterGetProjects,
-  NonprofitGetProjects,
-  ChapterGetProject,
   NonprofitGetProject,
 } from "src/utils/types";
 import urls from "src/utils/urls";
