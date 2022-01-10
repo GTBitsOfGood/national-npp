@@ -1,9 +1,11 @@
 doctype html
 // all styles/assets need to be relative to the "emails" directory AKA /emails
-link(rel="stylesheet", href="/shared/style.css", data-inline)
+link(rel="stylesheet", href="./style.css", data-inline)
 html
     body
-        - const emailAssetsUrl = `${baseUrl}/emails`
+        - const emailAssetsUrl = '../../public/emails'
+        - const buttonName = "Submit Application"
+        - const link = '/'
         table
             tbody
                 tr
@@ -11,30 +13,30 @@ html
                         - const placeholderURL = `${emailAssetsUrl}/header.png`
                         img(id="header" src=placeholderURL)
                 tr
-                    td
+                    td(class="bolded")
                         block address
-                            p Dear #{name},
+                            p Hi #{name},
                 tr
                     td
                         block content
+                            p Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                tr
+                    td 
+                        block button
+                            a(id="btn", href=`${link}`) #{buttonName}
                 tr
                     td
-                        block signature
-                            p - Bits of Good Team
-                tr
-                    td
-                        div(id="footer" style={ "background-image": `url("${emailAssetsUrl}/footer.jpg")` })
-                            div 
-                                p(class="thank-you") Thank you!
+                        div(id="footer")
+                            div(id="closing")
+                                p(class="bolded") Thank you!
                                 p Hack4Impact Team
                             div(id="socials")
-                                - const facebookLogoURL = `${emailAssetsUrl}/facebook.png`
-                                - const twitterLogoURL = `${emailAssetsUrl}/twitter.png`
+                                - const websiteURL = `${emailAssetsUrl}/globe.png`
                                 - const instagramLogoURL = `${emailAssetsUrl}/instagram.png`
                                 - const linkedinLogoURL = `${emailAssetsUrl}/linkedin.png`
-                                a(href="https://hack4impact.org/")
-                                    img(class="social right" src=facebookLogoURL)
-                                a(href="https://www.instagram.com/hack4impact/")
+                                a(href="https://hack4impact.org/", rel="noopener noreferrer", target="_blank")
+                                    img(class="social right" src=websiteURL)
+                                a(href="https://www.instagram.com/hack4impact/", rel="noopener noreferrer", target="_blank")
                                     img(class="social left right" src=instagramLogoURL)
-                                a(href="https://www.linkedin.com/company/hack4impact/")
+                                a(href="https://www.linkedin.com/company/hack4impact/", rel="noopener noreferrer", target="_blank")
                                     img(class="social left" src=linkedinLogoURL)
