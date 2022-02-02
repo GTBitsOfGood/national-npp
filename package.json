@@ -12,7 +12,6 @@
     "secrets:login": "bw login product@bitsofgood.org",
     "secrets:sync": "bw sync && bw get item national-npp/development/.env.local | fx .notes > \".env.local\"",
     "prepare": "husky install"
-    
   },
   "dependencies": {
     "@azure/storage-blob": "^12.8.0",
