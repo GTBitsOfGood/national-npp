@@ -178,10 +178,13 @@ function validateAndCoerceReq<Q_P, B, R>(
   return castedReq;
 }
 
-// parseJSONQueryParams attempts to convert strings that are expected to be objects from JSON.
-// it infers if a param type is object from the schema. if this does not work consistently enough,
+// parseJSONQueryParams attempts to convert JSON strings to JavaScript objects.
+// it infers if a query param string is in JSON using the schema. if this does not work consistently,
 // then switch it over from inference to a configuration option specifying the params that need to be transformed
 // or create a custom type that wraps a schema and specifies root level transformations in that wrapper
+//
+// Essentially: NextJS query params are: either string | string[]
+// This method expands the possible types to: string | string[] | Object
 function parseJSONQueryParams(
   schema: JTDSchemaType<unknown>,
   query: StringsDict
