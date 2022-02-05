@@ -41,6 +41,8 @@ const AccountSchema = new Schema<Account>(
   }
 );
 
+AccountSchema.statics.hasNoDependencies = () => true;
+
 const AccountModel =
   (mongoose.models.Account as mongoose.Model<Account>) ||
   mongoose.model<Account>("Account", AccountSchema);

@@ -1,7 +1,7 @@
 import { internalRequest } from "src/utils/requests";
 import {
-  Nonprofit,
   HttpMethod,
+  Nonprofit,
   NonprofitCreateNonprofit,
   NonprofitUpdateNonprofit,
 } from "src/utils/types";
@@ -30,6 +30,19 @@ export async function nonprofitUpdateNonprofit(
     method: HttpMethod.PATCH,
     body: {
       nonprofitUpdate,
+    },
+  });
+}
+
+export async function adminDeleteNonProfit(
+  nonprofitId: string,
+  reason: string
+) {
+  return internalRequest({
+    url: nonprofitAPI + `${nonprofitId}/nonprofit`,
+    method: HttpMethod.DELETE,
+    body: {
+      reason: reason,
     },
   });
 }

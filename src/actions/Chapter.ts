@@ -16,3 +16,13 @@ export async function chapterUpdateChapter(
     },
   });
 }
+
+export async function adminDeleteChapter(chapterId: string, reason: string) {
+  return internalRequest({
+    url: chapterAPI + `/${chapterId}/chapter`,
+    method: HttpMethod.DELETE,
+    body: {
+      reason: reason,
+    },
+  });
+}
