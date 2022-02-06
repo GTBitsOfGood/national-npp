@@ -6,19 +6,18 @@ import {
 } from "src/utils/types";
 import urls from "src/utils/urls";
 
-const nonprofitAPI = urls.baseUrl + urls.api.nonprofits;
-const chapterAPI = urls.baseUrl + urls.api.chapters;
+const adminAPI = urls.baseUrl + urls.api.admin;
 
 export async function adminGetNonprofits() {
     return internalRequest<Nonprofit[]>({
-        url: nonprofitAPI + "/admin",
+        url: adminAPI + "/nonprofit",
         method: HttpMethod.GET,
     });
 }
 
 export async function adminGetChapters() {
     return internalRequest<Project[]>({
-        url: chapterAPI + `/admin`,
+        url: adminAPI + `/chapter`,
         method: HttpMethod.GET,
     });
 }
