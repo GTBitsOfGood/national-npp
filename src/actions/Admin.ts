@@ -2,7 +2,8 @@ import { internalRequest } from "src/utils/requests";
 import {
     HttpMethod,
     Nonprofit,
-    Project
+    Chapter,
+    User,
 } from "src/utils/types";
 import urls from "src/utils/urls";
 
@@ -16,8 +17,15 @@ export async function adminGetNonprofits() {
 }
 
 export async function adminGetChapters() {
-    return internalRequest<Project[]>({
+    return internalRequest<Chapter[]>({
         url: adminAPI + `/chapter`,
         method: HttpMethod.GET,
+    });
+}
+
+export async function adminGetChapterContacts() {
+    return internalRequest<User[]>({
+        url: adminAPI + '/contacts',
+        method: HttpMethod.GET
     });
 }

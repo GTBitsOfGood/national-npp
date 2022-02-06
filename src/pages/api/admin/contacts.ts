@@ -1,6 +1,6 @@
-import { } from "server/mongodb/actions/Chapter";
+import { } from "server/mongodb/actions/User";
 import APIWrapper from "server/utils/APIWrapper";
-import { Chapter, Role } from "src/utils/types";
+import { User, Role } from "src/utils/types";
 
 export default APIWrapper({
     GET: {
@@ -10,8 +10,8 @@ export default APIWrapper({
         },
         handler: async (req) => {
             // Mongo Query Here
-            const projects: Chapter[] = [];
-            return projects;
+            const contacts: User[] = [];
+            return contacts;
         },
     },
 });
