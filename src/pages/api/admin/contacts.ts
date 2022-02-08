@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import { adminGetChapterUsers } from "server/mongodb/actions/User";
+import { adminGetChapterUsers } from "server/mongodb/actions/Admin";
 import APIWrapper from "server/utils/APIWrapper";
 import { User, Role } from "src/utils/types";
 
@@ -10,15 +10,7 @@ export default APIWrapper({
       roles: [Role.NATIONAL_ADMIN],
     },
     handler: async (req) => {
-      const chapterId = req.query.chapterId as string;
-
-      if (!chapterId) {
-        throw new Error("Received an invalid chapterId.");
-      }
-
-      const contacts: User[] = await adminGetChapterUsers(
-        Types.ObjectId(chapterId)
-      );
+      const contacts: User[] = await adminGetChapterUsers();
 
       if (!contacts) {
         throw new Error("Failed to retrieve contacts.");

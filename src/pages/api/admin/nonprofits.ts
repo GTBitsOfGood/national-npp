@@ -1,4 +1,4 @@
-import { adminGetNonprofits } from "server/mongodb/actions/Nonprofit";
+import { adminGetNonprofits } from "server/mongodb/actions/Admin";
 import APIWrapper from "server/utils/APIWrapper";
 import { Nonprofit, Role } from "src/utils/types";
 

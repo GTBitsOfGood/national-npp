@@ -1,4 +1,4 @@
-import { adminGetChapters } from "server/mongodb/actions/Chapter";
+import { adminGetChapters } from "server/mongodb/actions/Admin";
 import APIWrapper from "server/utils/APIWrapper";
 import { Chapter, Role } from "src/utils/types";
 
