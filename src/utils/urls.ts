@@ -48,7 +48,7 @@ const urls = {
     uploads: "/api/uploads",
     applications: "/api/applications",
     issues: "/api/issues",
-    admin: "/api/admin"
+    admin: "/api/admin",
   },
 };
 

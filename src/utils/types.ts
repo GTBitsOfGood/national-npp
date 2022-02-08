@@ -215,6 +215,8 @@ export type NonprofitUpdateIssue = Pick<
   "status" | "finishedAt"
 >;
 
+export type AdminGetChapterContacts = { chapterId: string };
+
 /* Enums */
 
 export enum ProjectType {

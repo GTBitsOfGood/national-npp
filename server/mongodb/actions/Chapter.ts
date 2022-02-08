@@ -17,3 +17,9 @@ export async function chapterUpdateChapter(
 
   return updatedChapter;
 }
+
+export async function adminGetChapters() {
+  await dbConnect();
+
+  return ChapterModel.find();
+}

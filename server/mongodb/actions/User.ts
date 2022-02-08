@@ -74,3 +74,9 @@ export async function nonprofitUpdateUser(
 
   return user;
 }
+
+export async function adminGetChapterUsers(chapterId: Types.ObjectId) {
+  await dbConnect();
+
+  return UserModel.find({ chapter: chapterId });
+}

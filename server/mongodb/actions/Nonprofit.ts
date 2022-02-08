@@ -30,3 +30,9 @@ export async function nonprofitUpdateNonprofit(
 
   return nonprofit;
 }
+
+export async function adminGetNonprofits() {
+  await dbConnect();
+
+  return NonprofitModel.find();
+}
