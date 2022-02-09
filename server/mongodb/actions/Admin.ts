@@ -3,9 +3,6 @@ import ChapterModel from "server/mongodb/models/Chapter";
 import UserModel from "server/mongodb/models/User";
 import dbConnect from "server/utils/dbConnect";
 import { User } from "src/utils/types";
-import { ObjectId } from "mongodb";
-import { Document } from "mongoose";
-
 
 export async function adminGetNonprofits() {
     await dbConnect();
@@ -27,7 +24,7 @@ export async function adminGetChapterUsers() {
 
     for (const document of query) {
         const user = (await UserModel.findOne(document.contact)) as User;
-        users.push(user as User);
+        users.push(user);
     }
 
     return users;

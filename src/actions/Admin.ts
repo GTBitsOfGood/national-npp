@@ -4,7 +4,6 @@ import {
   Nonprofit,
   Chapter,
   User,
-  AdminGetChapterContacts,
 } from "src/utils/types";
 import urls from "src/utils/urls";
 
@@ -25,11 +24,9 @@ export async function adminGetChapters() {
 }
 
 export async function adminGetChapterContacts(
-  getChapterContacts: AdminGetChapterContacts
 ) {
   return internalRequest<User[]>({
     url: adminAPI + "/contacts",
     method: HttpMethod.GET,
-    queryParams: { ...getChapterContacts },
   });
 }
