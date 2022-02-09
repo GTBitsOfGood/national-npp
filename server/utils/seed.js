@@ -28,8 +28,12 @@ const projectStages = [
 const stagesWithChapter = projectStages.filter(
   (stage) => !["Submit Application", "Application Review"].includes(stage)
 );
+const statusesWithReviewer = issueStatuses.filter(
+  (status) => status != "Pending"
+);
 
 const TEST_DATABASE = "national-npp-test";
+const TEST_CONTACT = new ObjectID("617ea1ef4fc7ad703f5db086"); // An existing user in the database
 const NUM_CHAPTERS_TO_CREATE = 5;
 const NUM_NONPROFITS_TO_CREATE = 5;
 const NUM_PROJECTS_TO_CREATE = 5;
@@ -39,23 +43,56 @@ const NUM_APPLICATIONS_TO_CREATE = 5;
 /* End Configuration */
 
 class DBSeeder {
-  constructor(client, userId, userType) {
-    this.client = client;
+  constructor(db, userId, userType) {
+    this.db = db;
     this.userId = new ObjectID(userId);
     this.userType = userType;
   }
 
+  async userExists() {
+    const userCount = await this.db
+      .collection("users")
+      .find({ _id: this.userId })
+      .count();
+
+    return userCount != 0;
+  }
+
+  async getRandomChapter() {
+    const chapters = await this.db
+      .collection("chapters")
+      .aggregate([{ $sample: { size: 1 } }])
+      .toArray();
+
+    return chapters[0];
+  }
+
+  async getRandomNonprofit() {
+    const nonprofits = await this.db
+      .collection("nonprofits")
+      .aggregate([{ $sample: { size: 1 } }])
+      .toArray();
+
+    return nonprofits[0];
+  }
+
+  async getRandomProject(orgFilter) {
+    const projects = await this.db
+      .collection("projects")
+      .aggregate([{ $match: orgFilter }, { $sample: { size: 1 } }])
+      .toArray();
+
+    return projects[0];
+  }
+
   async createChapters() {
-    const chapterCollection = this.client
-      .db(TEST_DATABASE)
-      .collection("chapters");
     const testChapters = [];
 
     for (let i = 0; i < NUM_CHAPTERS_TO_CREATE; i++) {
       testChapters.push({
         name: faker.company.companyName(),
         email: faker.internet.email(),
-        contact: new ObjectID("617ea1ef4fc7ad703f5db086"),
+        contact: TEST_CONTACT,
         address: {
           street: faker.address.streetName(),
           city: faker.address.cityName(),
@@ -74,19 +111,16 @@ class DBSeeder {
       });
     }
 
-    await chapterCollection.insertMany(testChapters);
+    await this.db.collection("chapters").insertMany(testChapters);
   }
 
   async createNonprofits() {
-    const nonprofitCollection = this.client
-      .db(TEST_DATABASE)
-      .collection("nonprofits");
     const testNonprofits = [];
 
     for (let i = 0; i < NUM_NONPROFITS_TO_CREATE; i++) {
       testNonprofits.push({
         name: faker.company.companyName(),
-        contact: new ObjectID("617ea1ef4fc7ad703f5db086"),
+        contact: TEST_CONTACT,
         address: {
           street: faker.address.streetName(),
           city: faker.address.cityName(),
@@ -100,24 +134,11 @@ class DBSeeder {
       });
     }
 
-    await nonprofitCollection.insertMany(testNonprofits);
+    await this.db.collection("nonprofits").insertMany(testNonprofits);
   }
 
   async assignUsertoOrg() {
-    const userCollection = this.client.db(TEST_DATABASE).collection("users");
-    const nonprofitCollection = this.client
-      .db(TEST_DATABASE)
-      .collection("nonprofits");
-    const chapterCollection = this.client
-      .db(TEST_DATABASE)
-      .collection("chapters");
-
-    const userCount = await userCollection.find({ _id: this.userId }).count();
-    if (userCount == 0) {
-      throw new Error("User does not exist");
-    }
-
-    await userCollection.updateOne(
+    await this.db.collection("users").updateOne(
       { _id: this.userId },
       {
         $unset: {
@@ -127,49 +148,35 @@ class DBSeeder {
       }
     );
 
-    const orgQueryBody = {};
-
+    const orgFilter = {};
     if (this.userType == "nonprofit") {
-      const nonprofit = await nonprofitCollection
-        .aggregate([{ $sample: { size: 1 } }])
-        .toArray()
-        .then((nonprofits) => nonprofits[0]);
+      const nonprofit = await this.getRandomNonprofit();
 
-      orgQueryBody.nonprofit = nonprofit._id;
-      orgQueryBody.roles = ["Nonprofit Member", "Nonprofit Admin"];
+      orgFilter.nonprofit = nonprofit._id;
+      orgFilter.roles = ["Nonprofit Member", "Nonprofit Admin"];
     } else if (this.userType == "chapter") {
-      const chapter = await chapterCollection
-        .aggregate([{ $sample: { size: 1 } }])
-        .toArray()
-        .then((chapters) => chapters[0]);
+      const chapter = await this.getRandomChapter();
 
-      orgQueryBody.chapter = chapter._id;
-      orgQueryBody.roles = ["Chapter Member", "Chapter Admin"];
+      orgFilter.chapter = chapter._id;
+      orgFilter.roles = ["Chapter Member", "Chapter Admin"];
     }
 
-    await userCollection.updateOne(
-      { _id: this.userId },
-      { $set: orgQueryBody }
-    );
+    await this.db
+      .collection("users")
+      .updateOne({ _id: this.userId }, { $set: orgFilter });
   }
 
   async createProjects() {
-    const userCollection = this.client.db(TEST_DATABASE).collection("users");
-    const nonprofitCollection = this.client
-      .db(TEST_DATABASE)
-      .collection("nonprofits");
-    const chapterCollection = this.client
-      .db(TEST_DATABASE)
-      .collection("chapters");
-    const projectCollection = this.client
-      .db(TEST_DATABASE)
-      .collection("projects");
     const testProjects = [];
 
-    const user = await userCollection.findOne({ _id: this.userId });
+    const user = await this.db
+      .collection("users")
+      .findOne({ _id: this.userId });
 
     for (let i = 0; i < NUM_PROJECTS_TO_CREATE; i++) {
       const status = faker.random.arrayElement(projectStages);
+      const hasChapter = stagesWithChapter.includes(status);
+
       const project = {
         name: faker.company.companyName(),
         status: status,
@@ -181,28 +188,21 @@ class DBSeeder {
       if (this.userType == "nonprofit") {
         project.nonprofit = user.nonprofit;
 
-        if (stagesWithChapter.includes(status)) {
-          const chapter = await chapterCollection
-            .aggregate([{ $sample: { size: 1 } }])
-            .toArray()
-            .then((chapters) => chapters[0]);
-
+        if (hasChapter) {
+          const chapter = await this.getRandomChapter();
           project.chapter = chapter._id;
         }
       } else if (this.userType == "chapter") {
-        const nonprofit = await nonprofitCollection
-          .aggregate([{ $sample: { size: 1 } }])
-          .toArray()
-          .then((nonprofits) => nonprofits[0]);
-
+        const nonprofit = await this.getRandomNonprofit();
         project.nonprofit = nonprofit._id;
-        if (stagesWithChapter.includes(status)) {
+
+        if (hasChapter) {
           project.chapter = user.chapter;
         }
       }
 
-      if (stagesWithChapter.includes(status)) {
-        project.contact = new ObjectID("617ea1ef4fc7ad703f5db086");
+      if (hasChapter) {
+        project.contact = TEST_CONTACT;
       }
 
       if (status == "Maintenance") {
@@ -215,118 +215,94 @@ class DBSeeder {
       testProjects.push(project);
     }
 
-    await projectCollection.insertMany(testProjects);
+    await this.db.collection("projects").insertMany(testProjects);
   }
 
   async createIssues() {
-    const issueCollection = this.client.db(TEST_DATABASE).collection("issues");
-    const projectCollection = this.client
-      .db(TEST_DATABASE)
-      .collection("projects");
-    const userCollection = this.client.db(TEST_DATABASE).collection("users");
     const testIssues = [];
 
-    const user = await userCollection.findOne({ _id: this.userId });
-    const orgQueryBody = {};
+    const user = await this.db
+      .collection("users")
+      .findOne({ _id: this.userId });
+
+    const orgFilter = {};
     if (this.userType == "nonprofit") {
-      orgQueryBody.nonprofit = new ObjectID(user.nonprofit);
+      orgFilter.nonprofit = new ObjectID(user.nonprofit);
     } else if (this.userType == "chapter") {
-      orgQueryBody.chapter = new ObjectID(user.chapter);
+      orgFilter.chapter = new ObjectID(user.chapter);
     }
 
     for (let i = 0; i < NUM_ISSUES_TO_CREATE; i++) {
-      const project = await projectCollection
-        .aggregate([{ $match: orgQueryBody }, { $sample: { size: 1 } }])
-        .toArray()
-        .then((projects) => projects[0]);
+      const project = await this.getRandomProject(orgFilter);
+      const status = faker.random.arrayElement(issueStatuses);
 
-      testIssues.push({
+      const issue = {
         name: faker.company.companyName(),
         project: project._id,
         type: faker.random.arrayElement(maintenanceTypes),
         title: faker.lorem.words(3),
         description: faker.lorem.paragraph(3),
-        status: faker.random.arrayElement(issueStatuses),
-        reviewer: new ObjectID("617ea1ef4fc7ad703f5db086"),
+        status: status,
         createdAt: faker.date.past(),
         updatedAt: faker.date.recent(),
-      });
+      };
+
+      if (statusesWithReviewer.includes(status)) {
+        issue.reviewer = TEST_CONTACT;
+      }
+
+      testIssues.push(issue);
     }
 
-    await issueCollection.insertMany(testIssues);
+    await this.db.collection("issues").insertMany(testIssues);
   }
 
   async createApplications() {
-    const projectCollection = this.client
-      .db(TEST_DATABASE)
-      .collection("projects");
-    const appCollection = this.client
-      .db(TEST_DATABASE)
-      .collection("applications");
-    const userCollection = this.client.db(TEST_DATABASE).collection("users");
     const testApplications = [];
 
-    const user = await userCollection.findOne({ _id: this.userId });
-    const orgQueryBody = {
+    const user = await this.db
+      .collection("users")
+      .findOne({ _id: this.userId });
+
+    const orgFilter = {
       status: { $ne: "Submit Application" },
     };
 
     if (this.userType == "nonprofit") {
-      orgQueryBody.nonprofit = new ObjectID(user.nonprofit);
+      orgFilter.nonprofit = new ObjectID(user.nonprofit);
     } else if (this.userType == "chapter") {
-      orgQueryBody.chapter = new ObjectID(user.chapter);
+      orgFilter.chapter = new ObjectID(user.chapter);
     }
 
     for (let i = 0; i < NUM_APPLICATIONS_TO_CREATE; i++) {
-      const project = await projectCollection
-        .aggregate([{ $match: orgQueryBody }, { $sample: { size: 1 } }])
-        .toArray()
-        .then((projects) => projects[0]);
+      const project = await this.getRandomProject(orgFilter);
 
       const application = {
         project: project._id,
       };
 
-      if (Math.random() >= 0.5) {
-        application.aboutQ1 = faker.lorem.paragraph(3);
-      }
+      const questions = [
+        "aboutQ1",
+        "aboutQ2",
+        "aboutQ3",
+        "aboutQ4",
+        "needsQ1",
+        "needsQ2",
+        "needsQ3",
+        "needsQ4",
+        "needsQ5",
+      ];
 
-      if (Math.random() >= 0.5) {
-        application.aboutQ2 = faker.lorem.paragraph(3);
-      }
-
-      if (Math.random() >= 0.5) {
-        application.aboutQ3 = faker.lorem.paragraph(3);
-      }
-
-      if (Math.random() >= 0.5) {
-        application.aboutQ4 = faker.lorem.paragraph(3);
-      }
-
-      if (Math.random() >= 0.5) {
-        application.needsQ1 = faker.lorem.paragraph(3);
-      }
-
-      if (Math.random() >= 0.5) {
-        application.needsQ2 = faker.lorem.paragraph(3);
-      }
-
-      if (Math.random() >= 0.5) {
-        application.needsQ3 = faker.lorem.paragraph(3);
-      }
-
-      if (Math.random() >= 0.5) {
-        application.needsQ4 = faker.lorem.paragraph(3);
-      }
-
-      if (Math.random() >= 0.5) {
-        application.needsQ5 = faker.lorem.paragraph(3);
-      }
+      questions.forEach((question) => {
+        if (Math.round(Math.random()) == 0) {
+          application[question] = faker.lorem.paragraph(3);
+        }
+      });
 
       testApplications.push(application);
     }
 
-    await appCollection.insertMany(testApplications);
+    await this.db.collection("applications").insertMany(testApplications);
   }
 }
 
@@ -353,7 +329,11 @@ async function seedDB() {
 
   await client.connect();
 
-  const seeder = new DBSeeder(client, userId, userType);
+  const seeder = new DBSeeder(client.db(TEST_DATABASE), userId, userType);
+  if (!seeder.userExists()) {
+    throw new Error("User does not exist");
+  }
+
   await seeder.createChapters();
   await seeder.createNonprofits();
   await seeder.assignUsertoOrg();
