@@ -4,8 +4,6 @@ link(rel="stylesheet", href="./style.css", data-inline)
 html
     body
         - const emailAssetsUrl = '../../public/emails'
-        - const buttonName = "Submit Application"
-        - const link = '/'
         table
             tbody
                 tr
@@ -18,12 +16,12 @@ html
                             p Hi #{name},
                 tr
                     td
-                        block content
-                            p Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                        block description
+                            p #{description}
                 tr
                     td 
                         block button
-                            a(id="btn", href=`${link}`) #{buttonName}
+                            a(id="btn", href=`${buttonLink}`) #{buttonText}
                 tr
                     td
                         div(id="footer")
@@ -31,11 +29,11 @@ html
                                 p(class="bolded") Thank you!
                                 p Hack4Impact Team
                             div(id="socials")
-                                - const websiteURL = `${emailAssetsUrl}/globe.png`
+                                - const websiteLogoURL = `${emailAssetsUrl}/globe.png`
                                 - const instagramLogoURL = `${emailAssetsUrl}/instagram.png`
                                 - const linkedinLogoURL = `${emailAssetsUrl}/linkedin.png`
                                 a(href="https://hack4impact.org/", rel="noopener noreferrer", target="_blank")
-                                    img(class="social right" src=websiteURL)
+                                    img(class="social right" src=websiteLogoURL)
                                 a(href="https://www.instagram.com/hack4impact/", rel="noopener noreferrer", target="_blank")
                                     img(class="social left right" src=instagramLogoURL)
                                 a(href="https://www.linkedin.com/company/hack4impact/", rel="noopener noreferrer", target="_blank")
