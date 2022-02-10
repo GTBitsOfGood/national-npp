@@ -261,6 +261,7 @@ export enum Role {
   CHAPTER_ADMIN = "Chapter Admin",
   NONPROFIT_MEMBER = "Nonprofit Member",
   NONPROFIT_ADMIN = "Nonprofit Admin",
+  NATIONAL_ADMIN = "National Admin",
 }
 
 export enum StepCardEvent {
