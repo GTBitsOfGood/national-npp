@@ -4,7 +4,7 @@ import {
   Issue,
   NonprofitCreateIssue,
   NonprofitUpdateIssue,
-  NonprofitGetIssues,
+  NonprofitIssuesListQuery,
 } from "src/utils/types";
 import urls from "src/utils/urls";
 
@@ -23,14 +23,11 @@ export async function nonprofitCreateIssue(
   });
 }
 
-export async function nonprofitGetIssues(
-  projectId: string,
-  issuesGet: NonprofitGetIssues
-) {
+export async function nonprofitGetIssues(issuesGet: NonprofitIssuesListQuery) {
   return internalRequest<Issue[]>({
-    url: projectAPI + `/${projectId}/issues/nonprofit`,
+    url: projectAPI + `/${issuesGet.id}/issues/nonprofit`,
     queryParams: {
-      ...issuesGet,
+      filters: issuesGet.filters,
     },
     method: HttpMethod.GET,
   });

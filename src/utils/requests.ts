@@ -22,11 +22,8 @@ export async function internalRequest<T>({
   if (queryParams) {
     const urlSearchParams = new URLSearchParams(
       Object.entries(queryParams)
-        .filter(([, value]) => value !== undefined && value !== null)
-        .map(([key, value]) => [
-          key,
-          (value as string | number | boolean).toString(),
-        ])
+        .map(([key, value]) => [key, serializeQueryValue(value)])
+        .filter(([, value]) => value !== null) as [string, string][]
     );
     url = `${url}?${urlSearchParams.toString()}`;
   }
@@ -42,4 +39,16 @@ export async function internalRequest<T>({
   }
 
   return responseBody.payload as T;
+}
+
+function serializeQueryValue(
+  value: string | number | boolean | Record<string, unknown> | undefined | null
+): string | null {
+  if (value === null || value === undefined) {
+    return null;
+  }
+  if (typeof value == "object") {
+    return JSON.stringify(value);
+  }
+  return value.toString();
 }

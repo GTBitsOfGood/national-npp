@@ -1,17 +1,14 @@
-type QueryParam = string | string[];
+import { JTDSchemaType } from "ajv/lib/types/jtd-schema";
 
-export function tryToParseBoolean(
-  value: QueryParam | undefined
-): boolean | undefined {
-  if (typeof value !== "string") {
-    return undefined;
-  }
-  value = value.toLowerCase();
-  if (value === "true") {
-    return true;
-  }
-  if (value === "false") {
-    return false;
-  }
-  return undefined;
-}
+export type IDQuery = {
+  id: string;
+};
+
+// ID_QUERY_SCHEMA represents the common schema of just having an 'id' as a query param
+export const ID_QUERY_SCHEMA: JTDSchemaType<IDQuery> = {
+  properties: {
+    id: {
+      type: "string",
+    },
+  },
+};

@@ -71,7 +71,7 @@ function NonprofitProjectsPage() {
   useEffect(() => {
     async function getProjects() {
       const projects: Project[] = await nonprofitGetProjects({
-        active,
+        filters: { status: { $active: active, type: "$active" } },
       });
 
       setDisplayedProjects(projects);

@@ -147,16 +147,27 @@ export enum HttpMethod {
   DELETE = "DELETE",
 }
 
-export interface InternalRequest extends NextApiRequest {
+export type StringsDict = { [key: string]: string | string[] };
+export type UnknownDict = { [key: string]: unknown };
+
+export interface InternalRequest<Q_P, B> extends Omit<NextApiRequest, "query"> {
   user: SessionUser;
-  body: { [key: string]: unknown };
+  query: Q_P;
+  body: B;
 }
 
 export interface InternalRequestData {
   url: string;
   method: HttpMethod;
-  body?: { [key: string]: unknown };
-  queryParams?: { [key: string]: string | number | boolean | undefined };
+  body?: UnknownDict;
+  queryParams?: {
+    [key: string]:
+      | string
+      | number
+      | boolean
+      | Record<string, unknown>
+      | undefined;
+  };
 }
 
 export interface InternalResponseData<T> {
@@ -174,9 +185,14 @@ export type AuthComponent = NextComponentType & { auth: PageAuth | undefined };
 
 export type NonprofitCreateProject = Pick<Required<Project>, "name" | "type">;
 export type ChapterGetProjects = { status?: ProjectStage };
-export type NonprofitGetProjects = Pick<Partial<Project>, "status"> & {
-  active?: boolean;
-};
+
+export type NonprofitProjectsListQuery = ListQuery<
+  never,
+  {
+    status?: // only tagged unions are supported, so must have a type key
+    { $active: boolean; type: "$active" } | { $eq: ProjectStage; type: "$eq" };
+  }
+>;
 export type NonprofitUpdateProject = Pick<Partial<Project>, "status">;
 export type ChapterGetProject = Pick<Partial<Project>, "status">;
 export type NonprofitGetProject = Pick<Partial<Project>, "status">;
@@ -187,7 +203,14 @@ export type ChapterUpdateProject = Pick<
 
 export type NonprofitCreateApplication = Omit<Application, "_id" | "project">;
 
-export type NonprofitGetIssues = { open?: boolean };
+export type NonprofitIssuesListQuery = ListQuery<
+  {
+    id: string;
+  },
+  {
+    status?: { $open: boolean };
+  }
+>;
 
 export type NonprofitUpdateUser = Pick<
   Partial<User>,
@@ -207,7 +230,7 @@ export type NonprofitUpdateNonprofit = Omit<
 >;
 export type NonprofitCreateIssue = Omit<
   Issue,
-  "_id" | "project" | "createdAt" | "updatedAt"
+  "_id" | "project" | "createdAt" | "updatedAt" | "finishedAt" | "reviewer"
 >;
 
 export type NonprofitUpdateIssue = Pick<
@@ -215,6 +238,19 @@ export type NonprofitUpdateIssue = Pick<
   "status" | "finishedAt"
 >;
 
+export type ListQuery<
+  PARAMS extends Required<Omit<Record<string, unknown>, "filters">>,
+  FILTERS extends Record<string, unknown>
+> = FetchQuery<PARAMS, FILTERS>;
+
+export type FetchQuery<
+  PARAMS extends Required<Record<string, unknown>>,
+  FILTERS extends Record<string, unknown>
+> = [PARAMS] extends [never]
+  ? { filters: FILTERS }
+  : PARAMS & {
+      filters: FILTERS;
+    };
 /* Enums */
 
 export enum ProjectType {
