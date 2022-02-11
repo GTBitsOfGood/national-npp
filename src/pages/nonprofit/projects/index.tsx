@@ -136,6 +136,19 @@ function NonprofitProjectsPage() {
       );
     }
   };
+  
+  const choices = [onClose, cancelProject]
+  const [choice, setChoice] = React.useState(0)
+  const [confirmTitle, setConfirmTitle] = React.useState("")
+  const [confirmDesc, setConfirmDesc] = React.useState("")
+  const [confText, setConfirmText] = React.useState("")
+  const handleClick =(newConfirmTitle: string, newConfirmDesc: string, newConfirmText: string, newChoice: number) => {
+    setConfirmTitle(newConfirmTitle)
+    setConfirmDesc(newConfirmDesc)
+    setConfirmText(newConfirmText)
+    setChoice(newChoice)
+    onOpen()
+  }
 
   return (
     <Flex height="100%" width="100%">
@@ -144,10 +157,10 @@ function NonprofitProjectsPage() {
       ) : (
         <>
           <ConfirmAlert
-            title="Delete Application"
-            description="Please confirm that you would like to delete this application."
-            confirmText="Delete"
-            onConfirm={cancelProject}
+            title={confirmTitle}
+            description={confirmDesc}
+            confirmText={confText}
+            onConfirm={choices[choice]}
             isOpen={isOpen}
             onClose={onClose}
           />
@@ -266,8 +279,7 @@ function NonprofitProjectsPage() {
                       color="white"
                       fontWeight={"500"}
                       borderRadius={3}
-                      onClick={onOpen}
-                      //() => handleClick("Delete NonProfit", "Please confirm that you would like to delete this project.", 0)}
+                      onClick={() => handleClick("Delete Application", "Please confirm that you would like to delete this project.", "Delete", 0)}
                     >
                       Delete Project
                     </Box>
@@ -329,7 +341,7 @@ function NonprofitProjectsPage() {
                         variant="secondary"
                         color="secondaryText"
                         textDecoration="underline"
-                        onClick={onOpen}
+                        onClick={() => handleClick("Cancel Project", "Are you sure you want to cancel this project?", "Cancel Project", 1)}
                         padding="0px"
                         _focus={{
                           boxShadow: "none",
@@ -367,6 +379,3 @@ function NonprofitProjectsPage() {
 }
 
 export default NonprofitProjectsPage;
-function handleClick(arg0: string, arg1: string, arg2: number): void {
-  throw new Error("Function not implemented.");
-}
