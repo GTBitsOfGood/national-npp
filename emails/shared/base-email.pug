@@ -11,30 +11,25 @@ html
                         - const placeholderURL = `${emailAssetsUrl}/header.png`
                         img(id="header" src=placeholderURL)
                 tr
-                    td
+                    td(class="bolded")
                         block address
-                            p Dear #{name},
+                            p Hi #{name},
                 tr
                     td
                         block content
                 tr
                     td
-                        block signature
-                            p - Bits of Good Team
-                tr
-                    td
-                        div(id="footer" style={ "background-image": `url("${emailAssetsUrl}/footer.jpg")` })
-                            h1(id="copyright") © 2021 Bits of Good | bitsofgood.org
+                        div(id="footer")
+                            div(id="closing")
+                                p(class="bolded") Thank you!
+                                p Hack4Impact Team
                             div(id="socials")
-                                - const facebookLogoURL = `${emailAssetsUrl}/facebook.png`
-                                - const twitterLogoURL = `${emailAssetsUrl}/twitter.png`
+                                - const websiteLogoURL = `${emailAssetsUrl}/globe.png`
                                 - const instagramLogoURL = `${emailAssetsUrl}/instagram.png`
                                 - const linkedinLogoURL = `${emailAssetsUrl}/linkedin.png`
-                                a(href="https://www.facebook.com/GTBitsOfGood/")
-                                    img(class="social right" src=facebookLogoURL)
-                                a(href="https://twitter.com/gtbitsofgood")
-                                    img(class="social left right" src=twitterLogoURL)
-                                a(href="https://www.instagram.com/gtbitsofgood/")
+                                a(href="https://hack4impact.org/", rel="noopener noreferrer", target="_blank")
+                                    img(class="social right" src=websiteLogoURL)
+                                a(href="https://www.instagram.com/hack4impact/", rel="noopener noreferrer", target="_blank")
                                     img(class="social left right" src=instagramLogoURL)
-                                a(href="https://www.linkedin.com/company/gtbitsofgood/about/")
+                                a(href="https://www.linkedin.com/company/hack4impact/", rel="noopener noreferrer", target="_blank")
                                     img(class="social left" src=linkedinLogoURL)
