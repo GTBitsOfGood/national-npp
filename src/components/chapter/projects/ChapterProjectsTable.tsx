@@ -1,13 +1,28 @@
-import { Menu, MenuButton, MenuList, MenuItem, IconButton, Button, Box, Link, Table, Thead, Tbody, Tr, Th, Td, useDisclosure} from "@chakra-ui/react";
-import type { ChapterProject } from "src/utils/types";
-import { Role } from "src/utils/types";
+import {
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  IconButton,
+  Button,
+  Box,
+  Link,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { useSession } from "next-auth/client";
-import ConfirmAlert from "src/components/shared/ConfirmAlert";
 import { BsThreeDots } from "react-icons/bs";
 import { FaTrash } from "react-icons/fa";
 import { RiPencilFill } from "react-icons/ri";
+import ConfirmAlert from "src/components/shared/ConfirmAlert";
+import { Role } from "src/utils/types";
+import type { ChapterProject } from "src/utils/types";
 import ChapterProjectStatus from "./ChapterProjectStatus";
-
 
 function ChapterProjectsTable(props: { projects: ChapterProject[] }) {
   const { projects } = props;
@@ -91,33 +106,24 @@ function ChapterProjectsTable(props: { projects: ChapterProject[] }) {
                 <Td>
                   <Menu>
                     <MenuButton>
-                      <Box
-                        as='button'
-                      >
-                        <BsThreeDots/>
+                      <Box as="button">
+                        <BsThreeDots />
                       </Box>
                     </MenuButton>
                     <MenuList>
-                        <MenuItem
-                          borderBottomWidth={'thin'}
-                          color="#858585"
-                          fontWeight={"semibold"}
-                          paddingBottom={4}
-                          paddingLeft={4}
-                          fontFamily={"Tahoma"}
-                          fontStyle={"normal"}
-                          icon={<RiPencilFill
-                            size={20}
-                          >
-                          </RiPencilFill>}
-                        >
-                          Edit Chapter
-                        </MenuItem>
-                      <Box
-                        as='button'
-                        width="100%"
-                        onClick={onOpen}
+                      <MenuItem
+                        borderBottomWidth={"thin"}
+                        color="#858585"
+                        fontWeight={"semibold"}
+                        paddingBottom={4}
+                        paddingLeft={4}
+                        fontFamily={"Tahoma"}
+                        fontStyle={"normal"}
+                        icon={<RiPencilFill size={20} />}
                       >
+                        Edit Chapter
+                      </MenuItem>
+                      <Box as="button" width="100%" onClick={onOpen}>
                         <MenuItem
                           color="danger"
                           fontWeight={"semibold"}
@@ -125,15 +131,12 @@ function ChapterProjectsTable(props: { projects: ChapterProject[] }) {
                           paddingTop={4}
                           fontFamily={"Tahoma"}
                           fontStyle={"normal"}
-                          icon={<FaTrash
-                            size={20}
-                          >
-                          </FaTrash>}
+                          icon={<FaTrash size={20} />}
                         >
                           Delete Chapter
                         </MenuItem>
                       </Box>
-                    </MenuList>  
+                    </MenuList>
                   </Menu>
                 </Td>
               )}
