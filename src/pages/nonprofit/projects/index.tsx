@@ -1,3 +1,4 @@
+import { userAgentPolicy } from "@azure/core-http";
 import {
   Flex,
   Stack,
@@ -11,8 +12,11 @@ import {
   TabList,
   TabPanel,
   TabPanels,
+  HStack,
+  Box,
 } from "@chakra-ui/react";
 import { Step, Steps } from "chakra-ui-steps";
+import { useSession } from "next-auth/client";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -35,6 +39,7 @@ import {
   projectStageToDisplayableProjectStage,
 } from "src/utils/stages";
 import {
+  Role,
   Chapter,
   DisplayableProjectStage,
   Project,
@@ -56,6 +61,8 @@ function NonprofitProjectsPage() {
   const projectChapter = currProject?.chapter as Chapter;
   const chapterContact = projectChapter?.contact as User;
   const projectContact = projectChapter?.contact as User;
+  const [session] = useSession();
+  const currUser = session?.user;
 
   const switchProject = useCallback(
     (projectId: string) => {
@@ -137,9 +144,9 @@ function NonprofitProjectsPage() {
       ) : (
         <>
           <ConfirmAlert
-            title="Cancel Project"
-            description="Are you sure you want to cancel this project?"
-            confirmText="Cancel Project"
+            title="Delete Application"
+            description="Please confirm that you would like to delete this application."
+            confirmText="Delete"
             onConfirm={cancelProject}
             isOpen={isOpen}
             onClose={onClose}
@@ -232,22 +239,40 @@ function NonprofitProjectsPage() {
                 margin="20px"
                 spacing="20px"
               >
-                <Steps
-                  display={{ base: "none", lg: "flex" }}
-                  maxHeight="100px"
-                  activeStep={
-                    displayableProjectStageOrder[
-                      projectStageToDisplayableProjectStage(currProject.status)
-                    ]
-                  }
-                  colorScheme="blue"
-                  responsive={false}
-                  paddingX="20px"
-                >
-                  {Object.values(DisplayableProjectStage).map((step) => (
-                    <Step key={step} label={step} />
-                  ))}
-                </Steps>
+                <HStack paddingTop={4} paddingBottom={4}>
+                  <Steps
+                    display={{ base: "none", lg: "flex" }}
+                    maxHeight="100px"
+                    activeStep={
+                      displayableProjectStageOrder[
+                        projectStageToDisplayableProjectStage(
+                          currProject.status
+                        )
+                      ]
+                    }
+                    colorScheme="blue"
+                    responsive={false}
+                    paddingX="20px"
+                  >
+                    {Object.values(DisplayableProjectStage).map((step) => (
+                      <Step key={step} label={step} />
+                    ))}
+                  </Steps>
+                  {currUser && currUser.roles.includes(Role.NATIONAL_ADMIN) && (
+                    <Box
+                      as="button"
+                      background="danger"
+                      padding={3}
+                      color="white"
+                      fontWeight={"500"}
+                      borderRadius={3}
+                      onClick={onOpen}
+                      //() => handleClick("Delete NonProfit", "Please confirm that you would like to delete this project.", 0)}
+                    >
+                      Delete Project
+                    </Box>
+                  )}
+                </HStack>
                 <Stack
                   direction={{ base: "column", lg: "row" }}
                   flex="1"
@@ -342,3 +367,6 @@ function NonprofitProjectsPage() {
 }
 
 export default NonprofitProjectsPage;
+function handleClick(arg0: string, arg1: string, arg2: number): void {
+  throw new Error("Function not implemented.");
+}
