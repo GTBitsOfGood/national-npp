@@ -1,4 +1,4 @@
-import { adminGetNonprofits } from "server/mongodb/actions/Admin";
+import { natlAdminGetNonprofits } from "server/mongodb/actions/NatlAdmin";
 import APIWrapper from "server/utils/APIWrapper";
 import { Nonprofit, Role } from "src/utils/types";
 
@@ -9,7 +9,7 @@ export default APIWrapper({
       roles: [Role.NATIONAL_ADMIN],
     },
     handler: async () => {
-      const nonprofits: Nonprofit[] = await adminGetNonprofits();
+      const nonprofits: Nonprofit[] = await natlAdminGetNonprofits();
 
       if (!nonprofits) {
         throw new Error("Failed to retrieve nonprofits.");
