@@ -27,6 +27,8 @@ const SessionSchema = new Schema<Session>(
   { timestamps: true }
 );
 
+SessionSchema.statics.hasNoDependencies = () => true;
+
 const SessionModel =
   (mongoose.models.Session as mongoose.Model<Session>) ||
   mongoose.model<Session>("Session", SessionSchema);
