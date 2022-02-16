@@ -36,7 +36,7 @@ export async function nonprofitUpdateNonprofit(
 
 export async function adminDeleteNonProfit(
   nonprofitId: string,
-  reason: string
+  reason = "National Admin's discretion"
 ) {
   return internalRequest({
     url: nonprofitAPI + `${nonprofitId}/nonprofit`,
