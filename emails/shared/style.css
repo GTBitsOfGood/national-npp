@@ -1,12 +1,19 @@
 body {
   margin: 20px;
   font-size: 15px;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
+    sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   line-height: 2em;
 }
 
 table {
   width: 560px;
+  text-align: center;
+  border-collapse: separate;
+}
+
+table tr {
+  margin: 50px;
 }
 
 p {
@@ -37,30 +44,32 @@ img#logo {
 
 div#footer {
   width: 560px;
-  height: 75px;
+  display: block;
+  min-height: 75px;
   margin-top: 50px;
   background-size: 560px 75px;
-  display: block;
   overflow: hidden;
 }
 
-#copyright {
-  font-family: Arial, Helvetica, sans-serif;
-  font-weight: 500;
+div#closing {
   text-align: center;
-  margin-top: 10px;
-  margin-bottom: 0px;
-  font-size: 13px;
-  color: #505565;
+}
+
+div#closing p {
+  margin: 0;
 }
 
 #socials {
   width: 105px;
   height: 15px;
-  margin-left: 210px;
-  margin-right: 210px;
-  margin-top: 0px;
+  display: flex;
+  justify-content: center;
+  margin: 10px auto;
   overflow: hidden;
+}
+
+.bolded {
+  font-weight: bold;
 }
 
 .social {
@@ -76,4 +85,14 @@ div#footer {
 
 .social.right {
   margin-right: 7.5px;
+}
+
+#btn {
+  background: #0069ca;
+  border-radius: 4px;
+  text-decoration: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 15px 10px;
 }
