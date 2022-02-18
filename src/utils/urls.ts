@@ -25,6 +25,11 @@ const urls = {
       },
       profile: "/chapter/profile",
     },
+    natlAdmin: {
+      chapters: {
+        index: "/natlAdmin/chapters"
+      }
+    },
     nonprofit: {
       issues: {
         index: "/nonprofit/issues",
