@@ -27,8 +27,8 @@ const urls = {
     },
     natlAdmin: {
       chapters: {
-        index: "/natlAdmin/chapters"
-      }
+        index: "/natlAdmin/chapters",
+      },
     },
     nonprofit: {
       issues: {

@@ -1,12 +1,4 @@
-import {
-  Link,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-} from "@chakra-ui/react";
+import { Link, Table, Thead, Tbody, Tr, Th, Td } from "@chakra-ui/react";
 import type { ChapterProject } from "src/utils/types";
 import ChapterProjectStatus from "./ChapterProjectStatus";
 
