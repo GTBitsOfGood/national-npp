@@ -39,6 +39,8 @@ const IssueSchema = new Schema<Issue>(
   }
 );
 
+IssueSchema.statics.hasNoDependencies = () => true;
+
 const IssueModel =
   (mongoose.models.Issue as mongoose.Model<Issue>) ||
   mongoose.model<Issue>("Issue", IssueSchema);

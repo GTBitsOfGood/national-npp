@@ -1,5 +1,8 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { CallbackError, Schema, Types } from "mongoose";
 import AddressSchema from "server/mongodb/models/embedded/Address";
+import ProjectModel from "server/mongodb/models/Project";
+import UserModel from "server/mongodb/models/User";
+import { deleteDocumentAndDependencies } from "server/utils/delete-document";
 import { Chapter, MaintenanceType } from "src/utils/types";
 
 const ChapterSchema = new Schema<Chapter>({
@@ -7,7 +10,6 @@ const ChapterSchema = new Schema<Chapter>({
     type: String,
     required: true,
   },
-  email: String,
   contact: {
     type: Schema.Types.ObjectId,
     ref: "User",
@@ -30,6 +32,23 @@ const ChapterSchema = new Schema<Chapter>({
     required: true,
   },
 });
+
+ChapterSchema.pre(
+  "remove",
+  async function (next: (err?: CallbackError) => void) {
+    const id = this._id as Types.ObjectId;
+    // Cascade deletes (and remove chapter from projects)
+    await Promise.all([
+      // delete the user associated with the nonprofit
+      deleteDocumentAndDependencies(UserModel, {
+        chapter: id,
+      }),
+      // Remove chapter from projects
+      ProjectModel.updateMany({ chapter: id }, { chapter: undefined }),
+    ]);
+    next();
+  }
+);
 
 const ChapterModel =
   (mongoose.models.Chapter as mongoose.Model<Chapter>) ||

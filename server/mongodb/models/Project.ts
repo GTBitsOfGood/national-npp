@@ -1,4 +1,7 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { CallbackError, Schema, Types } from "mongoose";
+import ApplicationModel from "server/mongodb/models/Application";
+import IssueModel from "server/mongodb/models/Issue";
+import { deleteDocumentAndDependencies } from "server/utils/delete-document";
 import { Project, ProjectStage, ProjectType } from "src/utils/types";
 
 const ProjectSchema = new Schema<Project>(
@@ -42,6 +45,24 @@ const ProjectSchema = new Schema<Project>(
   },
   {
     timestamps: true,
+  }
+);
+
+ProjectSchema.pre(
+  "remove",
+  async function (next: (err?: CallbackError) => void) {
+    const id = this._id as Types.ObjectId;
+    await Promise.all([
+      // delete the issues associated with the project
+      deleteDocumentAndDependencies(IssueModel, {
+        project: id,
+      }),
+      // delete the applications associated with the project
+      deleteDocumentAndDependencies(ApplicationModel, {
+        project: id,
+      }),
+    ]);
+    next();
   }
 );
 

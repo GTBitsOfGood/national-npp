@@ -17,6 +17,8 @@ const ApplicationSchema = new Schema<Application>({
   needsQ5: String,
 });
 
+ApplicationSchema.statics.hasNoDependencies = () => true;
+
 const ApplicationModel =
   (mongoose.models.Application as mongoose.Model<Application>) ||
   mongoose.model<Application>("Application", ApplicationSchema);

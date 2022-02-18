@@ -16,3 +16,16 @@ export async function chapterUpdateChapter(
     },
   });
 }
+
+export async function adminDeleteChapter(
+  chapterId: string,
+  reason = "National Admin's discretion"
+) {
+  return internalRequest({
+    url: chapterAPI + `/${chapterId}/chapter`,
+    method: HttpMethod.DELETE,
+    body: {
+      reason: reason,
+    },
+  });
+}

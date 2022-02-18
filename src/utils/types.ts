@@ -47,6 +47,14 @@ export interface Nonprofit {
   mission?: string;
 }
 
+export interface EntityRemoval {
+  _id: Types.ObjectId | string;
+  deletedDocumentId: Types.ObjectId;
+  name: string;
+  reason: string;
+  createdAt: Date;
+}
+
 export interface Project {
   _id: Types.ObjectId;
   chapter?: Chapter | Types.ObjectId;
@@ -199,12 +207,14 @@ export type ChapterUpdateUser = Pick<
 >;
 
 export type ChapterUpdateChapter = Omit<Partial<Chapter>, "_id">;
+export type AdminDeleteChapter = Omit<EntityRemoval, "_id" | "createdAt">;
 
 export type NonprofitCreateNonprofit = Omit<Nonprofit, "_id" | "isVerified">;
 export type NonprofitUpdateNonprofit = Omit<
   Partial<Nonprofit>,
   "_id" | "isVerified"
 >;
+export type AdminDeleteNonprofit = Omit<EntityRemoval, "_id" | "createdAt">;
 export type NonprofitCreateIssue = Omit<
   Issue,
   "_id" | "project" | "createdAt" | "updatedAt"
@@ -300,7 +310,12 @@ export interface UploadedFile {
   name: string; // name is the name of the file in blob storage
 }
 
+// BaseEmailTemplateData holds the required values for the base email
+export interface BaseEmailTemplateData {
+  name: string;
+}
+
 export interface Email {
-  data: Record<string, unknown>; // data contains the the variables for the template
+  data: Record<string, unknown> & BaseEmailTemplateData; // data contains the the variables for the template
   templateName: string; // templateName is the the name of the directory within `emails/` containing the template resources
 }
