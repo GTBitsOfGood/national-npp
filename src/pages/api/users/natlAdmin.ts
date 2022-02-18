@@ -47,6 +47,8 @@ export default APIWrapper({
             content: req.body.content as string,
             subject: req.body.subject as string
           }));
+
+        emailsSent.push(emails[index]);
       }
     }
   }
