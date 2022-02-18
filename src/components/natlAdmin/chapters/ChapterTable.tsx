@@ -13,7 +13,6 @@ import {
   Td,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useSession } from "next-auth/client";
 import { BsThreeDots } from "react-icons/bs";
 import { FaTrash } from "react-icons/fa";
 import { RiPencilFill } from "react-icons/ri";
