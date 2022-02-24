@@ -1,5 +1,10 @@
-import { Link, Table, Thead, Tbody, Tr, Th, Td } from "@chakra-ui/react";
+import { Link, Table, Thead, Tbody, Tr, Th, Td, useDisclosure, Menu, MenuButton, Box, MenuList, MenuItem, } from "@chakra-ui/react";
+import { BsThreeDots } from "react-icons/bs";
+import { RiPencilFill } from "react-icons/ri";
+import { FaTrash } from "react-icons/fa";
 import type { Chapter, Nonprofit, User } from "src/utils/types";
+import ConfirmAlert from "../shared/ConfirmAlert";
+
 
 interface Props {
   chapters?: Chapter[];
@@ -8,7 +13,17 @@ interface Props {
 }
 
 function AdminTable({ chapters, nonprofits, chapterIsActive }: Props) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
+    <>
+    <ConfirmAlert
+          title="Delete Chapter"
+          description="Please confirm that you would like to delete this chapter."
+          confirmText="Delete"
+          onConfirm={onClose}
+          isOpen={isOpen}
+          onClose={onClose}
+    />
     <Table variant="unstyled" size="lg">
       <Thead color="#999999" borderBottom="1px solid #E2E8F0">
         <Tr height="100px">
@@ -53,6 +68,42 @@ function AdminTable({ chapters, nonprofits, chapterIsActive }: Props) {
                     {(chapter.contact as User).email}
                   </Link>
                 </Td>
+                <Td>
+                    <Menu>
+                      <MenuButton>
+                        <Box as="button">
+                          <BsThreeDots />
+                        </Box>
+                      </MenuButton>
+                      <MenuList>
+                        <MenuItem
+                          borderBottomWidth={"thin"}
+                          color="#858585"
+                          fontWeight={"semibold"}
+                          paddingBottom={4}
+                          paddingLeft={4}
+                          fontFamily={"Tahoma"}
+                          fontStyle={"normal"}
+                          icon={<RiPencilFill size={20} />}
+                        >
+                          Edit Chapter
+                        </MenuItem>
+                        <Box as="button" width="100%" onClick={onOpen}>
+                          <MenuItem
+                            color="danger"
+                            fontWeight={"semibold"}
+                            paddingLeft={4}
+                            paddingTop={4}
+                            fontFamily={"Tahoma"}
+                            fontStyle={"normal"}
+                            icon={<FaTrash size={20} />}
+                          >
+                            Delete Chapter
+                          </MenuItem>
+                        </Box>
+                      </MenuList>
+                    </Menu>
+                </Td>
               </Tr>
             ))}
           </>
@@ -86,12 +137,49 @@ function AdminTable({ chapters, nonprofits, chapterIsActive }: Props) {
                       {(nonprofit.contact as User).email}
                     </Link>
                   </Td>
+                  <Td>
+                    <Menu>
+                      <MenuButton>
+                        <Box as="button">
+                          <BsThreeDots />
+                        </Box>
+                      </MenuButton>
+                      <MenuList>
+                        <MenuItem
+                          borderBottomWidth={"thin"}
+                          color="#858585"
+                          fontWeight={"semibold"}
+                          paddingBottom={4}
+                          paddingLeft={4}
+                          fontFamily={"Tahoma"}
+                          fontStyle={"normal"}
+                          icon={<RiPencilFill size={20} />}
+                        >
+                          Edit Chapter
+                        </MenuItem>
+                        <Box as="button" width="100%" onClick={onOpen}>
+                          <MenuItem
+                            color="danger"
+                            fontWeight={"semibold"}
+                            paddingLeft={4}
+                            paddingTop={4}
+                            fontFamily={"Tahoma"}
+                            fontStyle={"normal"}
+                            icon={<FaTrash size={20} />}
+                          >
+                            Delete Chapter
+                          </MenuItem>
+                        </Box>
+                      </MenuList>
+                    </Menu>
+                </Td>
                 </Tr>
               ))}
           </>
         )}
       </Tbody>
     </Table>
+    </>
   );
 }
 
