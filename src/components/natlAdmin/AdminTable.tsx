@@ -13,6 +13,7 @@ import {
   MenuList,
   MenuItem,
 } from "@chakra-ui/react";
+import React from "react";
 import { BsThreeDots } from "react-icons/bs";
 import { FaTrash } from "react-icons/fa";
 import { RiPencilFill } from "react-icons/ri";
@@ -26,14 +27,30 @@ interface Props {
 }
 
 function AdminTable({ chapters, nonprofits, chapterIsActive }: Props) {
+
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const delFunctions = [onClose, onClose];
+  const [delFunction, setDelFunction] = React.useState(0);
+  const [confirmTitle, setConfirmTitle] = React.useState("");
+  const [confirmDesc, setConfirmDesc] = React.useState("");
+  const handleClick = (
+    newConfirmTitle: string,
+    newConfirmDesc: string,
+    newDelFunction: number
+  ) => {
+    setConfirmTitle(newConfirmTitle);
+    setConfirmDesc(newConfirmDesc);
+    setDelFunction(newDelFunction);
+    onOpen();
+  };
+
   return (
     <>
       <ConfirmAlert
-        title="Delete Chapter"
-        description="Please confirm that you would like to delete this chapter."
+        title={confirmTitle}
+        description={confirmDesc}
         confirmText="Delete"
-        onConfirm={onClose}
+        onConfirm={delFunctions[delFunction]}
         isOpen={isOpen}
         onClose={onClose}
       />
@@ -101,7 +118,13 @@ function AdminTable({ chapters, nonprofits, chapterIsActive }: Props) {
                         >
                           Edit Chapter
                         </MenuItem>
-                        <Box as="button" width="100%" onClick={onOpen}>
+                        <Box as="button" width="100%" onClick={() =>
+                            handleClick(
+                                "Delete Chapter",
+                                "Please confirm that you would like to delete this chapter.",
+                                0
+                            )}
+                        >
                           <MenuItem
                             color="danger"
                             fontWeight={"semibold"}
@@ -168,9 +191,14 @@ function AdminTable({ chapters, nonprofits, chapterIsActive }: Props) {
                             fontStyle={"normal"}
                             icon={<RiPencilFill size={20} />}
                           >
-                            Edit Chapter
+                            Edit Nonprofit
                           </MenuItem>
-                          <Box as="button" width="100%" onClick={onOpen}>
+                          <Box as="button" width="100%" onClick={() =>
+                            handleClick(
+                                "Delete Nonprofit",
+                                "Please confirm that you would like to delete this nonprofit.",
+                                1
+                            )}>
                             <MenuItem
                               color="danger"
                               fontWeight={"semibold"}
@@ -180,7 +208,7 @@ function AdminTable({ chapters, nonprofits, chapterIsActive }: Props) {
                               fontStyle={"normal"}
                               icon={<FaTrash size={20} />}
                             >
-                              Delete Chapter
+                              Delete Nonprofit
                             </MenuItem>
                           </Box>
                         </MenuList>
