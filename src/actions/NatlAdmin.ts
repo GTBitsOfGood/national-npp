@@ -1,10 +1,5 @@
 import { internalRequest } from "src/utils/requests";
-import {
-  HttpMethod,
-  Nonprofit,
-  Chapter,
-  User,
-} from "src/utils/types";
+import { HttpMethod, Nonprofit, Chapter, User } from "src/utils/types";
 import urls from "src/utils/urls";
 
 const adminAPI = urls.baseUrl + urls.api.natlAdmin;
@@ -23,8 +18,7 @@ export async function natlAdminGetChapters() {
   });
 }
 
-export async function natlAdminGetChapterContacts(
-) {
+export async function natlAdminGetChapterContacts() {
   return internalRequest<User[]>({
     url: adminAPI + "/contacts",
     method: HttpMethod.GET,
