@@ -27,7 +27,6 @@ interface Props {
 }
 
 function AdminTable({ chapters, nonprofits, chapterIsActive }: Props) {
-
   const { isOpen, onOpen, onClose } = useDisclosure();
   const delFunctions = [onClose, onClose];
   const [delFunction, setDelFunction] = React.useState(0);
@@ -118,12 +117,16 @@ function AdminTable({ chapters, nonprofits, chapterIsActive }: Props) {
                         >
                           Edit Chapter
                         </MenuItem>
-                        <Box as="button" width="100%" onClick={() =>
+                        <Box
+                          as="button"
+                          width="100%"
+                          onClick={() =>
                             handleClick(
-                                "Delete Chapter",
-                                "Please confirm that you would like to delete this chapter.",
-                                0
-                            )}
+                              "Delete Chapter",
+                              "Please confirm that you would like to delete this chapter.",
+                              0
+                            )
+                          }
                         >
                           <MenuItem
                             color="danger"
@@ -193,12 +196,17 @@ function AdminTable({ chapters, nonprofits, chapterIsActive }: Props) {
                           >
                             Edit Nonprofit
                           </MenuItem>
-                          <Box as="button" width="100%" onClick={() =>
-                            handleClick(
+                          <Box
+                            as="button"
+                            width="100%"
+                            onClick={() =>
+                              handleClick(
                                 "Delete Nonprofit",
                                 "Please confirm that you would like to delete this nonprofit.",
                                 1
-                            )}>
+                              )
+                            }
+                          >
                             <MenuItem
                               color="danger"
                               fontWeight={"semibold"}
