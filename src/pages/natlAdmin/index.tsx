@@ -8,15 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { Types } from "mongoose";
 import AdminTable from "src/components/natlAdmin/AdminTable";
-import { Chapter, MaintenanceType, Address, Nonprofit } from "src/utils/types";
-
-function dateToString(date: Date) {
-  const dateOfMonth = `0${date.getDate().toString().slice(-2)}`;
-  const month = `0${(date.getMonth() + 1).toString().slice(-2)}`;
-  const year = date.getFullYear();
-
-  return `${month}/${dateOfMonth}/${year}`;
-}
+import { Chapter, MaintenanceType, Nonprofit } from "src/utils/types";
 
 function NatlAdminDelete() {
   const chapters: Chapter[] = [];

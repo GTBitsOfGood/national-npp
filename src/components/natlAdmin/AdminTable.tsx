@@ -18,6 +18,7 @@ import { BsThreeDots } from "react-icons/bs";
 import { FaTrash } from "react-icons/fa";
 import { RiPencilFill } from "react-icons/ri";
 import ConfirmAlertWithInput from "src/components/shared/ConfirmAlertWithInput";
+import { showError, showInfo } from "src/utils/notifications";
 import type { Chapter, Nonprofit, User } from "src/utils/types";
 
 interface Props {
@@ -32,6 +33,7 @@ function AdminTable({ chapters, nonprofits, chapterIsActive }: Props) {
   const [delFunction, setDelFunction] = React.useState(0);
   const [confirmTitle, setConfirmTitle] = React.useState("");
   const [confirmDesc, setConfirmDesc] = React.useState("");
+
   const handleClick = (
     newConfirmTitle: string,
     newConfirmDesc: string,
@@ -43,13 +45,23 @@ function AdminTable({ chapters, nonprofits, chapterIsActive }: Props) {
     onOpen();
   };
 
+  const handleDelete = (deleteFunc: () => void) => {
+    try {
+        deleteFunc();
+        showInfo("Successfully deleted. An email is being sent.");
+      } catch (e) {
+        const error = e as Error;
+        showError(error.message);
+      }
+  };
+
   return (
     <>
       <ConfirmAlertWithInput
         title={confirmTitle}
         description={confirmDesc}
         confirmText="Delete"
-        onConfirm={delFunctions[delFunction]}
+        onConfirm={() => handleDelete(delFunctions[delFunction])}
         isOpen={isOpen}
         onClose={onClose}
       />
