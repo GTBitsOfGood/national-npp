@@ -17,7 +17,7 @@ import React from "react";
 import { BsThreeDots } from "react-icons/bs";
 import { FaTrash } from "react-icons/fa";
 import { RiPencilFill } from "react-icons/ri";
-import ConfirmAlert from "src/components/shared/ConfirmAlert";
+import ConfirmAlertWithInput from "src/components/shared/ConfirmAlertWithInput";
 import type { Chapter, Nonprofit, User } from "src/utils/types";
 
 interface Props {
@@ -45,7 +45,7 @@ function AdminTable({ chapters, nonprofits, chapterIsActive }: Props) {
 
   return (
     <>
-      <ConfirmAlert
+      <ConfirmAlertWithInput
         title={confirmTitle}
         description={confirmDesc}
         confirmText="Delete"
