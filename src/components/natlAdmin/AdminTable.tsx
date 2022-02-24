@@ -47,12 +47,12 @@ function AdminTable({ chapters, nonprofits, chapterIsActive }: Props) {
 
   const handleDelete = (deleteFunc: () => void) => {
     try {
-        deleteFunc();
-        showInfo("Successfully deleted. An email is being sent.");
-      } catch (e) {
-        const error = e as Error;
-        showError(error.message);
-      }
+      deleteFunc();
+      showInfo("Successfully deleted. An email is being sent.");
+    } catch (e) {
+      const error = e as Error;
+      showError(error.message);
+    }
   };
 
   return (
