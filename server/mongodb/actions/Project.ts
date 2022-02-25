@@ -6,16 +6,17 @@ import UserModel from "server/mongodb/models/User";
 import dbConnect from "server/utils/dbConnect";
 import { displayableProjectStageToProjectStages } from "src/utils/stages";
 import {
+  ChapterGetProject,
+  ChapterGetProjects,
   ChapterUpdateProject,
   DisplayableProjectStage,
+  NatlAdminUpdateProject,
+  NonprofitCreateProject,
+  NonprofitGetProject,
+  NonprofitGetProjects,
   NonprofitUpdateProject,
   Project,
-  NonprofitCreateProject,
   ProjectStage,
-  ChapterGetProjects,
-  NonprofitGetProjects,
-  ChapterGetProject,
-  NonprofitGetProject,
 } from "src/utils/types";
 
 export async function nonprofitCreateProject(
@@ -197,4 +198,23 @@ export async function chapterUpdateProject(
   );
 
   return project;
+}
+
+export async function natlAdminUpdateProject(
+  projectId: Types.ObjectId,
+  updateProjectRequest: NatlAdminUpdateProject
+) {
+  await dbConnect();
+
+  if (updateProjectRequest.status === ProjectStage.SUBMIT_APPLICATION) {
+    return ProjectModel.findOneAndUpdate(
+      { _id: projectId },
+      { ...updateProjectRequest, $unset: { chapter: 1, contact: 1 } }
+    );
+  }
+
+  return ProjectModel.findOneAndUpdate(
+    { _id: projectId },
+    updateProjectRequest
+  );
 }
