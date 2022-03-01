@@ -12,7 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-
+      
+      - name: Run ESLint
+        run: npm i eslint && npm run lint
+        
       - name: Set pipeline
         id: pipeline
         # if its a PR, then its for preview, else its for development or prod based on what it's being pushed to.
