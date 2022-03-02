@@ -192,8 +192,17 @@ export type ChapterUpdateProject = Pick<
   Partial<Project>,
   "status" | "contact" | "chapter"
 >;
+export type NatlAdminUpdateProject = Pick<
+  Partial<Project>,
+  "status" | "contact" | "chapter"
+>;
 
 export type NonprofitCreateApplication = Omit<Application, "_id" | "project">;
+
+export type NatlAdminChangeApplicationStage = {
+  applicationId: string;
+  stage: ProjectStage;
+};
 
 export type NonprofitGetIssues = { open?: boolean };
 

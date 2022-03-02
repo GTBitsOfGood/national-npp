@@ -1,10 +1,5 @@
 import { internalRequest } from "src/utils/requests";
-import {
-  HttpMethod,
-  Nonprofit,
-  Chapter,
-  User,
-} from "src/utils/types";
+import { HttpMethod, Nonprofit, Chapter, User } from "src/utils/types";
 import urls from "src/utils/urls";
 
 const nonprofitAPI = urls.baseUrl + urls.api.nonprofits;
@@ -25,8 +20,7 @@ export async function natlAdminGetChapters() {
   });
 }
 
-export async function natlAdminGetChapterContacts(
-) {
+export async function natlAdminGetChapterContacts() {
   return internalRequest<User[]>({
     url: pocAPI + "/natlAdmin",
     method: HttpMethod.GET,
