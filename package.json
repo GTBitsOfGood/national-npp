@@ -36,7 +36,7 @@
   "devDependencies": {
     "@babel/core": "^7.14.6",
     "@babel/eslint-parser": "^7.14.7",
-    "@bitwarden/cli": "^1.16.0",
+    
     "@next/eslint-plugin-next": "^11.1.2",
     "@types/email-templates": "^8.0.4",
     "@types/react": "17.0.11",
