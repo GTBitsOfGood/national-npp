@@ -36,7 +36,7 @@ export async function natlAdminSendEmailChapterContacts(
     method: HttpMethod.POST,
     body: {
       subject: subject,
-      content: content
-    }
+      content: content,
+    },
   });
 }

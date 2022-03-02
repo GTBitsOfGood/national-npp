@@ -24,10 +24,13 @@ export default APIWrapper({
     config: {
       requireSession: true,
       roles: [Role.NATIONAL_ADMIN],
-    }, handler: async (req) => {
+    },
+    handler: async (req) => {
       const contacts: User[] = await natlAdminGetChapterContacts();
       if (!contacts) {
-        throw new Error("Failed to retrieve contacts. Unable to send the email.");
+        throw new Error(
+          "Failed to retrieve contacts. Unable to send the email."
+        );
       }
 
       const emails = contacts.map((contact) => contact.email);
@@ -45,11 +48,12 @@ export default APIWrapper({
           new NatlAdminEmailPOC({
             name: names[index],
             content: req.body.content as string,
-            subject: req.body.subject as string
-          }));
+            subject: req.body.subject as string,
+          })
+        );
 
         emailsSent.push(emails[index]);
       }
-    }
-  }
+    },
+  },
 });
