@@ -62,8 +62,6 @@ function NatlAdminDelete() {
     });
   }*/
 
-  
-
   /*nonprofits.push({
     _id: new Types.ObjectId(),
     name: "Hack4Impact",
@@ -108,17 +106,17 @@ function NatlAdminDelete() {
         justifyContent="center"
         alignItems="stretch"
       >
-        <Box 
-          flexGrow={1} 
+        <Box
+          flexGrow={1}
           flex="1 1 auto"
           border="1px solid #E2E8F0"
           borderRadius={10}
-          display="flex" 
+          display="flex"
           flexDirection="column"
           overflowX="hidden"
           overflowY="auto"
         >
-          <AdminTable chapters={chapters} chapterIsActive={true} /> 
+          <AdminTable chapters={chapters} chapterIsActive={true} />
         </Box>
       </Flex>
     </Flex>

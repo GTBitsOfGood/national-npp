@@ -113,10 +113,7 @@ function AdminTable({ chapters, nonprofits, chapterIsActive }: Props) {
                     </Link>
                   </Td>
                   <Td paddingInlineStart={4} paddingInlineEnd={4}>
-                    <Link
-                      href={`mailto:${chapter.email}`}
-                      isExternal
-                    >
+                    <Link href={`mailto:${chapter.email}`} isExternal>
                       {chapter.email}
                     </Link>
                   </Td>
