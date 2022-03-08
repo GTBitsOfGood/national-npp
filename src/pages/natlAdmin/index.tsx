@@ -5,16 +5,36 @@ import {
   TabPanels,
   Tab,
   TabPanel,
+  Box,
+  Heading,
 } from "@chakra-ui/react";
 import { Types } from "mongoose";
+import { useEffect, useState } from "react";
+import { natlAdminGetChapters } from "src/actions/NatlAdmin";
 import AdminTable from "src/components/natlAdmin/AdminTable";
+import { showError } from "src/utils/notifications";
 import { Chapter, MaintenanceType, Nonprofit } from "src/utils/types";
 
 function NatlAdminDelete() {
-  const chapters: Chapter[] = [];
+  //const chapters: Chapter[] = [];
   const nonprofits: Nonprofit[] = [];
 
-  for (let i = 0; i < 10; i += 1) {
+  const [chapters, setChapters] = useState<Chapter[]>();
+
+  useEffect(() => {
+    async function loadChapters() {
+      const newChapters: Chapter[] = await natlAdminGetChapters();
+
+      setChapters(newChapters);
+    }
+
+    loadChapters().catch((e) => {
+      const error = e as Error;
+      showError(error.message);
+    });
+  }, []);
+
+  /*for (let i = 0; i < 10; i += 1) {
     chapters.push({
       _id: new Types.ObjectId(),
       name: "BitsofGood",
@@ -40,9 +60,11 @@ function NatlAdminDelete() {
       maintenanceTypes: new Array<MaintenanceType>(),
       maintenancePeriod: 1,
     });
-  }
+  }*/
 
-  nonprofits.push({
+  
+
+  /*nonprofits.push({
     _id: new Types.ObjectId(),
     name: "Hack4Impact",
     website: "hack4impact.org",
@@ -64,7 +86,7 @@ function NatlAdminDelete() {
       zipCode: "Z",
       country: "Co",
     },
-  });
+  });*/
 
   return (
     <Flex
@@ -86,64 +108,18 @@ function NatlAdminDelete() {
         justifyContent="center"
         alignItems="stretch"
       >
-        <Tabs flexGrow={1} display="flex" flexDirection="column">
-          <TabList flex="0 0" borderBottom="none">
-            <Tab
-              width={120}
-              borderTopLeftRadius={10}
-              borderTopRightRadius={10}
-              border="1px solid none"
-              borderBottom="none"
-              fontWeight={600}
-              _selected={{
-                border: "1px solid #E2E8F0",
-                color: "primary",
-              }}
-              _focus={{
-                boxShadow: "none",
-              }}
-            >
-              Chapters
-            </Tab>
-            <Tab
-              width={120}
-              height={50}
-              backgroundColor="surface"
-              borderTopLeftRadius={10}
-              borderTopRightRadius={10}
-              border="1px solid none"
-              borderBottom="none"
-              fontWeight={600}
-              _selected={{
-                border: "1px solid #E2E8F0",
-                color: "primary",
-              }}
-              _focus={{
-                boxShadow: "none",
-              }}
-            >
-              Nonprofits
-            </Tab>
-          </TabList>
-
-          <TabPanels
-            backgroundColor="surface"
-            border="1px solid #E2E8F0"
-            borderBottomLeftRadius={10}
-            borderTopRightRadius={10}
-            borderBottomRightRadius={10}
-            flex="1 1 auto"
-            overflowX="hidden"
-            overflowY="auto"
-          >
-            <TabPanel paddingTop={0}>
-              <AdminTable chapters={chapters} chapterIsActive={true} />
-            </TabPanel>
-            <TabPanel paddingTop={0}>
-              <AdminTable nonprofits={nonprofits} chapterIsActive={false} />
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
+        <Box 
+          flexGrow={1} 
+          flex="1 1 auto"
+          border="1px solid #E2E8F0"
+          borderRadius={10}
+          display="flex" 
+          flexDirection="column"
+          overflowX="hidden"
+          overflowY="auto"
+        >
+          <AdminTable chapters={chapters} chapterIsActive={true} /> 
+        </Box>
       </Flex>
     </Flex>
   );

@@ -12,6 +12,14 @@ import {
   Box,
   MenuList,
   MenuItem,
+  Accordion,
+  AccordionButton,
+  AccordionItem,
+  AccordionPanel,
+  Text,
+  Grid,
+  HStack,
+  Flex,
 } from "@chakra-ui/react";
 import React from "react";
 import { BsThreeDots } from "react-icons/bs";
@@ -69,13 +77,16 @@ function AdminTable({ chapters, nonprofits, chapterIsActive }: Props) {
         <Thead color="#999999" borderBottom="1px solid #E2E8F0">
           <Tr height="100px">
             <Th paddingInlineStart={5} paddingInlineEnd={4}>
-              Organization
+              ORGANIZATION
             </Th>
             <Th paddingInlineStart={4} paddingInlineEnd={4}>
-              Website
+              WEBSITE
             </Th>
             <Th paddingInlineStart={4} paddingInlineEnd={4}>
-              Contact Email
+              CONTACT EMAIL
+            </Th>
+            <Th paddingInlineStart={4} paddingInlineEnd={4}>
+              NON-PROFITS
             </Th>
           </Tr>
         </Thead>
@@ -92,7 +103,7 @@ function AdminTable({ chapters, nonprofits, chapterIsActive }: Props) {
                   <Td
                     paddingInlineStart={5}
                     paddingInlineEnd={4}
-                    fontWeight={600}
+                    fontWeight={700}
                   >
                     {chapter.name}
                   </Td>
@@ -103,11 +114,14 @@ function AdminTable({ chapters, nonprofits, chapterIsActive }: Props) {
                   </Td>
                   <Td paddingInlineStart={4} paddingInlineEnd={4}>
                     <Link
-                      href={`mailto:${(chapter.contact as User).email}`}
+                      href={`mailto:${chapter.email}`}
                       isExternal
                     >
-                      {(chapter.contact as User).email}
+                      {chapter.email}
                     </Link>
+                  </Td>
+                  <Td paddingInlineStart={4} paddingInlineEnd={4}>
+                    5
                   </Td>
                   <Td>
                     <Menu>
