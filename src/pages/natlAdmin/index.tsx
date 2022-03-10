@@ -1,24 +1,11 @@
-import {
-  Flex,
-  Tabs,
-  TabList,
-  TabPanels,
-  Tab,
-  TabPanel,
-  Box,
-  Heading,
-} from "@chakra-ui/react";
-import { Types } from "mongoose";
+import { Flex, Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { natlAdminGetChapters } from "src/actions/NatlAdmin";
 import AdminTable from "src/components/natlAdmin/AdminTable";
 import { showError } from "src/utils/notifications";
-import { Chapter, MaintenanceType, Nonprofit } from "src/utils/types";
+import { Chapter } from "src/utils/types";
 
 function NatlAdminDelete() {
-  //const chapters: Chapter[] = [];
-  const nonprofits: Nonprofit[] = [];
-
   const [chapters, setChapters] = useState<Chapter[]>();
 
   useEffect(() => {
@@ -33,58 +20,6 @@ function NatlAdminDelete() {
       showError(error.message);
     });
   }, []);
-
-  /*for (let i = 0; i < 10; i += 1) {
-    chapters.push({
-      _id: new Types.ObjectId(),
-      name: "BitsofGood",
-      website: "bitsofgood1.org",
-      email: "gt@hack4impact1.org",
-      contact: {
-        _id: new Types.ObjectId(),
-        id: "123",
-        email: "bog.org",
-        emailVerified: new Date(),
-        name: "Bog contact",
-        roles: [],
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      address: {
-        street: "Bstr",
-        city: "Bci",
-        state: "Bsta",
-        zipCode: "Bzip",
-        country: "Bco",
-      },
-      maintenanceTypes: new Array<MaintenanceType>(),
-      maintenancePeriod: 1,
-    });
-  }*/
-
-  /*nonprofits.push({
-    _id: new Types.ObjectId(),
-    name: "Hack4Impact",
-    website: "hack4impact.org",
-    contact: {
-      _id: new Types.ObjectId(),
-      id: "456",
-      email: "bog2.org",
-      emailVerified: new Date(),
-      name: "Bog contact2",
-      roles: [],
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    isVerified: false,
-    address: {
-      street: "Str",
-      city: "C",
-      state: "Sta",
-      zipCode: "Z",
-      country: "Co",
-    },
-  });*/
 
   return (
     <Flex
@@ -116,7 +51,7 @@ function NatlAdminDelete() {
           overflowX="hidden"
           overflowY="auto"
         >
-          <AdminTable chapters={chapters} chapterIsActive={true} />
+          <AdminTable chapters={chapters} />
         </Box>
       </Flex>
     </Flex>

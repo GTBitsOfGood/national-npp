@@ -1,78 +1,15 @@
-import {
-  Link,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  useDisclosure,
-  Menu,
-  MenuButton,
-  Box,
-  MenuList,
-  MenuItem,
-  Accordion,
-  AccordionButton,
-  AccordionItem,
-  AccordionPanel,
-  Text,
-  Grid,
-  HStack,
-  Flex,
-} from "@chakra-ui/react";
+import { Table, Thead, Tbody, Tr, Th } from "@chakra-ui/react";
 import React from "react";
-import { BsThreeDots } from "react-icons/bs";
-import { FaTrash } from "react-icons/fa";
-import { RiPencilFill } from "react-icons/ri";
-import ConfirmAlertWithInput from "src/components/shared/ConfirmAlertWithInput";
-import { showError, showInfo } from "src/utils/notifications";
-import type { Chapter, Nonprofit, User } from "src/utils/types";
+import type { Chapter } from "src/utils/types";
+import AdminTableRow from "./AdminTableRow";
 
 interface Props {
   chapters?: Chapter[];
-  nonprofits?: Nonprofit[];
-  chapterIsActive: boolean;
 }
 
-function AdminTable({ chapters, nonprofits, chapterIsActive }: Props) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const delFunctions = [onClose, onClose];
-  const [delFunction, setDelFunction] = React.useState(0);
-  const [confirmTitle, setConfirmTitle] = React.useState("");
-  const [confirmDesc, setConfirmDesc] = React.useState("");
-
-  const handleClick = (
-    newConfirmTitle: string,
-    newConfirmDesc: string,
-    newDelFunction: number
-  ) => {
-    setConfirmTitle(newConfirmTitle);
-    setConfirmDesc(newConfirmDesc);
-    setDelFunction(newDelFunction);
-    onOpen();
-  };
-
-  const handleDelete = (deleteFunc: () => void) => {
-    try {
-      deleteFunc();
-      showInfo("Successfully deleted. An email is being sent.");
-    } catch (e) {
-      const error = e as Error;
-      showError(error.message);
-    }
-  };
-
+function AdminTable({ chapters }: Props) {
   return (
     <>
-      <ConfirmAlertWithInput
-        title={confirmTitle}
-        description={confirmDesc}
-        confirmText="Delete"
-        onConfirm={() => handleDelete(delFunctions[delFunction])}
-        isOpen={isOpen}
-        onClose={onClose}
-      />
       <Table variant="unstyled" size="lg">
         <Thead color="#999999" borderBottom="1px solid #E2E8F0">
           <Tr height="100px">
@@ -93,79 +30,7 @@ function AdminTable({ chapters, nonprofits, chapterIsActive }: Props) {
         <Tbody overflowY="auto">
           {chapters &&
             chapters.map((chapter) => (
-              <Tr
-                key={chapter.name}
-                height="100px"
-                cursor="pointer"
-                _hover={{ backgroundColor: "rgba(0, 105, 202, 0.05)" }}
-              >
-                <Td
-                  paddingInlineStart={5}
-                  paddingInlineEnd={4}
-                  fontWeight={700}
-                >
-                  {chapter.name}
-                </Td>
-                <Td paddingInlineStart={4} paddingInlineEnd={4}>
-                  <Link href={chapter.website} isExternal>
-                    {chapter.website}
-                  </Link>
-                </Td>
-                <Td paddingInlineStart={4} paddingInlineEnd={4}>
-                  <Link href={`mailto:${chapter.email}`} isExternal>
-                    {chapter.email}
-                  </Link>
-                </Td>
-                <Td paddingInlineStart={4} paddingInlineEnd={4}>
-                  5
-                </Td>
-                <Td>
-                  <Menu>
-                    <MenuButton>
-                      <Box as="button">
-                        <BsThreeDots />
-                      </Box>
-                    </MenuButton>
-                    <MenuList>
-                      <MenuItem
-                        borderBottomWidth={"thin"}
-                        color="#858585"
-                        fontWeight={"semibold"}
-                        paddingBottom={4}
-                        paddingLeft={4}
-                        fontFamily={"Tahoma"}
-                        fontStyle={"normal"}
-                        icon={<RiPencilFill size={20} />}
-                      >
-                        Edit Chapter
-                      </MenuItem>
-                      <Box
-                        as="button"
-                        width="100%"
-                        onClick={() =>
-                          handleClick(
-                            "Delete Chapter",
-                            "Please confirm that you would like to delete this chapter.",
-                            0
-                          )
-                        }
-                      >
-                        <MenuItem
-                          color="danger"
-                          fontWeight={"semibold"}
-                          paddingLeft={4}
-                          paddingTop={4}
-                          fontFamily={"Tahoma"}
-                          fontStyle={"normal"}
-                          icon={<FaTrash size={20} />}
-                        >
-                          Delete Chapter
-                        </MenuItem>
-                      </Box>
-                    </MenuList>
-                  </Menu>
-                </Td>
-              </Tr>
+              <AdminTableRow key={chapter.name} chapter={chapter} />
             ))}
         </Tbody>
       </Table>
