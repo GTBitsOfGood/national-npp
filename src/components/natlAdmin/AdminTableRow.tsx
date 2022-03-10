@@ -23,9 +23,9 @@ import {
 } from "react-icons/bs";
 import { FaTrash } from "react-icons/fa";
 import { RiPencilFill } from "react-icons/ri";
+import ConfirmAlertWithInput from "src/components/shared/ConfirmAlertWithInput";
 import { showError, showInfo } from "src/utils/notifications";
 import { Chapter } from "src/utils/types";
-import ConfirmAlertWithInput from "src/components/shared/ConfirmAlertWithInput";
 
 function AdminTableRow(props: { chapter: Chapter }) {
   const { chapter } = props;
