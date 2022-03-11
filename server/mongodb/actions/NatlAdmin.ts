@@ -7,13 +7,19 @@ import { User } from "src/utils/types";
 export async function natlAdminGetNonprofits() {
   await dbConnect();
 
-  return NonprofitModel.find();
+  return NonprofitModel.find().populate({
+    path: "contact",
+    model: UserModel
+  });
 }
 
 export async function natlAdminGetChapters() {
   await dbConnect();
 
-  return ChapterModel.find();
+  return ChapterModel.find().populate({
+    path: "contact",
+    model: UserModel
+  });
 }
 
 export async function natlAdminGetChapterContacts() {
