@@ -196,7 +196,7 @@ function AdminTableRow({ chapter, chapterProjects }: Props) {
               border="1px solid #E2E8F0"
               borderRadius={10}
               overflowX="hidden"
-              maxheight="250px"
+              height="250px"
             >
               <Table variant="unstyled" size="sm">
                 <Thead color="#999999">
