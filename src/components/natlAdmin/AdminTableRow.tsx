@@ -67,21 +67,26 @@ function AdminTableRow({ chapter, chapterProjects }: Props) {
   };
 
   const countNonprofits = () => {
-      let numNonprofits = 0;
-      const nonProfitTracker = new Set();
-      if (chapterProjects) {
-        for (let i = 0; i < chapterProjects?.length; i++) {
-            if (!nonProfitTracker.has((chapterProjects[i].nonprofit as Nonprofit)._id.toString())) {
-                numNonprofits +=1;
-                nonProfitTracker.add((chapterProjects[i].nonprofit as Nonprofit)._id.toString())
-            }
+    let numNonprofits = 0;
+    const nonProfitTracker = new Set();
+    if (chapterProjects) {
+      for (let i = 0; i < chapterProjects?.length; i++) {
+        if (
+          !nonProfitTracker.has(
+            (chapterProjects[i].nonprofit as Nonprofit)._id.toString()
+          )
+        ) {
+          numNonprofits += 1;
+          nonProfitTracker.add(
+            (chapterProjects[i].nonprofit as Nonprofit)._id.toString()
+          );
         }
       }
-      return numNonprofits;
+    }
+    return numNonprofits;
+  };
 
-  }
-
-  let nummberOfNonprofits = countNonprofits();
+  const nummberOfNonprofits = countNonprofits();
 
   return (
     <>
