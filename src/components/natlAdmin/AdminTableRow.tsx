@@ -256,7 +256,10 @@ function AdminTableRow({ chapter, chapterProjects }: Props) {
                           {chapterProject.type}
                         </Td>
                         <Td>
-                          <Link color="primary" href={urls.pages.nonprofit.projects.index}>
+                          <Link
+                            color="primary"
+                            href={urls.pages.nonprofit.projects.index}
+                          >
                             <HStack>
                               <Box>View Project</Box>
                               <BsArrowUpRight />

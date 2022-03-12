@@ -36,7 +36,7 @@ function Navigation() {
     } else {
       return nonprofitNavItems;
     }
-  }
+  };
   const navItems = getNavItems();
 
   const logOut = () => {
@@ -195,8 +195,8 @@ const chapterNavItems: Array<NavItem> = [
 ];
 
 const natlAdminNavItems: Array<NavItem> = [
- {
-   label: "Chapters",
-   href: urls.pages.natlAdmin.index,
- },
+  {
+    label: "Chapters",
+    href: urls.pages.natlAdmin.index,
+  },
 ];
