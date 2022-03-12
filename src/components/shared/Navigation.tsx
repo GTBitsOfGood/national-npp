@@ -20,6 +20,7 @@ import NextLink from "next/link";
 import Logo from "public/images/small_logo.svg";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { showError } from "src/utils/notifications";
+import { Role } from "src/utils/types";
 import urls from "src/utils/urls";
 
 function Navigation() {
@@ -27,7 +28,16 @@ function Navigation() {
   if (isLoading) return null;
   const user = session?.user;
 
-  const navItems = user?.chapter ? chapterNavItems : nonprofitNavItems;
+  const getNavItems = () => {
+    if (user?.roles.includes(Role.NATIONAL_ADMIN)) {
+      return natlAdminNavItems;
+    } else if (user?.chapter) {
+      return chapterNavItems;
+    } else {
+      return nonprofitNavItems;
+    }
+  }
+  const navItems = getNavItems();
 
   const logOut = () => {
     signOut().catch((e) => {
@@ -182,4 +192,11 @@ const chapterNavItems: Array<NavItem> = [
     label: "Maintenance",
     href: "/",
   },
+];
+
+const natlAdminNavItems: Array<NavItem> = [
+ {
+   label: "Chapters",
+   href: urls.pages.natlAdmin.index,
+ },
 ];

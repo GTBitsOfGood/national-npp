@@ -26,6 +26,7 @@ import { RiPencilFill } from "react-icons/ri";
 import ConfirmAlertWithInput from "src/components/shared/ConfirmAlertWithInput";
 import { showError, showInfo } from "src/utils/notifications";
 import { Chapter, Nonprofit, Project, User } from "src/utils/types";
+import urls from "src/utils/urls";
 
 interface Props {
   chapter: Chapter;
@@ -255,7 +256,7 @@ function AdminTableRow({ chapter, chapterProjects }: Props) {
                           {chapterProject.type}
                         </Td>
                         <Td>
-                          <Link color="primary">
+                          <Link color="primary" href={urls.pages.nonprofit.projects.index}>
                             <HStack>
                               <Box>View Project</Box>
                               <BsArrowUpRight />
