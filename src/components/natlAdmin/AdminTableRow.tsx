@@ -86,7 +86,19 @@ function AdminTableRow({ chapter, chapterProjects }: Props) {
     return numNonprofits;
   };
 
+  const nonProfitNameTracker = new Set();
+  const nonProfitNameShown = (currentChapterProjectId: string) => {
+      
+      if (nonProfitNameTracker.has(currentChapterProjectId)) {
+          return true;
+      } else {
+          nonProfitNameTracker.add(currentChapterProjectId);
+          return false;
+      }
+  }
+
   const nummberOfNonprofits = countNonprofits();
+  const sortedChapterProjects = chapterProjects?.sort((a, b) => (a.nonprofit as Nonprofit).name.localeCompare((b.nonprofit as Nonprofit).name));
 
   return (
     <>
@@ -170,7 +182,7 @@ function AdminTableRow({ chapter, chapterProjects }: Props) {
           </Menu>
         </Td>
       </Tr>
-      {expanded && (
+      {expanded && nummberOfNonprofits > 0 && (
         <Tr>
           <Td colSpan={5}>
             <Box
@@ -200,17 +212,21 @@ function AdminTableRow({ chapter, chapterProjects }: Props) {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {chapterProjects &&
-                    chapterProjects.map((chapterProject) => (
+                  {sortedChapterProjects &&
+                    sortedChapterProjects.map((chapterProject) => (
                       <Tr height="50px" key={chapterProject.name}>
-                        <Td
-                          paddingInlineStart={5}
-                          paddingInlineEnd={4}
-                          fontWeight={700}
-                          color="primary"
-                        >
-                          {(chapterProject.nonprofit as Nonprofit).name}
-                        </Td>
+                        {!nonProfitNameShown((chapterProject.nonprofit as Nonprofit)._id.toString()) ? (
+                            <Td
+                            paddingInlineStart={5}
+                            paddingInlineEnd={4}
+                            fontWeight={700}
+                            color="primary"
+                            >
+                            {(chapterProject.nonprofit as Nonprofit).name}
+                            </Td>
+                        ) : (
+                            <Td></Td>
+                        )}
                         <Td
                           paddingInlineStart={4}
                           paddingInlineEnd={4}
@@ -223,7 +239,7 @@ function AdminTableRow({ chapter, chapterProjects }: Props) {
                           paddingInlineEnd={4}
                           fontWeight={500}
                         >
-                          {(chapterProject.contact as User).email}
+                          {chapterProject.contact && (chapterProject.contact as User).email}
                         </Td>
                         <Td
                           paddingInlineStart={4}
