@@ -39,6 +39,9 @@ const urls = {
       },
       profile: "/nonprofit/profile",
     },
+    natlAdmin: {
+      index: "/natlAdmin",
+    },
   },
   api: {
     projects: "/api/projects",

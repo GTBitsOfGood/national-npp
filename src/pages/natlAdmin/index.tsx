@@ -1,70 +1,57 @@
+import { Flex, Box, Heading, VStack } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import {
-  Flex,
-  Tabs,
-  TabList,
-  TabPanels,
-  Tab,
-  TabPanel,
-} from "@chakra-ui/react";
-import { Types } from "mongoose";
+  natlAdminGetChapters,
+  natlAdminGetNonprofits,
+  natlAdminGetProjects,
+} from "src/actions/NatlAdmin";
 import AdminTable from "src/components/natlAdmin/AdminTable";
-import { Chapter, MaintenanceType, Nonprofit } from "src/utils/types";
+import { showError } from "src/utils/notifications";
+import { Chapter, Nonprofit, Project } from "src/utils/types";
 
 function NatlAdminDelete() {
-  const chapters: Chapter[] = [];
-  const nonprofits: Nonprofit[] = [];
+  const [chapters, setChapters] = useState<Chapter[]>();
+  const [projects, setProjects] = useState<Project[]>();
+  const [nonprofits, setNonprofits] = useState<Nonprofit[]>();
 
-  for (let i = 0; i < 10; i += 1) {
-    chapters.push({
-      _id: new Types.ObjectId(),
-      name: "BitsofGood",
-      website: "bitsofgood1.org",
-      email: "gt@hack4impact1.org",
-      contact: {
-        _id: new Types.ObjectId(),
-        id: "123",
-        email: "bog.org",
-        emailVerified: new Date(),
-        name: "Bog contact",
-        roles: [],
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      address: {
-        street: "Bstr",
-        city: "Bci",
-        state: "Bsta",
-        zipCode: "Bzip",
-        country: "Bco",
-      },
-      maintenanceTypes: new Array<MaintenanceType>(),
-      maintenancePeriod: 1,
+  useEffect(() => {
+    async function loadChapters() {
+      const newChapters: Chapter[] = await natlAdminGetChapters();
+
+      setChapters(newChapters);
+    }
+
+    loadChapters().catch((e) => {
+      const error = e as Error;
+      showError(error.message);
     });
-  }
+  }, []);
 
-  nonprofits.push({
-    _id: new Types.ObjectId(),
-    name: "Hack4Impact",
-    website: "hack4impact.org",
-    contact: {
-      _id: new Types.ObjectId(),
-      id: "456",
-      email: "bog2.org",
-      emailVerified: new Date(),
-      name: "Bog contact2",
-      roles: [],
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    isVerified: false,
-    address: {
-      street: "Str",
-      city: "C",
-      state: "Sta",
-      zipCode: "Z",
-      country: "Co",
-    },
-  });
+  useEffect(() => {
+    async function loadProjects() {
+      const newProjects: Project[] = await natlAdminGetProjects();
+
+      setProjects(newProjects);
+    }
+
+    loadProjects().catch((e) => {
+      const error = e as Error;
+      showError(error.message);
+    });
+  }, []);
+
+  useEffect(() => {
+    async function loadNonprofits() {
+      const newNonprofits: Nonprofit[] = await natlAdminGetNonprofits();
+
+      setNonprofits(newNonprofits);
+    }
+
+    loadNonprofits().catch((e) => {
+      const error = e as Error;
+      showError(error.message);
+    });
+  }, []);
 
   return (
     <Flex
@@ -74,77 +61,44 @@ function NatlAdminDelete() {
       alignItems="stretch"
       overflow="auto"
     >
-      <Flex
-        minH="600px"
-        margin={50}
-        padding={50}
-        border="1px solid #657788"
-        borderRadius={10}
-        backgroundColor="surface"
-        flexShrink={0}
+      <VStack
+        align="stretch"
+        marginBottom={15}
         flexGrow={1}
+        padding={50}
+        spacing="40px"
         justifyContent="center"
-        alignItems="stretch"
       >
-        <Tabs flexGrow={1} display="flex" flexDirection="column">
-          <TabList flex="0 0" borderBottom="none">
-            <Tab
-              width={120}
-              borderTopLeftRadius={10}
-              borderTopRightRadius={10}
-              border="1px solid none"
-              borderBottom="none"
-              fontWeight={600}
-              _selected={{
-                border: "1px solid #E2E8F0",
-                color: "primary",
-              }}
-              _focus={{
-                boxShadow: "none",
-              }}
-            >
-              Chapters
-            </Tab>
-            <Tab
-              width={120}
-              height={50}
-              backgroundColor="surface"
-              borderTopLeftRadius={10}
-              borderTopRightRadius={10}
-              border="1px solid none"
-              borderBottom="none"
-              fontWeight={600}
-              _selected={{
-                border: "1px solid #E2E8F0",
-                color: "primary",
-              }}
-              _focus={{
-                boxShadow: "none",
-              }}
-            >
-              Nonprofits
-            </Tab>
-          </TabList>
-
-          <TabPanels
-            backgroundColor="surface"
-            border="1px solid #E2E8F0"
-            borderBottomLeftRadius={10}
-            borderTopRightRadius={10}
-            borderBottomRightRadius={10}
+        <Heading fontSize={{ base: "2xl", md: "3xl" }} paddingLeft="20px">
+          Chapters
+        </Heading>
+        <Flex
+          minH="600px"
+          margin={10}
+          padding={50}
+          border="1px solid #657788"
+          borderRadius={10}
+          backgroundColor="surface"
+          flexShrink={0}
+          flexGrow={1}
+          justifyContent="center"
+          alignItems="stretch"
+        >
+          <Box
+            flexGrow={1}
             flex="1 1 auto"
+            border="1px solid #E2E8F0"
+            borderRadius={10}
+            display="flex"
+            flexDirection="column"
             overflowX="hidden"
             overflowY="auto"
+            maxHeight="500px"
           >
-            <TabPanel paddingTop={0}>
-              <AdminTable chapters={chapters} chapterIsActive={true} />
-            </TabPanel>
-            <TabPanel paddingTop={0}>
-              <AdminTable nonprofits={nonprofits} chapterIsActive={false} />
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
-      </Flex>
+            <AdminTable chapters={chapters} projects={projects} />
+          </Box>
+        </Flex>
+      </VStack>
     </Flex>
   );
 }

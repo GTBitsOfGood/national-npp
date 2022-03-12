@@ -1,9 +1,10 @@
 import { internalRequest } from "src/utils/requests";
-import { HttpMethod, Nonprofit, Chapter, User } from "src/utils/types";
+import { HttpMethod, Nonprofit, Chapter, User, Project } from "src/utils/types";
 import urls from "src/utils/urls";
 
 const nonprofitAPI = urls.baseUrl + urls.api.nonprofits;
 const chapterAPI = urls.baseUrl + urls.api.chapters;
+const projectAPI = urls.baseUrl + urls.api.projects;
 const pocAPI = urls.baseUrl + urls.api.users;
 
 export async function natlAdminGetNonprofits() {
@@ -16,6 +17,13 @@ export async function natlAdminGetNonprofits() {
 export async function natlAdminGetChapters() {
   return internalRequest<Chapter[]>({
     url: chapterAPI + "/natlAdmin",
+    method: HttpMethod.GET,
+  });
+}
+
+export async function natlAdminGetProjects() {
+  return internalRequest<Project[]>({
+    url: projectAPI + "/natlAdmin",
     method: HttpMethod.GET,
   });
 }
