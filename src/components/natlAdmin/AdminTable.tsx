@@ -1,6 +1,6 @@
 import { Table, Thead, Tbody, Tr, Th } from "@chakra-ui/react";
 import React from "react";
-import type { Chapter, Project } from "src/utils/types";
+import type { Chapter, Nonprofit, Project } from "src/utils/types";
 import AdminTableRow from "./AdminTableRow";
 
 interface Props {

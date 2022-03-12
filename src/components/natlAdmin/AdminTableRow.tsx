@@ -66,6 +66,23 @@ function AdminTableRow({ chapter, chapterProjects }: Props) {
     setExpanded(!expanded);
   };
 
+  const countNonprofits = () => {
+      let numNonprofits = 0;
+      const nonProfitTracker = new Set();
+      if (chapterProjects) {
+        for (let i = 0; i < chapterProjects?.length; i++) {
+            if (!nonProfitTracker.has((chapterProjects[i].nonprofit as Nonprofit)._id.toString())) {
+                numNonprofits +=1;
+                nonProfitTracker.add((chapterProjects[i].nonprofit as Nonprofit)._id.toString())
+            }
+        }
+      }
+      return numNonprofits;
+
+  }
+
+  let nummberOfNonprofits = countNonprofits();
+
   return (
     <>
       <ConfirmAlertWithInput
@@ -99,7 +116,7 @@ function AdminTableRow({ chapter, chapterProjects }: Props) {
           </Link>
         </Td>
         <Td paddingInlineStart={4} paddingInlineEnd={4}>
-          {5}
+          {nummberOfNonprofits}
         </Td>
         <Td>
           <Menu>

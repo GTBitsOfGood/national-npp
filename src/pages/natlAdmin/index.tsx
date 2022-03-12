@@ -2,15 +2,17 @@ import { Flex, Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import {
   natlAdminGetChapters,
+  natlAdminGetNonprofits,
   natlAdminGetProjects,
 } from "src/actions/NatlAdmin";
 import AdminTable from "src/components/natlAdmin/AdminTable";
 import { showError } from "src/utils/notifications";
-import { Chapter, Project } from "src/utils/types";
+import { Chapter, Nonprofit, Project } from "src/utils/types";
 
 function NatlAdminDelete() {
   const [chapters, setChapters] = useState<Chapter[]>();
   const [projects, setProjects] = useState<Project[]>();
+  const [nonprofits, setNonprofits] = useState<Nonprofit[]>();
 
   useEffect(() => {
     async function loadChapters() {
@@ -33,6 +35,19 @@ function NatlAdminDelete() {
     }
 
     loadProjects().catch((e) => {
+      const error = e as Error;
+      showError(error.message);
+    });
+  }, []);
+
+  useEffect(() => {
+    async function loadNonprofits() {
+      const newNonprofits: Nonprofit[] = await natlAdminGetNonprofits();
+
+      setNonprofits(newNonprofits);
+    }
+
+    loadNonprofits().catch((e) => {
       const error = e as Error;
       showError(error.message);
     });
