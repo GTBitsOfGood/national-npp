@@ -10,6 +10,7 @@ import { Chapter, Project } from "src/utils/types";
 
 function NatlAdminDelete() {
   const [chapters, setChapters] = useState<Chapter[]>();
+  const [projects, setProjects] = useState<Project[]>();
 
   useEffect(() => {
     async function loadChapters() {
@@ -24,8 +25,6 @@ function NatlAdminDelete() {
     });
   }, []);
 
-  const [projects, setProjects] = useState<Project[]>();
-
   useEffect(() => {
     async function loadProjects() {
       const newProjects: Project[] = await natlAdminGetProjects();
@@ -38,12 +37,6 @@ function NatlAdminDelete() {
       showError(error.message);
     });
   }, []);
-
-  if (projects && projects[2].chapter) {
-    console.log(projects[2].chapter);
-  }
-
-  //const myChapterProjects = projects?.filter((p) => p.chapter && (p.chapter as Chapter))
 
   return (
     <Flex
@@ -75,7 +68,7 @@ function NatlAdminDelete() {
           overflowX="hidden"
           overflowY="auto"
         >
-          <AdminTable chapters={chapters} />
+          <AdminTable chapters={chapters} projects={projects}/>
         </Box>
       </Flex>
     </Flex>

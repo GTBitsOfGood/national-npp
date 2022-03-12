@@ -34,6 +34,10 @@ export async function natlAdminGetProjects() {
     .populate({
       path: "chapter",
       model: ChapterModel,
+    })
+    .populate({
+      path: "nonprofit",
+      model: NonprofitModel,
     });
 }
 
