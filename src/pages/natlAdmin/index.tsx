@@ -61,7 +61,14 @@ function NatlAdminDelete() {
       alignItems="stretch"
       overflow="auto"
     >
-      <VStack align="stretch" marginBottom={15} flexGrow={1} padding={50} spacing="40px" justifyContent="center">
+      <VStack
+        align="stretch"
+        marginBottom={15}
+        flexGrow={1}
+        padding={50}
+        spacing="40px"
+        justifyContent="center"
+      >
         <Heading fontSize={{ base: "2xl", md: "3xl" }} paddingLeft="20px">
           Chapters
         </Heading>
