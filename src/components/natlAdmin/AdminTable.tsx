@@ -29,17 +29,18 @@ function AdminTable({ chapters, projects }: Props) {
           </Tr>
         </Thead>
         <Tbody overflowY="auto">
-          {chapters && 
+          {chapters &&
             chapters.map((chapter) => (
-              <AdminTableRow 
-                key={chapter.name} 
-                chapter={chapter} 
-                chapterProjects={
-                  projects?.filter(
-                    (p) => p.chapter && chapters && (
-                      (p.chapter as Chapter)._id === (chapter as Chapter)._id)
-                    )
-                }/>
+              <AdminTableRow
+                key={chapter.name}
+                chapter={chapter}
+                chapterProjects={projects?.filter(
+                  (p) =>
+                    p.chapter &&
+                    chapters &&
+                    (p.chapter as Chapter)._id === chapter._id
+                )}
+              />
             ))}
         </Tbody>
       </Table>

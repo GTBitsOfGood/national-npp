@@ -68,7 +68,7 @@ function NatlAdminDelete() {
           overflowX="hidden"
           overflowY="auto"
         >
-          <AdminTable chapters={chapters} projects={projects}/>
+          <AdminTable chapters={chapters} projects={projects} />
         </Box>
       </Flex>
     </Flex>

@@ -25,20 +25,14 @@ import { FaTrash } from "react-icons/fa";
 import { RiPencilFill } from "react-icons/ri";
 import ConfirmAlertWithInput from "src/components/shared/ConfirmAlertWithInput";
 import { showError, showInfo } from "src/utils/notifications";
-import {
-  Chapter,
-  Nonprofit,
-  Project,
-  User,
-} from "src/utils/types";
+import { Chapter, Nonprofit, Project, User } from "src/utils/types";
 
 interface Props {
-    chapter: Chapter;
-    chapterProjects?: Project[];
-  }
+  chapter: Chapter;
+  chapterProjects?: Project[];
+}
 
 function AdminTableRow({ chapter, chapterProjects }: Props) {
-
   const { isOpen, onOpen, onClose } = useDisclosure();
   const delFunctions = [onClose, onClose];
   const [delFunction, setDelFunction] = React.useState(0);
