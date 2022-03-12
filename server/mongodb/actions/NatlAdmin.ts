@@ -26,10 +26,15 @@ export async function natlAdminGetChapters() {
 export async function natlAdminGetProjects() {
   await dbConnect();
 
-  return ProjectModel.find().populate({
-    path: "contact",
-    model: UserModel,
-  });
+  return ProjectModel.find()
+    .populate({
+      path: "contact",
+      model: UserModel,
+    })
+    .populate({
+      path: "chapter",
+      model: ChapterModel,
+    });
 }
 
 export async function natlAdminGetChapterContacts() {
