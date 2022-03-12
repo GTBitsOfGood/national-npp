@@ -3,13 +3,14 @@ import NonprofitModel from "server/mongodb/models/Nonprofit";
 import UserModel from "server/mongodb/models/User";
 import dbConnect from "server/utils/dbConnect";
 import { User } from "src/utils/types";
+import ProjectModel from "server/mongodb/models/Project";
 
 export async function natlAdminGetNonprofits() {
   await dbConnect();
 
   return NonprofitModel.find().populate({
     path: "contact",
-    model: UserModel
+    model: UserModel,
   });
 }
 
@@ -18,7 +19,16 @@ export async function natlAdminGetChapters() {
 
   return ChapterModel.find().populate({
     path: "contact",
-    model: UserModel
+    model: UserModel,
+  });
+}
+
+export async function natlAdminGetProjects() {
+  await dbConnect();
+
+  return ProjectModel.find().populate({
+    path: "contact",
+    model: UserModel,
   });
 }
 

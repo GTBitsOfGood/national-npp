@@ -14,6 +14,7 @@ import {
   Tr,
   useDisclosure,
 } from "@chakra-ui/react";
+import { Types } from "mongoose";
 import React from "react";
 import {
   BsThreeDots,
@@ -25,7 +26,16 @@ import { FaTrash } from "react-icons/fa";
 import { RiPencilFill } from "react-icons/ri";
 import ConfirmAlertWithInput from "src/components/shared/ConfirmAlertWithInput";
 import { showError, showInfo } from "src/utils/notifications";
-import { Chapter } from "src/utils/types";
+import {
+  Chapter,
+  MaintenanceType,
+  Nonprofit,
+  Project,
+  ProjectStage,
+  ProjectType,
+  Role,
+  User,
+} from "src/utils/types";
 
 function AdminTableRow(props: { chapter: Chapter }) {
   const { chapter } = props;
@@ -37,6 +47,8 @@ function AdminTableRow(props: { chapter: Chapter }) {
   const [confirmDesc, setConfirmDesc] = React.useState("");
 
   const [expanded, setExpanded] = React.useState(false);
+
+  const chapterProjects: Project[] = [];
 
   const handleClick = (
     newConfirmTitle: string,
@@ -62,6 +74,72 @@ function AdminTableRow(props: { chapter: Chapter }) {
   const handleToggle = () => {
     setExpanded(!expanded);
   };
+
+  chapterProjects?.push({
+    _id: new Types.ObjectId("321321321321"),
+    nonprofit: {
+      _id: new Types.ObjectId("549549549549"),
+      name: "Nonprofit 1",
+      address: {
+        street: "B",
+        city: "O",
+        state: "G",
+        zipCode: "S",
+        country: "USA",
+      },
+      isVerified: false,
+
+      contact: {
+        _id: Types.ObjectId("240240240240"),
+        id: "240",
+        email: "contact1@bog.org",
+        emailVerified: new Date(),
+        name: "Contact 1",
+        roles: [Role.NATIONAL_ADMIN],
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    },
+    name: "Project 1",
+    status: ProjectStage.SUBMIT_APPLICATION,
+    type: ProjectType.WEBSITE,
+    contact: {
+      _id: Types.ObjectId("247247247247"),
+      id: "247",
+      email: "maincontact1@good.org",
+      emailVerified: new Date(),
+      name: " Main Contact 1",
+      roles: [Role.NATIONAL_ADMIN],
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    chapter: {
+      _id: new Types.ObjectId("322322322322"),
+      name: "Chapter 1",
+      email: "chapter1@bog.org",
+      contact: {
+        _id: Types.ObjectId("340340340340"),
+        id: "340",
+        email: "contact1@bits.org",
+        emailVerified: new Date(),
+        name: "ChapterContact1",
+        roles: [Role.NATIONAL_ADMIN],
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      address: {
+        street: "B",
+        city: "I",
+        state: "T",
+        zipCode: "S",
+        country: "USA",
+      },
+      maintenanceTypes: [MaintenanceType.BUG_FIXES],
+      maintenancePeriod: 6,
+    },
+  });
 
   return (
     <>
@@ -175,123 +253,48 @@ function AdminTableRow(props: { chapter: Chapter }) {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  <Tr height="50px">
-                    <Td
-                      paddingInlineStart={5}
-                      paddingInlineEnd={4}
-                      fontWeight={700}
-                      color="primary"
-                    >
-                      Non-profit
-                    </Td>
-                    <Td
-                      paddingInlineStart={4}
-                      paddingInlineEnd={4}
-                      fontWeight={500}
-                    >
-                      Project name
-                    </Td>
-                    <Td
-                      paddingInlineStart={4}
-                      paddingInlineEnd={4}
-                      fontWeight={500}
-                    >
-                      Contact email
-                    </Td>
-                    <Td
-                      paddingInlineStart={4}
-                      paddingInlineEnd={4}
-                      fontWeight={500}
-                    >
-                      Product type
-                    </Td>
-                    <Td>
-                      <Link color="primary">
-                        <HStack>
-                          <Box>View Project</Box>
-                          <BsArrowUpRight />
-                        </HStack>
-                      </Link>
-                    </Td>
-                  </Tr>
-                  <Tr height="50px">
-                    <Td
-                      paddingInlineStart={5}
-                      paddingInlineEnd={4}
-                      fontWeight={700}
-                      color="primary"
-                    >
-                      Non-profit
-                    </Td>
-                    <Td
-                      paddingInlineStart={4}
-                      paddingInlineEnd={4}
-                      fontWeight={500}
-                    >
-                      Project name
-                    </Td>
-                    <Td
-                      paddingInlineStart={4}
-                      paddingInlineEnd={4}
-                      fontWeight={500}
-                    >
-                      Contact email
-                    </Td>
-                    <Td
-                      paddingInlineStart={4}
-                      paddingInlineEnd={4}
-                      fontWeight={500}
-                    >
-                      Product type
-                    </Td>
-                    <Td>
-                      <Link color="primary">
-                        <HStack>
-                          <Box>View Project</Box>
-                          <BsArrowUpRight />
-                        </HStack>
-                      </Link>
-                    </Td>
-                  </Tr>
-                  <Tr height="50px">
-                    <Td
-                      paddingInlineStart={5}
-                      paddingInlineEnd={4}
-                      fontWeight={700}
-                      color="primary"
-                    >
-                      Non-profit
-                    </Td>
-                    <Td
-                      paddingInlineStart={4}
-                      paddingInlineEnd={4}
-                      fontWeight={500}
-                    >
-                      Project name
-                    </Td>
-                    <Td
-                      paddingInlineStart={4}
-                      paddingInlineEnd={4}
-                      fontWeight={500}
-                    >
-                      Contact email
-                    </Td>
-                    <Td
-                      paddingInlineStart={4}
-                      paddingInlineEnd={4}
-                      fontWeight={500}
-                    >
-                      Product type
-                    </Td>
-                    <Td>
-                      <Link color="primary">
-                        <HStack>
-                          <Box>View Project</Box>
-                          <BsArrowUpRight />
-                        </HStack>
-                      </Link>
-                    </Td>
-                  </Tr>
+                  {chapterProjects &&
+                    chapterProjects.map((chapterProject) => (
+                      <Tr height="50px" key={chapterProject.name}>
+                        <Td
+                          paddingInlineStart={5}
+                          paddingInlineEnd={4}
+                          fontWeight={700}
+                          color="primary"
+                        >
+                          {(chapterProject.nonprofit as Nonprofit).name}
+                        </Td>
+                        <Td
+                          paddingInlineStart={4}
+                          paddingInlineEnd={4}
+                          fontWeight={500}
+                        >
+                          {chapterProject.name}
+                        </Td>
+                        <Td
+                          paddingInlineStart={4}
+                          paddingInlineEnd={4}
+                          fontWeight={500}
+                        >
+                          {(chapterProject.contact as User).email}
+                        </Td>
+                        <Td
+                          paddingInlineStart={4}
+                          paddingInlineEnd={4}
+                          fontWeight={500}
+                        >
+                          {chapterProject.type}
+                        </Td>
+                        <Td>
+                          <Link color="primary">
+                            <HStack>
+                              <Box>View Project</Box>
+                              <BsArrowUpRight />
+                            </HStack>
+                          </Link>
+                        </Td>
+                      </Tr>
+                    ))}
                 </Tbody>
               </Table>
             </Box>
