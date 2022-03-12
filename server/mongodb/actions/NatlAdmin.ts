@@ -1,9 +1,9 @@
 import ChapterModel from "server/mongodb/models/Chapter";
 import NonprofitModel from "server/mongodb/models/Nonprofit";
+import ProjectModel from "server/mongodb/models/Project";
 import UserModel from "server/mongodb/models/User";
 import dbConnect from "server/utils/dbConnect";
 import { User } from "src/utils/types";
-import ProjectModel from "server/mongodb/models/Project";
 
 export async function natlAdminGetNonprofits() {
   await dbConnect();
