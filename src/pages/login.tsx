@@ -116,8 +116,12 @@ function LoginPage() {
                 </FormControl>
                 <Button
                   onClick={handleSubmit}
-                  variant="primary"
+                  backgroundColor="primary"
+                  color="white"
+                  variant="solid"
                   isLoading={isLoading}
+                  _hover={{backgroundColor: "primary"}}
+                  _active={{backgroundColor: "primary"}}
                 >
                   Next
                 </Button>
