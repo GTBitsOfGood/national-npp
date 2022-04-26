@@ -129,40 +129,40 @@ function Navigation() {
       </Flex>
       {!isLoading && (
         <>
-        {user ? (
-          <Flex alignItems="center" display={{ base: "none", md: "flex" }}>
-            <Menu>
-              <MenuButton
-                as={Button}
-                rounded="full"
-                variant="link"
-                cursor="pointer"
-              >
-                <Avatar width="40px" height="40px" />
-              </MenuButton>
-              <MenuList>
-                <NextLink
-                  href={
-                    user.chapter
-                      ? urls.pages.chapter.profile
-                      : urls.pages.nonprofit.profile
-                  }
+          {user ? (
+            <Flex alignItems="center" display={{ base: "none", md: "flex" }}>
+              <Menu>
+                <MenuButton
+                  as={Button}
+                  rounded="full"
+                  variant="link"
+                  cursor="pointer"
                 >
-                  <MenuItem>My Profile</MenuItem>
-                </NextLink>
-                <MenuItem onClick={logOut}>Sign Out</MenuItem>
-              </MenuList>
-            </Menu>
-          </Flex>
-        ) : (
-          <Stack flex={{ base: 1, md: 0 }} justify="flex-end" direction="row">
-            <NextLink href={urls.pages.login}>
-              <Button variant="primary" fontSize="sm">
-                Log In
-              </Button>
-            </NextLink>
-          </Stack>
-        )}
+                  <Avatar width="40px" height="40px" />
+                </MenuButton>
+                <MenuList>
+                  <NextLink
+                    href={
+                      user.chapter
+                        ? urls.pages.chapter.profile
+                        : urls.pages.nonprofit.profile
+                    }
+                  >
+                    <MenuItem>My Profile</MenuItem>
+                  </NextLink>
+                  <MenuItem onClick={logOut}>Sign Out</MenuItem>
+                </MenuList>
+              </Menu>
+            </Flex>
+          ) : (
+            <Stack flex={{ base: 1, md: 0 }} justify="flex-end" direction="row">
+              <NextLink href={urls.pages.login}>
+                <Button variant="primary" fontSize="sm">
+                  Log In
+                </Button>
+              </NextLink>
+            </Stack>
+          )}
         </>
       )}
     </Flex>
