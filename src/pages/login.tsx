@@ -120,8 +120,8 @@ function LoginPage() {
                   color="white"
                   variant="solid"
                   isLoading={isLoading}
-                  _hover={{backgroundColor: "primary"}}
-                  _active={{backgroundColor: "primary"}}
+                  _hover={{ backgroundColor: "primary" }}
+                  _active={{ backgroundColor: "primary" }}
                 >
                   Next
                 </Button>
