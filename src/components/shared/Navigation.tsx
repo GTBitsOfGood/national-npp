@@ -20,14 +20,24 @@ import NextLink from "next/link";
 import Logo from "public/images/small_logo.svg";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { showError } from "src/utils/notifications";
+import { Role } from "src/utils/types";
 import urls from "src/utils/urls";
 
 function Navigation() {
   const [session, isLoading] = useSession();
-  if (isLoading) return null;
+  //if (isLoading) return null;
   const user = session?.user;
 
-  const navItems = user?.chapter ? chapterNavItems : nonprofitNavItems;
+  const getNavItems = () => {
+    if (user?.roles.includes(Role.NATIONAL_ADMIN)) {
+      return natlAdminNavItems;
+    } else if (user?.chapter) {
+      return chapterNavItems;
+    } else {
+      return nonprofitNavItems;
+    }
+  };
+  const navItems = getNavItems();
 
   const logOut = () => {
     signOut().catch((e) => {
@@ -117,39 +127,43 @@ function Navigation() {
           </Flex>
         )}
       </Flex>
-      {user ? (
-        <Flex alignItems="center" display={{ base: "none", md: "flex" }}>
-          <Menu>
-            <MenuButton
-              as={Button}
-              rounded="full"
-              variant="link"
-              cursor="pointer"
-            >
-              <Avatar width="40px" height="40px" />
-            </MenuButton>
-            <MenuList>
-              <NextLink
-                href={
-                  user.chapter
-                    ? urls.pages.chapter.profile
-                    : urls.pages.nonprofit.profile
-                }
-              >
-                <MenuItem>My Profile</MenuItem>
+      {!isLoading && (
+        <>
+          {user ? (
+            <Flex alignItems="center" display={{ base: "none", md: "flex" }}>
+              <Menu>
+                <MenuButton
+                  as={Button}
+                  rounded="full"
+                  variant="link"
+                  cursor="pointer"
+                >
+                  <Avatar width="40px" height="40px" />
+                </MenuButton>
+                <MenuList>
+                  <NextLink
+                    href={
+                      user.chapter
+                        ? urls.pages.chapter.profile
+                        : urls.pages.nonprofit.profile
+                    }
+                  >
+                    <MenuItem>My Profile</MenuItem>
+                  </NextLink>
+                  <MenuItem onClick={logOut}>Sign Out</MenuItem>
+                </MenuList>
+              </Menu>
+            </Flex>
+          ) : (
+            <Stack flex={{ base: 1, md: 0 }} justify="flex-end" direction="row">
+              <NextLink href={urls.pages.login}>
+                <Button variant="primary" fontSize="sm">
+                  Log In
+                </Button>
               </NextLink>
-              <MenuItem onClick={logOut}>Sign Out</MenuItem>
-            </MenuList>
-          </Menu>
-        </Flex>
-      ) : (
-        <Stack flex={{ base: 1, md: 0 }} justify="flex-end" direction="row">
-          <NextLink href={urls.pages.login}>
-            <Button variant="primary" fontSize="sm">
-              Log In
-            </Button>
-          </NextLink>
-        </Stack>
+            </Stack>
+          )}
+        </>
       )}
     </Flex>
   );
@@ -181,5 +195,16 @@ const chapterNavItems: Array<NavItem> = [
   {
     label: "Maintenance",
     href: "/",
+  },
+];
+
+const natlAdminNavItems: Array<NavItem> = [
+  {
+    label: "Projects",
+    href: "/admin/projects",
+  },
+  {
+    label: "Organizations",
+    href: "/admin/orgs",
   },
 ];
