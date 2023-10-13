@@ -1,4 +1,8 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-npm run lint && npm run format
+if [ "$USE_DOCKER" = "true" ]; then
+  NODE_COMMAND=lint docker-compose up --build --exit-code-from app app && NODE_COMMAND=format docker-compose up --build --exit-code-from app app
+else
+  npm run lint && npm run format
+fi
