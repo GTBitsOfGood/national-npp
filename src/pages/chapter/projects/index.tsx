@@ -16,7 +16,7 @@ function ChapterProjects() {
       id: "123",
       org: "Bits of Good",
       website: "bitsofgood.org",
-      email: "gt@hack4impact.org",
+      email: "contact@gt.hack4impact.org",
       started: new Date(),
       lastUpdated: new Date(),
       status: "newApp",
